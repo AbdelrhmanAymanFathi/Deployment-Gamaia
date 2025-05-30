@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <title>اختيار دورك</title>
+    <link rel="stylesheet" href="mainLayout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Tajawal', sans-serif;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+        label:hover {
+            background-color: #f5f5f5;
+        }
+        input[type="radio"] {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h2>اختيار دورك في الجمعية</h2>
+    <form id="turnForm">
+        <label>
+            <input type="radio" name="turn" value="1" required> الدور الأول (يوليو 2025) - 240 رســـوم
+        </label>
+        <label>
+            <input type="radio" name="turn" value="2"> الدور الثاني (يوليو 2025) - 210 رســـوم
+        </label>
+        <label>
+            <input type="radio" name="turn" value="3"> الدور الثالث (أغسطس 2025) - 120 رســـوم
+        </label>
+        <label>
+            <input type="radio" name="turn" value="4"> الدور الرابع (سبتمبر 2025) - بدون رسوم
+        </label>
+        <button type="submit" style="margin-top:20px;width:100%;padding:16px;font-size:20px;background:linear-gradient(to right,#b6e19c,#f7d277);color:#222;border:none;border-radius:24px;">التالي</button>
+    </form>
+
+    <script src="select_turn.js"></script>
+</body>
+</html> 

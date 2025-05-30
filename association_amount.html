@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>مبلغ القبض - الجمعيات</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="mainLayout.css">
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_circle_left" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;700&display=swap');
+
+    body {
+      font-family: 'Cairo', sans-serif;
+    }
+
+    .bottom-navbar {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      border-top: 1.5px solid #eee;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 54px;
+      z-index: 10;
+      box-shadow: 0 2px 10px #0001;
+      font-size: 13px;
+    }
+
+    .bottom-navbar .label {
+      margin-top: 3px;
+      font-weight: 500;
+      text-align: center;
+      line-height: 1.1;
+    }
+
+    .bottom-navbar>div {
+      flex: 1 1 0;
+      text-align: center;
+      cursor: pointer;
+      padding: 7px 0 0 0;
+    }
+
+    .bottom-navbar .active-footer,
+    .bottom-navbar .active-footer .label {
+      color: #16a34a !important;
+      font-weight: 700;
+    }
+            .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 32px 8px 80px 8px;
+        }
+        .title {
+            color: #222;
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            margin-top: 38px;
+            text-align: center;
+        }
+        .desc {
+            color: #58b231;
+            font-size: 1rem;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .amount-box {
+            background: #f6f6f6;
+            border-radius: 16px;
+            padding: 26px 0;
+            margin: 0 auto 42px auto;
+            text-align: center;
+            font-size: 1.22rem;
+            color: #444;
+            width: 90%;
+            border: none;
+            outline: none;
+        }
+        .input-amount {
+            background: transparent;
+            border: none;
+            outline: none;
+            text-align: center;
+            font-size: 1.22rem;
+            color: #444;
+            width: 70%;
+            direction: rtl;
+        }
+        .btn-next {
+            display: block;
+            width: 90%;
+            margin: 30px auto 0 auto;
+            padding: 14px 0;
+            border-radius: 22px;
+            background: linear-gradient(90deg, #50a535, #388b1a);
+            color: #fff;
+            border: none;
+            font-size: 1.12rem;
+            font-weight: bold;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: background 0.2s;
+        }
+        .btn-next:active {
+            background: #277e18;
+        }
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+            border-width: 0.2em;
+            margin-right: 0.5rem;
+        }
+        .btn-next:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+        }
+  </style>
+    <link rel="stylesheet" href="mainLayout.css">
+
+
+    <!-- Tajawal font for better Arabic rendering -->
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+        <!-- Navbar Top -->
+  <div style="background-color:#90D1CA;"
+    class="navbar flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg">
+    <!-- Left icons -->
+    <div class="flex gap-4">
+      <span class="icon" title="الإشعارات / Notifications">
+        <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      </span>
+      <span class="icon" title="الرائج / Trends">
+        <i class="bi bi-fire text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      </span>
+    </div>
+
+    <!-- User profile icon -->
+    <div class="user-profile relative" id="profile-toggle" title="الملف الشخصي / Profile">
+      <i class="bi bi-person-circle text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      <!-- Popup menu -->
+      <div class="popup-menu absolute right-0 mt-2 hidden bg-white shadow-md p-2 rounded-md" id="popup-menu">
+        <a href="./profile.html" class="block text-sm text-black">Profile</a>
+        <button class="block text-sm w-full text-left">Settings</button>
+        <button class="logout-btn block text-sm w-full text-left text-red-600" id="logout-btn">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+   <main class="flex-grow container mx-auto py-8 px-2 mb-20 " dir="ltr">
+    <div class="container">
+        <div class="title">كام هيكون مبلغ القبض؟</div>
+        <div class="desc">أكتب من 3000 ر.س إلى 15,000 ر.س</div>
+        <div class="amount-box">
+            <input type="number" class="input-amount" id="amountInput" min="3000" max="1200000" placeholder="٠ ر.س" value="0"> ر.س
+        </div>
+        <button class="btn-next" id="nextButton">التالي</button>
+
+
+    </div>
+
+    <!-- Suggestions -->
+<div id="suggestionsContainer" class="grid gap-4 px-2 mb-4"></div>
+
+<!-- Joined Section -->
+<section id="joinedSection" class="hidden px-4 mb-20">
+  <h3 class="text-center font-bold mb-2">الجمعيات اللي انضممت ليها</h3>
+  <div id="joinedContainer" class="grid gap-4"></div>
+</section>
+
+</main>
+
+
+  <!-- Navbar Bottom -->
+  <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg" style="background-color:#90D1CA;">
+
+    <div onclick="location.href='home.html'" class="p-0">
+      <i class="bi bi-house-door-fill  text-xl "></i>
+      <div class="label ">الرئيسية</div>
+    </div>
+
+    <div onclick="location.href='circle-list.html'" class="p-0">
+      <i class="bi bi-people-fill text-xl"></i>
+      <div class="label">جمعياتي</div>
+    </div>
+
+    <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3" >
+      <!-- <span class="material-symbols-outlined text-3xl">
+        arrow_circle_left
+      </span> -->
+      <img src="./Assets/imgs/SubscribeIcon.svg" class="" alt="">
+      <div class="label" style="color:#16a34a; font-weight:700;">انضم الان</div>
+    </div>
+
+    <div onclick="location.href='./wallet.html'" class="p-0">
+      <i class="bi bi-credit-card-fill text-xl"></i>
+      <div class="label">محفظتي</div>
+    </div>
+
+    <div onclick="location.href='payments.html'" class="p-0">
+      <i class="bi bi-file-earmark-check-fill text-xl"></i>
+      <div class="label">المدفوعات</div>
+    </div>
+
+  </div>
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="./join.js"></script>
+
+  <script>
+     /* JavaScript */
+  // تأكد من وجود التوكن وإعادة التوجيه للـ login إذا لم يكن موجودًا
+const token = localStorage.getItem("token");
+if (!token) {
+  window.location.href = "login.html";
+}
+
+// Dropdown للملف الشخصي
+document.getElementById("profile-toggle").addEventListener("click", () => {
+  document.getElementById("popup-menu").classList.toggle("active");
+});
+
+// زر تسجيل الخروج
+document.getElementById("logout-btn").addEventListener("click", () => {
+  localStorage.removeItem("token");
+  window.location.href = "login.html";
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+    const amountInput = document.getElementById('amountInput');
+    const nextButton = document.getElementById('nextButton');
+
+    // Validate amount on input
+    amountInput.addEventListener('input', () => {
+        const amount = parseInt(amountInput.value);
+        if (amount < 3000 || amount > 1200000) {
+            nextButton.disabled = true;
+            nextButton.style.opacity = '0.5';
+        } else {
+            nextButton.disabled = false;
+            nextButton.style.opacity = '1';
+        }
+    });
+
+    // Handle next button click
+    nextButton.addEventListener('click', async () => {
+        const amount = parseInt(amountInput.value);
+        
+        if (amount < 3000 || amount > 1200000) {
+            alert('الرجاء إدخال مبلغ بين ٣٠٠٠ و ١,٢٠٠,٠٠٠ ريال');
+            return;
+        }
+
+        try {
+            // Show loading state
+            nextButton.disabled = true;
+            nextButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> جاري الإنشاء...';
+
+            // Create the association
+            const response = await fetch('http://localhost:3000/api/associations', {
+                method: 'POST',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: `جمعية ${amount} ريال`,
+                    monthlyAmount: amount,
+                    maxMembers: 10,
+                    startDate: new Date().toISOString().split('T')[0],
+                    type: 'B'
+                })
+            });
+
+            const data = await response.json();
+
+            if (!data.success && !data.association) {
+                throw new Error(data.error || 'فشل في إنشاء الجمعية');
+            }
+
+            // Save association ID and amount to localStorage
+            localStorage.setItem('selectedAssociationId', data.association.id);
+            localStorage.setItem('associationAmount', amount);
+
+            // Navigate to turn selection page
+            window.location.href = 'select_turn.html';
+
+        } catch (error) {
+            console.error('Error:', error);
+            alert(error.message || 'حدث خطأ أثناء إنشاء الجمعية');
+            nextButton.disabled = false;
+            nextButton.innerHTML = 'التالي';
+        }
+    });
+});
+let card = document.getElementById('card');
+      card.addEventListener('click', () => {
+    localStorage.setItem('selectedAssociationId', a.id);
+    window.location.href = 'select_turn.html';
+  });
+
+  </script>
+  <!-- Scripts -->
+
+
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

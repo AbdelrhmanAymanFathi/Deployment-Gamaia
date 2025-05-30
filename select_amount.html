@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اختيار المبلغ والمدة</title>
+    <link rel="stylesheet" href="mainLayout.css">
+    <style>
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .amount-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .amount-input {
+            width: 100%;
+            padding: 12px;
+            font-size: 1.2em;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            text-align: center;
+            margin: 10px 0;
+            transition: all 0.3s;
+        }
+
+        .amount-input:focus {
+            outline: none;
+            border-color: #4CAF50;
+        }
+
+        .amount-input.valid {
+            border-color: #4CAF50;
+            background-color: #f1f8e9;
+        }
+
+        .amount-input.invalid {
+            border-color: #f44336;
+            background-color: #ffebee;
+        }
+
+        .amount-range {
+            color: #666;
+            font-size: 0.9em;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .associations-section {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .associations-section.visible {
+            display: block;
+        }
+
+        .association-card {
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .association-card:hover {
+            border-color: #4CAF50;
+        }
+
+        .association-card.selected {
+            border-color: #4CAF50;
+            background-color: #f1f8e9;
+        }
+
+        .association-name {
+            font-weight: bold;
+            font-size: 1.1em;
+            margin-bottom: 5px;
+        }
+
+        .association-details {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .next-btn {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .next-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .error-message {
+            color: #f44336;
+            text-align: center;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .loading.visible {
+            display: block;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-radius: 50%;
+            border-top: 3px solid #4CAF50;
+            animation: spin 1s linear infinite;
+            margin-right: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>كم هيكون مبلغ القبض؟</h1>
+        
+        <div class="amount-section">
+            <input type="number" 
+                   class="amount-input" 
+                   id="amountInput" 
+                   placeholder="أدخل المبلغ"
+                   min="3000"
+                   max="1200000">
+            <div class="amount-range">المبلغ يجب أن يكون بين 3,000 و 1,200,000 رس</div>
+            <div class="error-message" id="errorMessage">الرجاء إدخال مبلغ صحيح</div>
+        </div>
+
+        <div class="loading" id="loadingSection">
+            <div class="loading-spinner"></div>
+            جاري البحث عن الجمعيات المتاحة...
+        </div>
+
+        <div class="associations-section" id="associationsSection">
+            <h2>الجمعيات المتاحة</h2>
+            <div id="associationsList">
+                <!-- Associations will be dynamically inserted here -->
+            </div>
+        </div>
+
+        <button class="next-btn" id="nextBtn" disabled>التالي</button>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="select_amount.js"></script>
+</body>
+</html> 

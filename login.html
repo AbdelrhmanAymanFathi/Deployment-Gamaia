@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <style>
+    body {
+      background-color: #f4f6f9;
+      font-family: 'Arial', sans-serif;
+    }
+    .login-container {
+      background-color: #fff;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .login-btn {
+      background-color: #007bff;
+      color: white;
+    }
+    .login-btn:hover {
+      background-color: #0056b3;
+    }
+    #login-error {
+      color: #dc3545;
+      margin-top: 10px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+    <div class="login-container">
+      <h3 class="text-center mb-4">تسجيل الدخول</h3>
+      <form id="login-form">
+        <div class="form-group">
+          <label for="login-username">National Id</label>
+          <input type="text" class="form-control" id="login-username" required>
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" class="form-control" id="login-password" required>
+        </div>
+        <div id="login-error" class="text-center"></div>
+        <button type="submit" class="btn login-btn btn-block">تسجيل الدخول</button>
+      </form>
+      <div class="text-center mt-3">
+        <a href="register.html">إنشاء حساب جديد</a>
+      </div>
+    </div>
+  </div>
+
+  <script src="api.js"></script>
+  <script src="login.js"></script>
+</body>
+</html>
