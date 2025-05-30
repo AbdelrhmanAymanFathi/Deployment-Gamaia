@@ -1,0 +1,161 @@
+{
+	"info": {
+		"_postman_id": "your-collection-id",
+		"name": "ROSCA API Testing",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"nationalId\": \"your_national_id\",\n    \"password\": \"your_password\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/auth/login",
+							"host": ["{{base_url}}"],
+							"path": ["api", "auth", "login"]
+						}
+					}
+				}
+			]
+		},
+		{
+			"name": "ROSCA Management",
+			"item": [
+				{
+					"name": "Create ROSCA",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Test ROSCA\",\n    \"monthlyAmount\": 1000,\n    \"duration\": 3,\n    \"type\": \"B\",\n    \"startDate\": \"2024-03-20\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/associations",
+							"host": ["{{base_url}}"],
+							"path": ["api", "associations"]
+						}
+					}
+				},
+				{
+					"name": "Join ROSCA",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/associations/{{association_id}}/join",
+							"host": ["{{base_url}}"],
+							"path": ["api", "associations", "{{association_id}}", "join"]
+						}
+					}
+				},
+				{
+					"name": "Make Payment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"associationId\": \"{{association_id}}\",\n    \"amount\": 1000\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/payments/pay",
+							"host": ["{{base_url}}"],
+							"path": ["api", "payments", "pay"]
+						}
+					}
+				},
+				{
+					"name": "Check Wallet Balance",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/userData/wallet",
+							"host": ["{{base_url}}"],
+							"path": ["api", "userData", "wallet"]
+						}
+					}
+				},
+				{
+					"name": "Get Available ROSCAs",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/api/associations/available?amount=1000",
+							"host": ["{{base_url}}"],
+							"path": ["api", "associations", "available"],
+							"query": [
+								{
+									"key": "amount",
+									"value": "1000"
+								}
+							]
+						}
+					}
+				}
+			]
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://localhost:3000"
+		},
+		{
+			"key": "token",
+			"value": "your_jwt_token_here"
+		},
+		{
+			"key": "association_id",
+			"value": "your_association_id_here"
+		}
+	]
+} 
