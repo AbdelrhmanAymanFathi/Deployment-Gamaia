@@ -98,10 +98,10 @@ json.data.forEach((a) => {
     <div class="text-sm text-gray-500 text-center mt-2">No fees</div>
   `;
 
-  card.addEventListener('click', () => {
-    localStorage.setItem('selectedAssociationId', a.id);
-    window.location.href = 'select_turn.html';
-  });
+  // card.addEventListener('click', () => {
+  //   localStorage.setItem('selectedAssociationId', a.id);
+  //   window.location.href = 'select_turn.html';
+  // });
 
   listEl.appendChild(card);
 });
