@@ -70,9 +70,9 @@
                     ${assoc.name}
                   </div>
                 </div>
-                <h5 class="text-lg font-medium text-gray-900 mb-2">${assoc.monthlyAmount.toLocaleString("en-EG")} EGP</h5>
+                <h5 class="text-lg font-medium text-gray-900 mb-2">${assoc.monthlyAmount.toLocaleString("en-EG")} SAR</h5>
                 <div class="text-blue-600 text-sm mb-4">
-                  ${assoc.monthlyAmount.toLocaleString("en-EG")} EGP monthly
+                  ${assoc.monthlyAmount.toLocaleString("en-EG")} SAR monthly
                 </div>
                 <div class="bg-gray-100 rounded-xl p-3 mb-4">
                   <div class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
@@ -99,7 +99,7 @@
                     </svg>
                     Installment Discount
                   </div>
-                  <span>${(assoc.discountAmount || 0).toLocaleString("en-EG")} EGP</span>
+                  <span>${(assoc.discountAmount || 0).toLocaleString("en-EG")} SAR</span>
                 </div>
                 <div class="text-sm text-gray-500 text-center mt-2">No fees</div>
               </div>
@@ -178,11 +178,11 @@
                 <h5 class="text-lg font-medium text-gray-900 mb-2">${assoc.name}</h5>
                 <div class="flex items-center justify-between mb-2">
                   <div class="text-2xl font-bold text-gray-800">
-                    ${assoc.monthlyAmount.toLocaleString("en-EG")} EGP
+                    ${assoc.monthlyAmount.toLocaleString("en-EG")} SAR
                   </div>
                 </div>
                 <div class="text-blue-600 text-sm mb-4">
-                  ${assoc.monthlyAmount.toLocaleString("en-EG")} EGP monthly
+                  ${assoc.monthlyAmount.toLocaleString("en-EG")} SAR monthly
                 </div>
                 <div class="bg-gray-100 rounded-xl p-3 mb-4">
                   <div class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
@@ -209,7 +209,7 @@
                     </svg>
                     Installment Discount
                   </div>
-                  <span>${(assoc.discountAmount || 0).toLocaleString("en-EG")} EGP</span>
+                  <span>${(assoc.discountAmount || 0).toLocaleString("en-EG")} SAR</span>
                 </div>
                 <div class="text-sm text-gray-500 text-center mt-2">No fees</div>
               </div>
