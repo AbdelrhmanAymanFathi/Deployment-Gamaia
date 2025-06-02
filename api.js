@@ -1,5 +1,5 @@
 // API utility functions
-const API_BASE_URL = 'http://localhost:3000/api';
+const API_BASE_URL = 'https://money-production-bfc6.up.railway.app/api';
 
 // Get the stored token
 const getToken = () => localStorage.getItem('token');

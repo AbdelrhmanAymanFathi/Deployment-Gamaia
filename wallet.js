@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // جلب الرصيد الحالي من السيرفر
-  fetch('http://localhost:3000/api/userData/wallet', {
+  fetch('https://money-production-bfc6.up.railway.app/api/userData/wallet', {
     headers: { 'Authorization': `Bearer ${token}` }
   })
     .then(res => res.ok ? res.json() : Promise.reject(res.status))
@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // POST لعملية التوب أب
-    fetch('http://localhost:3000/api/payments/topup', {
+    fetch('https://money-production-bfc6.up.railway.app/api/payments/topup', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
           return Promise.reject();
         }
         // لو نجح الشحن، نعيد جلب الرصيد الفعلي
-        return fetch('http://localhost:3000/api/userData/wallet', {
+        return fetch('https://money-production-bfc6.up.railway.app/api/userData/wallet', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
       })

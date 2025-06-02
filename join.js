@@ -37,7 +37,7 @@
 
       $.ajax({
         type: 'POST',
-        url: 'http://localhost:3000/api/payments/pay/suggest',
+        url: 'https://money-production-bfc6.up.railway.app/api/payments/pay/suggest',
         contentType: 'application/json',
         headers: { Authorization: 'Bearer ' + token },
         data: JSON.stringify({ amount }),
@@ -123,7 +123,7 @@
 
       $.ajax({
         type: 'POST',
-        url: `http://localhost:3000/api/associations/${assocId}/join`,
+        url: `https://money-production-bfc6.up.railway.app/api/associations/${assocId}/join`,
         headers: { Authorization: 'Bearer ' + token },
         success: function(res) {
           if (res.success) {
@@ -151,7 +151,7 @@
 
       $.ajax({
         type: 'GET',
-        url: 'http://localhost:3000/api/associations/joined',
+        url: 'https://money-production-bfc6.up.railway.app/api/associations/joined',
         headers: { Authorization: 'Bearer ' + token },
         success: function(res) {
           if (!res.success) {

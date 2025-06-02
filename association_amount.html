@@ -265,7 +265,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nextButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> جاري الإنشاء...';
 
             // Create the association
-            const response = await fetch('http://localhost:3000/api/associations', {
+            const response = await fetch('https://money-production-bfc6.up.railway.app/api/associations', {
                 method: 'POST',
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('token')}`,

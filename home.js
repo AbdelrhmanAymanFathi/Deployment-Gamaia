@@ -19,7 +19,7 @@ document.getElementById("logout-btn").addEventListener("click", () => {
 async function loadMyAssociations() {
   try {
     const res = await fetch(
-      "http://localhost:3000/api/associations/my-associations",
+      "https://money-production-bfc6.up.railway.app/api/associations/my-associations",
       {
         headers: { Authorization: "Bearer " + token },
       }
