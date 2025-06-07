@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>رفع مفردات المرتب</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      background: #fafafa;
+      font-family: 'Tajawal', Arial, sans-serif;
+    }
+    .upload-box {
+      border: 2px solid #16a34a;
+      border-radius: 18px;
+      background: #fff;
+      padding: 32px 16px;
+      margin: 32px auto;
+      max-width: 340px;
+      text-align: center;
+      box-shadow: 0 2px 12px 0 #00000012;
+    }
+    .upload-icon {
+      border: 1.5px solid #16a34a;
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px auto;
+      font-size: 2rem;
+      color: #16a34a;
+    }
+    .upload-btn {
+      border: 1.5px solid #16a34a;
+      border-radius: 22px;
+      background: #fff;
+      color: #16a34a;
+      font-weight: bold;
+      padding: 10px 0;
+      width: 80%;
+      margin: 18px auto 0 auto;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      display: block;
+    }
+    .upload-btn:hover {
+      background: #16a34a;
+      color: #fff;
+    }
+    .bottom-navbar .active-footer .label {
+      color: #16a34a;
+      font-weight: 700;
+    }
+    .notification-dropdown {
+      display: none;
+      min-width: 220px;
+      max-width: 300px;
+      max-height: 320px;
+      overflow-y: auto;
+      right: 0;
+      top: 36px;
+    }
+    .notification-dropdown.active {
+      display: block;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Navbar Top -->
+  <div style="background-color:#90D1CA;"
+    class="navbar flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg" dir="ltr">
+    <!-- Left icons -->
+    <div class="flex gap-4">
+      <span class="icon relative" title="الإشعارات / Notifications" id="notification-toggle" style="cursor:pointer;">
+        <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+        <!-- Notification Dropdown -->
+        <div class="notification-dropdown absolute right-0 mt-2 bg-white shadow-md rounded-md z-50" id="notification-dropdown">
+          <div class="text-sm text-gray-700 mb-2 font-bold">الإشعارات</div>
+          <div class="text-xs text-gray-500 mb-1">لا توجد إشعارات جديدة</div>
+        </div>
+      </span>
+      <span class="icon" title="الرائج / Trends">
+        <i class="bi bi-fire text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      </span>
+    </div>
+    <!-- User profile icon -->
+    <div class="user-profile relative" id="profile-toggle" title="الملف الشخصي / Profile">
+      <i class="bi bi-person-circle text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      <!-- Popup menu -->
+      <div class="popup-menu absolute right-0 mt-2 hidden bg-white shadow-md p-2 rounded-md" id="popup-menu">
+        <a href="./profile.html" class="block text-sm text-black">Profile</a>
+        <button class="block text-sm w-full text-left">Settings</button>
+        <button class="logout-btn block text-sm w-full text-left text-red-600" id="logout-btn">Logout</button>
+      </div>
+    </div>
+  </div>
+  <!-- end Navbar Top -->
+
+  <!-- Main Content -->
+  <div class="upload-box">
+    <div class="upload-icon">
+      <i class="bi bi-upload"></i>
+    </div>
+    <div class="mb-3" style="font-weight:500;">من فضلك، ارفع صورة مفردات المرتب الخاصة بك!</div>
+    <input type="file" id="salary-slip" accept="image/*" style="display:none;">
+    <label for="salary-slip" class="upload-btn">Choose Image</label>
+  </div>
+  <!-- end Main Content -->
+
+  <!-- Navbar Bottom -->
+  <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg" style="background-color:#90D1CA;">
+    <div onclick="location.href='home.html'" class="p-0">
+      <i class="bi bi-house-door-fill text-[#008D10] text-xl "></i>
+      <div class="label text-[#008D10]">الرئيسية</div>
+    </div>
+    <div onclick="location.href='circle-list.html'" class="p-0">
+      <i class="bi bi-people-fill text-xl"></i>
+      <div class="label">جمعياتي</div>
+    </div>
+    <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3">
+      <img src="./Assets/imgs/SubscribeIcon.svg" alt="">
+      <div class="label">إشترك</div>
+    </div>
+    <div onclick="location.href='./wallet.html'" class="p-0">
+      <i class="bi bi-credit-card-fill text-xl"></i>
+      <div class="label">محفظتي</div>
+    </div>
+    <div onclick="location.href='payments.html'" class="p-0">
+      <i class="bi bi-file-earmark-check-fill text-xl"></i>
+      <div class="label">المدفوعات</div>
+    </div>
+  </div>
+  <!-- end Navbar Bottom -->
+
+  <script>
+    // Profile dropdown
+    document.getElementById("profile-toggle").addEventListener("click", (e) => {
+      e.stopPropagation();
+      document.getElementById("popup-menu").classList.toggle("active");
+    });
+
+    // Notification dropdown
+    document.getElementById("notification-toggle").addEventListener("click", (e) => {
+      e.stopPropagation();
+      document.getElementById("notification-dropdown").classList.toggle("active");
+    });
+
+    // Close dropdowns when clicking outside
+    document.addEventListener("click", () => {
+      document.getElementById("popup-menu").classList.remove("active");
+      document.getElementById("notification-dropdown").classList.remove("active");
+    });
+
+    // Logout button
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      localStorage.removeItem("token");
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>

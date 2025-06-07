@@ -38,9 +38,17 @@
     class="navbar flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg" dir="ltr">
     <!-- Left icons -->
     <div class="flex gap-4">
-      <span class="icon" title="الإشعارات / Notifications">
-        <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
-      </span>
+      <span class="icon relative" title="الإشعارات / Notifications" id="notification-toggle" style="cursor:pointer;">
+  <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+  <!-- Notification Dropdown -->
+  <div class="notification-dropdown absolute right-0 mt-2 hidden bg-white shadow-md p-2 rounded-md z-50" id="notification-dropdown" style="min-width:220px;">
+    <div class="text-sm text-gray-700 mb-2 font-bold">الإشعارات</div>
+    <div class="text-xs text-gray-500 mb-1">لا توجد إشعارات جديدة</div>
+    <!-- Example notification item:
+    <div class="py-1 px-2 hover:bg-gray-100 rounded cursor-pointer">تمت إضافة جمعية جديدة</div>
+    -->
+  </div>
+</span>
       <span class="icon" title="الرائج / Trends">
         <i class="bi bi-fire text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
       </span>

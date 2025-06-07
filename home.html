@@ -64,8 +64,28 @@
     class="navbar flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg" dir="ltr">
     <!-- Left icons -->
     <div class="flex gap-4">
-      <span class="icon" title="الإشعارات / Notifications">
+      <span class="icon relative" title="الإشعارات / Notifications" id="notification-toggle" style="cursor:pointer;">
         <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+        <!-- Notification Dropdown -->
+        <div class="notification-dropdown absolute right-0 mt-2 hidden bg-white shadow-md rounded-md z-50" id="notification-dropdown">
+          <div class="notification-header">
+            <div class="notification-title">الإشعارات</div>
+            <div class="notification-count">0</div>
+          </div>
+          <div class="no-notifications">
+            <i class="bi bi-bell-slash"></i>
+            <p>لا توجد إشعارات جديدة</p>
+          </div>
+          <!-- Example notification items (hidden by default):
+          <div class="notification-item unread">
+            <div class="notification-icon">
+              <i class="bi bi-check-circle"></i>
+            </div>
+            <div class="notification-content">تمت إضافة جمعية جديدة</div>
+            <div class="notification-time">منذ 5 دقائق</div>
+          </div>
+          -->
+        </div>
       </span>
       <span class="icon" title="الرائج / Trends">
         <i class="bi bi-fire text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
@@ -164,6 +184,7 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
   <script src="./home.js"></script>
+  <script src="./notifications.js"></script>
 </body>
 
 </html>
