@@ -51,20 +51,59 @@ function createTurnCard(turn) {
     return card;
 }
 
-function selectTurn(turnId) {
-    // Remove previous selection
-    document.querySelectorAll('.turn-card.selected').forEach(card => {
-        card.classList.remove('selected');
-    });
+// Two-click logic for turn selection
+// Two-click logic for turn selection with API call before redirect
+function createTurnCard(turn) {
+    const card = document.createElement('div');
+    card.className = `turn-card ${turn.isTaken ? 'taken' : ''}`;
+    card.dataset.turnId = turn.id;
 
-    // Add selection to clicked card
-    const selectedCard = document.querySelector(`.turn-card[data-turn-id="${turnId}"]`);
-    if (selectedCard) {
-        selectedCard.classList.add('selected');
+    const content = `
+        <div class="turn-name">${turn.turnName}</div>
+        <div class="turn-date">${formatDate(turn.scheduledDate)}</div>
+        <div class="turn-amount">${formatAmount(turn.feeAmount)}</div>
+        ${turn.isTaken 
+            ? '<div class="mt-2 text-red-600 flex items-center gap-1"><span>🔒</span> <span>غير متاح</span></div>' 
+            : '<button class="lock-btn mt-3 px-3 py-1 rounded bg-green-600 text-white font-bold">احجز الدور</button>'
+        }
+    `;
+
+    card.innerHTML = content;
+
+    // Only add event for available turns
+    if (!turn.isTaken) {
+        // Highlight on card click
+        card.addEventListener('click', () => {
+            document.querySelectorAll('.turn-card.selected').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            selectedTurnId = turn.id;
+            nextBtn.disabled = false;
+        });
+
+        // Lock button event (stop propagation so card click doesn't fire)
+        const lockBtn = card.querySelector('.lock-btn');
+        lockBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const confirmed = confirm('هل أنت متأكد أنك تريد اختيار هذا الدور؟');
+            if (!confirmed) return;
+            loadingSpinner.style.display = 'block';
+            try {
+                const associationId = localStorage.getItem('selectedAssociationId');
+                if (!associationId) {
+                    alert('لا يوجد جمعية محددة');
+                    return;
+                }
+                await window.api.turns.select(associationId, turn.id);
+                window.location.href = 'upload.html';
+            } catch (error) {
+                alert('حدث خطأ أثناء حجز الدور');
+            } finally {
+                loadingSpinner.style.display = 'none';
+            }
+        });
     }
 
-    selectedTurnId = turnId; // Update selectedTurnId
-    document.getElementById('nextBtn').disabled = false; // Ensure nextBtn is the correct ID
+    return card;
 }
 
 function updateSummary(turn) {
@@ -113,8 +152,13 @@ filterButtons.forEach(btn => {
     });
 });
 
+// You can keep or remove the nextBtn logic as needed
 nextBtn.addEventListener('click', async () => {
     if (!selectedTurnId) return;
+
+    // Confirmation dialog before proceeding
+    const confirmed = confirm('هل أنت متأكد أنك تريد اختيار هذا الدور؟');
+    if (!confirmed) return;
 
     try {
         loadingSpinner.style.display = 'block';
@@ -125,11 +169,16 @@ nextBtn.addEventListener('click', async () => {
             throw new Error('No association selected. Please select an association first.');
         }
 
+        // Call the API to select the turn
         await window.api.turns.select(selection.associationId, selectedTurnId);
-        window.location.href = 'payments.html';
+
+        // Redirect to upload.html after successful turn selection
+        window.location.href = 'upload.html';
     } catch (error) {
         console.error('Error picking turn:', error);
         showError(error.message || 'Failed to pick turn. Please try again.');
+    } finally {
+        loadingSpinner.style.display = 'none';
     }
 });
 
@@ -170,20 +219,3 @@ async function initialize() {
 
 // Start the app
 initialize();
-
-document.addEventListener("DOMContentLoaded", function() {
-    document.getElementById("turnForm").onsubmit = function(event) {
-        event.preventDefault();
-
-        // Get selected turn
-        const selectedTurn = document.querySelector('input[name="turn"]:checked').value;
-
-        // You can now submit this info to your backend or proceed to a confirmation page
-        // For example, send to API (pseudo-code):
-        // fetch('/api/join', { method: "POST", body: JSON.stringify({ turn: selectedTurn }) })
-
-        // For demo, just show an alert and redirect to home or confirmation
-        alert("تم اختيار الدور رقم: " + selectedTurn + "\nتم الانضمام للجمعية بنجاح!");
-        window.location.href = "home.html"; // or confirmation.html
-    }
-}); 

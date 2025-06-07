@@ -139,41 +139,58 @@
     }
 
     function renderTurns() {
-      turnsGrid.innerHTML = '';
-      tabs[selectedTab].forEach(turn => {
-        const card = document.createElement('div');
-        card.className = `turn-card border-2 rounded-xl p-3 flex flex-col gap-1 cursor-pointer relative transition ${turn.taken ? 'taken border-gray-300 bg-gray-100' : 'border-teal-400 bg-white'}`;
-        card.dataset.id = turn.id;
-        if (turn.taken) card.classList.add('pointer-events-none');
-        if (selectedTurnId === turn.id) card.classList.add('selected');
-        card.innerHTML = `
-          <div class="flex items-center gap-2 mb-1">
-            <input type="radio" name="turn" value="${turn.id}" ${turn.taken ? 'disabled' : ''} ${selectedTurnId === turn.id ? 'checked' : ''} class="accent-teal-500">
-            <span class="font-bold">${turn.turnName}</span>
-          </div>
-          <div class="text-xs text-gray-500 mb-1">${formatDate(turn.scheduledDate)}</div>
-          <div class="text-sm font-bold text-teal-700">
-            ${
-              turn.feeAmount > 0
-                ? formatAmount(turn.feeAmount) + ' رسوم'
-                : (turn.feeAmount < 0
-                  ? formatAmount(turn.feeAmount) + ' خصم'
-                  : 'بدون رسوم')
-            }
-          </div>
-          ${turn.taken ? `<div class="absolute top-2 left-2 flex items-center gap-1 text-xs lock"><svg xmlns="http://www.w3.org/2000/svg" class="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm6-10V7a4 4 0 10-8 0v2" /></svg> غير متاح</div>` : ''}
-        `;
-        if (!turn.taken) {
-          card.addEventListener('click', () => {
-            selectedTurnId = turn.id;
-            nextBtn.disabled = false;
-            renderTurns();
+  turnsGrid.innerHTML = '';
+  tabs[selectedTab].forEach(turn => {
+    const card = document.createElement('div');
+    card.className = `turn-card border-2 rounded-xl p-3 flex flex-col gap-1 cursor-pointer relative transition ${turn.taken ? 'taken border-gray-300 bg-gray-100' : 'border-teal-400 bg-white'}`;
+    card.dataset.id = turn.id;
+    if (turn.taken) card.classList.add('pointer-events-none');
+    if (selectedTurnId === turn.id) card.classList.add('selected');
+    card.innerHTML = `
+      <div class="flex items-center gap-2 mb-1">
+        <input type="radio" name="turn" value="${turn.id}" ${turn.taken ? 'disabled' : ''} ${selectedTurnId === turn.id ? 'checked' : ''} class="accent-teal-500">
+        <span class="font-bold">${turn.turnName}</span>
+      </div>
+      <div class="text-xs text-gray-500 mb-1">${formatDate(turn.scheduledDate)}</div>
+      <div class="text-sm font-bold text-teal-700">
+        ${
+          turn.feeAmount > 0
+            ? formatAmount(turn.feeAmount) + ' رسوم'
+            : (turn.feeAmount < 0
+              ? formatAmount(turn.feeAmount) + ' خصم'
+              : 'بدون رسوم')
+        }
+      </div>
+      ${turn.taken ? `<div class="absolute top-2 left-2 flex items-center gap-1 text-xs lock"><svg xmlns="http://www.w3.org/2000/svg" class="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm6-10V7a4 4 0 10-8 0v2" /></svg> غير متاح</div>` 
+        : `<button class="lock-btn mt-3 px-3 py-1 rounded bg-green-600 text-white font-bold w-full">احجز الدور</button>`
+      }
+    `;
+    if (!turn.taken) {
+      card.addEventListener('click', () => {
+        selectedTurnId = turn.id;
+        nextBtn.disabled = false;
+        renderTurns();
+      });
+
+      // Add lock button event
+      setTimeout(() => {
+        const lockBtn = card.querySelector('.lock-btn');
+        if (lockBtn) {
+          lockBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const confirmed = confirm('هل أنت متأكد أنك تريد اختيار هذا الدور؟');
+            if (!confirmed) return;
+            // هنا ضع منطق الحجز الفعلي (API)
+            // مثال:
+            // await window.api.turns.select(association.id, turn.id);
+            window.location.href = 'upload.html';
           });
         }
-        turnsGrid.appendChild(card);
-      });
+      }, 0);
     }
-
+    turnsGrid.appendChild(card);
+  });
+}
     function renderSummary() {
       if (!association) return;
       durationEl.textContent = turns.length + ' شهور';
