@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ar" dir="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>أكتب رقم الموبايل</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts (Tajawal) -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    body { font-family: 'Tajawal', Arial, sans-serif; }
+    .custom-shadow { box-shadow: 0 2px 4px 0 #d9d9d9; }
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type="number"] { -moz-appearance: textfield; }
+  </style>
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center pt-6 px-2">
+  <!-- Header -->
+  <div class="w-full max-w-xs mx-auto flex flex-col items-end">
+    <div class="flex items-end justify-end w-full">
+      <span class="text-2xl font-bold ml-2">أكتب رقم الموبايل</span>
+      <i class="bi bi-arrow-right-short  text-2xl mt-1"></i>
+    </div>
+    <p class="text-xs text-gray-800 mt-2 text-center">
+      ده هيكون الرقم الأساسي للتواصل معاك علي الحساب
+    </p>
+  </div>
+
+  <!-- Phone Input -->
+  <form class="w-full max-w-xs mx-auto mt-8 flex flex-col items-center">
+    <div class="flex w-full gap-2">
+      <!-- Country code -->
+      <div class="flex items-center border border-gray-300 rounded-md overflow-hidden bg-white min-w-[80px] px-2 py-1">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/0/0d/Flag_of_Saudi_Arabia.svg" alt="KSA" class="w-auto h-8 object-cover ml-1">
+        <!-- <span class="text-xs font-medium text-white bg-green-600 px-2 py-1 rounded ml-1">السعودية</span> -->
+        <i class="bi bi-plus-lg text-xl text-gray-500 px-2"></i>
+      </div>
+      <!-- Phone number input -->
+      <input
+        type="number"
+        inputmode="numeric"
+        pattern="[0-9]*"
+        placeholder="0500 000 0000"
+        class="flex-1 border border-teal-400 rounded-md px-4 py-2 text-lg tracking-widest text-gray-700 focus:outline-none focus:border-teal-600 placeholder-gray-400"
+        dir="ltr"
+        style="font-family: 'Tajawal', Arial, sans-serif;"
+      >
+    </div>
+    <!-- Next Button -->
+    <button
+      type="submit"
+      class="w-full mt-10 bg-teal-500 shadow-sm hover:bg-teal-600 text-black font-bold py-3 rounded-3xl custom-shadow shadow-md text-lg transition"
+    >
+      التالي
+    </button>
+  </form>
+</body>
+</html>
