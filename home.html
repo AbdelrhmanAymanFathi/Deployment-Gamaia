@@ -127,12 +127,26 @@
       </div>
       <div class="flex justify-between items-center px-4">
         <div class=""><img src="./Assets/imgs/Group 13987.svg" alt=""></div>
-        <button
-          class="bg-white text-[#1E1E1E] font-semibold text-sm px-4 py-2 rounded-lg border border-gray-400 hover:bg-gray-100 transition">
-          إبعت دعوه
-        </button>
+<button
+  id="invite-btn"
+  class="bg-white text-[#1E1E1E] font-semibold text-sm px-4 py-2 rounded-lg border border-gray-400 hover:bg-gray-100 transition">
+  إبعت دعوه
+</button>
       </div>
     </div>
+    <!-- Modal for copy success -->
+<div id="copy-modal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden">
+  <div class="bg-white rounded-lg shadow-lg px-8 py-6 text-center">
+    <div class="text-green-600 text-3xl mb-2">
+      <i class="bi bi-clipboard-check"></i>
+    </div>
+    <div class="text-lg font-semibold mb-2">تم نسخ رابط الدعوة!</div>
+    <div class="text-gray-600 mb-4">يمكنك مشاركته مع أصدقائك.</div>
+    <button id="close-modal-btn" class="mt-2 px-4 py-2 bg-[#16a34a] text-white rounded hover:bg-[#128a3a] transition">
+      إغلاق
+    </button>
+  </div>
+</div>
     <!-- end card 2 -->
 
     <h3 class="hidden mb-4 text-center text-[#0FA451]">جمعياتي المنضمة<br><span style="font-size:12px;">My Joined
@@ -180,6 +194,36 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
   <script src="./home.js"></script>
   <script src="./notifications.js"></script>
+  <script>
+ document.getElementById('invite-btn').addEventListener('click', function () {
+    const shareData = {
+      title: 'جمعياتي',
+      text: 'انضم لجمعيتي واحصل على خصم!',
+      url: 'https://abdelrhmanaymanfathi.github.io/Deployment-Gamaia/'
+    };
+    if (navigator.share) {
+      navigator.share(shareData)
+        .catch(() => {});
+    } else {
+      // fallback: copy link and show modal
+      navigator.clipboard.writeText(shareData.url);
+      document.getElementById('copy-modal').classList.remove('hidden');
+    }
+  });
+
+  document.getElementById('close-modal-btn').addEventListener('click', function () {
+    document.getElementById('copy-modal').classList.add('hidden');
+  });
+
+  // Optional: Close modal when clicking outside the modal box
+  document.getElementById('copy-modal').addEventListener('click', function (e) {
+    if (e.target === this) {
+      this.classList.add('hidden');
+    }
+  });
+
+
+  </script>
 </body>
 
 </html>
