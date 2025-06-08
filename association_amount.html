@@ -119,26 +119,43 @@
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-  <!-- Navbar Top -->
-  <div style="background-color:#90D1CA;" class="navbar flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg">
+    <!-- Navbar Top -->
+  <div style="background-color:#90D1CA;"
+    class="navbar flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg" dir="ltr">
+    <!-- Left icons -->
     <div class="flex gap-4">
       <span class="icon relative" title="الإشعارات / Notifications" id="notification-toggle" style="cursor:pointer;">
-  <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
-  <!-- Notification Dropdown -->
-  <div class="notification-dropdown absolute left-0 mt-2 hidden bg-white shadow-md p-2 rounded-md z-50" id="notification-dropdown" style="min-width:220px;">
-    <div class="text-sm text-gray-700 mb-2 font-bold">الإشعارات</div>
-    <div class="text-xs text-gray-500 mb-1">لا توجد إشعارات جديدة</div>
-    <!-- Example notification item:
-    <div class="py-1 px-2 hover:bg-gray-100 rounded cursor-pointer">تمت إضافة جمعية جديدة</div>
-    -->
-  </div>
-</span>
+        <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+        <!-- Notification Dropdown -->
+        <div class="notification-dropdown absolute left-0 mt-2 hidden bg-white shadow-md rounded-md z-50" id="notification-dropdown">
+          <div class="notification-header">
+            <div class="notification-title">الإشعارات</div>
+            <div class="notification-count">0</div>
+          </div>
+          <div class="no-notifications">
+            <i class="bi bi-bell-slash"></i>
+            <p>لا توجد إشعارات جديدة</p>
+          </div>
+          <!-- Example notification items (hidden by default):
+          <div class="notification-item unread">
+            <div class="notification-icon">
+              <i class="bi bi-check-circle"></i>
+            </div>
+            <div class="notification-content">تمت إضافة جمعية جديدة</div>
+            <div class="notification-time">منذ 5 دقائق</div>
+          </div>
+          -->
+        </div>
+      </span>
       <span class="icon" title="الرائج / Trends">
         <i class="bi bi-fire text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
       </span>
     </div>
+
+    <!-- User profile icon -->
     <div class="user-profile relative" id="profile-toggle" title="الملف الشخصي / Profile">
       <i class="bi bi-person-circle text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      <!-- Popup menu -->
       <div class="popup-menu absolute right-0 mt-2 hidden bg-white shadow-md p-2 rounded-md" id="popup-menu">
         <a href="./profile.html" class="block text-sm text-black">Profile</a>
         <button class="block text-sm w-full text-left">Settings</button>
@@ -146,6 +163,8 @@
       </div>
     </div>
   </div>
+    <!-- end Navbar Top -->
+
   <!-- Main Content -->
   <main class="flex-grow container mx-auto py-8 px-2 mb-20 " dir="ltr">
     <div class="container">
@@ -274,5 +293,6 @@
     });
   </script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <script src="./MainLayout.js"></script>
 </body>
 </html>
