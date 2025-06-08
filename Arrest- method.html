@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>طريقة القبض</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts (Tajawal) -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    body { font-family: 'Tajawal', Arial, sans-serif; }
+    .custom-shadow { box-shadow: 0 2px 4px 0 #d9d9d9; }
+    .option-active { border-color: #14b8a6 !important; background: #f0fdfa; }
+    .option-label { cursor: pointer; }
+    .radio-custom:checked + .option-label { border-color: #14b8a6; background: #f0fdfa; }
+    .badge-solid {
+      font-size: 0.75rem;
+      padding: 0.1rem 0.7rem;
+      border-radius: 1rem;
+      margin-left: 0.5rem;
+      margin-right: 0.5rem;
+      font-weight: bold;
+      background: #10b981;
+      color: #fff;
+      display: inline-block;
+      border: none;
+    }
+    .option-label {
+      transition: border 0.2s, background 0.2s;
+    }
+    .option-radio-top {
+      position: absolute;
+      left: 1rem;
+      top: 1rem;
+      width: 1.1rem;
+      height: 1.1rem;
+      accent-color: #14b8a6;
+      transform: scale(1);
+    }
+    @media (max-width: 400px) {
+      .option-radio-top { left: 0.5rem; }
+    }
+  </style>
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center pt-4 px-2">
+  <div class="w-full max-w-xs mx-auto border border-teal-400 rounded-lg p-2">
+    <!-- Header -->
+    <div class="flex items-center justify-between border-b border-teal-400 pb-2 mb-2">
+      <span class="text-md font-bold flex items-center">
+        <span class="flex items-center">
+          <i class="bi bi-arrow-right-short text-2xl ml-1 align-middle"></i>
+          <span class="align-middle">طريقة القبض</span>
+        </span>
+      </span>
+    </div>
+    <!-- Title & Icon Centered -->
+    <div class="flex items-center justify-center w-full mb-4 mt-2">
+      <span class="text-lg font-bold text-center">اختار طريقة تناسبك للقبض</span>
+      <i class="bi bi-hand-index-thumb text-xl text-teal-400 mr-2"></i>
+    </div>
+    <!-- Options -->
+    <form id="arrest-method-form" class="flex flex-col gap-3">
+      <!-- Option 1 -->
+      <div class="relative border border-teal-400 rounded-lg px-2 py-3 mb-1 transition option-label cursor-pointer flex items-center">
+        <!-- Radio top left (smaller) -->
+        <input type="radio" name="method" id="wallet" class="radio-custom option-radio-top" checked>
+        <!-- Content -->
+        <label for="wallet" class="flex-1 flex items-center pr-2 cursor-pointer">
+          <div class="flex flex-col flex-1">
+            <div class="flex items-center">
+              <i class="bi bi-wallet2 text-xl text-teal-400 mr-2"></i>
+              <span class="text-md font-bold">محفظة إلكترونية</span>
+            </div>
+            <span class="text-xs text-gray-600 mt-1">فودافون كاش أو أي محفظة تانية</span>
+          </div>
+        </label>
+      </div>
+      <!-- Option 2 -->
+      <div class="relative border border-teal-400 rounded-lg px-2 py-3 mb-1 transition option-label cursor-pointer flex items-center">
+        <input type="radio" name="method" id="card" class="radio-custom option-radio-top">
+        <label for="card" class="flex-1 flex items-center pr-2 cursor-pointer">
+          <div class="flex flex-col flex-1">
+            <div class="flex items-center">
+              <i class="bi bi-credit-card-2-front text-xl text-teal-400 mr-2"></i>
+              <span class="text-md font-bold">كارت مدفوع مقدما</span>
+              <span class="badge-solid">بدون رسوم</span>
+            </div>
+            <span class="text-xs text-gray-600 mt-1">القبض بكارت مدفوع مقدما. الحد الأقصى للبطاقات 100,000 ج.م</span>
+          </div>
+        </label>
+      </div>
+      <!-- Option 3 -->
+      <div class="relative border border-teal-400 rounded-lg px-2 py-3 mb-1 transition option-label cursor-pointer flex items-center">
+        <input type="radio" name="method" id="bank" class="radio-custom option-radio-top">
+        <label for="bank" class="flex-1 flex items-center pr-2 cursor-pointer">
+          <div class="flex flex-col flex-1">
+            <div class="flex items-center">
+              <i class="bi bi-bank text-xl text-teal-400 mr-2"></i>
+              <span class="text-md font-bold">تحويل بنكي</span>
+              <span class="badge-solid">بدون رسوم</span>
+            </div>
+            <span class="text-xs text-gray-600 mt-1">تحويل قيمتك مباشرة لحسابك البنكي</span>
+          </div>
+        </label>
+      </div>
+      <!-- Next Button -->
+      <button
+        type="submit"
+        class="w-full mt-6 bg-white border border-teal-400 hover:bg-teal-50 text-black font-bold py-3 rounded-3xl custom-shadow text-lg transition flex items-center justify-center"
+        style="margin-bottom: 10px;"
+      >
+        التالي
+      </button>
+    </form>
+  </div>
+  <script>
+    // Highlight selected option
+    const radios = document.querySelectorAll('.radio-custom');
+    const optionLabels = document.querySelectorAll('.option-label');
+    radios.forEach((radio, idx) => {
+      radio.addEventListener('change', () => {
+        optionLabels.forEach((label, i) => {
+          if (i === idx) {
+            label.classList.add('option-active');
+          } else {
+            label.classList.remove('option-active');
+          }
+        });
+      });
+      // Set initial state
+      if (radio.checked) {
+        optionLabels[idx].classList.add('option-active');
+      }
+    });
+  </script>
+</body>
+</html>
