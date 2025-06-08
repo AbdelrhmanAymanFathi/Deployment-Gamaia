@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ar" dir="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>إكتب كود التأكيد</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts (Tajawal) -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+  <style>
+    body { font-family: 'Tajawal', Arial, sans-serif; }
+    .custom-shadow { box-shadow: 0 2px 4px 0 #d9d9d9; }
+    input[type="text"]::-webkit-inner-spin-button,
+    input[type="text"]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }
+    input[type="text"] { -moz-appearance: textfield; }
+    input.code-input:focus { border-color: #14b8a6; }
+  </style>
+</head>
+<body class="bg-white min-h-screen flex flex-col items-center pt-6 px-2">
+  <!-- Header -->
+  <div class="w-full max-w-xs mx-auto flex flex-col items-end">
+    <div class="flex items-end justify-end w-full">
+      <span class="text-2xl font-bold ml-2">إكتب كود التأكيد</span>
+      <i class="bi bi-arrow-right-short text-2xl mt-1"></i>
+    </div>
+    <p class="text-xs text-gray-800 mt-2 text-end">
+      بعتنالك رساله فيها كود التأكيد علي رقم موبايلك ......
+    </p>
+  </div>
+
+  <!-- Change phone link -->
+  <div class="w-full max-w-xs mx-auto mt-2 flex flex-row">
+    <a href="#" class="text-xs text-blue-700 font-bold items-start">تغيير رقم موبايلك</a>
+  </div>
+
+  <!-- Code Inputs -->
+  <form class="w-full max-w-xs mx-auto mt-4 flex flex-col items-center">
+    <div class="flex w-full border border-teal-400 rounded-md px-2 py-4 justify-between mb-4">
+      <input maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*" class="code-input w-10 h-10 border border-teal-400 rounded-md text-center text-xl focus:outline-none mx-1" />
+      <input maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*" class="code-input w-10 h-10 border border-teal-400 rounded-md text-center text-xl focus:outline-none mx-1" />
+      <input maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*" class="code-input w-10 h-10 border border-teal-400 rounded-md text-center text-xl focus:outline-none mx-1" />
+      <input maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*" class="code-input w-10 h-10 border border-teal-400 rounded-md text-center text-xl focus:outline-none mx-1" />
+      <input maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*" class="code-input w-10 h-10 border border-teal-400 rounded-md text-center text-xl focus:outline-none mx-1" />
+      <input maxlength="1" type="text" inputmode="numeric" pattern="[0-9]*" class="code-input w-10 h-10 border border-teal-400 rounded-md text-center text-xl focus:outline-none mx-1" />
+    </div>
+
+    <!-- Resend code button -->
+    <button type="button" class="flex items-center justify-center bg-white border border-gray-200 rounded-2xl px-6 py-2 mb-4 custom-shadow text-black font-bold text-md hover:bg-gray-50 transition">
+      <i class="bi bi-arrow-clockwise ml-2"></i>
+        إبعت الكود تاني
+    </button>
+
+    <!-- Next Button -->
+    <button
+      type="submit"
+      class="w-full bg-teal-500 hover:bg-teal-600 text-black font-bold py-3 rounded-3xl custom-shadow text-lg transition"
+    >
+      التالي
+    </button>
+  </form>
+
+  <script>
+    // Move focus automatically to next input
+    document.querySelectorAll('.code-input').forEach((input, idx, arr) => {
+      input.addEventListener('input', function(e) {
+        if (this.value.length === 1 && idx < arr.length - 1) {
+          arr[idx + 1].focus();
+        }
+      });
+      input.addEventListener('keydown', function(e) {
+        if (e.key === 'Backspace' && !this.value && idx > 0) {
+          arr[idx - 1].focus();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
