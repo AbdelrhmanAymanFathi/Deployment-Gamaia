@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>تسجيل الدخول</title>
+  <!-- Tailwind CSS via CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+  <div class="max-w-md w-full bg-white rounded-2xl shadow-lg overflow-hidden">
+    <div class="p-8">
+      <h1 class="text-2xl font-bold text-center mb-6">تسجيل دخول المدير</h1>
+      <form id="loginForm" class="space-y-5">
+        <div>
+          <label for="nationalId" class="block text-sm font-medium text-gray-700">الرقم القومي</label>
+          <input
+            type="text"
+            id="nationalId"
+            required
+            class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            placeholder="أدخل الرقم القومي"
+          />
+        </div>
+        <div>
+          <label for="password" class="block text-sm font-medium text-gray-700">كلمة المرور</label>
+          <input
+            type="password"
+            id="password"
+            required
+            class="mt-1 block w-full px-3 py-2 bg-gray-50 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
+            placeholder="أدخل كلمة المرور"
+          />
+        </div>
+        <p id="errorMsg" class="text-red-500 text-sm hidden"></p>
+        <button
+          type="submit"
+          id="submitBtn"
+          class="w-full py-2 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition"
+        >
+          تسجيل دخول
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      const nationalId = document.getElementById('nationalId').value.trim();
+      const password  = document.getElementById('password').value;
+      const errorMsg  = document.getElementById('errorMsg');
+      const submitBtn = document.getElementById('submitBtn');
+
+      errorMsg.classList.add('hidden');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'جاريّ المعالجة...';
+
+      try {
+        const res = await fetch('http://localhost:3000/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ nationalId, password })
+        });
+
+        if (!res.ok) {
+          const text = await res.text();
+          throw new Error(text || 'فشل في تسجيل الدخول');
+        }
+
+        const data = await res.json();
+        // تحفظ التوكن وبيانات اليوزر
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        // توجه للداشبورد
+        window.location.href = 'dashboard.html';
+      } catch (err) {
+        errorMsg.textContent = err.message;
+        errorMsg.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'تسجيل دخول';
+      }
+    });
+  </script>
+</body>
+</html>

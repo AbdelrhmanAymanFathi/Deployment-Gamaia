@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>لوحة التحكم - الإدارة</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=dashboard" />
+  <style>
+    aside {
+      background-color: #129990;
+      color: #eee;
+    }
+
+    aside nav button {
+      background-color: #129990;
+      color: #eee;
+    }
+
+    aside nav button:hover {
+      background-color: #0f7a7a;
+      color: #fff;
+      padding: 3% 5%;
+    }
+
+      @media (max-width: 768px) {
+    table th, table td {
+      padding: 0.5rem;
+      font-size: 0.8rem;
+    }
+  }
+
+  @media (max-width: 480px) {
+    table th, table td {
+      font-size: 0.7rem;
+    }
+  }
+  </style>
+</head>
+
+<body class="flex bg-gray-100 min-h-screen text-right">
+
+
+  <!-- Sidebar -->
+  <aside class="w-64 shadow-md h-screen fixed right-0 top-0 p-6 flex flex-col justify-between">
+    <div>
+      <h1 class="text-2xl font-bold  mb-8">لوحة التحكم</h1>
+      <nav class="space-y-4">
+        <button onclick="loadAssociations()" class="w-full text-right  "> عرض الجمعيات </button>
+        <button onclick="openCreateAssociationModal()" class="w-full text-right  ">إنشاء جمعية</button>
+        <button onclick="openCreateUserModal()" class="w-full text-right ">إنشاء مستخدم</button>
+        <!-- داخل <nav> جنب الأزرار الحالية -->
+        <button onclick="loadUsers()" class="w-full text-right">عرض المستخدمين</button> <!-- View Users -->
+
+      </nav>
+    </div>
+    <div class="text-sm text-white">© 2025 FundCircle</div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="flex-1 mr-64 p-6 overflow-y-auto">
+    <section id="contentContainer"></section>
+  </main>
+
+  <!-- Association Cards Container -->
+  <template id="associationsTemplate">
+    <div id="associationsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+  </template>
+
+  <!-- Create Association Modal -->
+  <div id="createAssociationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+    <div class="bg-white p-6 rounded-xl shadow-md w-full max-w-md">
+      <h2 class="text-xl font-bold mb-4">إنشاء جمعية جديدة</h2>
+      <form id="createAssociationForm" class="space-y-3">
+        <input name="name" placeholder="الاسم" class="w-full border p-2 rounded" required />
+        <input name="monthlyAmount" type="number" placeholder="المبلغ الشهري" class="w-full border p-2 rounded"
+          required />
+        <input name="duration" type="number" placeholder="المدة" class="w-full border p-2 rounded" required />
+        <input name="durationUnit" placeholder="وحدة المدة (مثلاً: weeks)" class="w-full border p-2 rounded" required />
+        <input name="type" placeholder="النوع (مثلاً: B)" class="w-full border p-2 rounded" required />
+        <input name="maxMembers" type="number" placeholder="الحد الأعلى للأعضاء" class="w-full border p-2 rounded"
+          min="2" max="15" required />
+        <div class="flex justify-end space-x-2 rtl:space-x-reverse">
+          <button type="button" onclick="closeCreateAssociationModal()"
+            class="bg-gray-300 px-4 py-2 rounded">إلغاء</button>
+          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">إنشاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Edit Association Modal -->
+  <div id="editAssociationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+    <div class="bg-white p-6 rounded-xl shadow-md w-full max-w-md">
+      <h2 class="text-xl font-bold mb-4">تعديل الجمعية</h2>
+      <form id="editAssociationForm" class="space-y-3">
+        <input name="id" type="hidden" />
+        <input name="monthlyAmount" type="number" placeholder="المبلغ الشهري" class="w-full border p-2 rounded"
+          required />
+        <input name="duration" type="number" placeholder="المدة" class="w-full border p-2 rounded" required />
+        <input name="durationUnit" placeholder="وحدة المدة (مثلاً: weeks)" class="w-full border p-2 rounded" required />
+        <input name="type" placeholder="النوع (مثلاً: B)" class="w-full border p-2 rounded" required />
+        <input name="maxMembers" type="number" placeholder="الحد الأعلى للأعضاء" class="w-full border p-2 rounded"
+          min="2" max="15" required />
+        <select name="status" class="w-full border p-2 rounded">
+          <option value="pending">قيد الانتظار</option>
+          <option value="active">نشطة</option>
+        </select>
+        <div class="flex justify-end space-x-2 rtl:space-x-reverse">
+          <button type="button" onclick="closeEditAssociationModal()"
+            class="bg-gray-300 px-4 py-2 rounded">إلغاء</button>
+          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">حفظ</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Delete Association Modal -->
+  <div id="deleteAssociationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+    <div class="bg-white p-6 rounded-xl shadow-md w-full max-w-sm text-center">
+      <p class="mb-4 text-lg">هل أنت متأكد من حذف الجمعية؟</p>
+      <input type="hidden" id="deleteAssocId" />
+      <div class="flex justify-center space-x-2 rtl:space-x-reverse">
+        <button onclick="closeDeleteAssociationModal()" class="bg-gray-300 px-4 py-2 rounded">إلغاء</button>
+        <button onclick="confirmDeleteAssociation()" class="bg-red-600 text-white px-4 py-2 rounded">حذف</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Create User Modal -->
+  <div id="createUserModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center">
+    <div class="bg-white p-6 rounded-xl shadow-md w-full max-w-md">
+      <h2 class="text-xl font-bold mb-4">إنشاء مستخدم جديد</h2>
+      <form id="createUserForm" class="space-y-3">
+        <input name="fullName" placeholder="الاسم الكامل" class="w-full border p-2 rounded" required />
+        <input name="nationalId" placeholder="الرقم القومي" class="w-full border p-2 rounded" required />
+        <input name="phone" placeholder="الهاتف" class="w-full border p-2 rounded" required />
+        <input name="address" placeholder="العنوان" class="w-full border p-2 rounded" required />
+        <select name="role" class="w-full border p-2 rounded" required>
+          <option value="user">User</option>
+          <option value="admin">Admin</option>
+        </select>
+        <input name="password" type="password" placeholder="كلمة المرور" class="w-full border p-2 rounded" required />
+        <div class="flex justify-end space-x-2 rtl:space-x-reverse">
+          <button type="button" onclick="closeCreateUserModal()" class="bg-gray-300 px-4 py-2 rounded">إلغاء</button>
+          <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded">إنشاء</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- تحت الـ <template id="associationsTemplate"> -->
+  <template id="usersTemplate">
+<div class="flex justify-start mb-4">
+  <button onclick="openCreateUserModal()"
+    class="bg-[#129990] text-right hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300">
+    + إنشاء مستخدم
+  </button>
+</div>
+
+    <table class="min-w-full bg-white rounded-lg shadow">
+      <thead class="bg-gray-300">
+        <tr>
+          <th class="px-4 py-2 text-sm  whitespace-nowrap">#</th>
+          <th class="px-4 py-2 text-sm  whitespace-nowrap">الاسم الكامل</th>
+          <th class="px-4 py-2 text-sm  whitespace-nowrap">الرقم القومي</th>
+          <th class="px-4 py-2 text-sm  whitespace-nowrap">الهاتف</th>
+          <th class="px-4 py-2 text-sm  whitespace-nowrap">واتساب</th> <!-- ← هنا -->
+          <th class="px-4 py-2 text-sm  whitespace-nowrap">الرصيد</th>
+          <th class="px-4 py-2 text-sm  whitespace-nowrap">الدور</th>
+          <th class="px-4 py-2 text-sm  whitespace-nowrap">تاريخ الإنشاء</th>
+        </tr>
+      </thead>
+
+      <tbody id="usersContainer"></tbody>
+    </table>
+  </template>
+
+
+  <template id="membersTemplate">
+  <div class="overflow-x-auto w-full">
+    <h2 class="text-xl font-bold mb-4">أعضاء الجمعية</h2>
+    <table class="min-w-full bg-white table-auto border-collapse border border-gray-200">
+      <thead class="bg-gray-200">
+        <tr>
+          <th class="px-4 py-2  text-red-500">#</th>
+          <th class="px-4 py-2 ">الاسم</th>
+          <th class="px-4 py-2 ">الهاتف</th>
+          <th class="px-4 py-2 ">استلمت؟</th>
+          <th class="px-4 py-2 ">آخر استلام</th>
+        </tr>
+      </thead>
+      <tbody id="membersContainer"></tbody>
+    </table>
+  </div>
+</template>
+
+
+  <!--  -->
+  <script src="./dashboard.js">
+
+  </script>
+</body>
+
+</html>
