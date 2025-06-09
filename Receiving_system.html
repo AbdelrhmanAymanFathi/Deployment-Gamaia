@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نقاط استلام جمعيتي - الرئيسية</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* General Body and Main Container Styling */
+        body {
+            font-family: 'Arial', sans-serif; /* A clear, modern font */
+            background-color: #f3ffef; /* Light gray background, slightly greenish for jumaiati theme */
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* Full viewport height */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .main-container {
+            flex-grow: 1; /* Allow content to grow and push footer down */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 1rem;
+            padding-bottom: 70px; /* Space for fixed navigation */
+            position: relative; /* For absolutely positioned elements like modals */
+        }
+
+        /* Top Bar Styling */
+        .top-bar {
+            background-color: #E0F2F1; /* Lighter teal-like, similar to image */
+            color: #26A69A; /* Greenish-blue dark text */
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start; /* For RTL content on right */
+            width: 100%;
+            position: sticky;
+            top: 0;
+            z-index: 50; /* Above other content, below modal */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Softer shadow */
+        }
+        .top-bar .title {
+            font-size: 1.25rem;
+            font-weight: bold;
+            margin-right: 0.75rem; /* Space between title and arrow */
+            margin-left: auto; /* Push title and arrow to the right (start of container) */
+        }
+        .top-bar .arrow-icon {
+            width: 24px;
+            height: 24px;
+            transform: rotate(0deg); /* Ensure no unintended rotation, points left */
+            color: #26A69A; /* Consistent color with text */
+            cursor: pointer; /* Indicate it's clickable */
+        }
+
+        /* Card Section Styling */
+        .info-card {
+            background-color: #ffffff;
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        .info-card h2 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #374151; /* gray-700 */
+            margin-bottom: 1.5rem;
+        }
+        .select-button-group {
+            display: flex;
+            gap: 1rem; /* Space between buttons */
+            justify-content: center;
+            flex-wrap: wrap; /* Allow wrapping on small screens */
+        }
+        .select-button {
+            display: flex;
+            flex-direction: row; /* For text and icon side-by-side */
+            align-items: center;
+            justify-content: space-between; /* Push text to right, icon to left */
+            background-color: #f9fafb; /* light gray background */
+            border: 1px solid #CFD8DC; /* Lighter gray-300 */
+            border-radius: 8px;
+            padding: 0.75rem 1.25rem;
+            font-size: 0.95rem;
+            color: #4CAF50; /* Greenish-blue for text */
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            min-width: 140px; /* Ensure buttons have a minimum width */
+            flex-grow: 1; /* Allow buttons to grow */
+            max-width: 190px; /* Limit button width for better layout */
+        }
+        .select-button:hover {
+            border-color: #4CAF50; /* Matching green on hover */
+            background-color: #E8F5E9; /* Lighter green on hover */
+            color: #388E3C; /* Darker green for text on hover */
+        }
+        .select-button .button-text {
+            /* No specific styles needed for text, flex handles it */
+        }
+        .select-button .icon-down {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.5rem; /* Space between text and icon in RTL */
+            color: #757575; /* gray-500 */
+        }
+        .select-button:hover .icon-down {
+            color: #388E3C; /* Darker green on hover */
+        }
+
+        /* Selected Location Display */
+        .selected-display {
+            font-size: 1.1rem;
+            color: #616161; /* gray-700 */
+            margin-top: 1.5rem;
+            font-weight: 500;
+            min-height: 24px; /* To prevent layout shift when content loads */
+            display: flex; /* Make it a flex container */
+            justify-content: space-between; /* Space out province and city */
+            width: 100%; /* Take full width */
+            padding: 0 0.5rem; /* Add some padding */
+        }
+        .selected-display .province-text {
+            text-align: right; /* Province on the right */
+        }
+        .selected-display .city-text {
+            text-align: left; /* City on the left */
+        }
+
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            background-color: #E0F2F1; /* Lighter teal-like, consistent */
+            width: 100%;
+            padding: 0.75rem 0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            position: fixed;
+            bottom: 0;
+            z-index: 100; /* Above all content, below modal */
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.05); /* Softer shadow */
+        }
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #26A69A; /* Consistent green-blue text */
+            font-size: 0.75rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .nav-item.active {
+            color: #00796B; /* Even darker green for active */
+        }
+        .nav-item svg {
+            width: 24px;
+            height: 24px;
+            margin-bottom: 0.25rem;
+        }
+        .nav-item:hover {
+            color: #00796B;
+        }
+
+        /* Modal specific styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Darker semi-transparent black background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it's on top */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: #ffffff; /* White background for modal content */
+            padding: 2rem;
+            border-radius: 0.75rem; /* More rounded corners */
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04); /* Larger shadow */
+            width: 95%; /* Responsive width */
+            max-width: 600px; /* Increased max width for more items in a row */
+            max-height: 90vh; /* Limit height for scrollable content */
+            overflow-y: auto; /* Enable scrolling if content overflows */
+            transform: translateY(20px); /* Start slightly below center */
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+            display: flex; /* Enable flex for internal layout */
+            flex-direction: column; /* Stack children vertically */
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: translateY(0); /* Move to center */
+            opacity: 1;
+        }
+
+        /* Search Bar Styling */
+        .search-input-wrapper {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        .search-input {
+            width: 100%;
+            padding: 10px 40px 10px 12px; /* Adjusted padding for icon */
+            border: 1px solid #B0BEC5; /* Lighter gray for input border */
+            border-radius: 6px;
+            font-size: 1rem;
+            background-color: #F5F5F5; /* Very light gray for input background */
+            color: #424242; /* Darker text for input */
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #66BB6A; /* Greenish-blue on focus */
+            box-shadow: 0 0 0 2px rgba(102, 187, 106, 0.2);
+        }
+        .search-icon {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9E9E9E; /* gray-400 */
+        }
+        .clear-search-icon {
+            position: absolute;
+            left: 12px; /* Adjusted to left */
+            top: 50%;
+            transform: translateY(-50%);
+            color: #EF5350; /* Red-500 */
+            cursor: pointer;
+            display: none; /* Hidden by default */
+        }
+        .clear-search-icon.show {
+            display: block;
+        }
+
+        /* Back Button Styling */
+        #back-to-provinces-btn {
+            background: none;
+            border: none;
+            padding: 0;
+            margin-bottom: 1rem;
+            color: #2196F3; /* Blue-500 */
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        #back-to-provinces-btn:hover {
+            color: #1976D2; /* Blue-700 */
+        }
+        #back-to-provinces-btn svg {
+            margin-left: 0.5rem; /* Space from text in RTL */
+        }
+
+
+        /* Specific styling for Province items (squares as per image) */
+        .province-item {
+            display: flex;
+            flex-direction: column; /* Stack name and arrow */
+            justify-content: center;
+            align-items: center;
+            width: 130px; /* Slightly larger fixed width */
+            height: 130px; /* Slightly larger fixed height */
+            background-color: #E8F5E9; /* Lighter green background */
+            border: 1px solid #A5D6A7; /* Green-300 */
+            border-radius: 12px; /* More rounded */
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            font-size: 1.05rem; /* Slightly larger font */
+            font-weight: 600;
+            color: #4CAF50; /* Green-500 */
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.07);
+        }
+        .province-item:hover {
+            border-color: #388E3C; /* Darker Green-700 */
+            background-color: #C8E6C9; /* Even lighter green */
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transform: translateY(-3px);
+        }
+        .province-item .province-name {
+            margin-bottom: 8px; /* Space between name and icon */
+        }
+        .province-item .arrow-icon {
+            color: #66BB6A; /* Green-400 */
+            transition: color 0.2s ease-in-out;
+        }
+        .province-item:hover .arrow-icon {
+            color: #388E3C; /* Darker Green-700 */
+        }
+
+        /* Grid for provinces */
+        .provinces-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); /* Responsive grid for squares */
+            gap: 16px; /* Space between squares */
+            justify-items: center; /* Center items in the grid cells */
+            padding-bottom: 10px; /* Space for scrollbar */
+        }
+
+
+        /* Styling for City items (list items as per image) */
+        .city-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 18px; /* More padding */
+            background-color: #ffffff; /* White */
+            border: 1px solid #E0E0E0; /* Light gray */
+            border-radius: 10px; /* Slightly more rounded */
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+            font-size: 1.05rem;
+            color: #424242; /* Dark gray */
+        }
+        .city-item:hover {
+            border-color: #81C784; /* Lighter green */
+            background-color: #F1F8E9; /* Very light green */
+            color: #4CAF50; /* Green */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .city-item.active {
+            background-color: #DCEDC8; /* Green-100 */
+            border-color: #4CAF50; /* Green-500 */
+            font-weight: 700; /* Bolder for active */
+            color: #388E3C; /* Darker Green-700 */
+        }
+        .city-item .check-icon {
+            color: #BDBDBD; /* gray-400 */
+        }
+        .city-item.active .check-icon {
+            color: #388E3C; /* Darker Green-700 */
+        }
+
+        .cities-list { /* Renamed for clarity, using space-y for vertical gap */
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* Space between city items */
+            padding-bottom: 10px; /* Space for scrollbar */
+        }
+        
+        /* Custom scrollbar styles (applied to location-list-container) */
+        .location-list-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .location-list-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .location-list-container::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        .location-list-container::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* "Done" Button on Main Page */
+        #main-confirm-button {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            padding: 0.8rem 2.5rem;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            margin-top: 2rem; /* Space above the button */
+            width: fit-content; /* Adjust width to content */
+            border: none;
+            display: block; /* To center it with margin auto */
+            margin-left: auto;
+            margin-right: auto;
+        }
+        #main-confirm-button:hover {
+            background-color: #388E3C; /* Darker green on hover */
+        }
+        #main-confirm-button:disabled {
+            background-color: #A5D6A7; /* Lighter green when disabled */
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div id="main-top-bar" class="top-bar">
+        <span class="title">نقاط استلام جمعيتي</span>
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 arrow-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l-7 7 7 7" />
+        </svg>
+    </div>
+
+    <div id="main-content-page" class="main-container">
+        <div class="info-card">
+            <h2>شوف أقرب نقطة استلام ليك عشان تستلم الكارت</h2>
+            <div class="select-button-group">
+                <button id="open-province-selection" class="select-button">
+                    <span class="button-text">اختار المحافظة</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 icon-down" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <button id="open-city-selection" class="select-button">
+                    <span class="button-text">اختار المدينة</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 icon-down" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+            </div>
+            <p id="selected-location-display" class="selected-display">
+                <span class="province-text"></span>
+                <span class="city-text"></span>
+            </p>
+        </div>
+
+        <button id="main-confirm-button" disabled>
+            تم
+        </button>
+
+        <div class="flex-grow"></div>
+    </div>
+
+
+    <div class="bottom-nav">
+        <div class="nav-item">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <span>المدفوعات</span>
+        </div>
+        <div class="nav-item">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h10m-10 4h10M4 6h16a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V7a1 1 0 011-1z" />
+            </svg>
+            <span>كارتي</span>
+        </div>
+        <div class="nav-item active">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 15l-3-3m0 0l3-3m-3 3h8M3 12a9 9 0 1118 0 9 9 0 01-18 0z" />
+            </svg>
+            <span>اشتراك</span>
+        </div>
+        <div class="nav-item">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.653-.106-1.296-.307-1.9M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.653.106-1.296.307-1.9M7 10a6 6 0 1112 0 6 6 0 01-12 0zm0 0H6" />
+            </svg>
+            <span>جمعياتي</span>
+        </div>
+        <div class="nav-item">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+            <span>الرئيسية</span>
+        </div>
+    </div>
+
+
+    <div id="location-modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <h2 id="modal-title" class="text-2xl font-extrabold mb-4 text-gray-800 flex items-center justify-between">
+                <span>اختار المحافظة</span>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </h2>
+
+            <div class="search-input-wrapper">
+                <input type="text" id="search-input" placeholder="بحث..." class="search-input">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 search-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                <button id="clear-search" class="clear-search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+
+            <button id="back-to-provinces-btn" class="hidden text-blue-600 hover:text-blue-800 font-semibold mb-4 flex items-center transition duration-200">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l-7 7 7 7" />
+                </svg>
+                الرجوع للمحافظات
+            </button>
+
+            <div id="location-list" class="location-list-container flex-grow">
+                </div>
+            
+            <p id="no-results-message" class="text-gray-500 text-center mt-4 hidden">لا توجد نتائج مطابقة للبحث.</p>
+
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements (Main Page)
+        const openProvinceSelectionBtn = document.getElementById('open-province-selection');
+        const openCitySelectionBtn = document.getElementById('open-city-selection');
+        const selectedLocationDisplay = document.getElementById('selected-location-display');
+        const selectedProvinceText = selectedLocationDisplay.querySelector('.province-text');
+        const selectedCityText = selectedLocationDisplay.querySelector('.city-text');
+        const mainConfirmButton = document.getElementById('main-confirm-button'); // The new "Done" button on main page
+
+        // DOM Elements (Location Modal)
+        const locationModalOverlay = document.getElementById('location-modal-overlay');
+        const closeModalBtn = document.getElementById('close-modal-btn');
+        const modalTitle = document.getElementById('modal-title');
+        const searchInput = document.getElementById('search-input');
+        const clearSearchBtn = document.getElementById('clear-search');
+        const backToProvincesBtn = document.getElementById('back-to-provinces-btn');
+        const locationListContainer = document.getElementById('location-list');
+        const noResultsMessage = document.getElementById('no-results-message');
+
+        // Data Structure for Provinces and Cities
+        const locations = {
+            "الرياض": ["الرياض", "وادي الدواسر", "الزلفي", "الدوادمي", "الأفلاج", "المجمعة", "الخرج", "القويعية", "شقراء", "حريملاء", "ثادق", "الغاط", "السليل", "الدرعية", "العيينة", "ضرما", "رماح", "حوطة بني تميم"],
+            "مكة المكرمة": ["مكة المكرمة", "جدة", "الطائف", "القنفذة", "الليث", "رابغ", "الجموم", "كامل", "الخرمة", "تربة", "أضم", "العرضيات", "ميسان"],
+            "المدينة المنورة": ["المدينة المنورة", "ينبع", "العلا", "مهد الذهب", "خيبر", "الحناكية", "بدر", "وادي الفرع"],
+            "القصيم": ["بريدة", "عنيزة", "الرس", "المذنب", "البكيرية", "البدائع", "الأسياح", "رياض الخبراء", "عقلة الصقور", "الشماسية", "النبهانية"],
+            "المنطقة الشرقية": ["الدمام", "الخبر", "الظهران", "القطيف", "الأحساء", "الجبيل", "رأس تنورة", "الخفجي", "النعيرية", "بقيق", "حفر الباطن", "قرية العليا"],
+            "عسير": ["أبها", "خميس مشيط", "بيشة", "محايل عسير", "النماص", "المجاردة", "سراة عبيدة", "أحد رفيدة", "ظهران الجنوب", "تثليث", "رجال ألمع", "بحر أبو سكينة"],
+            "تبوك": ["تبوك", "الوجه", "ضباء", "تيماء", "أملج", "حقل", "البدع"],
+            "حائل": ["حائل", "بقعاء", "الغزالة", "الشملي", "موقق", "سميراء"],
+            "نجران": ["نجران", "حبونا", "بدر الجنوب", "ثار", "يدمة", "خباش"],
+            "جازان": ["جازان", "صبيا", "أبو عريش", "صامطة", "بيش", "الدرب", "العارضة", "الحرث", "ضمد", "الريث", "فرسان", "فيفاء", "هروب", "الداير بني مالك", "الدرب"],
+            "الحدود الشمالية": ["عرعر", "رفحاء", "طريف"],
+            "الجوف": ["سكاكا", "القريات", "دومة الجندل", "طبرجل"],
+            "الباحة": ["الباحة", "بلجرشي", "المندق", "المخواة", "قلوة", "العقيق", "القرى"],
+            "عفيف": ["عفيف", "ضرية", "المجهول", "الصمعورية"],
+            "الدلم": ["الدلم", "الهياثم", "السهباء"]
+        };
+
+        let currentModalView = 'provinces'; // 'provinces' or 'cities' for the modal
+        let selectedProvince = localStorage.getItem('selectedProvince') || '';
+        let selectedCity = localStorage.getItem('selectedCity') || '';
+
+        // Function to show the modal
+        function showModal(initialView = 'provinces') {
+            locationModalOverlay.classList.add('show');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling on body
+            searchInput.value = ''; // Clear search input
+            clearSearchBtn.classList.remove('show'); // Hide clear button
+            currentModalView = initialView; // Set initial view (provinces or cities)
+            
+            if (currentModalView === 'cities' && !selectedProvince) {
+                currentModalView = 'provinces'; // If no province selected, always show provinces first
+                alert('الرجاء اختيار المحافظة أولاً لكي تتمكن من اختيار المدينة.');
+            }
+            renderLocations(); // Render initial list based on currentModalView
+        }
+
+        // Function to hide the modal
+        function hideModal() {
+            locationModalOverlay.classList.remove('show');
+            document.body.style.overflow = ''; // Re-enable scrolling
+            // Reset modal view to provinces when closing for next open, unless it's a direct city open
+            if (currentModalView === 'cities' && !selectedProvince) {
+                currentModalView = 'provinces';
+            }
+            backToProvincesBtn.classList.add('hidden');
+            updateSelectedLocationDisplay(); // Update display on close
+            checkMainConfirmButtonState(); // Check button state after modal closes
+        }
+
+        // Function to update the main page display
+        function updateSelectedLocationDisplay() {
+            selectedProvinceText.classList.remove('text-green-600', 'text-blue-600', 'font-bold', 'text-gray-700');
+            selectedCityText.classList.remove('text-green-600', 'text-blue-600', 'font-bold', 'text-gray-700');
+
+            // Default text if nothing is selected
+            selectedProvinceText.textContent = 'لم يتم اختيار محافظة';
+            selectedCityText.textContent = 'لم يتم اختيار مدينة';
+
+            if (selectedProvince) {
+                selectedProvinceText.textContent = selectedProvince;
+                if (selectedCity) {
+                    selectedCityText.textContent = selectedCity;
+                    selectedProvinceText.classList.add('text-green-600', 'font-bold');
+                    selectedCityText.classList.add('text-green-600', 'font-bold');
+                } else {
+                    selectedCityText.textContent = 'لم يتم اختيار مدينة';
+                    selectedProvinceText.classList.add('text-blue-600', 'font-bold');
+                    selectedCityText.classList.add('text-gray-700');
+                }
+            } else {
+                selectedProvinceText.classList.add('text-gray-700');
+                selectedCityText.classList.add('text-gray-700');
+            }
+            checkMainConfirmButtonState(); // Check button state after display update
+        }
+
+        // Function to render locations (provinces or cities) inside the modal
+        function renderLocations(filterText = '') {
+            locationListContainer.innerHTML = ''; // Clear current list
+            let itemsToRender = [];
+            let currentTitle = '';
+
+            if (currentModalView === 'provinces') {
+                itemsToRender = Object.keys(locations);
+                currentTitle = 'اختار المحافظة';
+                backToProvincesBtn.classList.add('hidden'); // Hide back button for provinces view
+                locationListContainer.classList.add('provinces-grid'); // Apply grid for provinces
+                locationListContainer.classList.remove('cities-list'); // Remove cities list styling
+            } else if (currentModalView === 'cities' && selectedProvince) {
+                itemsToRender = locations[selectedProvince] || [];
+                currentTitle = `اختار المدينة (${selectedProvince})`;
+                backToProvincesBtn.classList.remove('hidden'); // Show back button for cities view
+                locationListContainer.classList.remove('provinces-grid'); // Remove grid for cities
+                locationListContainer.classList.add('cities-list'); // Apply cities list styling
+            }
+
+            modalTitle.querySelector('span').textContent = currentTitle;
+
+            const filteredItems = itemsToRender.filter(item =>
+                item.toLowerCase().includes(filterText.toLowerCase())
+            );
+
+            if (filteredItems.length === 0) {
+                noResultsMessage.classList.remove('hidden');
+            } else {
+                noResultsMessage.classList.add('hidden');
+                filteredItems.forEach(item => {
+                    if (currentModalView === 'provinces') {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.classList.add('province-item');
+                        
+                        const provinceNameSpan = document.createElement('span');
+                        provinceNameSpan.classList.add('province-name');
+                        provinceNameSpan.textContent = item;
+                        itemDiv.appendChild(provinceNameSpan);
+
+                        const arrowIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                        arrowIcon.setAttribute("class", "h-5 w-5 arrow-icon");
+                        arrowIcon.setAttribute("fill", "none");
+                        arrowIcon.setAttribute("viewBox", "0 0 24 24");
+                        arrowIcon.setAttribute("stroke", "currentColor");
+                        arrowIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />';
+                        itemDiv.appendChild(arrowIcon);
+
+                        itemDiv.addEventListener('click', () => {
+                            selectedProvince = item;
+                            localStorage.setItem('selectedProvince', selectedProvince); // Save to local storage
+                            currentModalView = 'cities';
+                            searchInput.value = ''; // Clear search for new view
+                            clearSearchBtn.classList.remove('show');
+                            selectedCity = ''; // Reset selected city when changing province
+                            localStorage.removeItem('selectedCity'); // Remove old city from local storage
+                            renderLocations(); // Render cities for selected province
+                        });
+                        locationListContainer.appendChild(itemDiv);
+                    } else if (currentModalView === 'cities') {
+                        const itemDiv = document.createElement('div');
+                        itemDiv.classList.add('city-item');
+                        itemDiv.textContent = item;
+
+                        const checkIcon = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+                        checkIcon.setAttribute("class", "h-5 w-5 check-icon");
+                        checkIcon.setAttribute("fill", "none");
+                        checkIcon.setAttribute("viewBox", "0 0 24 24");
+                        checkIcon.setAttribute("stroke", "currentColor");
+                        checkIcon.innerHTML = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />';
+                        itemDiv.appendChild(checkIcon);
+
+                        // Set active class if this city was previously selected
+                        if (item === selectedCity) {
+                            itemDiv.classList.add('active');
+                        }
+
+                        itemDiv.addEventListener('click', () => {
+                            // First, remove 'active' from any previously selected city
+                            document.querySelectorAll('.city-item').forEach(city => city.classList.remove('active'));
+                            // Then, add 'active' to the clicked city
+                            itemDiv.classList.add('active');
+
+                            selectedCity = item; // Store the selected city
+                            localStorage.setItem('selectedCity', selectedCity); // Save to local storage
+                            hideModal(); // Hide modal after city selection
+                        });
+                        locationListContainer.appendChild(itemDiv);
+                    }
+                });
+            }
+        }
+
+        // Function to check and update the state of the main "Done" button
+        function checkMainConfirmButtonState() {
+            if (selectedProvince && selectedCity) {
+                mainConfirmButton.disabled = false;
+            } else {
+                mainConfirmButton.disabled = true;
+            }
+        }
+
+
+        // Event Listeners for main page buttons
+        openProvinceSelectionBtn.addEventListener('click', () => showModal('provinces'));
+        openCitySelectionBtn.addEventListener('click', () => {
+            if (selectedProvince) { 
+                showModal('cities');
+            } else { 
+                alert('الرجاء اختيار المحافظة أولاً.');
+                showModal('provinces'); 
+            }
+        });
+
+        // Event Listeners for modal controls
+        closeModalBtn.addEventListener('click', hideModal);
+
+        // Close modal when clicking outside of it
+        locationModalOverlay.addEventListener('click', (e) => {
+            if (e.target === locationModalOverlay) {
+                hideModal();
+            }
+        });
+
+        // Search input functionality
+        searchInput.addEventListener('input', () => {
+            renderLocations(searchInput.value);
+            if (searchInput.value.length > 0) {
+                clearSearchBtn.classList.add('show');
+            } else {
+                clearSearchBtn.classList.remove('show');
+            }
+        });
+
+        // Clear search button functionality
+        clearSearchBtn.addEventListener('click', () => {
+            searchInput.value = '';
+            clearSearchBtn.classList.remove('show');
+            renderLocations(); // Re-render without filter
+        });
+
+        // Back to provinces button functionality
+        backToProvincesBtn.addEventListener('click', () => {
+            currentModalView = 'provinces';
+            searchInput.value = ''; // Clear search when going back
+            clearSearchBtn.classList.remove('show');
+            selectedCity = ''; // Clear city selection when going back to provinces
+            localStorage.removeItem('selectedCity'); // Remove old city from local storage
+            renderLocations();
+            updateSelectedLocationDisplay();
+        });
+
+        // Event Listener for the main "تم" button
+        mainConfirmButton.addEventListener('click', () => {
+            if (selectedProvince && selectedCity) {
+                // Redirect to distributors.html, passing selected province and city as URL parameters
+                window.location.href = `distributors.html?province=${encodeURIComponent(selectedProvince)}&city=${encodeURIComponent(selectedCity)}`;
+            } else {
+                alert('الرجاء اختيار المحافظة والمدينة أولاً.');
+            }
+        });
+
+
+        // Initial setup on load
+        updateSelectedLocationDisplay(); // Set initial text
+        checkMainConfirmButtonState(); // Check button state on page load
+    </script>
+</body>
+</html>
