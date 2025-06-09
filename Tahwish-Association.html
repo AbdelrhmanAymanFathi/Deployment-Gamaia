@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جمعية تحويش</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* Custom styles for active state and subtle hover effects */
+        .tahwish-item.active {
+            border-color: #4CAF50; /* A shade of green */
+            box-shadow: 0 0 0 2px rgba(76, 175, 80, 0.5);
+        }
+        .duration-option.active {
+            background-color: #4CAF50;
+            color: white;
+            border-color: #4CAF50;
+        }
+        .duration-option:hover:not(.active) {
+            background-color: #e6ffe6; /* Light green on hover */
+        }
+        .tahwish-item:hover:not(.active) {
+            border-color: #A5D6A7; /* Lighter green on hover */
+            box-shadow: 0 0 0 1px rgba(76, 175, 80, 0.2);
+        }
+
+        /* New styling for duration options and details */
+        .duration-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Adjust minmax as needed */
+            gap: 16px; /* Space between buttons */
+        }
+        .duration-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 16px;
+            border: 1px solid #E5E7EB;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+        .duration-option .main-text {
+            font-weight: 600;
+            font-size: 1.125rem; /* text-lg */
+            color: #4B5563; /* gray-700 */
+        }
+        .duration-option .sub-text {
+            font-size: 0.875rem; /* text-sm */
+            color: #6B7280; /* gray-500 */
+            margin-top: 4px;
+        }
+        .duration-option.active .main-text,
+        .duration-option.active .sub-text {
+            color: white;
+        }
+
+        .details-card {
+            background-color: #F9FAFB; /* gray-50 */
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 24px;
+            box-shadow: inset 0 1px 3px 0 rgba(0,0,0,0.05);
+        }
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 0;
+            border-bottom: 1px dashed #E5E7EB; /* Light gray dashed line */
+        }
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        .detail-row p:first-child {
+            font-size: 0.875rem; /* text-sm */
+            color: #6B7280; /* gray-500 */
+        }
+        .detail-row p:last-child {
+            font-weight: 700;
+            font-size: 1rem; /* text-base */
+            color: #1F2937; /* gray-900 */
+        }
+        .detail-row #total-receipt {
+            color: #10B981; /* green-500 */
+            font-size: 1.125rem; /* text-lg */
+        }
+        .detail-row #monthly-amount {
+            color: #3B82F6; /* blue-500 */
+            font-size: 1.125rem; /* text-lg */
+        }
+
+        /* Modal specific styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; /* Ensure it's on top */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-out, visibility 0.3s ease-out;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1); /* Larger shadow */
+            width: 90%; /* Responsive width */
+            max-width: 500px; /* Max width for larger screens */
+            transform: translateY(20px); /* Start slightly below center */
+            transition: transform 0.3s ease-out, opacity 0.3s ease-out;
+        }
+
+        .modal-overlay.show .modal-content {
+            transform: translateY(0); /* Move to center */
+            opacity: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col md:flex-row items-start justify-center min-h-screen p-4 md:space-x-8 md:space-x-reverse font-sans">
+
+    <div class="w-full md:w-1/2 lg:w-2/5 bg-white p-6 rounded-lg shadow-xl mb-8 md:mb-0">
+        <h2 class="text-2xl font-extrabold mb-6 text-gray-800 flex items-center justify-between">
+            <span>اختار جمعية تحويش</span>
+            <span class="text-green-500 text-4xl">🌿</span>
+        </h2>
+
+        <div id="tahwish-options" class="space-y-4">
+            <div class="tahwish-item p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-green-400 transition duration-200 ease-in-out" data-base-amount="3000" data-monthly-increase="0">
+                <p class="font-semibold text-lg text-gray-700">تحويش لايت</p>
+                <p class="text-green-600 font-bold text-xl">3,000 ر.س</p>
+                <p class="text-sm text-gray-500">حتى 0 ر.س زيادة</p>
+            </div>
+            <div class="tahwish-item p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-green-400 transition duration-200 ease-in-out" data-base-amount="6000" data-monthly-increase="1000">
+                <p class="font-semibold text-lg text-gray-700">تحويش برونزي</p>
+                <p class="text-green-600 font-bold text-xl">6,000 ر.س</p>
+                <p class="text-sm text-gray-500">حتى 1,000 ر.س زيادة</p>
+            </div>
+            <div class="tahwish-item p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-green-400 transition duration-200 ease-in-out" data-base-amount="12000" data-monthly-increase="2400">
+                <p class="font-semibold text-lg text-gray-700">تحويش فضي</p>
+                <p class="text-green-600 font-bold text-xl">12,000 ر.س</p>
+                <p class="text-sm text-gray-500">حتى 2,400 ر.س زيادة</p>
+            </div>
+            <div class="tahwish-item p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-green-400 transition duration-200 ease-in-out" data-base-amount="30000" data-monthly-increase="5000">
+                <p class="font-semibold text-lg text-gray-700">تحويش ذهبي</p>
+                <p class="text-green-600 font-bold text-xl">30,000 ر.س</p>
+                <p class="text-sm text-gray-500">حتى 5,000 ر.س زيادة</p>
+            </div>
+             <div class="tahwish-item p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-green-400 transition duration-200 ease-in-out" data-base-amount="60000" data-monthly-increase="12000">
+                <p class="font-semibold text-lg text-gray-700">تحويش بلاتيني</p>
+                <p class="text-green-600 font-bold text-xl">60,000 ر.س</p>
+                <p class="text-sm text-gray-500">حتى 12,000 ر.س زيادة</p>
+            </div>
+            <div class="tahwish-item p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-green-400 transition duration-200 ease-in-out" data-base-amount="100000" data-monthly-increase="20000">
+                <p class="font-semibold text-lg text-gray-700">تحويش ألماس</p>
+                <p class="text-green-600 font-bold text-xl">100,000 ر.س</p>
+                <p class="text-sm text-gray-500">حتى 20,000 ر.س زيادة</p>
+            </div>
+            <div class="tahwish-item p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-green-400 transition duration-200 ease-in-out" data-base-amount="250000" data-monthly-increase="75000">
+                <p class="font-semibold text-lg text-gray-700">تحويش متقدم</p>
+                <p class="text-green-600 font-bold text-xl">250,000 ر.س</p>
+                <p class="text-sm text-gray-500">حتى 75,000 ر.س زيادة</p>
+            </div>
+            <div class="tahwish-item p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-green-400 transition duration-200 ease-in-out" data-base-amount="500000" data-monthly-increase="182000">
+                <p class="font-semibold text-lg text-gray-700">تحويش نخبة</p>
+                <p class="text-green-600 font-bold text-xl">500,000 ر.س</p>
+                <p class="text-sm text-gray-500">حتى 182,000 ر.س زيادة</p>
+            </div>
+            <div class="tahwish-item p-4 border-2 border-gray-200 rounded-lg cursor-pointer hover:border-green-400 transition duration-200 ease-in-out" data-base-amount="1000000" data-monthly-increase="200000">
+                <p class="font-semibold text-lg text-gray-700">تحويش مميز</p>
+                <p class="text-green-600 font-bold text-xl">1,000,000 ر.س</p>
+                <p class="text-sm text-gray-500">حتى 200,000 ر.س زيادة</p>
+            </div>
+        </div>
+        <p class="text-sm text-blue-500 mt-6 text-center cursor-pointer hover:underline">لم توجد ما تبحث عنه؟ <span class="font-medium">طلب المساعدة</span></p>
+    </div>
+
+    <div id="duration-modal-overlay" class="modal-overlay">
+        <div class="modal-content">
+            <h2 class="text-2xl font-extrabold mb-6 text-gray-800 flex items-center justify-between">
+                <span>اختار المدة</span>
+                <button id="close-modal-btn" class="text-gray-400 hover:text-gray-600 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </h2>
+
+            <div class="duration-grid mb-8">
+                <button class="duration-option" data-duration="6">
+                    <span class="main-text">6 شهور</span>
+                    <span class="sub-text" id="monthly-rate-6">-- ر.س/شهريًا</span>
+                </button>
+                <button class="duration-option" data-duration="12">
+                    <span class="main-text">12 شهر</span>
+                    <span class="sub-text" id="monthly-rate-12">-- ر.س/شهريًا</span>
+                </button>
+                <button class="duration-option" data-duration="24">
+                    <span class="main-text">24 شهر</span>
+                    <span class="sub-text" id="monthly-rate-24">-- ر.س/شهريًا</span>
+                </button>
+            </div>
+
+            <div class="details-card text-gray-700">
+                <div class="detail-row">
+                    <p>تبدأ في</p>
+                    <p id="start-date" class="font-bold">--</p>
+                </div>
+                <div class="detail-row">
+                    <p>تنتهي في</p>
+                    <p id="end-date" class="font-bold">--</p>
+                </div>
+                <div class="detail-row">
+                    <p>إجمالي القبض</p>
+                    <p id="total-receipt" class="font-bold text-green-700">-- ر.س</p>
+                </div>
+                <div class="detail-row">
+                    <p>المبلغ الشهري</p>
+                    <p id="monthly-amount" class="font-bold text-blue-700">-- ر.س</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const tahwishOptions = document.querySelectorAll('.tahwish-item');
+        const durationModalOverlay = document.getElementById('duration-modal-overlay'); // Changed from leftSection
+        const closeModalBtn = document.getElementById('close-modal-btn'); // Renamed from closeLeftSectionBtn
+        const durationOptions = document.querySelectorAll('.duration-option');
+        const startDateEl = document.getElementById('start-date');
+        const endDateEl = document.getElementById('end-date');
+        const totalReceiptEl = document.getElementById('total-receipt');
+        const monthlyAmountEl = document.getElementById('monthly-amount');
+
+        let selectedBaseAmount = 0;
+        let selectedMonthlyIncrease = 0;
+        let selectedDuration = 0; // in months
+
+        // Helper function to format currency
+        const formatCurrency = (amount) => {
+            if (isNaN(amount) || !isFinite(amount)) {
+                return '-- ر.س';
+            }
+            return new Intl.NumberFormat('ar-SA', { style: 'currency', currency: 'SAR', minimumFractionDigits: 0 }).format(amount);
+        };
+
+        // Function to update calculations
+        function updateCalculations() {
+            if (selectedBaseAmount === 0 || selectedDuration === 0) {
+                startDateEl.textContent = '--';
+                endDateEl.textContent = '--';
+                totalReceiptEl.textContent = '-- ر.س';
+                monthlyAmountEl.textContent = '-- ر.س';
+                return;
+            }
+
+            const startDate = new Date(); // Current month as start date
+            const currentYear = startDate.getFullYear();
+            const currentMonth = startDate.getMonth(); // 0-indexed
+
+            // Calculate start date string (e.g., "يونيو 2025")
+            const startMonthName = new Date(currentYear, currentMonth, 1).toLocaleString('ar-SA', { month: 'long', year: 'numeric' });
+            startDateEl.textContent = startMonthName;
+
+            // Calculate end date
+            const endDate = new Date(startDate);
+            endDate.setMonth(currentMonth + selectedDuration);
+            // Correctly set to the last day of the target month to avoid issues with month lengths
+            endDate.setDate(0); // This correctly sets it to the last day of the month *before* the current one.
+            endDate.setDate(endDate.getDate() + 1); // Move to the first day of the current month.
+            endDate.setMonth(currentMonth + selectedDuration); // Now set the target month
+            endDate.setDate(0); // Correctly sets it to the last day of the *target* month
+
+
+            const endMonthName = endDate.toLocaleString('ar-SA', { month: 'long', year: 'numeric' });
+            endDateEl.textContent = endMonthName;
+
+            // Calculate total receipt and monthly amount
+            const totalReceipt = selectedBaseAmount + (selectedMonthlyIncrease * selectedDuration);
+            const monthlyPayment = totalReceipt / selectedDuration;
+
+            totalReceiptEl.textContent = formatCurrency(totalReceipt);
+            monthlyAmountEl.textContent = formatCurrency(monthlyPayment);
+        }
+
+        // Function to update monthly rates on duration buttons
+        function updateDurationButtonRates() {
+            durationOptions.forEach(option => {
+                const duration = parseInt(option.dataset.duration);
+                const tempTotalReceipt = selectedBaseAmount + (selectedMonthlyIncrease * duration);
+                const tempMonthlyPayment = tempTotalReceipt / duration;
+                const monthlyRateSpan = option.querySelector('.sub-text');
+
+                if (!isNaN(tempMonthlyPayment) && isFinite(tempMonthlyPayment)) {
+                    monthlyRateSpan.textContent = `${formatCurrency(tempMonthlyPayment).replace('ر.س', '').trim()} ر.س/شهريًا`;
+                } else {
+                    monthlyRateSpan.textContent = `-- ر.س/شهريًا`;
+                }
+            });
+        }
+
+        // Function to show the modal
+        function showModal() {
+            durationModalOverlay.classList.add('show');
+            // Prevent scrolling on the body when modal is open
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Function to hide the modal
+        function hideModal() {
+            durationModalOverlay.classList.remove('show');
+            // Re-enable scrolling on the body
+            document.body.style.overflow = '';
+
+            // Reset selections and clear displayed values
+            tahwishOptions.forEach(item => item.classList.remove('active'));
+            durationOptions.forEach(item => item.classList.remove('active'));
+            selectedBaseAmount = 0;
+            selectedMonthlyIncrease = 0;
+            selectedDuration = 0;
+            updateCalculations();
+            updateDurationButtonRates();
+        }
+
+
+        // Event listeners for Tahwish options
+        tahwishOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove active class from all tahwish options
+                tahwishOptions.forEach(item => item.classList.remove('active'));
+                // Add active class to the clicked tahwish option
+                option.classList.add('active');
+
+                selectedBaseAmount = parseFloat(option.dataset.baseAmount);
+                selectedMonthlyIncrease = parseFloat(option.dataset.monthlyIncrease);
+
+                updateDurationButtonRates(); // Update rates displayed on buttons within the modal
+                updateCalculations(); // Clear main calculation displays for new selection
+
+                showModal(); // Show the duration modal
+            });
+        });
+
+        // Event listeners for Duration options inside the modal
+        durationOptions.forEach(option => {
+            option.addEventListener('click', () => {
+                // Remove active class from all duration options
+                durationOptions.forEach(item => item.classList.remove('active'));
+                // Add active class to the clicked duration option
+                option.classList.add('active');
+
+                selectedDuration = parseInt(option.dataset.duration);
+                updateCalculations();
+            });
+        });
+
+        // Event listener for the close button (X) inside the modal
+        closeModalBtn.addEventListener('click', hideModal);
+
+        // Optional: Close modal when clicking outside of it
+        durationModalOverlay.addEventListener('click', (e) => {
+            if (e.target === durationModalOverlay) {
+                hideModal();
+            }
+        });
+
+        // Initial state: ensure modal is hidden on load
+        hideModal(); // This will also reset initial values
+    </script>
+</body>
+</html>
