@@ -1,15 +1,6 @@
 // wallet.js
 
 document.addEventListener('DOMContentLoaded', () => {
-  // افتح/اغلق قائمة البروفايل
-  document.getElementById('profile-toggle').addEventListener('click', () => {
-    document.getElementById('popup-menu').classList.toggle('hidden');
-  });
-  // زر تسجيل خروج
-  document.getElementById('logout-btn').addEventListener('click', () => {
-    localStorage.removeItem('token');
-    window.location.href = 'login.html';
-  });
 
   // جلب التوكن والـ balance element
   const token = localStorage.getItem('token');
@@ -37,15 +28,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
   // عناصر المودال
-  const modal     = document.getElementById('topup-modal');
-  const btnOpen   = document.getElementById('topup-btn');
+  const modal = document.getElementById('topup-modal');
+  const btnOpen = document.getElementById('topup-btn');
   const btnCancel = document.getElementById('topup-cancel');
-  const btnOk     = document.getElementById('topup-ok');
-  const inputAmt  = document.getElementById('topup-amount');
+  const btnOk = document.getElementById('topup-ok');
+  const inputAmt = document.getElementById('topup-amount');
 
   // فتح/إغلاق المودال
-  btnOpen.addEventListener('click',  () => modal.classList.remove('hidden'));
-  btnCancel.addEventListener('click',() => modal.classList.add('hidden'));
+  btnOpen.addEventListener('click', () => modal.classList.remove('hidden'));
+  btnCancel.addEventListener('click', () => modal.classList.add('hidden'));
 
   // شحن المحفظة عند الضغط على موافق
   btnOk.addEventListener('click', () => {
@@ -60,7 +51,7 @@ document.addEventListener('DOMContentLoaded', () => {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
-        'Content-Type':  'application/json'
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify({ amount })
     })
@@ -85,7 +76,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.classList.add('hidden');
         inputAmt.value = '';
         alert('The shipment was successful');
-            })
+      })
       .catch(err => {
         console.error('Top-up error:', err);
       });
