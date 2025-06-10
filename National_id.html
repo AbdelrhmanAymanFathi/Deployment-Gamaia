@@ -96,6 +96,14 @@
           <path d="M9 12h6" stroke="#2DAA9E" stroke-width="2" stroke-linecap="round"/>
         </svg>
         <div class="text-gray-700 text-sm mb-4">احرص على حمل البطاقة في يدك وعدم وضعها على أي سطح.</div>
+        <!-- اختيار الكاميرا -->
+        <div class="mb-4">
+          <label for="cameraSelect" class="block mb-1 text-sm text-gray-700">اختر الكاميرا:</label>
+          <select id="cameraSelect" class="w-full border rounded px-2 py-1 text-sm">
+            <option value="environment">الخلفية</option>
+            <option value="user">الأمامية</option>
+          </select>
+        </div>
         <button id="beginCapture" class="w-full border border-green-400 rounded-full py-2 text-green-900 font-medium text-base hover:bg-green-50 transition">ابدأ</button>
       </div>
     </div>
@@ -179,8 +187,13 @@
 
     async function startCamera() {
       if (videoStream) return;
+      const cameraSelect = document.getElementById('cameraSelect');
+      const facingMode = cameraSelect ? cameraSelect.value : "environment";
       try {
-        videoStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+        videoStream = await navigator.mediaDevices.getUserMedia({
+          video: { facingMode: { ideal: facingMode } },
+          audio: false
+        });
         video.srcObject = videoStream;
       } catch (e) {
         alert('تعذر الوصول للكاميرا');
