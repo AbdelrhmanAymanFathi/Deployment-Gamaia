@@ -11,7 +11,6 @@
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_circle_left" />
     <script src="https://cdn.tailwindcss.com"></script>
   <style>
-
     .upload-box {
       border: 2px solid #16a34a;
       border-radius: 18px;
@@ -174,6 +173,11 @@
   <!-- ...existing code... -->
   <script src="./MainLayout.js"></script>
   <script>
+    // --- TEST ONLY: Set token and userId in localStorage ---
+    localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6ImFkbWluIiwid2FsbGV0QmFsYW5jZSI6MzIxNS42LCJpYXQiOjE3NDk1NTY2NzcsImV4cCI6MTc0OTY0MzA3N30.I32RfWybr7BY9nl2VaRm_9KVcjMmvmdCEYftYvICiIk');
+    localStorage.setItem('userId', '2');
+  </script>
+  <script>
     document.getElementById('salary-slip').addEventListener('change', async function(e) {
       const file = e.target.files[0];
       if (!file) return;
@@ -212,9 +216,7 @@
         console.error('Network error:', err);
       }
     });
-    </script>
+  </script>
 
 </body>
 </html>
-
-<!-- TOdo change url to producation url  -->

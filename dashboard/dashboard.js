@@ -1,110 +1,110 @@
-  const token = localStorage.getItem('token');
-    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-    const assocApi = 'http://localhost:3000/api/associations';
-    const userApi = 'http://localhost:3000/api/admin/create-user';
+const token = localStorage.getItem('token');
+axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+const assocApi = 'http://localhost:3000/api/associations';
+const userApi = 'http://localhost:3000/api/admin/create-user';
 
-    // Render helper
-    function renderAssociationCard(assoc) {
-      return `
-        <div class="bg-white p-4 rounded-lg shadow space-y-2">
-          <h3 class="font-bold text-lg">${assoc.name}</h3>
-          <p>المبلغ الشهري: ${assoc.monthlyAmount}</p>
-          <p>المدة: ${assoc.duration} ${assoc.type}</p>
-          <p>الحالة: ${assoc.status}</p>
-          <p>الحد الأعلى للأعضاء: ${assoc.maxMembers}</p>
-          <div class="flex justify-end space-x-2 rtl:space-x-reverse">
-            <button onclick="openEditAssociationModal(${assoc.id}, ${assoc.monthlyAmount}, ${assoc.duration}, '${assoc.status}')" class="text-blue-600">تعديل</button>
-            <button onclick="openDeleteAssociationModal(${assoc.id})" class="text-red-600">حذف</button>
-          </div>
-        </div>
-      `;
-    }
+// Render helper
+function renderAssociationCard(assoc) {
+  return `
+    <div class="bg-white p-4 rounded-lg shadow space-y-2">
+      <h3 class="font-bold text-lg">${assoc.name}</h3>
+      <p>المبلغ الشهري: ${assoc.monthlyAmount}</p>
+      <p>المدة: ${assoc.duration} ${assoc.type}</p>
+      <p>الحالة: ${assoc.status}</p>
+      <p>الحد الأعلى للأعضاء: ${assoc.maxMembers}</p>
+      <div class="flex justify-end space-x-2 rtl:space-x-reverse">
+        <button onclick="openEditAssociationModal(${assoc.id}, ${assoc.monthlyAmount}, ${assoc.duration}, '${assoc.status}')" class="text-blue-600">تعديل</button>
+        <button onclick="openDeleteAssociationModal(${assoc.id})" class="text-red-600">حذف</button>
+      </div>
+    </div>
+  `;
+}
 
-    // Load associations
-    async function loadAssociations() {
-      document.getElementById('contentContainer').innerHTML = document.getElementById('associationsTemplate').innerHTML;
-      try {
-        const res = await axios.get(`${assocApi}?page=1&pageSize=5&status=pending`);
-        const data = res.data;
-        if (!Array.isArray(data.data)) throw new Error();
-        const container = document.getElementById('associationsContainer');
-        container.innerHTML = data.data.map(renderAssociationCard).join('');
-      } catch (e) {
-        document.getElementById('associationsContainer').innerHTML = `<div class="text-red-500 p-4">⚠️ لا توجد جمعيات.</div>`;
-      }
-    }
+// Load associations
+async function loadAssociations() {
+  document.getElementById('contentContainer').innerHTML = document.getElementById('associationsTemplate').innerHTML;
+  try {
+    const res = await axios.get(`${assocApi}?page=1&pageSize=5&status=pending`);
+    const data = res.data;
+    if (!Array.isArray(data.data)) throw new Error();
+    const container = document.getElementById('associationsContainer');
+    container.innerHTML = data.data.map(renderAssociationCard).join('');
+  } catch (e) {
+    document.getElementById('associationsContainer').innerHTML = `<div class="text-red-500 p-4">⚠️ لا توجد جمعيات.</div>`;
+  }
+}
 
-    // Create Association
-    function openCreateAssociationModal() { document.getElementById('createAssociationModal').classList.remove('hidden');document.getElementById('createAssociationModal').classList.add('flex'); }
-    function closeCreateAssociationModal() { document.getElementById('createAssociationModal').classList.add('hidden'); }
-    document.getElementById('createAssociationForm').onsubmit = async e => {
-      e.preventDefault();
-      const form = e.target; const body = Object.fromEntries(new FormData(form));
-      body.monthlyAmount = +body.monthlyAmount; body.duration = +body.duration;
-      await axios.post(assocApi, body);
-      closeCreateAssociationModal(); loadAssociations();
-    };
+// Create Association
+function openCreateAssociationModal() { document.getElementById('createAssociationModal').classList.remove('hidden');document.getElementById('createAssociationModal').classList.add('flex'); }
+function closeCreateAssociationModal() { document.getElementById('createAssociationModal').classList.add('hidden'); }
+document.getElementById('createAssociationForm').onsubmit = async e => {
+  e.preventDefault();
+  const form = e.target; const body = Object.fromEntries(new FormData(form));
+  body.monthlyAmount = +body.monthlyAmount; body.duration = +body.duration;
+  await axios.post(assocApi, body);
+  closeCreateAssociationModal(); loadAssociations();
+};
 
-    // Edit Association
-    function openEditAssociationModal(id, amount, duration, status) {
-      const form = document.getElementById('editAssociationForm');
-      form.id.value=id; form.monthlyAmount.value=amount; form.duration.value=duration; form.status.value=status;
-      document.getElementById('editAssociationModal').classList.remove('hidden');
-       document.getElementById('editAssociationModal').classList.add('flex');
-    }
-    function closeEditAssociationModal() { document.getElementById('editAssociationModal').classList.add('hidden'); }
-    document.getElementById('editAssociationForm').onsubmit = async e => {
-      e.preventDefault(); const form=e.target; const id=form.id.value;
-      const body={ monthlyAmount:+form.monthlyAmount.value, duration:+form.duration.value, status:form.status.value };
-      await axios.put(`${assocApi}/${id}`, body);
-      closeEditAssociationModal(); loadAssociations();
-    };
+// Edit Association
+function openEditAssociationModal(id, amount, duration, status) {
+  const form = document.getElementById('editAssociationForm');
+  form.id.value=id; form.monthlyAmount.value=amount; form.duration.value=duration; form.status.value=status;
+  document.getElementById('editAssociationModal').classList.remove('hidden');
+   document.getElementById('editAssociationModal').classList.add('flex');
+}
+function closeEditAssociationModal() { document.getElementById('editAssociationModal').classList.add('hidden'); }
+document.getElementById('editAssociationForm').onsubmit = async e => {
+  e.preventDefault(); const form=e.target; const id=form.id.value;
+  const body={ monthlyAmount:+form.monthlyAmount.value, duration:+form.duration.value, status:form.status.value };
+  await axios.put(`${assocApi}/${id}`, body);
+  closeEditAssociationModal(); loadAssociations();
+};
 
-    // Delete Association
-    function openDeleteAssociationModal(id) { document.getElementById('deleteAssocId').value=id; document.getElementById('deleteAssociationModal').classList.remove('hidden'); document.getElementById('deleteAssociationModal').classList.add('flex'); }
-    function closeDeleteAssociationModal() { document.getElementById('deleteAssociationModal').classList.add('hidden'); }
-    async function confirmDeleteAssociation() {
-      const id=document.getElementById('deleteAssocId').value;
-      await axios.delete(`${assocApi}/${id}`);
-      closeDeleteAssociationModal(); loadAssociations();
-    }
+// Delete Association
+function openDeleteAssociationModal(id) { document.getElementById('deleteAssocId').value=id; document.getElementById('deleteAssociationModal').classList.remove('hidden'); document.getElementById('deleteAssociationModal').classList.add('flex'); }
+function closeDeleteAssociationModal() { document.getElementById('deleteAssociationModal').classList.add('hidden'); }
+async function confirmDeleteAssociation() {
+  const id=document.getElementById('deleteAssocId').value;
+  await axios.delete(`${assocApi}/${id}`);
+  closeDeleteAssociationModal(); loadAssociations();
+}
 
-    // Create User
+// Create User
 const createuserApi = "http://localhost:3000/api/userData/admin/create-user";
 
-  function openCreateUserModal() {
-    document.getElementById('createUserModal').classList.remove('hidden');
-    document.getElementById('createUserModal').classList.add('flex');
-  }
+function openCreateUserModal() {
+  document.getElementById('createUserModal').classList.remove('hidden');
+  document.getElementById('createUserModal').classList.add('flex');
+}
 
-  function closeCreateUserModal() {
-    document.getElementById('createUserModal').classList.remove('flex');
-    document.getElementById('createUserModal').classList.add('hidden');
-  }
+function closeCreateUserModal() {
+  document.getElementById('createUserModal').classList.remove('flex');
+  document.getElementById('createUserModal').classList.add('hidden');
+}
 
-  document.getElementById('createUserForm').onsubmit = async e => {
-    e.preventDefault();
-    const form = e.target;
-    const body = Object.fromEntries(new FormData(form));
+document.getElementById('createUserForm').onsubmit = async e => {
+  e.preventDefault();
+  const form = e.target;
+  const body = Object.fromEntries(new FormData(form));
 
-    try {
-      const res = await axios.post(createuserApi, body);
-      if (res.data.message === "User created successfully") {
-        alert("تم إنشاء المستخدم بنجاح");
-        closeCreateUserModal();
-        form.reset();
-        // Optional: إعادة تحميل البيانات من السيرفر لعرضها في الجدول
-      }
-    } catch (error) {
-      console.error(error);
-      alert("حدث خطأ أثناء إنشاء المستخدم");
+  try {
+    const res = await axios.post(createuserApi, body);
+    if (res.data.message === "User created successfully") {
+      alert("تم إنشاء المستخدم بنجاح");
+      closeCreateUserModal();
+      form.reset();
+      // Optional: إعادة تحميل البيانات من السيرفر لعرضها في الجدول
     }
-  };
+  } catch (error) {
+    console.error(error);
+    alert("حدث خطأ أثناء إنشاء المستخدم");
+  }
+};
 
-    // Initialize
-    window.onload = loadAssociations;
+// Initialize
+window.onload = loadAssociations;
 
-    // إضافة الرابط الجديد
+// إضافة الرابط الجديد
 const usersApi = 'http://localhost:3000/api/userData/users'; // Users endpoint
 
 // دالة ترندر صف مستخدم
@@ -113,6 +113,11 @@ function renderUserRow(user, index) {
   const waNumber = user.phone.startsWith('0')
     ? '+20' + user.phone.slice(1)        // لو عندك أرقام محلية تبدأ بـ0 شيلها وحط 2 (كود مصر)
     : user.phone;                     // لو بالفعل دولي
+
+  // مستند الراتب: زر مراجعة إذا موجود
+  const salarySlipCell = user.salarySlipImage
+    ? `<button onclick="openApproveProfileModal(${user.id})" class="bg-blue-500 text-white px-2 py-1 rounded">مراجعة المستند</button>`
+    : '—';
 
   return `
     <tr class="border-t">
@@ -132,10 +137,10 @@ function renderUserRow(user, index) {
       <td class="px-4 py-2 text-sm  whitespace-nowrap">${user.walletBalance}</td>
       <td class="px-4 py-2 text-sm  whitespace-nowrap">${user.role}</td>
       <td class="px-4 py-2 text-sm  whitespace-nowrap">${new Date(user.createdAt).toLocaleDateString('ar-EG')}</td>
+      <td class="px-4 py-2 text-sm  whitespace-nowrap">${salarySlipCell}</td>
     </tr>
   `;
 }
-
 
 // دالة لجلب وعرض المستخدمين
 async function loadUsers() {
@@ -153,10 +158,9 @@ async function loadUsers() {
   } catch (err) {
     console.error('خطأ في جلب المستخدمين:', err);
     document.getElementById('usersContainer').innerHTML =
-      `<tr><td colspan="7" class="text-center p-4 text-red-500">فشل تحميل المستخدمين</td></tr>`;
+      `<tr><td colspan="9" class="text-center p-4 text-red-500">فشل تحميل المستخدمين</td></tr>`;
   }
 }
-
 
 function renderAssociationCard(assoc) {
   return `
@@ -233,3 +237,63 @@ async function loadMembers(assocId) {
   }
 }
 
+// ========== إدارة مراجعة مستند الراتب (المودال) ==========
+
+let currentApproveUserId = null;
+
+async function openApproveProfileModal(userId) {
+  // جلب بيانات المستخدم (بما فيها صورة المستند)
+  try {
+    const res = await axios.get(`http://localhost:3000/api/userData/user/${userId}`);
+    const user = res.data;
+    currentApproveUserId = userId;
+
+    // عرض الصورة إذا موجودة
+    const imgHtml = user.salarySlipImage
+      ? `<img src="http://localhost:3000/api/userData/${user.salarySlipImage.replace(/\\/g, '/').replace(/^uploads\//, 'uploads/')}" alt="Salary Slip" class="mx-auto max-h-64 rounded mb-2" />`
+      : '<div class="text-gray-500">لا يوجد مستند</div>';
+
+    document.getElementById('profileImageContainer').innerHTML = imgHtml;
+    document.getElementById('profileApproveError').innerText = '';
+    document.getElementById('approveProfileModal').classList.remove('hidden');
+    document.getElementById('approveProfileModal').classList.add('flex');
+    document.getElementById('rejectReasonContainer').classList.add('hidden');
+    document.getElementById('rejectReasonInput').value = '';
+  } catch (err) {
+    document.getElementById('profileImageContainer').innerHTML = '';
+    document.getElementById('profileApproveError').innerText = 'خطأ في تحميل بيانات المستخدم';
+    document.getElementById('approveProfileModal').classList.remove('hidden');
+    document.getElementById('approveProfileModal').classList.add('flex');
+  }
+}
+
+function closeApproveProfileModal() {
+  document.getElementById('approveProfileModal').classList.add('hidden');
+  document.getElementById('approveProfileModal').classList.remove('flex');
+  currentApproveUserId = null;
+  document.getElementById('rejectReasonInput').value = '';
+  document.getElementById('rejectReasonContainer').classList.add('hidden');
+}
+
+function approveProfile(approved) {
+  if (!approved) {
+    // إظهار حقل السبب
+    document.getElementById('rejectReasonContainer').classList.remove('hidden');
+    const reason = document.getElementById('rejectReasonInput').value;
+    if (reason || confirm('هل تريد الرفض بدون سبب؟')) {
+      sendApproveProfileRequest(false, reason);
+    }
+  } else {
+    sendApproveProfileRequest(true);
+  }
+}
+
+async function sendApproveProfileRequest(approved, reason = '') {
+  try {
+    await axios.post(`http://localhost:3000/api/userData/admin/approve-profile/${currentApproveUserId}`, { approved, reason });
+    closeApproveProfileModal();
+    loadUsers();
+  } catch (err) {
+    document.getElementById('profileApproveError').innerText = 'خطأ أثناء تحديث حالة الموافقة';
+  }
+}

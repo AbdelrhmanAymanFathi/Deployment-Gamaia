@@ -168,10 +168,11 @@
           <th class="px-4 py-2 text-sm  whitespace-nowrap">الاسم الكامل</th>
           <th class="px-4 py-2 text-sm  whitespace-nowrap">الرقم القومي</th>
           <th class="px-4 py-2 text-sm  whitespace-nowrap">الهاتف</th>
-          <th class="px-4 py-2 text-sm  whitespace-nowrap">واتساب</th> <!-- ← هنا -->
+          <th class="px-4 py-2 text-sm  whitespace-nowrap">واتساب</th>
           <th class="px-4 py-2 text-sm  whitespace-nowrap">الرصيد</th>
           <th class="px-4 py-2 text-sm  whitespace-nowrap">الدور</th>
           <th class="px-4 py-2 text-sm  whitespace-nowrap">تاريخ الإنشاء</th>
+          <th class="px-4 py-2 text-sm  whitespace-nowrap">مستند الراتب</th> <!-- NEW COLUMN -->
         </tr>
       </thead>
 
@@ -198,11 +199,24 @@
   </div>
 </template>
 
+<!-- Approve Profile Modal -->
+<div id="approveProfileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+  <div class="bg-white p-6 rounded-xl shadow-md w-full max-w-md">
+    <h2 class="text-xl font-bold mb-4">مراجعة مستند المستخدم</h2>
+    <div id="profileImageContainer" class="mb-4 text-center"></div>
+    <div id="profileApproveError" class="text-red-500 mb-2"></div>
+    <div class="flex justify-end space-x-2 rtl:space-x-reverse">
+      <button type="button" onclick="closeApproveProfileModal()" class="bg-gray-300 px-4 py-2 rounded">إلغاء</button>
+      <button type="button" onclick="approveProfile(true)" class="bg-green-600 text-white px-4 py-2 rounded">قبول</button>
+      <button type="button" onclick="approveProfile(false)" class="bg-red-600 text-white px-4 py-2 rounded">رفض</button>
+    </div>
+    <div id="rejectReasonContainer" class="mt-2 hidden">
+      <input id="rejectReasonInput" class="w-full border p-2 rounded" placeholder="سبب الرفض (اختياري)" />
+    </div>
+  </div>
+</div>
 
-  <!--  -->
-  <script src="./dashboard.js">
-
-  </script>
+  <script src="./dashboard.js"></script>
 </body>
 
 </html>
