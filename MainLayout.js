@@ -1,23 +1,31 @@
-    // Profile dropdown
-    document.getElementById("profile-toggle").addEventListener("click", (e) => {
-      e.stopPropagation();
-      document.getElementById("popup-menu").classList.toggle("active");
-    });
 
-    // Notification dropdown
-    document.getElementById("notification-toggle").addEventListener("click", (e) => {
-      e.stopPropagation();
-      document.getElementById("notification-dropdown").classList.toggle("active");
-    });
+  const profileToggle = document.getElementById("profile-toggle");
+  const profileMenu = document.getElementById("popup-menu");
+  const notificationToggle = document.getElementById("notification-toggle");
+  const notificationDropdown = document.getElementById("notification-dropdown");
 
-    // Close dropdowns when clicking outside
-    document.addEventListener("click", () => {
-      document.getElementById("popup-menu").classList.remove("active");
-      document.getElementById("notification-dropdown").classList.remove("active");
-    });
+  // Toggle profile menu
+  profileToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    notificationDropdown.classList.add("hidden");
+    profileMenu.classList.toggle("hidden");
+  });
 
-    // Logout button
-    document.getElementById("logout-btn").addEventListener("click", () => {
-      localStorage.removeItem("token");
-      window.location.href = "login.html";
-    });
+  // Toggle notifications
+  notificationToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    profileMenu.classList.add("hidden");
+    notificationDropdown.classList.toggle("hidden");
+  });
+
+  // Close dropdowns if click outside
+  document.addEventListener("click", () => {
+    profileMenu.classList.add("hidden");
+    notificationDropdown.classList.add("hidden");
+  });
+
+  // Logout
+  document.getElementById("logout-btn").addEventListener("click", () => {
+    localStorage.removeItem("token");
+    window.location.href = "login.html";
+  });

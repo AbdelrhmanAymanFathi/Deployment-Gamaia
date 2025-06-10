@@ -107,52 +107,55 @@
 </head>
 
 <body class="bg-[#f5f5f5]">
-  <!-- Navbar Top -->
 
   <!-- Navbar Top -->
   <div style="background-color:#90D1CA;"
-    class="navbar flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg" dir="ltr">
+    class="navbar fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg"
+    dir="ltr">
+
     <!-- Left icons -->
-    <div class="flex gap-4">
-      <span class="icon relative" title="الإشعارات / Notifications" id="notification-toggle" style="cursor:pointer;">
-        <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
-        <!-- Notification Dropdown -->
-        <div class="notification-dropdown absolute left-0 mt-2 hidden bg-white shadow-md rounded-md z-50" id="notification-dropdown">
-          <div class="notification-header">
-            <div class="notification-title">الإشعارات</div>
-            <div class="notification-count">0</div>
+    <div class="flex gap-4 items-center">
+      <!-- Notifications -->
+      <div class="relative">
+        <button id="notification-toggle" class="focus:outline-none" title="الإشعارات / Notifications">
+          <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+        </button>
+        <div id="notification-dropdown"
+          class="hidden absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-md z-50 p-3">
+          <div class="flex justify-between items-center border-b pb-2 mb-2">
+            <span class="font-bold text-sm text-gray-700">الإشعارات</span>
+            <span class="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full">0</span>
           </div>
-          <div class="no-notifications">
-            <i class="bi bi-bell-slash"></i>
-            <p>لا توجد إشعارات جديدة</p>
+          <div class="text-center text-gray-500">
+            <i class="bi bi-bell-slash text-2xl mb-1"></i>
+            <p class="text-sm">لا توجد إشعارات جديدة</p>
           </div>
-          <!-- Example notification items (hidden by default):
-          <div class="notification-item unread">
-            <div class="notification-icon">
-              <i class="bi bi-check-circle"></i>
-            </div>
-            <div class="notification-content">تمت إضافة جمعية جديدة</div>
-            <div class="notification-time">منذ 5 دقائق</div>
-          </div>
-          -->
         </div>
-      </span>
-      <span class="icon" title="الرائج / Trends">
+      </div>
+
+      <!-- Trends -->
+      <button title="الرائج / Trends" class="focus:outline-none">
         <i class="bi bi-fire text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
-      </span>
+      </button>
     </div>
 
-    <!-- User profile icon -->
-    <div class="user-profile relative" id="profile-toggle" title="الملف الشخصي / Profile">
-      <i class="bi bi-person-circle text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
-      <!-- Popup menu -->
-      <div class="popup-menu absolute right-0 mt-2 hidden bg-white shadow-md p-2 rounded-md" id="popup-menu">
-        <a href="./profile.html" class="block text-sm text-black">Profile</a>
-        <button class="block text-sm w-full text-left">Settings</button>
-        <button class="logout-btn block text-sm w-full text-left text-red-600" id="logout-btn">Logout</button>
+    <!-- User Profile -->
+    <div class="relative">
+      <button id="profile-toggle" class="focus:outline-none" title="الملف الشخصي / Profile">
+        <i class="bi bi-person-circle text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      </button>
+      <div id="popup-menu"
+        class="hidden absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-50 p-2">
+        <a href="./profile.html" class="block text-sm text-black py-1 hover:text-green-600">Profile</a>
+        <button class="block text-sm w-full text-left py-1 hover:text-green-600">Settings</button>
+        <button id="logout-btn"
+          class="block text-sm w-full text-left text-red-600 py-1 hover:text-red-800">Logout</button>
       </div>
     </div>
   </div>
+
+    <!-- Spacer so content isn't hidden under navbar -->
+  <div class="h-10"></div>
 
   <div class="container py-4">
     <h2 class="text-center mb-4">Payments</h2>
@@ -173,7 +176,6 @@
     </div>
   </div>
 
-  <!-- Navbar Bottom -->
   <!-- Navbar Bottom -->
   <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg" style="background-color:#90D1CA;" dir="rtl">
 
@@ -209,7 +211,53 @@
 
   <script src="api.js"></script>
   <script src="payments.js"></script>
-  <script src="./MainLayout.js"></script>
+
+  
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const notifToggle = document.getElementById("notification-toggle");
+    const notifDropdown = document.getElementById("notification-dropdown");
+    const profToggle = document.getElementById("profile-toggle");
+    const profMenu = document.getElementById("popup-menu");
+    const logoutBtn = document.getElementById("logout-btn");
+
+    // Helper: close both
+    function closeAll() {
+      notifDropdown.classList.add("hidden");
+      profMenu.classList.add("hidden");
+    }
+
+    // Toggle notifications
+    notifToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      profMenu.classList.add("hidden");
+      notifDropdown.classList.toggle("hidden");
+    });
+
+    // Toggle profile menu
+    profToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      notifDropdown.classList.add("hidden");
+      profMenu.classList.toggle("hidden");
+    });
+
+    // Click outside closes all
+    document.addEventListener("click", closeAll);
+
+    // Prevent clicks inside dropdown from closing
+    notifDropdown.addEventListener("click", (e) => e.stopPropagation());
+    profMenu.addEventListener("click", (e) => e.stopPropagation());
+
+    // Logout
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        window.location.href = "login.html";
+      });
+    }
+  });
+</script>
+
 </body>
 
 </html>

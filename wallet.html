@@ -19,48 +19,52 @@
 
   <!-- Navbar Top -->
   <div style="background-color:#90D1CA;"
-    class="navbar flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg" dir="ltr">
+    class="navbar fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg"
+    dir="ltr">
+
     <!-- Left icons -->
-    <div class="flex gap-4">
-      <span class="icon relative" title="الإشعارات / Notifications" id="notification-toggle" style="cursor:pointer;">
-        <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
-        <!-- Notification Dropdown -->
-        <div class="notification-dropdown absolute left-0 mt-2 hidden bg-white shadow-md rounded-md z-50" id="notification-dropdown">
-          <div class="notification-header">
-            <div class="notification-title">الإشعارات</div>
-            <div class="notification-count">0</div>
+    <div class="flex gap-4 items-center">
+      <!-- Notifications -->
+      <div class="relative">
+        <button id="notification-toggle" class="focus:outline-none" title="الإشعارات / Notifications">
+          <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+        </button>
+        <div id="notification-dropdown"
+          class="hidden absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-md z-50 p-3">
+          <div class="flex justify-between items-center border-b pb-2 mb-2">
+            <span class="font-bold text-sm text-gray-700">الإشعارات</span>
+            <span class="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full">0</span>
           </div>
-          <div class="no-notifications">
-            <i class="bi bi-bell-slash"></i>
-            <p>لا توجد إشعارات جديدة</p>
+          <div class="text-center text-gray-500">
+            <i class="bi bi-bell-slash text-2xl mb-1"></i>
+            <p class="text-sm">لا توجد إشعارات جديدة</p>
           </div>
-          <!-- Example notification items (hidden by default):
-          <div class="notification-item unread">
-            <div class="notification-icon">
-              <i class="bi bi-check-circle"></i>
-            </div>
-            <div class="notification-content">تمت إضافة جمعية جديدة</div>
-            <div class="notification-time">منذ 5 دقائق</div>
-          </div>
-          -->
         </div>
-      </span>
-      <span class="icon" title="الرائج / Trends">
+      </div>
+
+      <!-- Trends -->
+      <button title="الرائج / Trends" class="focus:outline-none">
         <i class="bi bi-fire text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
-      </span>
+      </button>
     </div>
 
-    <!-- User profile icon -->
-    <div class="user-profile relative" id="profile-toggle" title="الملف الشخصي / Profile">
-      <i class="bi bi-person-circle text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
-      <!-- Popup menu -->
-      <div class="popup-menu absolute right-0 mt-2 hidden bg-white shadow-md p-2 rounded-md" id="popup-menu">
-        <a href="./profile.html" class="block text-sm text-black">Profile</a>
-        <button class="block text-sm w-full text-left">Settings</button>
-        <button class="logout-btn block text-sm w-full text-left text-red-600" id="logout-btn">Logout</button>
+    <!-- User Profile -->
+    <div class="relative">
+      <button id="profile-toggle" class="focus:outline-none" title="الملف الشخصي / Profile">
+        <i class="bi bi-person-circle text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      </button>
+      <div id="popup-menu"
+        class="hidden absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-50 p-2">
+        <a href="./profile.html" class="block text-sm text-black py-1 hover:text-green-600">Profile</a>
+        <button class="block text-sm w-full text-left py-1 hover:text-green-600">Settings</button>
+        <button id="logout-btn"
+          class="block text-sm w-full text-left text-red-600 py-1 hover:text-red-800">Logout</button>
       </div>
     </div>
   </div>
+
+    <!-- Spacer so content isn't hidden under navbar -->
+  <div class="h-10"></div>
   <!-- Main Content -->
   <main class="flex-grow container mx-auto py-8 px-4 mb-4">
 
@@ -122,9 +126,65 @@
   </div>
 
 -->
+
+  <div class="max-w-xs mx-auto py-6 px-2 space-y-4">
+    <!-- Step 1 -->
+    <div class="bg-[#d0efcc] rounded-2xl p-4 flex flex-col items-left text-left step-box shadow-md">
+      <img src="./Assets/imgs/card.png" alt="بطاقة بنكية" class="mt-4 mb-2 rounded" />
+      <p class="text-sm ">My Gamaia Card</p>
+      <p class="text-sm font-bold">Only for 149 SAR</p>
+      <p class="text-sm mb-4">Receive your Jamiati card for only 149 Saudi riyals and benefit from exclusive benefits
+        that have no end.</p>
+    </div>
+
+    <!-- Step 2 -->
+    <div class="bg-[#e8f5e9] rounded-2xl p-4 flex flex-col items-left text-left step-box shadow-md">
+      <img src="./Assets/imgs/id-card.png" alt="بطاقة هوية" class="mb-1 rounded" />
+      <p class="text-sm ">No papers, </p>
+
+      <p class="text-sm font-bold">just register with your card</p>
+      <p class="text-sm mb-4">You only need your card to be valid and upload it to the application.</p>
+
+    </div>
+
+    <!-- Step 3 -->
+    <div class="bg-[#f5f5dc] rounded-2xl p-4 flex flex-col items-left text-left step-box shadow-md">
+      <img src="./Assets/imgs/wallet.png" alt="إثبات العنوان" class="mb-2 rounded" />
+      <p class="text-sm ">It will make your life easier</p>
+      <p class="text-sm font-bold">Get paid faster</p>
+      <p class="text-sm mb-4">By using your Jamiaty card to collect, you will ensure that you collect faster than any
+        other method.</p>
+    </div>
+
+    <!-- Step 4 -->
+    <div class="bg-[#fce4ec] rounded-2xl p-4 flex flex-col items-left text-left step-box shadow-md">
+      <img src="./Assets/imgs/Group 14072.png" alt="الشروط" class="mb-2 rounded" />
+      <p class="text-sm ">Depends on it</p>
+      <p class="text-sm font-bold">Use the card everywhere</p>
+      <p class="text-sm mb-4">You can use the card for online payments, in stores, and at ATMs.</p>
+    </div>
+
+    <!-- Step 5 -->
+    <div class="bg-[#f3e5f5] rounded-2xl p-4 flex flex-col items-left text-left step-box shadow-md">
+      <img src="./Assets/imgs/maps.png" alt="الموقع" class="mb-2 rounded" />
+      <p class="text-sm ">No Effort</p>
+      <p class="text-sm font-bold">Receive the card from the nearest collection point</p>
+      <p class="text-sm mb-4">Visit your nearest contact point to receive and activate the card. Don't forget to have
+        your card with you.</p>
+    </div>
+
+    <!-- Button -->
+    <div class="text-center mb-5">
+      <button
+        class="bg-[#6048E4] hover:bg-[#5851db] text-white font-bold py-2 px-6 rounded-full transition duration-300">
+        Start subscribing now
+      </button>
+    </div>
+  </div>
+
+
   </main>
 
-  <!-- Navbar Bottom -->
   <!-- Navbar Bottom -->
   <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg" style="background-color:#90D1CA;" dir="rtl">
 
