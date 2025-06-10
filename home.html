@@ -59,6 +59,47 @@
 </head>
 
 <body>
+  <div id="loader" style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#fff">
+        <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f9f9f9; /* Light gray background to match the image edge */
+        }
+        /* لتجنب أي مشاكل في تناسب الصورة داخل الحاوية */
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /*
+         * تعديلات مخصصة لشاشات الموبايل الصغيرة (تقريباً 390px وما شابه)
+         * باستخدام Tailwind's 'sm' breakpoint (الافتراضي 640px)، يمكننا استهداف ما هو أصغر
+         */
+        @media (max-width: 639px) { /* يستهدف الشاشات الأصغر من sm: */
+            .text-xs-custom { font-size: 0.625rem; /* 10px */ } /* أصغر للبنك الأهلي السعودي والترجمة */
+            .text-lg-custom { font-size: 1.125rem; /* 18px */ } /* أكبر للمملكة العربية السعودية */
+            .w-flag-sm { width: 2rem; /* 32px - أكبر للعلم */ }
+        }
+    </style>
+    <div class="relative w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl bg-white shadow-lg p-8 h-screen flex flex-col justify-between items-center overflow-hidden">
+        <div class="flex flex-col items-center justify-center flex-grow text-center">
+            <img src="imgs/Capture-removebg-preview (13)-pica.png" alt="جمعيتي Logo" class="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mb-4 object-contain">
+            </div>
+
+        <div class="flex flex-col items-center justify-end w-full mt-auto pb-4 sm:pb-8">
+            <p class="text-xs-custom sm:text-sm text-gray-600 whitespace-nowrap text-center">البنك الأهلي السعودي</p>
+
+            <div class="flex items-center justify-center mt-0"> <img src="imgs/download-pica.png" alt="علم المملكة العربية السعودية" class="w-flag-sm sm:w-8 md:w-9 mr-1 sm:mr-2 order-first object-contain">
+                <p class="text-lg-custom sm:text-xl md:text-2xl font-bold text-gray-700 whitespace-nowrap order-last">المملكة العربية السعودية</p>
+            </div>
+
+            <p class="text-xs-custom sm:text-xs text-gray-500 whitespace-nowrap text-center mt-0">National Bank of Saudi Arabia</p>
+        </div>
+    </div>
+  </div>
 
   <!-- Navbar Top -->
   <div style="background-color:#90D1CA;"
@@ -269,7 +310,12 @@
       });
     });
   </script>
-
+  <!-- loader -->
+  <script>
+    window.addEventListener('load', function() {
+      document.getElementById('loader').style.display = 'none';
+    });
+  </script>
 </body>
 
 </html>
