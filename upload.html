@@ -134,6 +134,7 @@
     <label for="salary-slip" class="block border border-[#16a34a] rounded-full px-6 py-2 text-[#16a34a] font-bold cursor-pointer transition hover:bg-[#16a34a] hover:text-white w-fit mx-auto">
       Choose Image
     </label>
+    <div id="upload-message" class="mt-4 text-green-600 font-bold"></div>
   </div>
 </div>
 <!-- end Main Content -->
@@ -170,7 +171,50 @@
 
   </div>
     <!-- end Navbar Bottom -->
+  <!-- ...existing code... -->
   <script src="./MainLayout.js"></script>
+  <script>
+    document.getElementById('salary-slip').addEventListener('change', async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+    
+      const formData = new FormData();
+      formData.append('salarySlipImage', file);
+    
+      // Get userId from localStorage (adjust the key if needed)
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        document.getElementById('upload-message').textContent = 'يجب تسجيل الدخول أولاً.';
+        return;
+      }
+      formData.append('userId', userId);
+    
+      const uploadMessage = document.getElementById('upload-message');
+      uploadMessage.textContent = 'جاري رفع الملف...';
+    
+      const token = localStorage.getItem('token');
+    
+      try {
+        const res = await fetch('http://localhost:3000/api/userData/upload-documents', {
+          method: 'POST',
+          body: formData,
+          headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+        });
+        const data = await res.json();
+        if (res.ok && data.message) {
+          uploadMessage.textContent = data.message;
+        } else {
+          uploadMessage.textContent = data.message || data.error || 'حدث خطأ أثناء رفع الملف.';
+          console.error('Upload error:', data);
+        }
+      } catch (err) {
+        uploadMessage.textContent = 'تعذر الاتصال بالخادم.';
+        console.error('Network error:', err);
+      }
+    });
+    </script>
 
 </body>
 </html>
+
+<!-- TOdo change url to producation url  -->
