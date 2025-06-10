@@ -336,11 +336,14 @@
     });
   </script>
   <!-- loader -->
-  <script>
-    window.addEventListener('load', function () {
+<!-- loader -->
+<script>
+  window.addEventListener('load', function () {
+    setTimeout(function () {
       document.getElementById('loader').style.display = 'none';
-    });
-  </script>
+    }, 3000); // 3 ثواني
+  });
+</script>
 </body>
 
 </html>
