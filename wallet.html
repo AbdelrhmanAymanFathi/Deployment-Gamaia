@@ -222,7 +222,35 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
   <script src="./wallet.js"></script>
-  <script src="./MainLayout.js"></script>
+  
+<script>
+  // إظهار/إخفاء قائمة الإشعارات
+  const notificationToggle = document.getElementById("notification-toggle");
+  const notificationDropdown = document.getElementById("notification-dropdown");
+
+  notificationToggle.addEventListener("click", function (e) {
+    e.stopPropagation();
+    notificationDropdown.classList.toggle("hidden");
+    popupMenu.classList.add("hidden"); // غلق قائمة البروفايل لو كانت مفتوحة
+  });
+
+  // إظهار/إخفاء قائمة الملف الشخصي
+  const profileToggle = document.getElementById("profile-toggle");
+  const popupMenu = document.getElementById("popup-menu");
+
+  profileToggle.addEventListener("click", function (e) {
+    e.stopPropagation();
+    popupMenu.classList.toggle("hidden");
+    notificationDropdown.classList.add("hidden"); // غلق قائمة الإشعارات لو كانت مفتوحة
+  });
+
+  // إغلاق القوائم عند الضغط خارجها
+  document.addEventListener("click", function () {
+    notificationDropdown.classList.add("hidden");
+    popupMenu.classList.add("hidden");
+  });
+</script>
+
 </body>
 
 </html>
