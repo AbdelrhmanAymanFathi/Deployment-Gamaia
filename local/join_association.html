@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الانضمام للجمعية</title>
+    <link rel="stylesheet" href="mainLayout.css">
+    <style>
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .summary-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+
+        .summary-label {
+            color: #666;
+        }
+
+        .summary-value {
+            font-weight: bold;
+        }
+
+        .join-btn {
+            width: 100%;
+            padding: 12px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+        }
+
+        .join-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+
+        .loading.visible {
+            display: block;
+        }
+
+        .error-message {
+            color: #f44336;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .error-message.visible {
+            display: block;
+        }
+
+        .success-message {
+            color: #4CAF50;
+            text-align: center;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .success-message.visible {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>تأكيد الانضمام للجمعية</h1>
+        
+        <div class="summary-card">
+            <div class="summary-row">
+                <span class="summary-label">اسم الجمعية:</span>
+                <span class="summary-value" id="associationName">-</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">القسط الشهري:</span>
+                <span class="summary-value" id="monthlyFee">-</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">المدة:</span>
+                <span class="summary-value" id="duration">-</span>
+            </div>
+            <div class="summary-row">
+                <span class="summary-label">إجمالي القبض:</span>
+                <span class="summary-value" id="totalAmount">-</span>
+            </div>
+        </div>
+
+        <div class="loading" id="loadingSection">
+            جاري الانضمام للجمعية...
+        </div>
+
+        <div class="error-message" id="errorMessage">
+            حدث خطأ أثناء الانضمام للجمعية. يرجى المحاولة مرة أخرى.
+        </div>
+
+        <div class="success-message" id="successMessage">
+            تم الانضمام للجمعية بنجاح!
+        </div>
+
+        <button class="join-btn" id="joinBtn">انضم للجمعية</button>
+    </div>
+
+    <script src="join_association.js"></script>
+      <script src="./MainLayout.js"></script>
+
+</body>
+</html> 

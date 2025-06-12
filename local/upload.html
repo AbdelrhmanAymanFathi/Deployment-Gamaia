@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>رفع مفردات المرتب</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="mainLayout.css">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_circle_left" />
+    <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .upload-box {
+      border: 2px solid #16a34a;
+      border-radius: 18px;
+      background: #fff;
+      padding: 32px 16px;
+      margin: 32px auto;
+      max-width: 340px;
+      text-align: center;
+      box-shadow: 0 2px 12px 0 #00000012;
+    }
+    .upload-icon {
+      border: 1.5px solid #16a34a;
+      border-radius: 50%;
+      width: 56px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 18px auto;
+      font-size: 2rem;
+      color: #16a34a;
+    }
+    .upload-btn {
+      border: 1.5px solid #16a34a;
+      border-radius: 22px;
+      background: #fff;
+      color: #16a34a;
+      font-weight: bold;
+      padding: 10px 0;
+      width: 80%;
+      margin: 18px auto 0 auto;
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      display: block;
+    }
+    .upload-btn:hover {
+      background: #16a34a;
+      color: #fff;
+    }
+    .bottom-navbar .active-footer .label {
+      color: #16a34a;
+      font-weight: 700;
+    }
+    .notification-dropdown {
+      display: none;
+      min-width: 220px;
+      max-width: 300px;
+      max-height: 320px;
+      overflow-y: auto;
+      right: 0;
+      top: 36px;
+    }
+    .notification-dropdown.active {
+      display: block;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Navbar Top -->
+  <div style="background-color:#90D1CA;"
+    class="navbar fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg"
+    dir="ltr">
+
+    <!-- Left icons -->
+    <div class="flex gap-4 items-center">
+      <!-- Notifications -->
+      <div class="relative">
+        <button id="notification-toggle" class="focus:outline-none" title="الإشعارات / Notifications">
+          <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+        </button>
+        <div id="notification-dropdown"
+          class="hidden absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-md z-50 p-3">
+          <div class="flex justify-between items-center border-b pb-2 mb-2">
+            <span class="font-bold text-sm text-gray-700">الإشعارات</span>
+            <span class="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+          </div>
+          <div class="text-center text-gray-500">
+            <i class="bi bi-bell-slash text-2xl mb-1"></i>
+            <p class="text-sm">لا توجد إشعارات جديدة</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trends -->
+      <button title="الرائج / Trends" class="focus:outline-none">
+        <i class="bi bi-fire text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      </button>
+    </div>
+
+    <!-- User Profile -->
+    <div class="relative">
+      <button id="profile-toggle" class="focus:outline-none" title="الملف الشخصي / Profile">
+        <i class="bi bi-person-circle text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      </button>
+      <div id="popup-menu"
+        class="hidden absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-50 p-2">
+        <a href="./profile.html" class="block text-sm text-black py-1 hover:text-green-600">Profile</a>
+        <button class="block text-sm w-full text-left py-1 hover:text-green-600">Settings</button>
+        <button id="logout-btn"
+          class="block text-sm w-full text-left text-red-600 py-1 hover:text-red-800">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spacer so content isn't hidden under navbar -->
+  <div class="h-8"></div>
+
+<!-- Main Content -->
+<div class="flex justify-center items-center min-h-[60vh]">
+  <div class="border-2 border-dashed border-[#16a34a] rounded-xl bg-white p-8 w-[320px] text-center shadow-md">
+    <div class="flex justify-center mb-4">
+      <div class="border border-[#16a34a] rounded-full w-14 h-14 flex items-center justify-center text-3xl text-[#16a34a]">
+        <i class="bi bi-upload"></i>
+      </div>
+    </div>
+    <div class="mb-4 font-medium text-black">من فضلك ارفع صورة مفردات المرتب الخاصة بك!</div>
+    <input type="file" id="salary-slip" accept="image/*" class="hidden">
+    <label for="salary-slip" class="block border border-[#16a34a] rounded-full px-6 py-2 text-[#16a34a] font-bold cursor-pointer transition hover:bg-[#16a34a] hover:text-white w-fit mx-auto">
+      Choose Image
+    </label>
+    <div id="upload-message" class="mt-4 text-green-600 font-bold"></div>
+  </div>
+</div>
+<!-- end Main Content -->
+  <!-- Navbar Bottom -->
+  <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg" style="background-color:#90D1CA;" dir="rtl">
+
+    <div onclick="location.href='home.html'" class="p-0">
+      <i class="bi bi-house-door-fill text-xl "></i>
+      <div class="label ">الرئيسية</div>
+    </div>
+
+    <div onclick="location.href='circle-list.html'" class="p-0">
+      <i class="bi bi-people-fill text-xl"></i>
+      <div class="label">جمعياتي</div>
+    </div>
+
+    <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3" >
+      <!-- <span class="material-symbols-outlined text-3xl">
+        arrow_circle_left
+      </span> -->
+      <img src="./Assets/imgs/SubscribeIcon.svg" class="" alt="">
+      <div class="label" style="color:#16a34a; font-weight:700;">انضم الان</div>
+    </div>
+
+    <div onclick="location.href='./wallet.html'" class="p-0">
+      <i class="bi bi-credit-card-fill text-xl"></i>
+      <div class="label">محفظتي</div>
+    </div>
+
+    <div onclick="location.href='payments.html'" class="p-0">
+      <i class="bi bi-file-earmark-check-fill text-xl"></i>
+      <div class="label">المدفوعات</div>
+    </div>
+
+  </div>
+    <!-- end Navbar Bottom -->
+  <!-- ...existing code... -->
+  <script src="./MainLayout.js"></script>
+  <script>
+    // --- TEST ONLY: Set token and userId in localStorage ---
+    localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6ImFkbWluIiwid2FsbGV0QmFsYW5jZSI6MzIxNS42LCJpYXQiOjE3NDk1NTY2NzcsImV4cCI6MTc0OTY0MzA3N30.I32RfWybr7BY9nl2VaRm_9KVcjMmvmdCEYftYvICiIk');
+    localStorage.setItem('userId', '2');
+  </script>
+  <script>
+    document.getElementById('salary-slip').addEventListener('change', async function(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+    
+      const formData = new FormData();
+      formData.append('salarySlipImage', file);
+    
+      // Get userId from localStorage (adjust the key if needed)
+      const userId = localStorage.getItem('userId');
+      if (!userId) {
+        document.getElementById('upload-message').textContent = 'يجب تسجيل الدخول أولاً.';
+        return;
+      }
+      formData.append('userId', userId);
+    
+      const uploadMessage = document.getElementById('upload-message');
+      uploadMessage.textContent = 'جاري رفع الملف...';
+    
+      const token = localStorage.getItem('token');
+    
+      try {
+        const res = await fetch('http://localhost:3000/api/userData/upload-documents', {
+          method: 'POST',
+          body: formData,
+          headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+        });
+        const data = await res.json();
+        if (res.ok && data.message) {
+          uploadMessage.textContent = data.message;
+        } else {
+          uploadMessage.textContent = data.message || data.error || 'حدث خطأ أثناء رفع الملف.';
+          console.error('Upload error:', data);
+        }
+      } catch (err) {
+        uploadMessage.textContent = 'تعذر الاتصال بالخادم.';
+        console.error('Network error:', err);
+      }
+    });
+  </script>
+
+</body>
+</html>

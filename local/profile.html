@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>الملف الشخصي / Profile</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="mainLayout.css">
+</head>
+<body class="bg-gray-100 font-sans">
+
+
+  <!-- Navbar Top -->
+  <div style="background-color:#90D1CA;"
+    class="navbar fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg"
+    dir="ltr">
+
+    <!-- Left icons -->
+    <div class="flex gap-4 items-center">
+      <!-- Notifications -->
+      <div class="relative">
+        <button id="notification-toggle" class="focus:outline-none" title="الإشعارات / Notifications">
+          <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+        </button>
+        <div id="notification-dropdown"
+          class="hidden absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-md z-50 p-3">
+          <div class="flex justify-between items-center border-b pb-2 mb-2">
+            <span class="font-bold text-sm text-gray-700">الإشعارات</span>
+            <span class="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+          </div>
+          <div class="text-center text-gray-500">
+            <i class="bi bi-bell-slash text-2xl mb-1"></i>
+            <p class="text-sm">لا توجد إشعارات جديدة</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trends -->
+      <button title="الرائج / Trends" class="focus:outline-none">
+        <i class="bi bi-fire text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      </button>
+    </div>
+
+    <!-- User Profile -->
+    <div class="relative">
+      <button id="profile-toggle" class="focus:outline-none" title="الملف الشخصي / Profile">
+        <i class="bi bi-person-circle text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      </button>
+      <div id="popup-menu"
+        class="hidden absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-50 p-2">
+        <a href="./profile.html" class="block text-sm text-black py-1 hover:text-green-600">Profile</a>
+        <button class="block text-sm w-full text-left py-1 hover:text-green-600">Settings</button>
+        <button id="logout-btn"
+          class="block text-sm w-full text-left text-red-600 py-1 hover:text-red-800">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile Card -->
+  <main class="min-h-screen flex items-center justify-center p-4 pb-20">
+    
+    <div id="profile-card" class="bg-white shadow-lg rounded-2xl p-6 w-full max-w-md">
+      <!-- Profile Image -->
+      <div class="flex justify-center">
+        <img
+          id="profile-image"
+          class="w-28 h-28 rounded-full border-4 border-indigo-500 cursor-pointer transition-transform hover:scale-105"
+          src=""
+          alt="Profile Image"
+        />
+      </div>
+      <!-- Full Name -->
+      <h2
+        id="full-name"
+        class="mt-4 text-center text-2xl font-extrabold text-gray-800"
+      ></h2>
+      <!-- Info Fields -->
+      <div class="mt-6 space-y-4">
+        <div class="flex justify-between">
+          <span class="text-gray-600">الرقم القومي:</span>
+          <span id="national-id" class="text-gray-800 font-medium"></span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-gray-600">رقم الهاتف:</span>
+          <span id="phone" class="text-gray-800 font-medium"></span>
+        </div>
+      </div>
+      <!-- Logout Button -->
+      <button
+        id="logout-btn"
+        class="mt-8 w-full bg-red-500 hover:bg-red-600 text-white py-2 rounded-xl transition"
+      >
+        تسجيل الخروج / Logout
+      </button>
+    </div>
+  </main>
+
+  <!-- Navbar Bottom -->
+  <!-- Navbar Bottom -->
+  <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg" style="background-color:#90D1CA;" dir="rtl">
+
+    <div onclick="location.href='home.html'" class="p-0">
+      <i class="bi bi-house-door-fill  text-xl "></i>
+      <div class="label ">الرئيسية</div>
+    </div>
+
+    <div onclick="location.href='circle-list.html'" class="p-0">
+      <i class="bi bi-people-fill text-xl"></i>
+      <div class="label">جمعياتي</div>
+    </div>
+
+    <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3" >
+      <!-- <span class="material-symbols-outlined text-3xl">
+        arrow_circle_left
+      </span> -->
+      <img src="./Assets/imgs/SubscribeIcon.svg" class="" alt="">
+      <div class="label" style="color:#16a34a; font-weight:700;">انضم الان</div>
+    </div>
+
+    <div onclick="location.href='./wallet.html'" class="p-0">
+      <i class="bi bi-credit-card-fill text-xl"></i>
+      <div class="label">محفظتي</div>
+    </div>
+
+    <div onclick="location.href='payments.html'" class="p-0 ">
+      <i class="bi bi-file-earmark-check-fill text-xl "></i>
+      <div class="label ">المدفوعات</div>
+    </div>
+
+  </div>
+
+  <!-- Image Overlay for Enlargement -->
+  <div id="img-overlay" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center hidden z-50">
+    <img id="img-large" class="max-w-full max-h-full rounded-xl" src="" alt="Enlarged Profile" />
+  </div>
+ <script src="./profile.js"></script>
+  <script src="./MainLayout.js"></script>
+
+</body>
+</html>

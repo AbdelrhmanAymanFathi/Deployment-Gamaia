@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title> Wallet Balance</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <!-- Tailwind CSS -->
+     <!-- Suppress tailwindcdn warning -->
+  <script>
+    (function() {
+      const originalWarn = console.warn.bind(console);
+      console.warn = function(...args) {
+        if (
+          args[0] &&
+          typeof args[0] === 'string' &&
+          args[0].includes('cdn.tailwindcss.com should not be used in production')
+        ) {
+          return;
+        }
+        originalWarn(...args);
+      };
+    })();
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="mainLayout.css">
+</head>
+
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+
+  <!-- Navbar Top -->
+  <div style="background-color:#90D1CA;"
+    class="navbar fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg"
+    dir="ltr">
+
+    <!-- Left icons -->
+    <div class="flex gap-4 items-center">
+      <!-- Notifications -->
+      <div class="relative">
+        <button id="notification-toggle" class="focus:outline-none" title="الإشعارات / Notifications">
+          <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+        </button>
+        <div id="notification-dropdown" class="hidden absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-md z-50 p-3">
+          <div class="flex justify-between items-center border-b pb-2 mb-2">
+            <span class="font-bold text-sm text-gray-700">الإشعارات</span>
+            <span class="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+          </div>
+          <div class="text-center text-gray-500">
+            <i class="bi bi-bell-slash text-2xl mb-1"></i>
+            <p class="text-sm">لا توجد إشعارات جديدة</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trends -->
+      <button title="الرائج / Trends" class="focus:outline-none">
+        <i class="bi bi-fire text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      </button>
+    </div>
+
+    <!-- User Profile -->
+    <div class="relative">
+      <button id="profile-toggle" class="focus:outline-none" title="الملف الشخصي / Profile">
+        <i class="bi bi-person-circle text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      </button>
+      <div id="popup-menu" class="hidden absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-50 p-2">
+        <a href="./profile.html" class="block text-sm text-black py-1 hover:text-green-600">Profile</a>
+        <button class="block text-sm w-full text-left py-1 hover:text-green-600">Settings</button>
+        <button id="logout-btn"
+          class="block text-sm w-full text-left text-red-600 py-1 hover:text-red-800">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Spacer so content isn't hidden under navbar -->
+  <div class="h-10"></div>
+  <!-- Main Content -->
+  <main class="flex-grow container mx-auto py-8 px-4 mb-4">
+
+    <div class="mb-4">
+      <img class="w-100 img-fluid" src="./Assets/imgs/master card.svg" alt="Master Card">
+    </div>
+    <!-- Top Up Modal -->
+    <div id="topup-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
+      <div class="bg-white p-6 rounded-lg w-80">
+        <h3 class="text-lg font-semibold mb-4">Recharge Wallet</h3>
+        <input id="topup-amount" type="number" placeholder="Enter Amount" min="1"
+          class="w-full border rounded px-3 py-2 mb-4" />
+        <div class="flex justify-end space-x-2 ltr:space-x-reverse">
+          <button id="topup-cancel" class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300">
+            cancel
+          </button>
+          <button id="topup-ok" class="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700">
+            Accept
+          </button>
+        </div>
+      </div>
+    </div>
+
+
+
+    <!-- credit card -->
+    <!-- <section class="max-w-md mx-auto bg-white rounded-2xl shadow-lg  mb-8 rtl">
+      <img src="./Assets/imgs/card.svg" alt="credit card" class="w-full h-auto">
+    </section> -->
+    <!-- Wallet Balance Card -->
+    <section class="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-6 mb-8 w-70">
+      <h2 class="text-2xl font-semibold mb-4 text-gray-800">Wallet Balance</h2>
+      <p id="wallet-balance" class="text-3xl font-bold text-green-500">Loading...</p>
+    </section>
+
+    <!-- Top Up Button -->
+    <div class="flex justify-center mb-4">
+      <button id="topup-btn" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
+        Recharge Wallet
+      </button>
+    </div>
+    <!-- 
+
+
+
+  <div class="bg-white rounded-lg shadow-md p-6 w-full max-w-sm text-right">
+    <div class="flex items-center justify-between mb-4">
+      <div>
+        <p class="text-sm text-gray-600">البنك المركزي السعودي</p>
+        <h2 class="text-lg font-bold text-gray-800">مرحباً، <span class="text-black font-bold">فاطمه أحمد</span></h2>
+      </div>
+      <img src="https://cdn-icons-png.flaticon.com/512/2590/2590645.png" alt="bank icon" class="w-8 h-8">
+    </div>
+
+    <div class="space-y-2 text-gray-700 text-sm">
+      <p><span class="font-medium">الحساب الجاري:</span> 2004-2811</p>
+      <p><span class="font-medium">رصيدك المتاح:</span> 5,250 رس</p>
+    </div>
+  </div>
+
+-->
+
+    <div class="max-w-xs mx-auto py-6 px-2 space-y-4">
+      <!-- Step 1 -->
+      <div class="bg-[#d0efcc] rounded-2xl p-4 flex flex-col items-left text-left step-box shadow-md">
+        <img src="./Assets/imgs/card.png" alt="بطاقة بنكية" class="mt-4 mb-2 rounded" />
+        <p class="text-sm ">My Gamaia Card</p>
+        <p class="text-sm font-bold">Only for 149 SAR</p>
+        <p class="text-sm mb-4">Receive your Jamiati card for only 149 Saudi riyals and benefit from exclusive benefits
+          that have no end.</p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="bg-[#e8f5e9] rounded-2xl p-4 flex flex-col items-left text-left step-box shadow-md">
+        <img src="./Assets/imgs/id-card.png" alt="بطاقة هوية" class="mb-1 rounded" />
+        <p class="text-sm ">No papers, </p>
+
+        <p class="text-sm font-bold">just register with your card</p>
+        <p class="text-sm mb-4">You only need your card to be valid and upload it to the application.</p>
+
+      </div>
+
+      <!-- Step 3 -->
+      <div class="bg-[#f5f5dc] rounded-2xl p-4 flex flex-col items-left text-left step-box shadow-md">
+        <img src="./Assets/imgs/wallet.png" alt="إثبات العنوان" class="mb-2 rounded" />
+        <p class="text-sm ">It will make your life easier</p>
+        <p class="text-sm font-bold">Get paid faster</p>
+        <p class="text-sm mb-4">By using your Jamiaty card to collect, you will ensure that you collect faster than any
+          other method.</p>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="bg-[#fce4ec] rounded-2xl p-4 flex flex-col items-left text-left step-box shadow-md">
+        <img src="./Assets/imgs/Group 14072.png" alt="الشروط" class="mb-2 rounded" />
+        <p class="text-sm ">Depends on it</p>
+        <p class="text-sm font-bold">Use the card everywhere</p>
+        <p class="text-sm mb-4">You can use the card for online payments, in stores, and at ATMs.</p>
+      </div>
+
+      <!-- Step 5 -->
+      <div class="bg-[#f3e5f5] rounded-2xl p-4 flex flex-col items-left text-left step-box shadow-md">
+        <img src="./Assets/imgs/maps.png" alt="الموقع" class="mb-2 rounded" />
+        <p class="text-sm ">No Effort</p>
+        <p class="text-sm font-bold">Receive the card from the nearest collection point</p>
+        <p class="text-sm mb-4">Visit your nearest contact point to receive and activate the card. Don't forget to have
+          your card with you.</p>
+      </div>
+
+      <!-- Button -->
+      <div class="text-center mb-5">
+        <button
+          class="bg-[#6048E4] hover:bg-[#5851db] text-white font-bold py-2 px-6 rounded-full transition duration-300">
+          Start subscribing now
+        </button>
+      </div>
+    </div>
+
+
+  </main>
+
+  <!-- Navbar Bottom -->
+  <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg"
+    style="background-color:#90D1CA;" dir="rtl">
+
+    <div onclick="location.href='home.html'" class="p-0">
+      <i class="bi bi-house-door-fill  text-xl "></i>
+      <div class="label ">الرئيسية</div>
+    </div>
+
+    <div onclick="location.href='circle-list.html'" class="p-0">
+      <i class="bi bi-people-fill text-xl"></i>
+      <div class="label">جمعياتي</div>
+    </div>
+
+    <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3">
+      <!-- <span class="material-symbols-outlined text-3xl">
+        arrow_circle_left
+      </span> -->
+      <img src="./Assets/imgs/SubscribeIcon.svg" class="" alt="">
+      <div class="label" style="color:#16a34a; font-weight:700;">انضم الان</div>
+    </div>
+
+    <div onclick="location.href='./wallet.html'" class="p-0 text-[#008D10]">
+      <i class="bi bi-credit-card-fill text-xl text-[#008D10]"></i>
+      <div class="label text-[#008D10]">محفظتي</div>
+    </div>
+
+    <div onclick="location.href='payments.html'" class="p-0">
+      <i class="bi bi-file-earmark-check-fill text-xl"></i>
+      <div class="label">المدفوعات</div>
+    </div>
+
+  </div>
+
+  <!-- Scripts -->
+  <!-- External Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <script src="./wallet.js"></script>
+
+  <!-- Dropdown & Logout Script -->
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      // عرّف المتغيّرات أولاً
+      const notifToggle = document.getElementById("notification-toggle");
+      const notifDropdown = document.getElementById("notification-dropdown");
+      const profToggle = document.getElementById("profile-toggle");
+      const profMenu = document.getElementById("popup-menu");
+      const logoutBtn = document.getElementById("logout-btn");
+
+      // دالة لإغلاق القوائم
+      function closeAll() {
+        notifDropdown.classList.add("hidden");
+        profMenu.classList.add("hidden");
+      }
+
+      // تفعيل الـ notification dropdown
+      notifToggle.addEventListener("click", e => {
+        e.stopPropagation();
+        profMenu.classList.add("hidden");
+        notifDropdown.classList.toggle("hidden");
+      });
+
+      // تفعيل الـ profile dropdown
+      profToggle.addEventListener("click", e => {
+        e.stopPropagation();
+        notifDropdown.classList.add("hidden");
+        profMenu.classList.toggle("hidden");
+      });
+
+      // إغلاق إذا ضُغط في أي مكان خارج القوائم
+      document.addEventListener("click", closeAll);
+
+      // غلق تلقائي عند الضغط جوا القوائم
+      notifDropdown.addEventListener("click", e => e.stopPropagation());
+      profMenu.addEventListener("click", e => e.stopPropagation());
+
+      // Logout
+      logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        window.location.href = "login.html";
+      });
+    });
+  </script>
+</body>
+
+</html>

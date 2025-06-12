@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <title>اختيار دورك</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Tajawal', sans-serif; background: #f8fafc; }
+    .turn-card.selected { border-color: #16a34a !important; background: #e6f9f0; }
+    .turn-card.taken { opacity: 0.5; pointer-events: none; }
+    .turn-card .lock { color: #e11d48; }
+    .tab-btn.active { background: #16a34a; color: #fff; }
+    .tab-btn { transition: background 0.2s, color 0.2s; }
+  </style>
+</head>
+<body class="p-2">
+  <div class="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-4 mt-4">
+    <div class="flex items-center justify-between mb-2">
+      <span class="text-gray-400 text-xs">الدور</span>
+      <div class="flex gap-1">
+        <span class="w-3 h-3 rounded-full bg-teal-400"></span>
+        <span class="w-3 h-3 rounded-full bg-teal-400"></span>
+        <span class="w-3 h-3 rounded-full bg-teal-400"></span>
+      </div>
+    </div>
+    <h2 class="text-center font-bold text-lg mb-2">إختيار دورك</h2>
+    <p class="text-center text-gray-500 text-sm mb-4">
+      إستلام القبض من يوم 15 إلى يوم 30 من شهر القبض
+    </p>
+    <!-- Tabs -->
+    <div class="flex justify-center gap-2 mb-4">
+      <button class="tab-btn px-3 py-1 rounded-lg border border-teal-400 text-teal-700 active" data-tab="early">الأدوار الأولي</button>
+      <button class="tab-btn px-3 py-1 rounded-lg border border-teal-400 text-teal-700" data-tab="middle">الأدوار الوسطى</button>
+      <button class="tab-btn px-3 py-1 rounded-lg border border-teal-400 text-teal-700" data-tab="late">الأدوار الأخيرة</button>
+    </div>
+    <!-- Cards -->
+    <div id="turnsGrid" class="grid grid-cols-2 gap-3 mb-4"></div>
+    <!-- ملخص -->
+    <div class="bg-gray-50 rounded-xl p-3 mb-2 flex flex-col gap-2">
+      <div class="flex justify-between text-sm">
+        <span>المدة</span>
+        <span id="duration">-</span>
+      </div>
+      <div class="flex justify-between text-sm">
+        <span>القسط الشهري</span>
+        <span id="monthlyFee">-</span>
+      </div>
+      <div class="flex justify-between text-sm">
+        <span>إجمالي القبض</span>
+        <span id="totalFee">-</span>
+      </div>
+    </div>
+    <button id="nextBtn" class="w-full py-3 rounded-full bg-teal-500 text-white font-bold text-lg mt-2 transition hover:bg-teal-600 disabled:opacity-50" disabled>التالي</button>
+  </div>
+    <script src="./MainLayout.js"></script>
+  <script>
+    // Helpers
+    function formatDate(dateString) {
+      const date = new Date(dateString);
+      const months = [
+        'يناير', 'فبراير', 'مارس', 'إبريل', 'مايو', 'يونيو',
+        'يوليو', 'أغسطس', 'سبتمبر', 'أكتوبر', 'نوفمبر', 'ديسمبر'
+      ];
+      return `${months[date.getMonth()]} ${date.getFullYear()}`;
+    }
+    function formatAmount(amount) {
+      return `${amount.toLocaleString(undefined, {maximumFractionDigits: 0})} رس`;
+    }
+
+    // State
+    let turns = [];
+    let tabs = { early: [], middle: [], late: [] };
+    let selectedTab = 'early';
+    let selectedTurnId = null;
+    let association = null;
+
+    // DOM
+    const turnsGrid = document.getElementById('turnsGrid');
+    const durationEl = document.getElementById('duration');
+    const monthlyFeeEl = document.getElementById('monthlyFee');
+    const totalFeeEl = document.getElementById('totalFee');
+    const nextBtn = document.getElementById('nextBtn');
+
+    // جلب البيانات من الـ API
+    async function fetchTurns() {
+      const associationId = localStorage.getItem('selectedAssociationId');
+      const token = localStorage.getItem('token');
+      if (!associationId) {
+        alert('لم يتم اختيار جمعية!');
+        window.location.href = 'home.html';
+        return;
+      }
+      if (!token) {
+        alert('يجب تسجيل الدخول أولاً');
+        window.location.href = 'login.html';
+        return;
+      }
+      try {
+        const res = await fetch(`http://localhost:3000/api/turns/public/${associationId}`, {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        if (!res.ok) {
+          throw new Error('Network response was not ok: ' + res.status);
+        }
+        const data = await res.json();
+        if (!Array.isArray(data)) {
+          throw new Error('البيانات المستلمة ليست مصفوفة');
+        }
+        turns = data;
+        if (turns.length === 0) throw new Error('لا يوجد أدوار متاحة');
+        association = turns[0].association;
+        splitTabs();
+        renderTabs();
+        renderTurns();
+        renderSummary();
+      } catch (e) {
+        console.error('تفاصيل الخطأ:', e);
+        alert('خطأ في تحميل الأدوار');
+      }
+    }
+
+    // تقسيم الأدوار Tabs تلقائياً
+    function splitTabs() {
+      const n = turns.length;
+      const perTab = Math.ceil(n / 3);
+      tabs.early = turns.slice(0, perTab);
+      tabs.middle = turns.slice(perTab, perTab * 2);
+      tabs.late = turns.slice(perTab * 2);
+    }
+
+    function renderTabs() {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.classList.remove('active');
+        if (btn.dataset.tab === selectedTab) btn.classList.add('active');
+      });
+    }
+
+    function renderTurns() {
+  turnsGrid.innerHTML = '';
+  tabs[selectedTab].forEach(turn => {
+    const card = document.createElement('div');
+    card.className = `turn-card border-2 rounded-xl p-3 flex flex-col gap-1 cursor-pointer relative transition ${turn.taken ? 'taken border-gray-300 bg-gray-100' : 'border-teal-400 bg-white'}`;
+    card.dataset.id = turn.id;
+    if (turn.taken) card.classList.add('pointer-events-none');
+    if (selectedTurnId === turn.id) card.classList.add('selected');
+    card.innerHTML = `
+      <div class="flex items-center gap-2 mb-1">
+        <input type="radio" name="turn" value="${turn.id}" ${turn.taken ? 'disabled' : ''} ${selectedTurnId === turn.id ? 'checked' : ''} class="accent-teal-500">
+        <span class="font-bold">${turn.turnName}</span>
+      </div>
+      <div class="text-xs text-gray-500 mb-1">${formatDate(turn.scheduledDate)}</div>
+      <div class="text-sm font-bold text-teal-700">
+        ${
+          turn.feeAmount > 0
+            ? formatAmount(turn.feeAmount) + ' رسوم'
+            : (turn.feeAmount < 0
+              ? formatAmount(turn.feeAmount) + ' خصم'
+              : 'بدون رسوم')
+        }
+      </div>
+      ${turn.taken ? `<div class="absolute top-2 left-2 flex items-center gap-1 text-xs lock"><svg xmlns="http://www.w3.org/2000/svg" class="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm6-10V7a4 4 0 10-8 0v2" /></svg> غير متاح</div>` 
+        : `<button class="lock-btn mt-3 px-3 py-1 rounded bg-green-600 text-white font-bold w-full">احجز الدور</button>`
+      }
+    `;
+    if (!turn.taken) {
+      card.addEventListener('click', () => {
+        selectedTurnId = turn.id;
+        nextBtn.disabled = false;
+        renderTurns();
+      });
+
+      // Add lock button event
+      setTimeout(() => {
+        const lockBtn = card.querySelector('.lock-btn');
+        if (lockBtn) {
+          lockBtn.addEventListener('click', async (e) => {
+            e.stopPropagation();
+            const confirmed = confirm('هل أنت متأكد أنك تريد اختيار هذا الدور؟');
+            if (!confirmed) return;
+            // هنا ضع منطق الحجز الفعلي (API)
+            // مثال:
+            // await window.api.turns.select(association.id, turn.id);
+            window.location.href = 'upload.html';
+          });
+        }
+      }, 0);
+    }
+    turnsGrid.appendChild(card);
+  });
+}
+    function renderSummary() {
+      if (!association) return;
+      durationEl.textContent = turns.length + ' شهور';
+      monthlyFeeEl.textContent = formatAmount(association.monthlyAmount);
+      totalFeeEl.textContent = formatAmount(association.monthlyAmount * turns.length);
+    }
+
+    // التبديل بين التابات
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectedTab = btn.dataset.tab;
+        renderTabs();
+        renderTurns();
+      });
+    });
+
+    // زر التالي
+    nextBtn.addEventListener('click', function() {
+      if (!selectedTurnId) return;
+      alert('تم اختيار الدور رقم: ' + selectedTurnId + '\nتم الانضمام للجمعية بنجاح!');
+      window.location.href = "home.html";
+    });
+
+    // أول تحميل
+    fetchTurns();
+  </script>
+
+</body>
+</html>

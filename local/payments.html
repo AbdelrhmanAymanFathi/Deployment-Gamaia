@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payments</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" href="./mainLayout.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+
+    .step-box {
+      clip-path: polygon(0 8%, 100% 0, 100% 92%, 0 100%);
+      z-index: -3;
+      position: relative;
+      overflow: hidden;
+      transition: clip-path 0.3s ease-in-out;
+
+    }
+
+    @media (max-width: 640px) {
+      .step-box {
+        clip-path: polygon(0 10%, 100% 0, 100% 90%, 0 100%);
+      }
+    }
+
+    .payment-card {
+      background: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .payment-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .payment-date {
+      color: #6c757d;
+    }
+
+    .payment-status {
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.9em;
+    }
+
+    .payment-status.paid {
+      background-color: #d4edda;
+      color: #155724;
+    }
+
+    .payment-status.pending {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+
+    .payment-status.overdue {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+
+    .payment-amount {
+      font-size: 1.2em;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+
+    .pay-btn {
+      width: 100%;
+      padding: 8px;
+      background-color: #28a745;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .pay-btn:hover {
+      background-color: #218838;
+    }
+
+    .loading-spinner {
+      display: none;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .error-message {
+      color: #dc3545;
+      text-align: center;
+      margin: 10px 0;
+      display: none;
+    }
+
+    .error-message.visible {
+      display: block;
+    }
+  </style>
+</head>
+
+<body class="bg-[#f5f5f5]">
+
+  <!-- Navbar Top -->
+  <div style="background-color:#90D1CA;"
+    class="navbar fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg"
+    dir="ltr">
+
+    <!-- Left icons -->
+    <div class="flex gap-4 items-center">
+      <!-- Notifications -->
+      <div class="relative">
+        <button id="notification-toggle" class="focus:outline-none" title="الإشعارات / Notifications">
+          <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+        </button>
+        <div id="notification-dropdown"
+          class="hidden absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-md z-50 p-3">
+          <div class="flex justify-between items-center border-b pb-2 mb-2">
+            <span class="font-bold text-sm text-gray-700">الإشعارات</span>
+            <span class="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full">0</span>
+          </div>
+          <div class="text-center text-gray-500">
+            <i class="bi bi-bell-slash text-2xl mb-1"></i>
+            <p class="text-sm">لا توجد إشعارات جديدة</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trends -->
+      <button title="الرائج / Trends" class="focus:outline-none">
+        <i class="bi bi-fire text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      </button>
+    </div>
+
+    <!-- User Profile -->
+    <div class="relative">
+      <button id="profile-toggle" class="focus:outline-none" title="الملف الشخصي / Profile">
+        <i class="bi bi-person-circle text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+      </button>
+      <div id="popup-menu"
+        class="hidden absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-50 p-2">
+        <a href="./profile.html" class="block text-sm text-black py-1 hover:text-green-600">Profile</a>
+        <button class="block text-sm w-full text-left py-1 hover:text-green-600">Settings</button>
+        <button id="logout-btn"
+          class="block text-sm w-full text-left text-red-600 py-1 hover:text-red-800">Logout</button>
+      </div>
+    </div>
+  </div>
+
+    <!-- Spacer so content isn't hidden under navbar -->
+  <div class="h-10"></div>
+
+  <div class="container py-4">
+    <h2 class="text-center mb-4">Payments</h2>
+
+    <!-- Error Message -->
+    <div id="errorMessage" class="error-message"></div>
+
+    <!-- Loading Spinner -->
+    <div class="loading-spinner">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+
+    <!-- Payments List -->
+    <div id="paymentsList">
+      <!-- Payment cards will be dynamically inserted here -->
+    </div>
+  </div>
+
+  <!-- Navbar Bottom -->
+  <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg" style="background-color:#90D1CA;" dir="rtl">
+
+    <div onclick="location.href='home.html'" class="p-0">
+      <i class="bi bi-house-door-fill text-xl "></i>
+      <div class="label ">الرئيسية</div>
+    </div>
+
+    <div onclick="location.href='circle-list.html'" class="p-0">
+      <i class="bi bi-people-fill text-xl"></i>
+      <div class="label">جمعياتي</div>
+    </div>
+
+    <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3" >
+      <!-- <span class="material-symbols-outlined text-3xl">
+        arrow_circle_left
+      </span> -->
+      <img src="./Assets/imgs/SubscribeIcon.svg" class="" alt="">
+      <div class="label" style="color:#16a34a; font-weight:700;">انضم الان</div>
+    </div>
+
+    <div onclick="location.href='./wallet.html'" class="p-0">
+      <i class="bi bi-credit-card-fill text-xl"></i>
+      <div class="label">محفظتي</div>
+    </div>
+
+    <div onclick="location.href='payments.html'" class="p-0 text-[#008D10]">
+      <i class="bi bi-file-earmark-check-fill text-xl"></i>
+      <div class="label">المدفوعات</div>
+    </div>
+
+  </div>
+
+  <script src="api.js"></script>
+  <script src="payments.js"></script>
+
+  
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const notifToggle = document.getElementById("notification-toggle");
+    const notifDropdown = document.getElementById("notification-dropdown");
+    const profToggle = document.getElementById("profile-toggle");
+    const profMenu = document.getElementById("popup-menu");
+    const logoutBtn = document.getElementById("logout-btn");
+
+    // Helper: close both
+    function closeAll() {
+      notifDropdown.classList.add("hidden");
+      profMenu.classList.add("hidden");
+    }
+
+    // Toggle notifications
+    notifToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      profMenu.classList.add("hidden");
+      notifDropdown.classList.toggle("hidden");
+    });
+
+    // Toggle profile menu
+    profToggle.addEventListener("click", (e) => {
+      e.stopPropagation();
+      notifDropdown.classList.add("hidden");
+      profMenu.classList.toggle("hidden");
+    });
+
+    // Click outside closes all
+    document.addEventListener("click", closeAll);
+
+    // Prevent clicks inside dropdown from closing
+    notifDropdown.addEventListener("click", (e) => e.stopPropagation());
+    profMenu.addEventListener("click", (e) => e.stopPropagation());
+
+    // Logout
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", () => {
+        localStorage.removeItem("token");
+        window.location.href = "login.html";
+      });
+    }
+  });
+</script>
+
+</body>
+
+</html>
