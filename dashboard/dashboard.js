@@ -1,20 +1,31 @@
+// تحقق من وجود التوكن في الأعلى
 const token = localStorage.getItem('token');
+if (!token) {
+  window.location.href = 'index.html'; // أو login.html حسب نظامك
+}
 axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
 const assocApi = 'http://localhost:3000/api/associations';
 const userApi = 'http://localhost:3000/api/admin/create-user';
 
 // Render helper
 function renderAssociationCard(assoc) {
   return `
-    <div class="bg-white p-4 rounded-lg shadow space-y-2">
+    <div class="bg-white p-4 rounded-lg shadow space-y-2 flex flex-col">
       <h3 class="font-bold text-lg">${assoc.name}</h3>
+      <!-- بيانات الجمعية -->
       <p>المبلغ الشهري: ${assoc.monthlyAmount}</p>
       <p>المدة: ${assoc.duration} ${assoc.type}</p>
       <p>الحالة: ${assoc.status}</p>
-      <p>الحد الأعلى للأعضاء: ${assoc.maxMembers}</p>
-      <div class="flex justify-end space-x-2 rtl:space-x-reverse">
-        <button onclick="openEditAssociationModal(${assoc.id}, ${assoc.monthlyAmount}, ${assoc.duration}, '${assoc.status}')" class="text-blue-600">تعديل</button>
-        <button onclick="openDeleteAssociationModal(${assoc.id})" class="text-red-600">حذف</button>
+      <p>الحد الأقصى للأعضاء: ${assoc.maxMembers}</p>
+      <!-- أزرار -->
+      <div class="mt-auto flex justify-between space-x-2 rtl:space-x-reverse">
+        <button onclick="openEditAssociationModal(${assoc.id}, ${assoc.monthlyAmount}, ${assoc.duration}, '${assoc.status}')"
+                class="text-blue-600 hover:underline">تعديل</button>
+        <button onclick="openDeleteAssociationModal(${assoc.id})"
+                class="text-red-600 hover:underline">حذف</button>
+        <button onclick="loadMembers(${assoc.id})"
+                class="text-green-600 hover:underline">عرض الأعضاء</button>  <!-- زر جديد -->
       </div>
     </div>
   `;
@@ -142,98 +153,52 @@ function renderUserRow(user, index) {
   `;
 }
 
+let usersAutoRefreshInterval = null;
+
 // دالة لجلب وعرض المستخدمين
 async function loadUsers() {
-  // نعرض التمبليت بدل المحتوى الحالي
   document.getElementById('contentContainer').innerHTML =
     document.getElementById('usersTemplate').innerHTML;
 
+  // clear any previous interval
+  if (usersAutoRefreshInterval) clearInterval(usersAutoRefreshInterval);
+
+  // أول تحميل مباشر
+  await fetchAndRenderUsers();
+
+  // auto refresh كل 10 ثواني
+  usersAutoRefreshInterval = setInterval(fetchAndRenderUsers, 10000);
+}
+
+async function fetchAndRenderUsers() {
   try {
     const res = await axios.get(usersApi);
-    const users = res.data;
+    let users = res.data;
+
+    // إذا كان الـ API يرجع {data: [...]}
+    if (users && users.data && Array.isArray(users.data)) {
+      users = users.data;
+    }
+
     const container = document.getElementById('usersContainer');
+    if (!users || users.length === 0) {
+      container.innerHTML =
+        `<tr><td colspan="9" class="text-center p-4 text-red-500">لا يوجد مستخدمين</td></tr>`;
+      return;
+    }
     container.innerHTML = users
       .map((u, i) => renderUserRow(u, i))
       .join('');
   } catch (err) {
     console.error('خطأ في جلب المستخدمين:', err);
-    document.getElementById('usersContainer').innerHTML =
-      `<tr><td colspan="9" class="text-center p-4 text-red-500">فشل تحميل المستخدمين</td></tr>`;
-  }
-}
-
-function renderAssociationCard(assoc) {
-  return `
-    <div class="bg-white p-4 rounded-lg shadow space-y-2 flex flex-col">
-      <h3 class="font-bold text-lg">${assoc.name}</h3>
-      <!-- بيانات الجمعية -->
-      <p>المبلغ الشهري: ${assoc.monthlyAmount}</p>
-      <p>المدة: ${assoc.duration} ${assoc.type}</p>
-      <p>الحالة: ${assoc.status}</p>
-      <p>الحد الأقصى للأعضاء: ${assoc.maxMembers}</p>
-      <!-- أزرار -->
-      <div class="mt-auto flex justify-between space-x-2 rtl:space-x-reverse">
-        <button onclick="openEditAssociationModal(${assoc.id}, ${assoc.monthlyAmount}, ${assoc.duration}, '${assoc.status}')"
-                class="text-blue-600 hover:underline">تعديل</button>
-        <button onclick="openDeleteAssociationModal(${assoc.id})"
-                class="text-red-600 hover:underline">حذف</button>
-        <button onclick="loadMembers(${assoc.id})"
-                class="text-green-600 hover:underline">عرض الأعضاء</button>  <!-- زر جديد -->
-      </div>
-    </div>
-  `;
-}
-
-// دالة لترندر صف عضو
-function renderMemberRow(member, idx) {
-  return `
-    <tr class="border-t">
-      <td class="px-4 py-2">${idx + 1}</td>
-      <td class="px-4 py-2">${member.name}</td>
-      <td class="px-4 py-2">${member.phone}</td>
-      <td class="px-4 py-2">${member.hasReceived ? 'نعم' : 'لا'}</td>
-      <td class="px-4 py-2">${member.lastReceivedDate
-        ? new Date(member.lastReceivedDate).toLocaleDateString('ar-EG')
-        : '-'}</td>
-    </tr>
-  `;
-}
-
-// دالة لجلب وعرض الأعضاء
-async function loadMembers(assocId) {
-  // استيراد التمبليت
-  const tpl = document.getElementById('membersTemplate').content.cloneNode(true);
-  // ربط الكونتينر
-  const container = tpl.getElementById('membersContainer');
-  // تفريغ المحتوى القديم
-  const content = document.getElementById('contentContainer');
-  content.innerHTML = '';
-  content.appendChild(tpl);
-
-  try {
-    const res = await axios.get(`${assocApi}/${assocId}/members`);
-    const members = res.data.data;
-    if (!Array.isArray(members) || members.length === 0) {
-      container.innerHTML = `
-        <tr>
-          <td colspan="5" class="px-4 py-2 text-center text-red-500">
-            لا يوجد أعضاء حالياً
-          </td>
-        </tr>`;
-      return;
+    const container = document.getElementById('usersContainer');
+    if (container)
+      container.innerHTML =
+        `<tr><td colspan="9" class="text-center p-4 text-red-500">فشل تحميل المستخدمين</td></tr>`;
+    if (err.response && err.response.status === 401) {
+      localStorage.removeItem('token');
+      window.location.href = 'index.html';
     }
-    // بنحط كل صف
-    container.innerHTML = members
-      .map((m, i) => renderMemberRow(m, i))
-      .join('');
-  } catch (err) {
-    console.error('خطأ في جلب الأعضاء:', err);
-    container.innerHTML = `
-      <tr>
-        <td colspan="5" class="px-4 py-2 text-center text-red-500">
-          فشل في تحميل الأعضاء
-        </td>
-      </tr>`;
   }
 }
 
@@ -241,17 +206,88 @@ async function loadMembers(assocId) {
 
 let currentApproveUserId = null;
 
-async function openApproveProfileModal(userId) {
-  // جلب بيانات المستخدم (بما فيها صورة المستند)
-  try {
-    const res = await axios.get(`http://localhost:3000/api/userData/user/${userId}`);
-    const user = res.data;
-    currentApproveUserId = userId;
+// رفع مستند مفردات المرتب (يمكنك وضع هذا في صفحة رفع المستند أو استدعاؤه من هنا عند الحاجة)
+async function uploadSalarySlip(fileInput) {
+  let userId = localStorage.getItem('userId');
+  if (!userId) {
+    try {
+      const user = JSON.parse(localStorage.getItem('user'));
+      if (user && user.id) userId = user.id;
+    } catch {}
+  }
+  const token = localStorage.getItem('token');
+  if (!userId || !token) {
+    alert('يجب تسجيل الدخول أولاً.');
+    window.location.href = 'login.html';
+    return;
+  }
+  const file = fileInput.files[0];
+  if (!file) {
+    alert('يرجى اختيار صورة أولاً.');
+    return;
+  }
+  const formData = new FormData();
+  formData.append('salarySlipImage', file);
+  formData.append('userId', userId);
 
-    // عرض الصورة إذا موجودة
-    const imgHtml = user.salarySlipImage
-      ? `<img src="http://localhost:3000/api/userData/${user.salarySlipImage.replace(/\\/g, '/').replace(/^uploads\//, 'uploads/')}" alt="Salary Slip" class="mx-auto max-h-64 rounded mb-2" />`
-      : '<div class="text-gray-500">لا يوجد مستند</div>';
+  try {
+    const res = await fetch('http://localhost:3000/api/userData/upload-documents', {
+      method: 'POST',
+      body: formData,
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    });
+    const data = await res.json();
+    if (res.ok && data.user && data.user.salarySlipImage) {
+      alert(data.message || 'تم رفع المستند بنجاح وجاري المراجعة.');
+    } else {
+      throw new Error(data.error || 'فشل في رفع المستند');
+    }
+  } catch (err) {
+    alert(err.message || 'حدث خطأ أثناء رفع الملف.');
+  }
+}
+
+// مراجعة مستند الراتب (عرض صورة المستند من endpoint الصحيح)
+async function openApproveProfileModal(userId) {
+  try {
+    let imgHtml;
+    try {
+      const slipRes = await axios.get(
+        `http://localhost:3000/api/userData/salary-slip/${userId}`,
+        {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        }
+      );
+      if (slipRes.data && slipRes.data.salarySlipImage) {
+        const filePath = slipRes.data.salarySlipImage;
+        const fileName = filePath.split(/[\\/]/).pop();
+        // استخدم endpoint الصحيح هنا
+        const imgUrl = `http://localhost:3000/api/userData/uploads/${fileName}`;
+        imgHtml = `
+          <div class="text-center">
+            <a href="${imgUrl}" target="_blank" class="text-blue-600 underline" rel="noopener">
+              اضغط هنا لعرض المستند في نافذة جديدة
+            </a>
+            <div class="mt-2 text-gray-500 text-xs">إذا لم تظهر الصورة مباشرة، اضغط على الرابط أعلاه لفتحها في نافذة جديدة.</div>
+            <img src="${imgUrl}" alt="مستند المرتب" style="max-width:100%;margin-top:10px;border-radius:8px;box-shadow:0 2px 8px #0002;">
+          </div>
+        `;
+      } else {
+        imgHtml = '<div class="text-gray-500">لا يوجد مستند</div>';
+      }
+    } catch (imgErr) {
+      if (imgErr.response && imgErr.response.status === 401) {
+        alert('انتهت صلاحية الجلسة. يرجى تسجيل الدخول مجددًا.');
+        localStorage.removeItem('token');
+        window.location.href = 'index.html';
+        return;
+      }
+      imgHtml = '<div class="text-red-500">تعذر تحميل صورة المستند</div>';
+    }
 
     document.getElementById('profileImageContainer').innerHTML = imgHtml;
     document.getElementById('profileApproveError').innerText = '';
@@ -259,9 +295,10 @@ async function openApproveProfileModal(userId) {
     document.getElementById('approveProfileModal').classList.add('flex');
     document.getElementById('rejectReasonContainer').classList.add('hidden');
     document.getElementById('rejectReasonInput').value = '';
+    currentApproveUserId = userId;
   } catch (err) {
     document.getElementById('profileImageContainer').innerHTML = '';
-    document.getElementById('profileApproveError').innerText = 'خطأ في تحميل بيانات المستخدم';
+    document.getElementById('profileApproveError').innerText = 'خطأ في تحميل صورة المستند';
     document.getElementById('approveProfileModal').classList.remove('hidden');
     document.getElementById('approveProfileModal').classList.add('flex');
   }
@@ -284,16 +321,46 @@ function approveProfile(approved) {
       sendApproveProfileRequest(false, reason);
     }
   } else {
-    sendApproveProfileRequest(true);
+    sendApproveProfileRequest(true, ""); // Always send reason (empty if approved)
   }
 }
 
 async function sendApproveProfileRequest(approved, reason = '') {
   try {
-    await axios.post(`http://localhost:3000/api/userData/admin/approve-profile/${currentApproveUserId}`, { approved, reason });
+    const token = localStorage.getItem('token');
+    if (!token) {
+      alert('انتهت صلاحية الجلسة. يرجى تسجيل الدخول مجددًا.');
+      window.location.href = 'index.html';
+      return;
+    }
+    const res = await axios.post(
+      `http://localhost:3000/api/userData/admin/approve-profile/${currentApproveUserId}`,
+      { approved, reason },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        }
+      }
+    );
+    if (res.data && res.data.message) {
+      alert(res.data.message);
+    }
     closeApproveProfileModal();
-    loadUsers();
+    fetchAndRenderUsers();
   } catch (err) {
-    document.getElementById('profileApproveError').innerText = 'خطأ أثناء تحديث حالة الموافقة';
+    if (err.response && err.response.status === 401) {
+      alert('انتهت صلاحية الجلسة. يرجى تسجيل الدخول مجددًا.');
+      localStorage.removeItem('token');
+      window.location.href = 'index.html';
+      return;
+    }
+    const msg = err.response?.data?.message || 'خطأ أثناء تحديث حالة الموافقة';
+    document.getElementById('profileApproveError').innerText = msg;
+    alert(msg);
   }
 }
+
+// تأكد من استدعاء loadUsers عند الضغط على "عرض المستخدمين" في القائمة الجانبية
+// مثال: document.getElementById('showUsersBtn').onclick = loadUsers;
+// أو حسب الكود الموجود عندك في القائمة الجانبية

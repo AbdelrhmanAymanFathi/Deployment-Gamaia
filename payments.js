@@ -1,4 +1,4 @@
-  /* JavaScript */
+/* JavaScript */
   // تأكد من وجود التوكن وإعادة التوجيه للـ login إذا لم يكن موجودًا
 const token = localStorage.getItem("token");
 if (!token) {
@@ -57,8 +57,10 @@ function createPaymentCard(payment) {
 
 function showError(message) {
     errorMessage.textContent = message;
-    errorMessage.style.display = 'block';
-    loadingSpinner.style.display = 'none';
+    errorMessage.classList.remove('hidden');
+    errorMessage.classList.add('block');
+    loadingSpinner.classList.add('hidden');
+    loadingSpinner.classList.remove('block');
 }
 
 async function makePayment(paymentId) {
@@ -83,12 +85,16 @@ async function makePayment(paymentId) {
 
 async function loadPayments() {
     try {
-        loadingSpinner.style.display = 'block';
-        errorMessage.style.display = 'none';
+        loadingSpinner.classList.remove('hidden');
+        loadingSpinner.classList.add('block');
+        errorMessage.classList.add('hidden');
+        errorMessage.classList.remove('block');
 
         const selection = JSON.parse(localStorage.getItem('associationSelection'));
         if (!selection) {
-            throw new Error('No association selected. Please select an association first.');
+            showError('يجب اختيار جمعية أولاً.'); // رسالة أوضح للمستخدم
+            paymentsList.innerHTML = '';
+            return;
         }
 
         const payments = await window.api.payments.getAll(selection.associationId);
@@ -101,7 +107,8 @@ async function loadPayments() {
         console.error('Error loading payments:', error);
         showError(error.message || 'Failed to load payments. Please try again.');
     } finally {
-        loadingSpinner.style.display = 'none';
+        loadingSpinner.classList.add('hidden');
+        loadingSpinner.classList.remove('block');
     }
 }
 

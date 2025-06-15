@@ -9,7 +9,17 @@
     <link rel="stylesheet" href="mainLayout.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_circle_left" />
-    <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Suppress tailwind warning -->
+  <script>
+    console.warn = (function(originalWarn) {
+      return function(msg) {
+        if (!msg.includes('cdn.tailwindcss.com')) {
+          originalWarn(msg);
+        }
+      }
+    })(console.warn);
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
     .upload-box {
       border: 2px solid #16a34a;
@@ -129,11 +139,15 @@
       </div>
     </div>
     <div class="mb-4 font-medium text-black">من فضلك ارفع صورة مفردات المرتب الخاصة بك!</div>
+    <!-- زر اختيار الصورة -->
     <input type="file" id="salary-slip" accept="image/*" class="hidden">
-    <label for="salary-slip" class="block border border-[#16a34a] rounded-full px-6 py-2 text-[#16a34a] font-bold cursor-pointer transition hover:bg-[#16a34a] hover:text-white w-fit mx-auto">
-      Choose Image
+    <label for="salary-slip" id="choose-label" class="block border border-[#16a34a] rounded-full px-6 py-2 text-[#16a34a] font-bold cursor-pointer transition hover:bg-[#16a34a] hover:text-white w-fit mx-auto">
+      اختر صورة
     </label>
+    <!-- زر رفع -->
+    <button id="upload-btn" class="upload-btn mt-4" style="display:none;">رفع المستند</button>
     <div id="upload-message" class="mt-4 text-green-600 font-bold"></div>
+    <div id="preview-container" class="mt-2"></div>
   </div>
 </div>
 <!-- end Main Content -->
@@ -172,50 +186,132 @@
     <!-- end Navbar Bottom -->
   <!-- ...existing code... -->
   <script src="./MainLayout.js"></script>
+  
   <script>
-    // --- TEST ONLY: Set token and userId in localStorage ---
-    localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Miwicm9sZSI6ImFkbWluIiwid2FsbGV0QmFsYW5jZSI6MzIxNS42LCJpYXQiOjE3NDk1NTY2NzcsImV4cCI6MTc0OTY0MzA3N30.I32RfWybr7BY9nl2VaRm_9KVcjMmvmdCEYftYvICiIk');
-    localStorage.setItem('userId', '2');
-  </script>
-  <script>
-    document.getElementById('salary-slip').addEventListener('change', async function(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-    
-      const formData = new FormData();
-      formData.append('salarySlipImage', file);
-    
-      // Get userId from localStorage (adjust the key if needed)
-      const userId = localStorage.getItem('userId');
-      if (!userId) {
-        document.getElementById('upload-message').textContent = 'يجب تسجيل الدخول أولاً.';
-        return;
-      }
-      formData.append('userId', userId);
-    
-      const uploadMessage = document.getElementById('upload-message');
-      uploadMessage.textContent = 'جاري رفع الملف...';
-    
-      const token = localStorage.getItem('token');
-    
+  // عناصر الصفحة
+  const fileInput = document.getElementById('salary-slip');
+  const uploadBtn = document.getElementById('upload-btn');
+  const uploadMsg = document.getElementById('upload-message');
+  const previewContainer = document.getElementById('preview-container');
+  const chooseLabel = document.getElementById('choose-label');
+
+  let selectedFile = null;
+
+  // تحقق من التوكن 
+  function checkAuth() {
+    const token = localStorage.getItem('token');
+    let userId = localStorage.getItem('userId');
+    // جلب userId من user object إذا لم يوجد مباشرة
+    if (!userId) {
       try {
-        const res = await fetch('http://localhost:3000/api/userData/upload-documents', {
-          method: 'POST',
-          body: formData,
-          headers: token ? { 'Authorization': 'Bearer ' + token } : {}
-        });
-        const data = await res.json();
-        if (res.ok && data.message) {
-          uploadMessage.textContent = data.message;
-        } else {
-          uploadMessage.textContent = data.message || data.error || 'حدث خطأ أثناء رفع الملف.';
-          console.error('Upload error:', data);
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user && user.id) userId = user.id;
+      } catch {}
+    }
+    if (!token || !userId) {
+      uploadMsg.textContent = 'يجب تسجيل الدخول أولاً.';
+      uploadMsg.className = 'mt-4 text-red-600 font-bold';
+      setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+      return false;
+    }
+    return { token, userId };
+  }
+
+  // عند اختيار صورة
+  fileInput.addEventListener('change', (e) => {
+    const file = e.target.files[0];
+    previewContainer.innerHTML = '';
+    uploadMsg.textContent = '';
+    if (file) {
+      selectedFile = file;
+      // عرض معاينة للصورة
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(file);
+      img.className = "mx-auto rounded-lg mt-2 mb-2 max-h-40";
+      previewContainer.appendChild(img);
+      uploadBtn.style.display = 'block';
+      chooseLabel.textContent = 'تغيير الصورة';
+    } else {
+      selectedFile = null;
+      uploadBtn.style.display = 'none';
+      chooseLabel.textContent = 'اختر صورة';
+    }
+  });
+
+  // تحقق من التوكن عند تحميل الصفحة
+  document.addEventListener('DOMContentLoaded', checkAuth);
+
+  // عند الضغط على زر رفع المستند
+  uploadBtn.addEventListener('click', async () => {
+    uploadMsg.textContent = '';
+    if (!selectedFile) {
+      uploadMsg.textContent = 'يرجى اختيار صورة أولاً.';
+      uploadMsg.className = 'mt-4 text-red-600 font-bold';
+      return;
+    }
+
+    let userId = localStorage.getItem('userId');
+    if (!userId) {
+      try {
+        const user = JSON.parse(localStorage.getItem('user'));
+        if (user && user.id) userId = user.id;
+      } catch {}
+    }
+    const token = localStorage.getItem('token');
+    console.log('رفع المستند: userId=', userId, 'token=', token, 'selectedFile=', selectedFile);
+
+    if (!token || !userId) {
+      uploadMsg.textContent = 'يجب تسجيل الدخول أولاً.';
+      uploadMsg.className = 'mt-4 text-red-600 font-bold';
+      setTimeout(() => { window.location.href = 'login.html'; }, 1500);
+      return;
+    }
+
+    uploadBtn.disabled = true;
+    uploadBtn.textContent = 'جاري الرفع...';
+
+    try {
+      const formData = new FormData();
+      formData.append('salarySlipImage', selectedFile, selectedFile.name);
+      formData.append('userId', String(userId));
+
+      const res = await fetch('http://localhost:3000/api/userData/upload-documents', {
+        method: 'POST',
+        body: formData,
+        headers: {
+
+          // الحل: تأكد أن التوكن يُرسل هكذا بالضبط
+          'Authorization': 'Bearer ' + token
         }
-      } catch (err) {
-        uploadMessage.textContent = 'تعذر الاتصال بالخادم.';
-        console.error('Network error:', err);
+      });
+
+      const data = await res.json();
+      console.log('رد السيرفر:', data);
+
+      if (res.ok && data.user && data.user.salarySlipImage) {
+        uploadMsg.innerHTML = `
+          <span class="text-green-600">${data.message || 'تم رفع المستند بنجاح وجاري المراجعة.'}</span>
+          <div class="mt-4 text-gray-500 text-sm">تم رفع الصورة بنجاح، ستظهر بعد مراجعة الإدارة.</div>
+        `;
+        previewContainer.innerHTML = '';
+        uploadBtn.style.display = 'none';
+        chooseLabel.textContent = 'اختر صورة';
+        fileInput.value = '';
+        selectedFile = null;
+        localStorage.setItem('hasUploadedDocuments', 'true');
+      } else {
+        throw new Error(data.error || 'فشل في رفع المستند');
       }
-    });
+    } catch (err) {
+      uploadMsg.textContent = (err.message && err.message !== 'Something went wrong!')
+        ? err.message
+        : 'حدث خطأ أثناء رفع الملف. تأكد من أن الصورة أقل من 5 ميجا وأن نوعها صحيح.';
+      uploadMsg.className = 'mt-4 text-red-600 font-bold';
+    } finally {
+      uploadBtn.disabled = false;
+      uploadBtn.textContent = 'رفع المستند';
+    }
+  });
   </script>
 
 </body>

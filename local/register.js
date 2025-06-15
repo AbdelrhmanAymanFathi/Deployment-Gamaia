@@ -5,7 +5,12 @@ document.getElementById('register-form').addEventListener('submit', async functi
   const errorElement = document.getElementById('register-error');
 
   try {
-    await window.api.auth.register(formData);
+    const data = await window.api.auth.register(formData);
+    // حفظ userId و user object بعد التسجيل (لو رجعهم السيرفر)
+    if (data.user && data.user.id) {
+      localStorage.setItem('userId', data.user.id);
+      localStorage.setItem('user', JSON.stringify(data.user));
+    }
     window.location.href = 'login.html';
   } catch (error) {
     errorElement.textContent = error.message || 'Registration failed. Please try again.';
