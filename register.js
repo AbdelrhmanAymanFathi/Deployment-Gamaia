@@ -24,7 +24,7 @@
       const formData = new FormData(this);
       const errorEl = document.getElementById('register-error');
       try {
-        const res = await fetch('http://localhost:3000/api/auth/register', {
+        const res = await fetch('https://money-production-bfc6.up.railway.app/api/auth/register', {
           method: 'POST',
           body: formData
         });
