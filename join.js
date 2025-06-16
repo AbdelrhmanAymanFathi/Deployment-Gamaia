@@ -48,60 +48,25 @@ $('.btn-next').on('click', function() {
           '<p class="col-span-full text-center text-gray-500">No suggestions found.</p>'
         );
       }
+      // استخدم grid responsive
+      $container.removeClass().addClass('grid gap-4 px-2 mb-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5');
       suggestions.forEach(assoc => {
-        // Dates & progress percent
-        const join = new Date(assoc.joinDate);
-        const start = join.toLocaleDateString("en-EG", { year:"numeric", month:"long" });
-        const endDate = new Date(join);
-        endDate.setMonth(endDate.getMonth() + assoc.duration);
-        const end = endDate.toLocaleDateString("en-EG", { year:"numeric", month:"long" });
-        const pct = Math.max(0, Math.min(100,
-          Math.round((new Date() - join) / (endDate - join) * 100)
-        ));
-
-        // Build card
+        // Build card (new design)
         const $card = $(`
-          <div class="association-card card max-w-md bg-white border rounded-2xl shadow p-4 text-right font-sans" data-association-id="${assoc.id}">
-            <div class="flex items-center justify-between mb-2">
-              <button class="join-button text-blue-600 font-medium hover:underline" data-id="${assoc.id}">
-                Join
-              </button>
-              <div class="text-2xl font-bold text-gray-800">
-                ${assoc.name}
+          <div class="association-card card max-w-[160px] w-full bg-white border border-teal-400 rounded-lg shadow p-0 text-center font-sans cursor-pointer select-none transition hover:shadow-lg flex flex-col mx-auto" data-association-id="${assoc.id}">
+            <div class="flex justify-between items-start px-3 pt-3">
+              <span class="inline-block w-5 h-5 border-2 border-teal-400 rounded-full"></span>
+              <div class="flex flex-col items-end">
+                <span class="text-lg font-bold text-gray-800">${assoc.duration}</span>
+                <span class="text-base font-bold text-gray-900" style="font-family: Tajawal, sans-serif;">شهور</span>
               </div>
             </div>
-            <h5 class="text-lg font-medium text-gray-900 mb-2">${assoc.monthlyAmount.toLocaleString("en-EG")} SAR</h5>
-            <div class="text-blue-600 text-sm mb-4">
-              ${assoc.monthlyAmount.toLocaleString("en-EG")} SAR monthly
+            <div class="border-t border-teal-400 my-2"></div>
+            <div class="flex flex-col items-center justify-center py-2">
+              <span class="text-xl font-bold text-gray-800">${assoc.monthlyAmount.toLocaleString("ar-EG")}</span>
+              <span class="text-base font-bold text-gray-900" style="font-family: Tajawal, sans-serif;">ر.س/شهر</span>
             </div>
-            <div class="bg-gray-100 rounded-xl p-3 mb-4">
-              <div class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                <div class="bg-blue-100 text-blue-600 rounded-full p-1">
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 10a3 3 0 100-6 3 3 0 000 6zM2 17a6 6 0 0112 0H2z"/>
-                  </svg>
-                </div>
-                Role (${assoc.type})
-              </div>
-              <div class="flex items-center justify-between text-sm text-gray-600">
-                <span>${start}</span>
-                <span class="font-bold text-gray-800">${assoc.duration} months</span>
-                <span>${end}</span>
-              </div>
-              <div class="w-full bg-gray-300 h-1 rounded mt-2 mb-1">
-                <div class="bg-black h-1 rounded" style="width: ${pct}%;"></div>
-              </div>
-            </div>
-            <div class="flex items-center justify-between text-green-600 text-sm font-medium">
-              <div class="flex items-center gap-1">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927C9.469 1.891 10.53 1.891 10.95 2.927l1.286 3.262 3.516.272c1.074.083 1.51 1.396.729 2.14l-2.624 2.418.783 3.447c.24 1.06-.84 1.916-1.79 1.387L10 13.187l-3.4 2.666c-.95.528-2.03-.327-1.79-1.387l.783-3.447-2.624-2.418c-.78-.744-.345-2.057.729-2.14l3.516-.272 1.286-3.262z"/>
-                </svg>
-                Installment Discount
-              </div>
-              <span>${(assoc.discountAmount || 0).toLocaleString("en-EG")} SAR</span>
-            </div>
-            <div class="text-sm text-gray-500 text-center mt-2">No fees</div>
+            <button class="join-button absolute inset-0 opacity-0" data-id="${assoc.id}" tabindex="-1" aria-label="انضم"></button>
           </div>
         `);
         $container.append($card);
@@ -110,35 +75,6 @@ $('.btn-next').on('click', function() {
     error: function(err) {
       console.error('Error fetching suggestions:', err);
       alert('Error fetching suggestions.');
-    }
-  });
-});
-
-// Join handler
-$(document).on('click', '.join-button', function(e) {
-  e.stopPropagation(); // حتى لا يشتغل حدث الكارد مع زر join
-  const $btn = $(this);
-  const assocId = $btn.data('id');
-  const $card = $btn.closest('.association-card');
-  $btn.prop('disabled', true).text('Joining...');
-
-  $.ajax({
-    type: 'POST',
-    url: `https://money-production-bfc6.up.railway.app/api/associations/${assocId}/join`,
-    headers: { Authorization: 'Bearer ' + token },
-    success: function(res) {
-      if (res.success) {
-        alert('Successfully joined!');
-        moveToJoined($card);
-      } else {
-        alert(res.error || 'Join failed');
-        $btn.prop('disabled', false).text('Join');
-      }
-    },
-    error: function(err) {
-      console.error('Join error:', err);
-      alert(err.responseJSON?.error || 'Error joining.');
-      $btn.prop('disabled', false).text('Join');
     }
   });
 });
@@ -164,54 +100,21 @@ function loadJoinedAssociations() {
         $('#joinedSection').removeClass('hidden');
       }
       associations.forEach(assoc => {
-        const join = new Date(assoc.joinDate);
-        const start = join.toLocaleDateString("en-EG", { year:"numeric", month:"long" });
-        const endDate = new Date(join);
-        endDate.setMonth(endDate.getMonth() + assoc.duration);
-        const end = endDate.toLocaleDateString("en-EG", { year:"numeric", month:"long" });
-        const pct = Math.max(0, Math.min(100,
-          Math.round((new Date() - join) / (endDate - join) * 100)
-        ));
-
+        // Build card (new design for joined)
         const $card = $(`
-          <div class="association-card card max-w-md bg-white border rounded-2xl shadow p-4 text-right font-sans" data-association-id="${assoc.id}">
-            <h5 class="text-lg font-medium text-gray-900 mb-2">${assoc.name}</h5>
-            <div class="flex items-center justify-between mb-2">
-              <div class="text-2xl font-bold text-gray-800">
-                ${assoc.monthlyAmount.toLocaleString("en-EG")} SAR
+          <div class="association-card card max-w-[160px] w-full bg-white border border-teal-400 rounded-lg shadow p-0 text-center font-sans cursor-pointer select-none transition hover:shadow-lg flex flex-col mx-auto" data-association-id="${assoc.id}">
+            <div class="flex justify-between items-start px-3 pt-3">
+              <span class="inline-block w-5 h-5 border-2 border-teal-400 rounded-full bg-teal-200"></span>
+              <div class="flex flex-col items-end">
+                <span class="text-lg font-bold text-gray-800">${assoc.duration}</span>
+                <span class="text-base font-bold text-gray-900" style="font-family: Tajawal, sans-serif;">شهور</span>
               </div>
             </div>
-            <div class="text-blue-600 text-sm mb-4">
-              ${assoc.monthlyAmount.toLocaleString("en-EG")} SAR monthly
+            <div class="border-t border-teal-400 my-2"></div>
+            <div class="flex flex-col items-center justify-center py-2">
+              <span class="text-xl font-bold text-gray-800">${assoc.monthlyAmount.toLocaleString("ar-EG")}</span>
+              <span class="text-base font-bold text-gray-900" style="font-family: Tajawal, sans-serif;">ر.س/شهر</span>
             </div>
-            <div class="bg-gray-100 rounded-xl p-3 mb-4">
-              <div class="flex items-center gap-2 text-sm font-medium text-gray-700 mb-2">
-                <div class="bg-blue-100 text-blue-600 rounded-full p-1">
-                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M10 10a3 3 0 100-6 3 3 0 000 6zM2 17a6 6 0 0112 0H2z"/>
-                  </svg>
-                </div>
-                Role (${assoc.type})
-              </div>
-              <div class="flex items-center justify-between text-sm text-gray-600">
-                <span>${start}</span>
-                <span class="font-bold text-gray-800">${assoc.duration} months</span>
-                <span>${end}</span>
-              </div>
-              <div class="w-full bg-gray-300 h-1 rounded mt-2 mb-1">
-                <div class="bg-black h-1 rounded" style="width: ${pct}%;"></div>
-              </div>
-            </div>
-            <div class="flex items-center justify-between text-green-600 text-sm font-medium">
-              <div class="flex items-center gap-1">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M9.049 2.927C9.469 1.891 10.53 1.891 10.95 2.927l1.286 3.262 3.516.272c1.074.083 1.51 1.396.729 2.14l-2.624 2.418.783 3.447c.24 1.06-.84 1.916-1.79 1.387L10 13.187l-3.4 2.666c-.95.528-2.03-.327-1.79-1.387l.783-3.447-2.624-2.418c-.78-.744-.345-2.057.729-2.14l3.516-.272 1.286-3.262z"/>
-                </svg>
-                Installment Discount
-              </div>
-              <span>${(assoc.discountAmount || 0).toLocaleString("en-EG")} SAR</span>
-            </div>
-            <div class="text-sm text-gray-500 text-center mt-2">No fees</div>
           </div>
         `);
         $('#joinedContainer').append($card);
@@ -231,10 +134,22 @@ $(document).ready(function() {
 // عند الضغط على أي كارد (اقتراح أو منضم إليه)
 $(document).on('click', '.association-card', function(e) {
   // تجاهل الضغط إذا كان على زر join نفسه
+  // (الزر الآن شفاف ويغطي الكارد بالكامل، لكن نحتفظ بالشرط)
   if ($(e.target).hasClass('join-button')) return;
   const associationId = $(this).data('association-id');
   if (associationId) {
     localStorage.setItem('selectedAssociationId', associationId);
+    window.location.href = 'select_turn.html';
+  }
+});
+
+// Join handler: فقط يحفظ associationId ويوجه للصفحة، لا يعمل join فعلي
+$(document).on('click', '.join-button', function(e) {
+  e.stopPropagation();
+  const $btn = $(this);
+  const assocId = $btn.data('id');
+  if (assocId) {
+    localStorage.setItem('selectedAssociationId', assocId);
     window.location.href = 'select_turn.html';
   }
 });
