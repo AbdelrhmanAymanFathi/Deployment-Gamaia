@@ -36,7 +36,7 @@
       <div class="flex items-center gap-2 bg-[#9CD1C7] px-4 py-3 border-b border-[#2DAA9E]">
       <i class="bi bi-arrow-right-short text-2xl teal-icon"></i>
 
-        <span class="text-sm font-bold text-black">اقبض عن طريق التحويل البنكي</span>
+        <span id="backToArrest" class="text-sm font-bold text-black cursor-pointer">اقبض عن طريق التحويل البنكي</span>
       </div>
       <!-- Info Text -->
       <div class="px-6 pt-4 pb-2">
@@ -139,6 +139,27 @@ error
     tabIban.onclick = showIban;
     // Start with account tab active
     showAccount();
+
+    // Redirect on "حفظ" (submit) and "تخطي" (skip) buttons
+    document.querySelectorAll('form').forEach(form => {
+      // Prevent default submit and redirect
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        window.location.href = 'National_id.html';
+      });
+      // Handle "تخطي" button
+      const skipBtn = form.querySelector('button[type="button"]');
+      if (skipBtn) {
+        skipBtn.addEventListener('click', function() {
+          window.location.href = 'National_id.html';
+        });
+      }
+    });
+
+    // Redirect when clicking the header text
+    document.getElementById('backToArrest').onclick = function() {
+      window.location.href = 'Arrest_method.html';
+    };
   </script>
 </body>
 </html>
