@@ -1,12 +1,10 @@
-
-
 // التحقق من وجود التوكن
 const token = localStorage.getItem('token');
 if (!token) {
   window.location.href = 'login.html';
 }
 
-// جلب بيانات الملف الشخصي
+// جلب بيانات الملف شخصي
 async function loadProfile() {
   try {
     const res = await fetch('https://money-production-bfc6.up.railway.app/api/userData/profile', {
@@ -21,8 +19,12 @@ async function loadProfile() {
 
     const imgEl = document.getElementById('profile-image');
     const placeholder = 'https://via.placeholder.com/150?text=User';
-    imgEl.src = `./Backend/${data.profileImage}`;
-
+    if (data.profileImage) {
+      const fileName = data.profileImage.split(/[\\/]/).pop();
+      imgEl.src = `https://money-production-bfc6.up.railway.app/api/userData/uploads/${fileName}`;
+    } else {
+      imgEl.src = placeholder;
+    }
   } catch (err) {
     console.error(err);
     alert('❌ ' + err.message);
@@ -45,4 +47,5 @@ document.getElementById('logout-btn').addEventListener('click', () => {
   window.location.href = 'login.html';
 });
 
+document.addEventListener('DOMContentLoaded', loadProfile);
 document.addEventListener('DOMContentLoaded', loadProfile);
