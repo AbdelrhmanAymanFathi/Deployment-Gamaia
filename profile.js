@@ -77,11 +77,8 @@
             window.location.href = 'login.html';
         });
 
-        // تحميل الملف الشخصي عند تحميل الصفحة
-        document.addEventListener('DOMContentLoaded', () => {
-            loadProfile();
-
-            // عرض الأنشطة الأخيرة من localStorage
+        // دالة لعرض الأنشطة الأخيرة من localStorage
+        function renderRecentActivities() {
             const activities = JSON.parse(localStorage.getItem('activities') || '[]');
             const container = document.getElementById('recent-activities');
             if (container) {
@@ -90,7 +87,6 @@
                 } else {
                     container.innerHTML = activities.map(act => {
                         if (act.type === 'topup') {
-                            // حساب الوقت منذ الشحن
                             const date = new Date(act.date);
                             const now = new Date();
                             const diffMs = now - date;
@@ -118,9 +114,16 @@
                             </div>
                             `;
                         }
-                        // يمكن إضافة أنواع أخرى من الأنشطة هنا
                         return '';
                     }).join('');
                 }
             }
+        }
+
+        // تحميل الملف الشخصي عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', () => {
+            loadProfile();
+            renderRecentActivities();
+            // تحديث تلقائي للأنشطة كل دقيقة
+            setInterval(renderRecentActivities, 5);
         });
