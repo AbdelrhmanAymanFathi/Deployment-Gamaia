@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>سياسة المدفوعات - برنامج الجمعية</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+  <script>
+    // سلايدر الهيدر
+    const sliderTexts = [
+      "منصة رقمية متطورة لإدارة الجمعيات المالية بسهولة وأمان وبتصميم عصري يواكب تطلعاتك",
+      "تابع اشتراكاتك وسدد دفعاتك بكل سهولة وشفافية مع برنامج الجمعية",
+      "أمان بياناتك أولوية لدينا، استمتع بتجربة دفع إلكتروني آمنة وموثوقة",
+      "إدارة الجمعيات المالية لم تكن يوماً بهذه البساطة والاحترافية"
+    ];
+    let sliderIndex = 0;
+    function updateSlider() {
+      const el = document.getElementById('header-slider');
+      if (el) {
+        el.textContent = sliderTexts[sliderIndex];
+        sliderIndex = (sliderIndex + 1) % sliderTexts.length;
+      }
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      updateSlider();
+      setInterval(updateSlider, 3500);
+    });
+
+    // مودال الدعم
+    function showSupportMsg() {
+      document.getElementById('support-modal').classList.remove('hidden');
+    }
+    function closeSupportModal() {
+      document.getElementById('support-modal').classList.add('hidden');
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === "Escape") closeSupportModal();
+    });
+  </script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .custom-header-bg {
+      background: linear-gradient(135deg, #90D1CA 60%, #e0f7fa 100%);
+    }
+    .header-art {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .btn-main {
+      background-color: #90D1CA !important;
+      color: #fff !important;
+      transition: background 0.2s;
+    }
+    .btn-main:hover, .btn-main:focus {
+      background-color: #6bbcb2 !important;
+      color: #fff !important;
+    }
+  </style>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="relative custom-header-bg shadow-lg overflow-hidden">
+    <div class="header-art">
+      <svg width="100%" height="100%" viewBox="0 0 1440 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <ellipse cx="1200" cy="80" rx="220" ry="80" fill="#fff" fill-opacity="0.18"/>
+        <ellipse cx="300" cy="120" rx="180" ry="60" fill="#fff" fill-opacity="0.13"/>
+        <ellipse cx="800" cy="40" rx="120" ry="40" fill="#fff" fill-opacity="0.10"/>
+        <path d="M0,160 C480,320 960,0 1440,160 L1440,320 L0,320 Z" fill="#fff" fill-opacity="0.10"/>
+      </svg>
+    </div>
+    <div class="container mx-auto px-4 py-10 flex flex-col items-center relative z-10">
+      <div class="flex items-center gap-4">
+        <div class="bg-white rounded-full p-3 shadow-xl border-4 border-[#90D1CA] animate-pulse">
+          <svg class="w-14 h-14 text-[#90D1CA]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+            <path d="M12 8c-2.21 0-4 1.79-4 4v4h8v-4c0-2.21-1.79-4-4-4z"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </div>
+        <h1 class="text-4xl md:text-5xl font-extrabold text-white drop-shadow-lg tracking-wide">
+          برنامج الجمعية
+        </h1>
+      </div>
+      <!-- سلايدر الهيدر -->
+      <div class="mt-6 w-full flex justify-center">
+        <p id="header-slider" class="text-[#155e63] text-xl md:text-2xl font-semibold text-center max-w-2xl drop-shadow-lg bg-white/60 rounded-xl px-6 py-2 shadow transition-all duration-500 min-h-[56px]"></p>
+      </div>
+      <div class="mt-6 flex gap-3">
+        <span class="inline-block w-3 h-3 rounded-full bg-[#90D1CA] shadow"></span>
+        <span class="inline-block w-3 h-3 rounded-full bg-[#155e63] shadow"></span>
+        <span class="inline-block w-3 h-3 rounded-full bg-[#e0f7fa] shadow"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 container mx-auto px-4 py-10">
+    <section class="bg-white rounded-xl shadow-lg p-8 max-w-3xl mx-auto">
+      <h2 class="text-3xl font-bold text-blue-700 mb-6 text-center">سياسة المدفوعات</h2>
+      <p class="mb-4 text-gray-700 leading-relaxed">
+        نرحب بك في برنامج الجمعية! نلتزم بتوفير تجربة دفع آمنة وشفافة لجميع المستخدمين. يرجى قراءة سياسة المدفوعات بعناية لفهم كيفية معالجة المدفوعات والاشتراكات.
+      </p>
+      <ul class="list-disc pr-6 mb-6 text-gray-700 space-y-2">
+        <li>
+          <span class="font-semibold text-blue-700">طرق الدفع:</span>
+          يدعم البرنامج الدفع الإلكتروني عبر البطاقات البنكية والمحافظ الرقمية.
+        </li>
+        <li>
+          <span class="font-semibold text-blue-700">تأكيد الدفع:</span>
+          يتم تأكيد الدفع فور إتمام العملية بنجاح، وستصلك رسالة تأكيد عبر البريد الإلكتروني أو رسالة نصية.
+        </li>
+        <li>
+          <span class="font-semibold text-blue-700">سياسة الإلغاء والاسترداد:</span>
+          يمكنك إلغاء الاشتراك واسترداد المبلغ خلال 24 ساعة من الدفع في حال وجود مشكلة في الخدمة.
+        </li>
+        <li>
+          <span class="font-semibold text-blue-700">الأمان:</span>
+          جميع بيانات الدفع مشفرة ويتم التعامل معها بسرية تامة وفقاً لأعلى معايير الأمان.
+        </li>
+        <li>
+          <span class="font-semibold text-blue-700">الدعم الفني:</span>
+          في حال وجود أي استفسار أو مشكلة في الدفع، يرجى التواصل مع فريق الدعم.
+        </li>
+      </ul>
+      <div class="flex justify-center">
+        <button onclick="showSupportMsg()" class="btn-main font-semibold py-2 px-6 rounded-lg shadow transition">
+          تواصل مع الدعم
+        </button>
+      </div>
+      <!-- Modal -->
+      <div id="support-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+        <div class="bg-white rounded-xl shadow-2xl max-w-sm w-full p-6 text-center relative">
+          <button onclick="closeSupportModal()" class="absolute left-4 top-4 text-gray-400 hover:text-gray-700 text-2xl font-bold focus:outline-none">&times;</button>
+          <svg class="mx-auto mb-4 text-[#90D1CA]" width="48" height="48" fill="none" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="12" fill="#90D1CA" opacity="0.1"/>
+            <path d="M12 8v4m0 4h.01" stroke="#90D1CA" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h3 class="text-lg font-semibold mb-2 text-[#155e63]">دعم برنامج الجمعية</h3>
+          <p class="text-gray-700 mb-4">للتواصل مع الدعم الفني يمكنك الاتصال مباشرة على الرقم التالي:</p>
+          <a href="tel:+201114441724" class="btn-main inline-block font-bold py-2 px-6 rounded-lg shadow transition text-lg tracking-wider mb-2" dir="ltr">
+            +20 111 444 1724
+          </a>
+          <p class="text-gray-500 text-xs">اضغط على الرقم للاتصال مباشرة</p>
+          <button onclick="closeSupportModal()" class="mt-4 btn-main font-semibold py-2 px-6 rounded-lg transition">
+            إغلاق
+          </button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white shadow-inner mt-10">
+    <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between text-gray-600 text-sm">
+      <span>جميع الحقوق محفوظة &copy; 2024 برنامج الجمعية</span>
+      <div class="flex gap-4 mt-2 md:mt-0">
+        <a href="#" class="hover:text-[#90D1CA]">سياسة الخصوصية</a>
+        <a href="#" class="hover:text-[#90D1CA]">الشروط والأحكام</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
