@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>إعدادات المدفوعات - برنامج الجمعيات السعودي</title>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .main-color { color: #90D1CA; }
+    .bg-main { background-color: #90D1CA !important; }
+    .btn-main {
+      background-color: #90D1CA !important;
+      color: #fff !important;
+      transition: background 0.2s;
+    }
+    .btn-main:hover, .btn-main:focus {
+      background-color: #6bbcb2 !important;
+      color: #fff !important;
+    }
+    .custom-header-bg {
+      background: linear-gradient(135deg, #90D1CA 60%, #e0f7fa 100%);
+    }
+    .setting-card {
+      @apply bg-white rounded-2xl shadow-lg p-6 mb-6 border border-gray-100;
+    }
+    .input-main:focus {
+      border-color: #90D1CA;
+      box-shadow: 0 0 0 2px #90D1CA22;
+    }
+  </style>
+  <script>
+    function saveSettings(e) {
+      e.preventDefault();
+      document.getElementById('save-success').classList.remove('hidden');
+      setTimeout(() => {
+        document.getElementById('save-success').classList.add('hidden');
+      }, 2500);
+    }
+    function toggleWalletField() {
+      const walletSection = document.getElementById('wallet-section');
+      const walletCheckbox = document.getElementById('enable-wallet');
+      walletSection.style.display = walletCheckbox.checked ? 'block' : 'none';
+    }
+    document.addEventListener('DOMContentLoaded', function() {
+      toggleWalletField();
+    });
+  </script>
+</head>
+<body class="bg-gray-50 min-h-screen flex flex-col">
+  <!-- Header -->
+  <header class="custom-header-bg shadow-lg">
+    <div class="container mx-auto px-4 py-8 flex flex-col md:flex-row items-center gap-4">
+      <div class="bg-white rounded-full p-3 shadow-xl border-4 border-[#90D1CA]">
+        <svg class="w-12 h-12 text-[#90D1CA]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+          <path d="M12 8c-2.21 0-4 1.79-4 4v4h8v-4c0-2.21-1.79-4-4-4z"/>
+          <circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <div>
+        <h1 class="text-3xl md:text-4xl font-extrabold text-white drop-shadow-lg tracking-wide">
+          إعدادات المدفوعات
+        </h1>
+        <p class="text-[#155e63] text-lg mt-2 font-semibold drop-shadow max-w-xl">
+          تحكم بطرق الدفع الإلكترونية والمحافظ الرقمية السعودية بسهولة وأمان.
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="flex-1 container mx-auto px-4 py-10">
+    <form class="max-w-2xl mx-auto space-y-8" onsubmit="saveSettings(event)">
+      <!-- طرق الدفع -->
+      <div class="setting-card">
+        <h2 class="text-xl font-bold text-[#155e63] mb-4 flex items-center gap-2">
+          <svg class="w-6 h-6 text-[#90D1CA]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="2" /><path d="M2 10h20" /></svg>
+          خيارات الدفع
+        </h2>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <label class="flex items-center gap-2">
+            <input type="checkbox" checked disabled class="accent-[#90D1CA]" />
+            <span>بطاقات بنكية سعودية (مدى، فيزا، ماستركارد)</span>
+          </label>
+          <label class="flex items-center gap-2">
+            <input type="checkbox" id="enable-wallet" class="accent-[#90D1CA]" onchange="toggleWalletField()" />
+            <span>محفظة رقمية (STC Pay وغيرها)</span>
+          </label>
+        </div>
+      </div>
+      <!-- بوابة الدفع -->
+      <div class="setting-card">
+        <label class="block text-gray-700 font-semibold mb-2">بوابة الدفع الإلكتروني:</label>
+        <select class="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-[#90D1CA] py-2 px-3 input-main">
+          <option>HyperPay</option>
+          <option>STC Pay</option>
+          <option>PayTabs</option>
+          <option>Tap</option>
+        </select>
+      </div>
+      <!-- بيانات المحفظة الرقمية -->
+      <div id="wallet-section" class="setting-card" style="display:none;">
+        <label class="block text-gray-700 font-semibold mb-2">بيانات المحفظة الرقمية:</label>
+        <input type="text" class="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-[#90D1CA] py-2 px-3 mb-2 input-main" placeholder="رقم الجوال المرتبط بالمحفظة" />
+        <select class="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-[#90D1CA] py-2 px-3 input-main">
+          <option>STC Pay</option>
+          <option>محفظة الراجحي</option>
+          <option>محفظة الإنماء</option>
+        </select>
+      </div>
+      <!-- إعدادات الإشعارات -->
+      <div class="setting-card">
+        <label class="block text-gray-700 font-semibold mb-2">إشعارات الدفع:</label>
+        <div class="flex flex-col sm:flex-row gap-4">
+          <label class="flex items-center gap-2">
+            <input type="checkbox" checked class="accent-[#90D1CA]" />
+            <span>إرسال بريد إلكتروني عند الدفع</span>
+          </label>
+          <label class="flex items-center gap-2">
+            <input type="checkbox" class="accent-[#90D1CA]" />
+            <span>إرسال رسالة نصية (SMS)</span>
+          </label>
+        </div>
+      </div>
+      <!-- زر الحفظ -->
+      <div class="flex justify-center">
+        <button type="submit" class="btn-main font-semibold py-2 px-8 rounded-lg shadow transition text-lg flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+          حفظ الإعدادات
+        </button>
+      </div>
+      <!-- رسالة نجاح -->
+      <div id="save-success" class="hidden text-center">
+        <span class="inline-block bg-[#90D1CA] text-white rounded-lg px-6 py-2 mt-2 shadow">
+          تم حفظ الإعدادات بنجاح!
+        </span>
+      </div>
+    </form>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white shadow-inner mt-10">
+    <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between text-gray-600 text-sm">
+      <span>جميع الحقوق محفوظة &copy; 2024 برنامج الجمعيات السعودي</span>
+      <div class="flex gap-4 mt-2 md:mt-0">
+        <a href="#" class="hover:text-[#90D1CA]">سياسة الخصوصية</a>
+        <a href="#" class="hover:text-[#90D1CA]">الشروط والأحكام</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
