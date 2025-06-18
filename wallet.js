@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(data => {
       balanceEl.textContent = new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: 'EGP',
+        currency: 'SAR',
         currencyDisplay: 'code'
       }).format(data.walletBalance);
     })
@@ -70,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(walletData => {
         balanceEl.textContent = new Intl.NumberFormat('en-US', {
           style: 'currency',
-          currency: 'EGP',
+          currency: 'SAR',
           currencyDisplay: 'code'
         }).format(walletData.walletBalance);
         modal.classList.add('hidden');

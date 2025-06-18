@@ -106,7 +106,7 @@ function renderRecentActivities() {
                                     </div>
                                     <div>
                                         <div class="font-medium">شحن الرصيد</div>
-                                        <div class="text-sm text-gray-500">تم شحن ${act.amount} جنيه إلى المحفظة</div>
+                                        <div class="text-sm text-gray-500">تم شحن ${act.amount}ريال سعودي إلى المحفظة</div>
                                     </div>
                                 </div>
                                 <div class="text-sm text-gray-500 ml-auto mt-2 sm:mt-0">${timeAgo}</div>
