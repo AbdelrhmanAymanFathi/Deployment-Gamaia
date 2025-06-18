@@ -1,102 +1,101 @@
-// التحقق من وجود التوكن
-        const token = localStorage.getItem('token');
-        if (!token) {
-            window.location.href = 'login.html';
-        }
+const token = localStorage.getItem('token');
+if (!token) {
+    window.location.href = 'login.html';
+}
 
-        // جلب بيانات الملف شخصي
-        async function loadProfile() {
-            try {
-                const res = await fetch('https://money-production-bfc6.up.railway.app/api/userData/profile', {
-                    headers: { 'Authorization': 'Bearer ' + token }
-                });
-                const data = await res.json();
-                if (!res.ok) throw new Error(data.message || data.error || 'فشل جلب الملف الشخصي');
+// جلب بيانات الملف شخصي
+async function loadProfile() {
+    try {
+        const res = await fetch('https://money-production-bfc6.up.railway.app/api/userData/profile', {
+            headers: { 'Authorization': 'Bearer ' + token }
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || data.error || 'فشل جلب الملف الشخصي');
 
-                // عرض بيانات المستخدم
-                document.getElementById('full-name').textContent = data.fullName;
-                document.getElementById('national-id').textContent = data.nationalId;
-                document.getElementById('phone').textContent = data.phone;
-                
-                // تحديث تاريخ آخر تحديث
-                const now = new Date();
-                document.getElementById('last-updated').textContent = now.toLocaleString('ar-SA', {
-                    day: 'numeric', 
-                    month: 'long', 
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
+        // عرض بيانات المستخدم
+        document.getElementById('full-name').textContent = data.fullName;
+        document.getElementById('national-id').textContent = data.nationalId;
+        document.getElementById('phone').textContent = data.phone;
 
-                // عرض الصورة الشخصية
-                const imgEl = document.getElementById('profile-image');
-                const placeholder = 'https://via.placeholder.com/150?text=لا+توجد+صورة';
-                
-                if (data.profileImage) {
-                    // إصلاح المشكلة: استخدام المسار الصحيح للصورة
-                    const imageUrl = `https://money-production-bfc6.up.railway.app/uploads/${data.profileImage.replace('uploads/', '')}?t=${new Date().getTime()}`;
-                    
-                    // تحميل الصورة أولاً للتحقق من وجودها
-                    const testImage = new Image();
-                    testImage.onload = function() {
-                        imgEl.src = imageUrl;
-                    };
-                    testImage.onerror = function() {
-                        console.log('فشل تحميل الصورة، استخدام البديل');
-                        imgEl.src = placeholder;
-                    };
-                    testImage.src = imageUrl;
-                } else {
-                    imgEl.src = placeholder;
-                }
-            } catch (err) {
-                console.error(err);
-                alert('❌ ' + err.message);
-            }
-        }
+        // تحديث تاريخ آخر تحديث
+        const now = new Date();
+        document.getElementById('last-updated').textContent = now.toLocaleString('ar-SA', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
 
-        // تكبير الصورة عند الضغط
+        // عرض الصورة الشخصية
         const imgEl = document.getElementById('profile-image');
-        const overlay = document.getElementById('img-overlay');
-        const largeImg = document.getElementById('img-large');
-        imgEl.addEventListener('click', () => {
-            largeImg.src = imgEl.src;
-            overlay.classList.remove('hidden');
-        });
-        
-        // إغلاق الصورة الكبيرة
-        overlay.addEventListener('click', (e) => {
-            if (e.target === overlay || e.target.classList.contains('close-btn')) {
-                overlay.classList.add('hidden');
-            }
-        });
+        const placeholder = 'https://via.placeholder.com/150?text=لا+توجد+صورة';
 
-        // تسجيل الخروج
-        document.getElementById('logout-btn').addEventListener('click', () => {
-            localStorage.removeItem('token');
-            window.location.href = 'login.html';
-        });
+        if (data.profileImage) {
+            // إصلاح المشكلة: استخدام المسار الصحيح للصورة
+            const imageUrl = `https://money-production-bfc6.up.railway.app/uploads/${data.profileImage.replace('uploads/', '')}?t=${new Date().getTime()}`;
 
-        // دالة لعرض الأنشطة الأخيرة من localStorage
-        function renderRecentActivities() {
-            const activities = JSON.parse(localStorage.getItem('activities') || '[]');
-            const container = document.getElementById('recent-activities');
-            if (container) {
-                if (activities.length === 0) {
-                    container.innerHTML = `<div class="text-gray-500 text-center">لا توجد أنشطة بعد</div>`;
-                } else {
-                    container.innerHTML = activities.map(act => {
-                        if (act.type === 'topup') {
-                            const date = new Date(act.date);
-                            const now = new Date();
-                            const diffMs = now - date;
-                            const diffMin = Math.floor(diffMs / 60000);
-                            let timeAgo = '';
-                            if (diffMin < 60) timeAgo = `منذ ${diffMin} دقيقة`;
-                            else if (diffMin < 1440) timeAgo = `منذ ${Math.floor(diffMin/60)} ساعة`;
-                            else timeAgo = `منذ ${Math.floor(diffMin/1440)} يوم`;
+            // تحميل الصورة أولاً للتحقق من وجودها
+            const testImage = new Image();
+            testImage.onload = function () {
+                imgEl.src = imageUrl;
+            };
+            testImage.onerror = function () {
+                console.log('فشل تحميل الصورة، استخدام البديل');
+                imgEl.src = placeholder;
+            };
+            testImage.src = imageUrl;
+        } else {
+            imgEl.src = placeholder;
+        }
+    } catch (err) {
+        console.error(err);
+        alert('❌ ' + err.message);
+    }
+}
 
-                            return `
+// تكبير الصورة عند الضغط
+const imgEl = document.getElementById('profile-image');
+const overlay = document.getElementById('img-overlay');
+const largeImg = document.getElementById('img-large');
+imgEl.addEventListener('click', () => {
+    largeImg.src = imgEl.src;
+    overlay.classList.remove('hidden');
+});
+
+// إغلاق الصورة الكبيرة
+overlay.addEventListener('click', (e) => {
+    if (e.target === overlay || e.target.classList.contains('close-btn')) {
+        overlay.classList.add('hidden');
+    }
+});
+
+// تسجيل الخروج
+document.getElementById('logout-btn').addEventListener('click', () => {
+    localStorage.removeItem('token');
+    window.location.href = 'login.html';
+});
+
+// دالة لعرض الأنشطة الأخيرة من localStorage
+function renderRecentActivities() {
+    const activities = JSON.parse(localStorage.getItem('activities') || '[]');
+    const container = document.getElementById('recent-activities');
+    if (container) {
+        if (activities.length === 0) {
+            container.innerHTML = `<div class="text-gray-500 text-center">لا توجد أنشطة بعد</div>`;
+        } else {
+            container.innerHTML = activities.map(act => {
+                if (act.type === 'topup') {
+                    const date = new Date(act.date);
+                    const now = new Date();
+                    const diffMs = now - date;
+                    const diffMin = Math.floor(diffMs / 60000);
+                    let timeAgo = '';
+                    if (diffMin < 60) timeAgo = `منذ ${diffMin} دقيقة`;
+                    else if (diffMin < 1440) timeAgo = `منذ ${Math.floor(diffMin / 60)} ساعة`;
+                    else timeAgo = `منذ ${Math.floor(diffMin / 1440)} يوم`;
+
+                    return `
                             <div class="flex flex-col sm:flex-row items-start sm:items-center p-3 bg-gray-50 rounded-lg">
                                 <div class="flex items-center mb-2 sm:mb-0">
                                     <div class="bg-blue-100 p-2 rounded-full mr-3">
@@ -113,17 +112,17 @@
                                 <div class="text-sm text-gray-500 ml-auto mt-2 sm:mt-0">${timeAgo}</div>
                             </div>
                             `;
-                        }
-                        return '';
-                    }).join('');
                 }
-            }
+                return '';
+            }).join('');
         }
+    }
+}
 
-        // تحميل الملف الشخصي عند تحميل الصفحة
-        document.addEventListener('DOMContentLoaded', () => {
-            loadProfile();
-            renderRecentActivities();
-            // تحديث تلقائي للأنشطة كل دقيقة
-            setInterval(renderRecentActivities, 5);
-        });
+// تحميل الملف الشخصي عند تحميل الصفحة
+document.addEventListener('DOMContentLoaded', () => {
+    loadProfile();
+    renderRecentActivities();
+    // تحديث تلقائي للأنشطة كل دقيقة
+    setInterval(renderRecentActivities, 5);
+});
