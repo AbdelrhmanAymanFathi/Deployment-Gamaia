@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>عقد الجمعية</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap');
+
+        body {
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            /* تأثير خلفية ناعمة ومتدرجة مثل 19-movie-card-medium.png ولكن بألوان أقرب للأصلية */
+            /* تدرج لوني يعطي إحساس بالنعومة والإضاءة مثل الصورة، لكن بالأزرق الفاتح والوردي الفاتح جداً */
+            background: linear-gradient(135deg, #e0f2fe, #f0f8ff, #fdf6f0); /* أزرق فاتح جداً إلى أبيض مائل للوردي الفاتح */
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden; /* منع التمرير الأفقي */
+            overflow-y: scroll; /* السماح بالتمرير العمودي دائماً */
+            position: relative;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: white;
+            border-radius: 1.5rem; /* كما كان في التصميم الأصلي */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            max-width: 28rem;
+            width: 90%;
+            margin: 2rem auto; /* توسيط أفقي مع هوامش علوية وسفلية */
+            overflow: hidden;
+            position: relative;
+            z-index: 10;
+        }
+
+        .header {
+            background-color: white; /* كما كان في التصميم الأصلي */
+            padding: 1.5rem;
+            border-bottom: 1px solid #e0e0e0; /* كما كان في التصميم الأصلي */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-button {
+            background: none;
+            border: none;
+            font-size: 2rem; /* حجم الخط الأصلي */
+            color: #888; /* اللون الأصلي */
+            cursor: pointer;
+            line-height: 1;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header h2 {
+            color: #1a202c; /* لون الخط الأصلي لعنوان الرأس (text-gray-800) */
+        }
+
+        .section-item {
+            display: flex;
+            align-items: flex-start;
+            padding: 1.5rem;
+            border-bottom: 1px solid #f0f0f0;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+            position: relative;
+            z-index: 20;
+        }
+
+        .section-item:last-child {
+            border-bottom: none;
+        }
+
+        .section-item:hover {
+            background-color: #f9f9f9;
+        }
+
+        .icon-container {
+            background-color: #e0f2fe; /* اللون الأصلي */
+            border-radius: 0.75rem;
+            padding: 0.75rem;
+            margin-left: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            width: 3rem;
+            height: 3rem;
+        }
+
+        .icon-container svg {
+            width: 1.5rem;
+            height: 1.5rem;
+            color: #2196f3; /* اللون الأصلي */
+        }
+
+        /* ************* تأثيرات 19-movie-card-medium.png على الزر فقط (بالألوان الأصلية) ************* */
+        .main-action-button {
+            background-color: #2196f3; /* أزرق الزر الأصلي */
+            color: white;
+            padding: 0.75rem 1.5rem; /* حشوة أقل لجعل الزر أرفع مثل "Watch Now" */
+            border: none; /* لا حدود */
+            border-radius: 1.5rem; /* حواف مستديرة جدًا مثل "Watch Now" */
+            text-align: center;
+            font-size: 1rem; /* حجم خط أصغر وأكثر تناسبًا */
+            font-weight: 600; /* سمك خط متوسط */
+            width: auto; /* عرض تلقائي ليناسب المحتوى (مثل "Watch Now") */
+            display: block; /* جعله block ليأخذ سطرًا كاملاً */
+            margin: 1.5rem auto; /* توسيط الزر */
+            cursor: pointer;
+            transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+            /* ظل ناعم مشابه لظل زر "Watch Now" باستخدام لون الزر الأصلي */
+            box-shadow: 0 4px 8px rgba(33, 150, 243, 0.3); /* ظل أزرق ناعم */
+            position: relative; /* لإضافة تأثير توهج داخلي إذا أردنا لاحقًا */
+            overflow: hidden; /* لإخفاء أي توهج داخلي يتجاوز الحدود */
+        }
+
+        .main-action-button:hover {
+            background-color: #1976d2; /* أزرق أغمق قليلاً عند التمرير */
+            box-shadow: 0 6px 12px rgba(33, 150, 243, 0.4); /* ظل أقوى عند التمرير */
+        }
+
+        /* ************* نهاية تأثيرات 19-movie-card-medium.png على الزر ************* */
+
+        /* إزالة أشكال الخلفية القديمة بالكامل */
+        .shape, .triangle-shape, .square-shape {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <button class="close-button">×</button>
+            <h2 class="text-xl font-bold text-gray-800">عقد الجمعية</h2>
+        </div>
+
+        <div class="flex flex-col">
+            <div class="section-item">
+                <div class="icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-1">توقيع العقد</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        توقيع العقد بيكون مرة واحدة بس في حالة عدم
+                        وجود أي تغييرات في البنود.
+                        <a href="#" class="text-blue-600 hover:underline font-medium">
+                            (شوف نسخة العقد من هنا)
+                        </a>
+                    </p>
+                </div>
+            </div>
+
+            <div class="section-item">
+                <div class="icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.808-1.212a2 2 0 011.664-.89h.86c.642 0 1.242.384 1.573.941l.781 1.173a2 2 0 001.664.89H21a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-1">التصوير عند التوقيع</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        تبعاً لنظام "اعرف عميلك" مطلوب من المندوب
+                        تصويرك عند توقيع العقد للتأكد من مطابقة
+                        الهوية
+                    </p>
+                </div>
+            </div>
+
+            <div class="section-item">
+                <div class="icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-1">رسوم التوصيل</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        يتم دفع رسوم التعاقد للمندوب وبتكون 150ج.
+                    </p>
+                </div>
+            </div>
+
+            <div class="section-item">
+                <div class="icon-container">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold text-gray-800 mb-1">إيصال التزام السداد</h3>
+                    <p class="text-sm text-gray-600 leading-relaxed">
+                        مطلوب توقيع إيصال التزام السداد مع العقد
+                        لضمان حق كل المستخدمين وتقدر تستبرده بعد
+                        انتهاء الجمعية.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <button class="main-action-button">
+            اكتب عنوان التوصيل
+        </button>
+
+    </div>
+
+    <script>
+        const closeButton = document.querySelector('.close-button');
+        if (closeButton) {
+            closeButton.addEventListener('click', () => {
+                alert('Close button clicked!');
+            });
+        }
+
+        const mainActionButton = document.querySelector('.main-action-button');
+        if (mainActionButton) {
+            mainActionButton.addEventListener('click', () => {
+                alert('زر "اكتب عنوان التوصيل" تم الضغط عليه!');
+            });
+        }
+    </script>
+</body>
+</html>
