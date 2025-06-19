@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ملخص الجمعية - جمعيتي</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+    <style>
+        /* الألوان المخصصة - الأخضر السعودي والماتش مع الصورة بالظبط */
+        .bg-saudi-green { background-color: #006C35; }
+        .text-saudi-green { color: #006C35; }
+        .border-saudi-green { border-color: #006C35; }
+        .hover\:bg-saudi-green-darker:hover { background-color: #005A2C; }
+
+        /* الألوان اللي في الصورة (ملخص الجمعية) بتنسيقاتها الدقيقة */
+        .text-dark-gray { color: #4a5568; }
+        .bg-custom-light-gray { background-color: #f7fafc; } /* أفتح درجة رمادي في الخلفيات */
+        .bg-custom-medium-gray { background-color: #e2e8f0; } /* رمادي أزرار التبويبات */
+        .text-custom-darker-gray { color: #2d3748; } /* لون النص الغامق للأقسام */
+        .border-custom-light-gray { border-color: #edf2f7; } /* لون الحدود الفاتح */
+        .bg-blue-600-custom { background-color: #2b6cb0; } /* لون زر تأكيد الاشتراك الأزرق */
+        .hover\:bg-blue-700-custom:hover { background-color: #2c5282; }
+
+        /* الألوان الجديدة للدوريات (Teal) من image_6b9ad8.png */
+        .bg-custom-teal { background-color: #20b2aa; } /* لون الـ Teal للدوريات المليانة */
+        .border-custom-teal { border-color: #20b2aa; } /* لون الـ Teal للحدود الدوريات المفرغة */
+        .text-custom-light-blue { color: #20b2aa; } /* لون أزرق فاتح/Teal للنصوص زي "رسوم توصيل العقد" */
+
+
+        /* تنسيقات الدوريات الجديدة (3 دوريات) في الهيدر */
+        .header-circular-dots-container {
+            display: flex;
+            justify-content: center; /* لسنترة الدوريات */
+            gap: 8px; /* المسافة بين الدوريات */
+            padding: 5px 0 10px; /* مسافة فوق وتحت الدوريات */
+            width: 100%;
+        }
+        .header-circular-dot {
+            width: 16px; /* حجم الدائرة */
+            height: 16px; /* حجم الدائرة */
+            border-radius: 50%;
+            border: 2px solid; /* لتكون الدوائر مفرغة أو ليها حدود */
+        }
+        .header-circular-dot.empty {
+            background-color: transparent; /* مفرغ */
+            border-color: #20b2aa; /* لون حدود الـ Teal */
+        }
+        .header-circular-dot.filled {
+            background-color: #20b2aa; /* مليان بالـ Teal */
+            border-color: #20b2aa; /* حدود بنفس اللون */
+        }
+
+        /* التنسيقات الخاصة بمنطقة الدور (Timeline) - رجعت للشكل الأصلي مع النقاط الرمادي */
+        .timeline-flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 0 10px;
+            position: relative;
+            margin-top: 10px; /* مسافة من شريط التقدم */
+        }
+        .timeline-item-new {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            flex: 1;
+            position: relative;
+            padding-bottom: 20px;
+        }
+        .timeline-item-new .month-label {
+            font-size: 0.875rem; /* text-sm */
+            color: #718096; /* gray-600 */
+            margin-top: 15px;
+        }
+        .timeline-dot-new {
+            width: 8px;
+            height: 8px;
+            background-color: #cbd5e0; /* رمادي الخط زي الصورة */
+            border-radius: 50%;
+            position: absolute;
+            top: 0px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+        }
+        .timeline-line-horizontal {
+            position: absolute;
+            height: 2px;
+            background-color: #cbd5e0; /* رمادي الخط */
+            left: 10px;
+            right: 10px;
+            top: 4px;
+            transform: translateY(-50%);
+            z-index: 0;
+        }
+
+        /* تنسيقات شريط التقدم (الرمادي والأخضر) - رجعت للشكل الأصلي 6 مربعات والرابع أخضر */
+        .progress-segments-container {
+            display: flex;
+            gap: 4px;
+            width: 100%;
+            height: 8px;
+            background-color: transparent;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+        .progress-segment {
+            flex: 1;
+            background-color: #d1d5db; /* لون رمادي فاتح للمربعات غير المكتملة */
+            border-radius: 2px;
+        }
+        .progress-segment.active {
+            background-color: #006C35; /* لون أخضر للمربع النشط */
+        }
+        
+        /* تنسيقات الناف بار السفلية - طبق الأصل */
+        .bottom-nav {
+            background-color: #006C35;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: env(safe-area-inset-bottom);
+            z-index: 10;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 500;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .bottom-nav-item.active {
+            opacity: 1;
+            color: #d1fae5;
+        }
+
+        .bottom-nav-item i {
+            font-size: 1.25rem;
+            margin-bottom: 2px;
+        }
+
+        .bottom-nav-center-btn {
+            background-color: #006C35;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            transform: translateY(-20%);
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
+            border: 4px solid #fff;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+         .bottom-nav-center-btn i {
+            font-size: 1.5rem;
+        }
+
+        /* تنسيقات الـ Toggle Switch */
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px; /* عرض السويتش */
+            height: 28px; /* ارتفاع السويتش */
+            margin-right: 10px; /* مسافة عن النص */
+        }
+
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc; /* لون الخلفية لما يكون مطفأ */
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 28px; /* لتكون الأطراف دائرية */
+        }
+
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 20px; /* حجم الدائرة */
+            width: 20px; /* حجم الدائرة */
+            left: 4px; /* مسافة من اليسار */
+            bottom: 4px; /* مسافة من الأسفل */
+            background-color: white; /* لون الدائرة البيضاء */
+            -webkit-transition: .4s;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .toggle-slider {
+            background-color: #2196F3; /* لون الخلفية لما يكون شغال (أزرق افتراضي) */
+        }
+        /* لون السويتش أزرق عند التفعيل نفس اللي في الصورة image_6bad04.png */
+        input:checked + .toggle-slider {
+            background-color: #2b6cb0; /* أزرق داكن نفس لون زر "تأكيد الاشتراك" */
+        }
+
+
+        input:focus + .toggle-slider {
+            box-shadow: 0 0 1px #2196F3;
+        }
+
+        input:checked + .toggle-slider:before {
+            -webkit-transform: translateX(22px); /* تحريك الدائرة لليمين */
+            -ms-transform: translateX(22px);
+            transform: translateX(22px);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 font-sans text-right">
+
+    <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden my-0 min-h-screen pb-20">
+        <header class="flex items-center justify-between p-4 border-b border-gray-200 flex-col">
+            <div class="flex items-center justify-between w-full mb-2">
+                <a href="#" class="text-gray-600 hover:text-gray-800">
+                    <i class="fas fa-arrow-right text-xl"></i> </a>
+                <h1 class="text-xl font-bold text-gray-800 flex-grow text-center">ملخص الجمعية</h1>
+                <div class="w-6"></div> </div>
+            
+            <div class="header-circular-dots-container">
+                <div class="header-circular-dot filled"></div> <div class="header-circular-dot filled"></div> <div class="header-circular-dot filled"></div> </div>
+        </header>
+
+        <main class="p-4">
+
+            <section class="bg-custom-light-gray rounded-lg p-4 mb-4 flex items-center justify-center">
+                <div class="flex items-center text-sm font-medium text-gray-700">
+                    <i class="fas fa-users text-gray-500 text-lg ml-2"></i>
+                    <span>في <span class="text-saudi-green font-bold">45 مستخدم</span> مهتم بيحجز الدور ده دلوقتي</span>
+                </div>
+            </section>
+
+            <section class="flex bg-custom-medium-gray rounded-full p-1 mb-6">
+                <button class="flex-1 py-2 px-4 rounded-full text-center text-custom-darker-gray font-medium bg-white shadow-sm">
+                    تفاصيل الجمعية
+                </button>
+                <button class="flex-1 py-2 px-4 rounded-full text-center text-gray-500 font-medium">
+                    تفاصيل المدفوعات
+                </button>
+            </section>
+
+            <section class="mb-6">
+                <h2 class="text-lg font-bold text-custom-darker-gray mb-4">تفاصيل الجمعية</h2>
+
+                <div class="bg-white rounded-lg p-4 shadow-sm relative overflow-hidden mb-4 flex flex-col items-center">
+                    <div class="flex items-center text-lg font-bold text-saudi-green mb-4">
+                        <span class="ml-2">دورك (أغسطس)</span>
+                        <i class="fas fa-user-circle text-2xl"></i>
+                    </div>
+
+                    <div class="progress-segments-container mb-4 px-4">
+                        <div class="progress-segment"></div>
+                        <div class="progress-segment"></div>
+                        <div class="progress-segment"></div>
+                        <div class="progress-segment active"></div> <div class="progress-segment"></div>
+                        <div class="progress-segment"></div>
+                    </div>
+
+                    <div class="timeline-flex-container w-full">
+                        <div class="timeline-line-horizontal"></div>
+                        
+                        <div class="timeline-item-new">
+                            <div class="timeline-dot-new"></div>
+                            <span class="month-label">يوليو 2025</span>
+                        </div>
+
+                        <div class="timeline-item-new">
+                            <div class="timeline-dot-new"></div>
+                            <span class="month-label">6 شهور</span>
+                        </div>
+
+                        <div class="timeline-item-new">
+                            <div class="timeline-dot-new"></div>
+                            <span class="month-label">ديسمبر 2025</span>
+                        </div>
+                    </div>
+                    
+                    <p class="text-sm text-gray-600 mt-2 text-center">
+                        يتم إرسال القبض من يوم 15 إلى 30 في شهر القبض
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-lg p-4 shadow-sm flex items-center mb-4">
+                    <span class="text-xl font-bold text-saudi-green ml-2">%</span>
+                    <input type="text" placeholder="إكتب البرومو كود هنا" class="flex-1 border-none outline-none focus:ring-0 text-gray-700 placeholder-gray-400 text-sm py-2">
+                    <button class="text-saudi-green text-sm font-medium opacity-50 cursor-not-allowed">تطبيق</button>
+                </div>
+            </section>
+
+            <section class="mb-6">
+                <h2 class="text-lg font-bold text-custom-darker-gray mb-4">حسابات القبض</h2>
+
+                <div class="bg-white rounded-lg p-4 shadow-sm">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-700 text-sm">مبلغ الجمعية</span>
+                        <span class="text-gray-900 font-bold">12,000 <span class="text-xs font-normal">ر.س</span></span>
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-700 text-sm">قسط شهر القبض</span>
+                        <span class="text-red-500 font-bold">2,000 - <span class="text-xs font-normal">ر.س</span></span>
+                    </div>
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-700 text-sm">المتبقي من المصاريف الإدارية</span>
+                        <span class="text-red-500 font-bold">420 - <span class="text-xs font-normal">ر.س</span></span>
+                    </div>
+                    <div class="border-t border-gray-200 my-3"></div>
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-700 text-lg font-bold">إجمالي القبض</span>
+                        <span class="text-saudi-green text-xl font-bold">9,580 <span class="text-sm font-normal">ر.س</span></span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-6">
+                <h2 class="text-lg font-bold text-custom-darker-gray mb-4">الرسوم</h2>
+
+                <div class="bg-white rounded-lg p-4 shadow-sm mb-4">
+                    <div class="flex justify-between items-center mb-2">
+                        <span class="text-gray-700 text-sm">إجمالي رسوم الجمعية</span>
+                        <span class="text-gray-900 font-bold">840 <span class="text-xs font-normal">ر.س</span></span>
+                    </div>
+                    <p class="text-xs text-gray-500 mb-4">
+                        رسوم الجمعية بتنقسم على عدة شهور محددة لحد شهر القبض
+                    </p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-custom-light-blue text-sm font-bold">رسوم توصيل العقد <i class="fas fa-question-circle text-gray-400 text-xs mr-1"></i></span>
+                        <span class="text-gray-900 font-bold">150 <span class="text-xs font-normal">ر.س</span></span>
+                    </div>
+                    <p class="text-xs text-gray-500">
+                        يتم دفعها مرة واحدة فقط نقدًا عند التسليم
+                    </p>
+                </div>
+
+                <div class="bg-white rounded-lg p-4 shadow-sm flex items-center justify-between mb-4">
+                    <div class="flex items-center">
+                        <i class="fas fa-sync-alt text-gray-600 text-xl ml-2"></i>
+                        <span class="text-lg font-bold text-custom-darker-gray">تجديد الجمعية تلقائيًا</span>
+                    </div>
+                    <label class="toggle-switch">
+                        <input type="checkbox">
+                        <span class="toggle-slider"></span>
+                    </label>
+                </div>
+                <p class="text-xs text-gray-500 mb-6">
+                    لما الخيار ده يكون مقفل، الجمعية هتتجدد بنفس المبلغ والمدة والدور بعد ما تخلص.
+                </p>
+            </section>
+            <section class="p-4">
+                <p class="text-sm text-gray-600 mb-4 text-center">
+                    تأكيد اشتراكك في الجمعية بيأكد موافقتك على <span class="text-custom-light-blue font-bold">الشروط والأحكام</span> و <span class="text-custom-light-blue font-bold">سياسة الخصوصية</span>.
+                </p>
+                <button class="w-full bg-blue-600-custom text-white py-3 rounded-lg text-lg font-semibold shadow-md hover:bg-blue-700-custom transition-colors duration-300">
+                    تأكيد الإشتراك
+                </button>
+            </section>
+
+        </main>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="#" class="bottom-nav-item">
+            <i class="fas fa-receipt"></i>
+            <span>المدفوعات</span>
+        </a>
+        <a href="#" class="bottom-nav-item">
+            <i class="fas fa-credit-card"></i>
+            <span>كارتي</span>
+        </a>
+        <a href="#" class="bottom-nav-item bottom-nav-center-btn">
+            <i class="fas fa-plus"></i>
+        </a>
+        <a href="#" class="bottom-nav-item">
+            <i class="fas fa-users"></i>
+            <span>جمعياتي</span>
+        </a>
+        <a href="#" class="bottom-nav-item active">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
+            bottomNavItems.forEach(item => {
+                item.addEventListener('click', function(event) {
+                    bottomNavItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>
