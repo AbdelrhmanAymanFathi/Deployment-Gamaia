@@ -155,10 +155,10 @@
   </style>
 </head>
 <body class="bg-white min-h-screen flex flex-col items-center pt-2 px-2">
-  <div class="w-full max-w-xs mx-auto border border-[#b6e2da] rounded-lg overflow-hidden shadow-custom bg-white">
+  <div class=" border border-[#b6e2da] rounded-lg overflow-hidden shadow-custom bg-white">
     <!-- Header -->
     <div class="section-title">
-      <i class="bi bi-arrow-right-short text-2xl teal-icon"></i>
+      <i class="bi bi-arrow-right-short text-2xl teal-icon cursor-pointer" onclick="history.back()"></i>
       <span>محفظة إلكترونية</span>
     </div>
     <!-- Info -->
@@ -215,8 +215,8 @@
       </div>
       <!-- Buttons -->
       <div class="flex flex-col gap-2 w-full">
-        <input type="button" value="التالي" class="btn-main" />
-        <input type="button" value="تخطي" class="btn-outline" />
+        <input type="button" value="التالي" class="btn-main" onclick="window.location.href='National_id.html'" />
+        <input type="button" value="تخطي" class="btn-outline" onclick="window.location.href='National_id.html'" />
       </div>
     </div>
   </div>
