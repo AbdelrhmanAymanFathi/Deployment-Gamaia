@@ -1,29 +1,45 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>إعدادات المدفوعات - برنامج الجمعيات السعودي</title>
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.1/dist/tailwind.min.css" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <style>
-    .main-color { color: #90D1CA; }
-    .bg-main { background-color: #90D1CA !important; }
+    .main-color {
+      color: #90D1CA;
+    }
+
+    .bg-main {
+      background-color: #90D1CA !important;
+    }
+
     .btn-main {
       background-color: #90D1CA !important;
       color: #fff !important;
       transition: background 0.2s;
     }
-    .btn-main:hover, .btn-main:focus {
+
+    .btn-main:hover,
+    .btn-main:focus {
       background-color: #6bbcb2 !important;
       color: #fff !important;
     }
+
     .custom-header-bg {
       background: linear-gradient(135deg, #90D1CA 60%, #e0f7fa 100%);
     }
+
     .setting-card {
       @apply bg-white rounded-2xl shadow-lg p-6 mb-6 border border-gray-100;
     }
+
     .input-main:focus {
       border-color: #90D1CA;
       box-shadow: 0 0 0 2px #90D1CA22;
@@ -42,19 +58,31 @@
       const walletCheckbox = document.getElementById('enable-wallet');
       walletSection.style.display = walletCheckbox.checked ? 'block' : 'none';
     }
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
       toggleWalletField();
     });
   </script>
 </head>
+
 <body class="bg-gray-50 min-h-screen flex flex-col">
+  <!-- Header with back icon -->
+  <header style="background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0.75rem 0; margin-bottom: 1.5rem;">
+    <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center;">
+      <button onclick="window.location.href='payments.html'"
+        style="background: none; border: none; cursor: pointer; display: flex; align-items: center; color: #38b2ac; font-size: 1.7rem; padding: 0 0.5rem;">
+        <i class="fas fa-arrow-right"></i>
+        <span style="font-size: 1rem; margin-right: 0.5rem;">رجوع</span>
+      </button>
+    </div>
+  </header>
+
   <!-- Header -->
   <header class="custom-header-bg shadow-lg">
     <div class="container mx-auto px-4 py-8 flex flex-col md:flex-row items-center gap-4">
       <div class="bg-white rounded-full p-3 shadow-xl border-4 border-[#90D1CA]">
         <svg class="w-12 h-12 text-[#90D1CA]" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-          <path d="M12 8c-2.21 0-4 1.79-4 4v4h8v-4c0-2.21-1.79-4-4-4z"/>
-          <circle cx="12" cy="7" r="4"/>
+          <path d="M12 8c-2.21 0-4 1.79-4 4v4h8v-4c0-2.21-1.79-4-4-4z" />
+          <circle cx="12" cy="7" r="4" />
         </svg>
       </div>
       <div>
@@ -74,7 +102,10 @@
       <!-- طرق الدفع -->
       <div class="setting-card">
         <h2 class="text-xl font-bold text-[#155e63] mb-4 flex items-center gap-2">
-          <svg class="w-6 h-6 text-[#90D1CA]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="2" /><path d="M2 10h20" /></svg>
+          <svg class="w-6 h-6 text-[#90D1CA]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <rect x="2" y="7" width="20" height="10" rx="2" />
+            <path d="M2 10h20" />
+          </svg>
           خيارات الدفع
         </h2>
         <div class="flex flex-col sm:flex-row gap-4">
@@ -101,7 +132,9 @@
       <!-- بيانات المحفظة الرقمية -->
       <div id="wallet-section" class="setting-card" style="display:none;">
         <label class="block text-gray-700 font-semibold mb-2">بيانات المحفظة الرقمية:</label>
-        <input type="text" class="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-[#90D1CA] py-2 px-3 mb-2 input-main" placeholder="رقم الجوال المرتبط بالمحفظة" />
+        <input type="text"
+          class="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-[#90D1CA] py-2 px-3 mb-2 input-main"
+          placeholder="رقم الجوال المرتبط بالمحفظة" />
         <select class="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-[#90D1CA] py-2 px-3 input-main">
           <option>STC Pay</option>
           <option>محفظة الراجحي</option>
@@ -124,8 +157,11 @@
       </div>
       <!-- زر الحفظ -->
       <div class="flex justify-center">
-        <button type="submit" class="btn-main font-semibold py-2 px-8 rounded-lg shadow transition text-lg flex items-center gap-2">
-          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg>
+        <button type="submit"
+          class="btn-main font-semibold py-2 px-8 rounded-lg shadow transition text-lg flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path d="M5 13l4 4L19 7" />
+          </svg>
           حفظ الإعدادات
         </button>
       </div>
@@ -140,7 +176,8 @@
 
   <!-- Footer -->
   <footer class="bg-white shadow-inner mt-10">
-    <div class="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between text-gray-600 text-sm">
+    <div
+      class="container mx-auto px-4 py-6 flex flex-col md:flex-row items-center justify-between text-gray-600 text-sm">
       <span>جميع الحقوق محفوظة &copy; 2024 برنامج الجمعيات السعودي</span>
       <div class="flex gap-4 mt-2 md:mt-0">
         <a href="#" class="hover:text-[#90D1CA]">سياسة الخصوصية</a>
@@ -149,4 +186,5 @@
     </div>
   </footer>
 </body>
+
 </html>

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>الإشعارات</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+
+  <div class="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-6 space-y-6">
+    <h1 class="text-2xl font-bold text-gray-800 border-b pb-2">📢 الإشعارات</h1>
+
+    <div id="notificationsContainer" class="space-y-4">
+      <!-- الإشعارات سيتم إضافتها هنا ديناميكيًا -->
+    </div>
+
+    <div id="pagination" class="flex justify-between items-center pt-4 border-t text-sm text-gray-500">
+      <button id="prevBtn" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50" disabled>السابق</button>
+      <span id="pageInfo">صفحة 1</span>
+      <button id="nextBtn" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50">التالي</button>
+    </div>
+  </div>
+
+  <script>
+    const container = document.getElementById("notificationsContainer");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const pageInfo = document.getElementById("pageInfo");
+
+    let currentPage = 1;
+    const limit = 10;
+
+    // Always get the raw token (no Bearer prefix)
+    let token = localStorage.getItem("token");
+    if (token && token.startsWith("Bearer ")) {
+      token = token.replace(/^Bearer\s+/, "");
+      localStorage.setItem("token", token); // fix it for future use
+    }
+
+    async function fetchNotifications(page = 1) {
+      try {
+        if (!token) {
+          container.innerHTML = `<div class="text-red-600 text-center py-10">🛑 يجب تسجيل الدخول أولاً</div>`;
+          return;
+        }
+
+        const res = await fetch(`https://money-production-bfc6.up.railway.app/api/userData/notifications?page=${page}&limit=${limit}`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          if (res.status === 401) {
+            container.innerHTML = `<div class="text-red-600 text-center py-10">⛔ غير مصرح. يرجى تسجيل الدخول مجددًا</div>`;
+          } else {
+            container.innerHTML = `<div class="text-red-600 text-center py-10">⚠️ حدث خطأ في تحميل البيانات. رمز الحالة: ${res.status}</div>`;
+          }
+          return;
+        }
+
+        const data = await res.json();
+        if (!data.notifications) {
+          throw new Error("❌ لم يتم العثور على بيانات إشعارات");
+        }
+
+        container.innerHTML = "";
+
+        if (data.notifications.length === 0) {
+          container.innerHTML = `<div class="text-gray-600 text-center py-10">لا توجد إشعارات حالياً</div>`;
+        } else {
+          data.notifications.forEach(notif => {
+            const card = document.createElement("div");
+            card.className = `p-4 rounded-xl shadow transition duration-300 ${notif.isRead ? 'bg-gray-50' : 'bg-yellow-100'}`;
+
+            const date = new Date(notif.createdAt).toLocaleString('ar-EG', {
+              dateStyle: 'short',
+              timeStyle: 'short'
+            });
+
+            card.innerHTML = `
+              <div class="flex justify-between items-start">
+                <p class="text-gray-800">${notif.message}</p>
+                <span class="text-xs text-gray-500 whitespace-nowrap">${date}</span>
+              </div>
+            `;
+
+            container.appendChild(card);
+          });
+        }
+
+        currentPage = data.pagination.page;
+        pageInfo.textContent = `صفحة ${currentPage}`;
+        prevBtn.disabled = currentPage <= 1;
+        nextBtn.disabled = !data.pagination.hasMore;
+
+      } catch (error) {
+        container.innerHTML = `<div class="text-red-600 text-center py-10">${error.message}</div>`;
+        console.error(error);
+      }
+    }
+
+    prevBtn.addEventListener("click", () => {
+      if (currentPage > 1) fetchNotifications(currentPage - 1);
+    });
+
+    nextBtn.addEventListener("click", () => {
+      fetchNotifications(currentPage + 1);
+    });
+
+    fetchNotifications();
+  </script>
+</body>
+</html>

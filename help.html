@@ -4,16 +4,20 @@
     <meta charset="UTF-8">
     <title>مساعدة</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="bg-gray-50 min-h-screen font-sans">
-    <!-- Header -->
-    <div class="p-3 flex items-center border-b bg-white align-items-center">
-                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-        </svg>
-        <span class="text-xl font-bold ml-2">مساعدة</span>
-
-    </div>
+    <!-- Header with back icon -->
+    <header style="background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0.75rem 0; margin-bottom: 1.5rem;">
+        <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center;">
+            <button onclick="window.location.href='payments.html'"
+                style="background: none; border: none; cursor: pointer; display: flex; align-items: center; color: #38b2ac; font-size: 1.5rem; padding: 0 0.5rem;">
+                <i class="fas fa-arrow-right"></i>
+                <span style="font-size: 1rem; margin-right: 0.5rem;">رجوع</span>
+            </button>
+            <!-- <span class="text-xl font-bold ml-4">مساعدة</span> -->
+        </div>
+    </header>
 
     <!-- التصنيفات -->
     <div class="p-4 grid grid-cols-2 md:grid-cols-3 gap-4">
