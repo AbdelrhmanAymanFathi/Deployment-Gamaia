@@ -217,6 +217,18 @@
         </div>
         <div class="text-lg font-semibold mb-2">تم نسخ رابط الدعوة!</div>
         <div class="text-gray-600 mb-4">يمكنك مشاركته مع أصدقائك.</div>
+        <!-- روابط المشاركة -->
+        <div id="social-share" class="flex justify-center gap-3 mb-2 hidden">
+          <a id="wa-share" href="#" target="_blank" title="واتساب">
+            <i class="bi bi-whatsapp text-2xl text-green-500"></i>
+          </a>
+          <a id="tw-share" href="#" target="_blank" title="تويتر">
+            <i class="bi bi-twitter text-2xl text-blue-400"></i>
+          </a>
+          <a id="fb-share" href="#" target="_blank" title="فيسبوك">
+            <i class="bi bi-facebook text-2xl text-blue-600"></i>
+          </a>
+        </div>
         <button id="close-modal-btn"
           class="mt-2 px-4 py-2 bg-[#16a34a] text-white rounded hover:bg-[#128a3a] transition">
           إغلاق
@@ -281,24 +293,32 @@
       const logoutBtn = document.getElementById("logout-btn");
 
       function closeAll() {
-        notifDropdown.classList.add("hidden");
+        if (notifDropdown) {
+          notifDropdown.classList.add("hidden");
+        }
         profMenu.classList.add("hidden");
       }
 
       notifToggle.addEventListener("click", e => {
         e.stopPropagation();
         profMenu.classList.add("hidden");
-        notifDropdown.classList.toggle("hidden");
+        if (notifDropdown) {
+          notifDropdown.classList.toggle("hidden");
+        }
       });
 
       profToggle.addEventListener("click", e => {
         e.stopPropagation();
-        notifDropdown.classList.add("hidden");
+        if (notifDropdown) {
+          notifDropdown.classList.add("hidden");
+        }
         profMenu.classList.toggle("hidden");
       });
 
       document.addEventListener("click", closeAll);
-      notifDropdown.addEventListener("click", e => e.stopPropagation());
+      if (notifDropdown) {
+        notifDropdown.addEventListener("click", e => e.stopPropagation());
+      }
       profMenu.addEventListener("click", e => e.stopPropagation());
 
       if (logoutBtn) {
@@ -313,38 +333,56 @@
       const copyModal = document.getElementById('copy-modal');
       const closeModalBtn = document.getElementById('close-modal-btn');
       const shareUrl = 'https://abdelrhmanaymanfathi.github.io/Deployment-Gamaia/';
+      const socialShare = document.getElementById('social-share');
+      const waShare = document.getElementById('wa-share');
+      const twShare = document.getElementById('tw-share');
+      const fbShare = document.getElementById('fb-share');
 
-      inviteBtn.addEventListener('click', () => {
-        const shareData = {
-          title: 'جمعياتي',
-          text: 'انضم لجمعيتي واحصل على خصم!',
-          url: shareUrl
-        };
-        if (navigator.share) {
-          navigator.share(shareData).catch(() => { });
-        } else {
-          navigator.clipboard.writeText(shareUrl);
-          copyModal.classList.remove('hidden');
-        }
-      });
+      if (inviteBtn) {
+        inviteBtn.addEventListener('click', () => {
+          const shareData = {
+            title: 'جمعياتي',
+            text: 'انضم لجمعيتي واحصل على خصم!',
+            url: shareUrl
+          };
+          if (navigator.share) {
+            navigator.share(shareData).catch(() => { });
+          } else {
+            // إعداد روابط السوشيال ميديا
+            if (waShare && twShare && fbShare && socialShare) {
+              waShare.href = `https://wa.me/?text=${encodeURIComponent(shareData.text + ' ' + shareUrl)}`;
+              twShare.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareData.text)}&url=${encodeURIComponent(shareUrl)}`;
+              fbShare.href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`;
+              socialShare.classList.remove('hidden');
+            }
+            if (navigator.clipboard) {
+              navigator.clipboard.writeText(shareUrl).then(() => {
+                if (copyModal) copyModal.classList.remove('hidden');
+              });
+            } else {
+              window.prompt("انسخ هذا الرابط وشاركه مع أصدقائك:", shareUrl);
+            }
+          }
+        });
+      }
 
-      closeModalBtn.addEventListener('click', () => {
-        copyModal.classList.add('hidden');
-      });
-      copyModal.addEventListener('click', e => {
-        if (e.target === copyModal) copyModal.classList.add('hidden');
-      });
+      if (closeModalBtn && copyModal) {
+        closeModalBtn.addEventListener('click', () => {
+          copyModal.classList.add('hidden');
+          if (socialShare) socialShare.classList.add('hidden');
+        });
+        copyModal.addEventListener('click', e => {
+          if (e.target === copyModal) {
+            copyModal.classList.add('hidden');
+            if (socialShare) socialShare.classList.add('hidden');
+          }
+        });
+      }
     });
   </script>
   <!-- loader -->
 <!-- loader -->
-<script>
-  window.addEventListener('load', function () {
-    setTimeout(function () {
-      document.getElementById('loader').style.display = 'none';
-    }, 3000); // 3 ثواني
-  });
-</script>
+
 </body>
 
 </html>
