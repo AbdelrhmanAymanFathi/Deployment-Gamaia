@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مساعدة - جمعيتي</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <style>
+        /* إزالة المسافة من فوق - تعديل على body */
+        body {
+            margin-top: 0; /* إزالة المسافة العلوية */
+        }
+
+        /* الألوان المخصصة (أخضر سعودي) */
+        .bg-saudi-green { background-color: #006C35; }
+        .text-saudi-green { color: #006C35; }
+        .border-saudi-green { border-color: #006C35; }
+        .hover\:bg-saudi-green-darker:hover { background-color: #005A2C; } /* درجة أغمق للهوفر */
+        
+        /* لون الهافر الجديد المطلوب */
+        .hover\:bg-custom-hover:hover { background-color: #9cd1c8; } 
+        .hover\:text-custom-hover:hover { color: #9cd1c8; } /* لو حبيت تأثير نص باللون ده */
+
+
+        /* لتأثيرات الـ Modal */
+        .modal-overlay {
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+            transition: opacity 0.3s ease-in-out;
+        }
+        .modal-content {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        }
+        .hidden-modal {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .hidden-modal .modal-content {
+            transform: translateY(-20px);
+            opacity: 0;
+        }
+        .faq-answer { /* إخفاء الإجابات الأصلية بالكامل */
+            display: none !important;
+        }
+
+        /* تعديلات على مربع البحث لتظهر المقترحات */
+        .search-container {
+            position: relative;
+        }
+        .search-suggestions {
+            position: absolute;
+            top: 100%; /* تظهر تحت حقل البحث */
+            right: 0; /* محاذاة لليمين */
+            width: 100%;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            z-index: 10;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .search-suggestions div {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        .search-suggestions div:last-child {
+            border-bottom: none;
+        }
+        .search-suggestions div:hover {
+            background-color: #f3f4f6;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+
+    <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden my-0"> <header class="flex items-center justify-between p-4 border-b border-gray-200">
+            <a href="#" class="text-gray-600 hover:text-gray-800">
+                <i class="fas fa-arrow-right text-xl"></i>
+            </a>
+            <h1 class="text-xl font-bold text-gray-800">مساعدة</h1>
+            <div class="relative search-container">
+                <input type="text" id="searchInput" placeholder="ابحث هنا..." class="py-2 pr-10 pl-4 rounded-full bg-gray-100 text-gray-700 text-sm focus:outline-none focus:ring-2 focus:ring-saudi-green">
+                <i class="fas fa-search absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                <div id="searchResults" class="search-suggestions hidden">
+                    </div>
+            </div>
+        </header>
+
+        <main class="p-4">
+
+            <section class="mb-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">تصفح التصنيفات</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 flex items-center justify-between shadow-sm hover:bg-custom-hover">
+                        <i class="fas fa-id-card text-saudi-green text-2xl ml-3"></i> <span class="text-gray-700 font-medium text-right flex-grow">كارت جمعيتي</span>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 flex items-center justify-between shadow-sm hover:bg-custom-hover">
+                        <i class="fas fa-cogs text-saudi-green text-2xl ml-3"></i>
+                        <span class="text-gray-700 font-medium text-right flex-grow">إدارية</span>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 flex items-center justify-between shadow-sm hover:bg-custom-hover">
+                        <i class="fas fa-credit-card text-saudi-green text-2xl ml-3"></i>
+                        <span class="text-gray-700 font-medium text-right flex-grow">الدفع</span>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 flex items-center justify-between shadow-sm hover:bg-custom-hover">
+                        <i class="fas fa-user-circle text-saudi-green text-2xl ml-3"></i>
+                        <span class="text-gray-700 font-medium text-right flex-grow">الحساب</span>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 flex items-center justify-between shadow-sm hover:bg-custom-hover">
+                        <i class="fas fa-file-contract text-saudi-green text-2xl ml-3"></i>
+                        <span class="text-gray-700 font-medium text-right flex-grow">العقد</span>
+                    </div>
+                    <div class="bg-gray-50 border border-gray-200 rounded-lg p-4 flex items-center justify-between shadow-sm hover:bg-custom-hover">
+                        <i class="fas fa-exchange-alt text-saudi-green text-2xl ml-3"></i>
+                        <span class="text-gray-700 font-medium text-right flex-grow">السحب</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h2 class="text-lg font-semibold text-gray-800">الأسئلة الشائعة</h2>
+                    <a href="#" class="text-saudi-green hover:text-green-700 font-medium text-sm">عرض الكل</a>
+                </div>
+
+                <div class="space-y-3">
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden hover:bg-custom-hover">
+                        <button class="faq-question-btn w-full flex items-center justify-between p-4 text-right text-gray-700 font-medium focus:outline-none"
+                                data-question="أين توجد فروع جمعيتي؟"
+                                data-answer="تنتشر فروع جمعيتي في جميع أنحاء المملكة العربية السعودية، لتغطية المدن الرئيسية والمناطق الحيوية مثل الرياض، جدة، الدمام، ومكة المكرمة. نحن ملتزمون بالتوسع المستمر لضمان قربنا منكم أينما كنتم. يمكنك بسهولة العثور على أقرب فرع لك باستخدام خاصية 'محدد الفروع' المتوفرة داخل التطبيق على الخريطة التفاعلية.">
+                            <span>أين توجد فروع جمعيتي؟</span>
+                            <i class="fas fa-chevron-left text-saudi-green text-sm"></i>
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden hover:bg-custom-hover">
+                        <button class="faq-question-btn w-full flex items-center justify-between p-4 text-right text-gray-700 font-medium focus:outline-none"
+                                data-question="لماذا أثق في جمعيتي؟"
+                                data-answer="ثقتك هي رأس مالنا. جمعيتي تعمل بترخيص كامل من الجهات الحكومية المختصة في المملكة العربية السعودية، وتلتزم بأعلى معايير الأمن السيبراني لحماية بياناتك المالية والشخصية باستخدام أحدث تقنيات التشفير. نحن نضمن الشفافية المطلقة في جميع معاملاتنا، ولدينا فريق دعم عملاء متخصص وجاهز لمساعدتك على مدار الساعة، مما يجعل جمعيتي خيارك الآمن والموثوق.">
+                            <span>لماذا أثق في جمعيتي؟</span>
+                            <i class="fas fa-chevron-left text-saudi-green text-sm"></i>
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden hover:bg-custom-hover">
+                        <button class="faq-question-btn w-full flex items-center justify-between p-4 text-right text-gray-700 font-medium focus:outline-none"
+                                data-question="ما هي الجمعيات المضمونة؟"
+                                data-answer="الجمعيات المضمونة هي شبكة النخبة من الشركاء والكيانات المعتمدة لدى جمعيتي، والتي تم اختيارها بعناية فائقة وبعد تقييم شامل لضمان التزامها بمعايير الجودة، الشفافية، والموثوقية. نحن نتعاون فقط مع الجهات التي تلتزم بأعلى معايير النزاهة في تقديم خدماتها، سواء كانت مشاريع خيرية، عروض تجارية، أو منصات استثمارية، لضمان أقصى فائدة وأمان لمستخدمينا.">
+                            <span>ما هي الجمعيات المضمونة؟</span>
+                            <i class="fas fa-chevron-left text-saudi-green text-sm"></i>
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden hover:bg-custom-hover">
+                        <button class="faq-question-btn w-full flex items-center justify-between p-4 text-right text-gray-700 font-medium focus:outline-none"
+                                data-question="ماذا أقدم في جمعيتي؟"
+                                data-answer="جمعيتي يقدم لك بوابة متكاملة للعديد من الخدمات القيمة: يمكنك المساهمة في مشاريع خيرية موثوقة، الاستفادة من عروض حصرية وخصومات من شركائنا، تجميع النقاط والمكافآت على مشترياتك اليومية، وحتى إدارة مدخراتك بطرق مبتكرة. هدفنا هو تمكينك من تحقيق أقصى استفادة مالية واجتماعية من خلال منصة آمنة وشفافة.">
+                            <span>ماذا أقدم في جمعيتي؟</span>
+                            <i class="fas fa-chevron-left text-saudi-green text-sm"></i>
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden hover:bg-custom-hover">
+                        <button class="faq-question-btn w-full flex items-center justify-between p-4 text-right text-gray-700 font-medium focus:outline-none"
+                                data-question="هل هذا قانوني؟"
+                                data-answer="نؤكد لكم أن جمعيتي يعمل ضمن إطار قانوني صارم ومتوافق تماماً مع جميع الأنظمة والتشريعات المعمول بها في المملكة العربية السعودية. جميع عملياتنا، من جمع التبرعات إلى إدارة المعاملات المالية، تخضع لرقابة صارمة من الجهات المختصة، مما يضمن لكم أعلى مستويات الشفافية والأمان والشرعية. نحن ملتزمون بتقديم تجربة قانونية وموثوقة لجميع مستخدمينا.">
+                            <span>هل هذا قانوني؟</span>
+                            <i class="fas fa-chevron-left text-saudi-green text-sm"></i>
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden hover:bg-custom-hover">
+                        <button class="faq-question-btn w-full flex items-center justify-between p-4 text-right text-gray-700 font-medium focus:outline-none"
+                                data-question="إزاي استخدم كود الخصم؟"
+                                data-answer="استخدام كود الخصم في جمعيتي سهل جداً! عند قيامك بعملية دفع أو شراء أي خدمة/منتج من خلال التطبيق، ستجد خانة مخصصة مكتوب عليها 'أدخل كود الخصم' أو 'الرمز الترويجي' قبل إتمام عملية الدفع النهائية. قم بإدخال الكود في هذه الخانة ثم اضغط على زر 'تطبيق' لتفعيل الخصم مباشرة على إجمالي المبلغ المستحق. تأكد من صلاحية الكود قبل الاستخدام.">
+                            <span>إزاي استخدم كود الخصم؟</span>
+                            <i class="fas fa-chevron-left text-saudi-green text-sm"></i>
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden hover:bg-custom-hover">
+                        <button class="faq-question-btn w-full flex items-center justify-between p-4 text-right text-gray-700 font-medium focus:outline-none"
+                                data-question="إزاي أبعت كود الخصم لصاحبك؟"
+                                data-answer="لمشاركة كود الخصم مع أصدقائك، يمكنك الذهاب إلى قسم 'دعوة الأصدقاء' أو 'المشاركة' داخل تطبيق جمعيتي. ستجد هناك خيارًا لمشاركة كود الخصم الخاص بك أو كود مخصص للدعوات عبر رسالة نصية، البريد الإلكتروني، أو تطبيقات التواصل الاجتماعي مثل واتساب. ببساطة، انسخ الكود وأرسله لصديقك لكي يستفيد هو من الخصم وتستفيد أنت من مكافآت الدعوة الخاصة بنا!">
+                            <span>إزاي أبعت كود الخصم لصاحبك؟</span>
+                            <i class="fas fa-chevron-left text-saudi-green text-sm"></i>
+                        </button>
+                    </div>
+
+                    <div class="bg-white rounded-lg border border-gray-200 shadow-sm overflow-hidden hover:bg-custom-hover">
+                        <button class="faq-question-btn w-full flex items-center justify-between p-4 text-right text-gray-700 font-medium focus:outline-none"
+                                data-question="ما هو فليكسيشن جمعيتي؟"
+                                data-answer="فليكسيشن جمعيتي هو برنامج الولاء المبتكر والحصري لمستخدمينا، صُمم ليكافئك على كل تفاعل داخل التطبيق. من خلال فليكسيشن، ستحصل على 'نقاط فليكسيشن' قيمة عند كل عملية شراء، تبرع، أو استخدام لخدمات جمعيتي. هذه النقاط يمكن استبدالها بخصومات فورية، مكافآت نقدية، منتجات مجانية، أو حتى المساهمة في مشاريع خيرية إضافية. فليكسيشن يمنحك مرونة مالية وقيمة مضافة حقيقية لكل ريال تنفقه أو تكسبه مع جمعيتي.">
+                            <span>ما هو أبلكيشن جمعيتي؟</span>
+                            <i class="fas fa-chevron-left text-saudi-green text-sm"></i>
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="mb-6">
+                <h2 class="text-lg font-semibold text-gray-800 mb-4">معلومات عن التطبيق</h2>
+                <div class="space-y-3">
+                    <div class="bg-gray-50 rounded-lg border border-gray-200 p-4 flex items-center justify-between shadow-sm hover:bg-custom-hover">
+                        <span class="text-gray-700 font-medium">عن أبلكيشن جمعيتي</span>
+                        <i class="fas fa-chevron-left text-saudi-green text-sm"></i>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg border border-gray-200 p-4 flex items-center justify-between shadow-sm hover:bg-custom-hover">
+                        <span class="text-gray-700 font-medium">الشروط والأحكام</span>
+                        <i class="fas fa-chevron-left text-saudi-green text-sm"></i>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg border border-gray-200 p-4 flex items-center justify-between shadow-sm hover:bg-custom-hover">
+                        <span class="text-gray-700 font-medium">سياسة الخصوصية</span>
+                        <i class="fas fa-chevron-left text-saudi-green text-sm"></i>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="p-4 border-t border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-800 mb-4 text-center">تواصل معنا</h2>
+            <div class="flex justify-center space-x-4">
+                <button id="callUsBtn" class="flex items-center justify-center bg-saudi-green text-white py-3 px-6 rounded-full shadow-md hover:bg-saudi-green-darker transition duration-300 transform hover:scale-105">
+                    <i class="fas fa-phone-alt ml-2 text-xl"></i>
+                    <span>اتصل بنا</span>
+                </button>
+                <button id="chatBtn" class="flex items-center justify-center bg-saudi-green text-white py-3 px-6 rounded-full shadow-md hover:bg-saudi-green-darker transition duration-300 transform hover:scale-105">
+                    <i class="fas fa-comments ml-2 text-xl"></i>
+                    <span>دردشة</span>
+                </button>
+            </div>
+            <div class="mt-4 text-center">
+                <button id="sendNoteBtn" class="inline-flex items-center justify-center text-saudi-green bg-green-50 py-2 px-4 rounded-full hover:bg-green-100 transition duration-300">
+                    <i class="fas fa-paper-plane ml-2"></i>
+                    <span>أرسل ملاحظة</span>
+                </button>
+            </div>
+        </footer>
+
+    </div>
+
+    <div id="faqModal" class="fixed inset-0 flex items-center justify-center z-50 hidden-modal modal-overlay">
+        <div class="bg-white rounded-lg shadow-xl p-6 mx-4 w-full max-w-sm modal-content relative">
+            <button id="closeModalBtn" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-lg">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 id="modalQuestion" class="text-lg font-bold text-gray-800 mb-3 text-right"></h3>
+            <p id="modalAnswer" class="text-gray-700 text-sm leading-relaxed text-right"></p>
+            <div class="mt-5 text-center">
+                <button id="okModalBtn" class="bg-saudi-green text-white py-2 px-6 rounded-full hover:bg-saudi-green-darker transition duration-300">حسناً</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="noteModal" class="fixed inset-0 flex items-center justify-center z-50 hidden-modal modal-overlay">
+        <div class="bg-white rounded-lg shadow-xl p-6 mx-4 w-full max-w-sm modal-content relative">
+            <button id="closeNoteModalBtn" class="absolute top-3 right-3 text-gray-500 hover:text-gray-700 text-lg">
+                <i class="fas fa-times"></i>
+            </button>
+            <h3 class="text-lg font-bold text-gray-800 mb-3 text-right">أرسل ملاحظاتك</h3>
+            <textarea id="noteTextarea" class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-saudi-green resize-y h-32" placeholder="اكتب ملاحظاتك هنا..."></textarea>
+            <div class="mt-5 text-center">
+                <button id="submitNoteBtn" class="bg-saudi-green text-white py-2 px-6 rounded-full hover:bg-saudi-green-darker transition duration-300">إرسال الملاحظة</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
