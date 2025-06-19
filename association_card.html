@@ -5,70 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>كارت جمعيتي - الأسئلة</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         body {
-            font-family: 'Tajawal', sans-serif;
-            margin: 0;
-            padding: 0;
-            min-height: 100vh;
+            font-family: 'Cairo', sans-serif; /* استخدام خط القاهرة لتحسين المظهر */
+            background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec); /* تدرج لوني ناعم للخلفية */
             display: flex;
             align-items: center;
             justify-content: center;
-            overflow: hidden; /* لمنع ظهور scrollbars من الخلفية عند الحركة */
-            position: relative;
-            background-color: #2196f3; /* Fallback color */
+            min-height: 100vh;
+            padding: 1rem; /* إضافة padding للبودي لضمان المسافة على الشاشات الصغيرة */
+            box-sizing: border-box; /* التأكد من أن البادينج لا يضيف عرضًا إضافيًا */
         }
 
-        /* الخلفية المستوحاة من Ashbry Music Festival مع تحسينات الأنميشن */
-        body::before {
-            content: '';
-            position: fixed; /* لتظل الخلفية ثابتة وتتحرك العناصر فوقها لإنشاء تأثير Parallax */
-            top: 0;
-            left: 0;
+        .card-container {
+            background-color: #ffffff;
+            border-radius: 1.5rem; /* زوايا مستديرة أكثر */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* ظل أعمق وأكثر نعومة */
+            padding: 1.5rem;
             width: 100%;
-            height: 100%;
-            z-index: -1;
-            background:
-                radial-gradient(circle at 10% 10%, #FF5722 0%, transparent 40%) top left / 30% 30% no-repeat,
-                radial-gradient(circle at 90% 20%, #4CAF50 0%, transparent 40%) top right / 40% 40% no-repeat,
-                radial-gradient(circle at 20% 80%, #FFC107 0%, transparent 40%) bottom left / 35% 35% no-repeat,
-                radial-gradient(circle at 80% 90%, #9C27B0 0%, transparent 40%) bottom right / 25% 25% no-repeat,
-                linear-gradient(135deg, #FF9800, #E91E63) 0% 0% / 100% 100% no-repeat;
-
-            background-size: 200% 200%;
-            animation: backgroundPan 30s infinite alternate ease-in-out;
+            max-width: 380px; /* زيادة عرض الكارت قليلاً ليكون احترافياً */
+            box-sizing: border-box;
+            opacity: 0; /* إخفاء الكارت مبدئياً لتأثير الظهور */
+            transform: translateY(20px);
+            animation: fadeInSlideUp 0.8s ease-out forwards;
         }
 
-        @keyframes backgroundPan {
-            0% {
-                background-position: 0% 0%;
-            }
-            100% {
-                background-position: 100% 100%;
-            }
-        }
-
-        /* أنيميشن دخول الكارد الرئيسي */
-        @keyframes cardEntrance {
-            0% {
-                opacity: 0;
-                transform: translateY(50px) scale(0.9);
-                filter: blur(10px);
-            }
-            70% {
-                opacity: 1;
-                transform: translateY(-10px) scale(1.02);
-                filter: blur(0px);
-            }
-            100% {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
-        }
-
-        /* أنيميشن دخول عناصر الـ FAQ بالتتالي */
-        @keyframes fadeInSlideUpItem {
+        @keyframes fadeInSlideUp {
             from {
                 opacity: 0;
                 transform: translateY(20px);
@@ -79,239 +42,168 @@
             }
         }
 
-        .card-container {
-            background-color: rgba(255, 255, 255, 0.95);
-            border-radius: 1.5rem;
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
-            padding: 1.75rem;
-            width: 100%;
-            max-width: 400px;
-            box-sizing: border-box;
-            position: relative;
-            z-index: 10;
-            animation: cardEntrance 1s ease-out forwards;
-            /* منع ظهور الأسئلة قبل أنيميشن الكارد */
-            animation-delay: 0.2s; /* تأخير بسيط لبدء الكارد أولاً */
-            opacity: 0; /* يبدأ مخفيًا بسبب الأنميشن */
-        }
-
         .card-header {
             display: flex;
             flex-direction: row-reverse;
             align-items: center;
-            justify-content: flex-end;
-            margin-bottom: 1.5rem;
+            justify-content: flex-end; /* ضبط الموضع ليكون في نهاية السطر */
+            margin-bottom: 1.5rem; /* مسافة أكبر بين الرأس والقائمة */
             padding-bottom: 1rem;
-            border-bottom: 1px solid #e0e0e0;
+            border-bottom: 1px solid #edf2f7; /* خط فاصل أنيق */
         }
 
         .card-header .title {
-            font-weight: 700;
-            font-size: 1.1rem;
-            margin-left: 0.85rem;
-            color: #333;
+            font-weight: 700; /* خط سميك */
+            font-size: 1rem; /* حجم خط أكبر قليلاً */
+            margin-left: 0.75rem; /* مسافة أكبر بين العنوان والسهم */
+            color: #333; /* لون نص أغمق */
         }
 
         .card-header .arrow-icon {
-            width: 1.35rem;
-            height: 1.35rem;
-            color: #555;
-            transition: transform 0.3s ease;
-        }
-        .card-header .arrow-icon:hover {
-            transform: translateX(-5px) rotateY(180deg); /* حركة عند التمرير على السهم العلوي */
+            width: 1.25rem; /* حجم أكبر للسهم */
+            height: 1.25rem;
+            color: #4a5568; /* لون سهم أغمق قليلاً */
+            transition: transform 0.3s ease; /* إضافة انتقال لسلاسة الحركة */
         }
 
-        /* تحسينات عناصر قائمة الأسئلة مع أنيميشن */
+        /* تحسين عناصر قائمة الأسئلة */
         .faq-item-div {
             display: flex;
-            flex-direction: row-reverse;
+            flex-direction: row-reverse; /* لجعل السهم على اليمين */
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
-            padding: 1rem;
-            border-radius: 1rem;
+            padding: 0.85rem; /* حشوة أكبر */
+            border-radius: 0.75rem; /* زوايا مستديرة للعنصر */
             transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
             position: relative;
-            z-index: 1;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-            margin-bottom: 0.85rem;
-            overflow: hidden;
-            /* أنيميشن دخول كل سؤال بتأخير */
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInSlideUpItem 0.6s ease-out forwards;
+            z-index: 1; /* لضمان ظهور الظل بشكل صحيح */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* ظل خفيف لكل عنصر */
+            margin-bottom: 0.75rem; /* مسافة بين العناصر */
         }
 
-        /* تأخير أنيميشن دخول كل سؤال (سيتم تطبيقها بـ JavaScript لاحقًا) */
-        /* .faq-item-div:nth-child(1) { animation-delay: 1.2s; } */
-        /* .faq-item-div:nth-child(2) { animation-delay: 1.3s; } */
-        /* ... وهكذا لباقي العناصر */
-
         .faq-item-div:hover {
-            background-color: #f5f5f5;
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-            transform: translateY(-5px) scale(1.01);
+            background-color: #f0f4f8; /* خلفية أفتح عند التمرير */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* ظل أقوى عند التمرير */
+            transform: translateY(-2px); /* رفع العنصر قليلاً */
         }
 
         .faq-item-div .question-text {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: #333;
-            flex-grow: 1;
-            text-align: right;
-            margin-right: 0.6rem;
-            transition: color 0.3s ease; /* أنيميشن لون النص */
-        }
-        .faq-item-div:hover .question-text {
-            color: #1a73e8; /* تغيير لون النص عند التمرير */
+            font-size: 0.85rem; /* حجم خط أصغر قليلاً لمظهر أكثر أناقة */
+            font-weight: 600; /* خط شبه سميك */
+            color: #2d3748; /* لون نص أغمق قليلاً */
+            flex-grow: 1; /* السماح للنص بأخذ المساحة المتاحة */
+            text-align: right; /* محاذاة النص لليمين */
+            margin-right: 0.5rem; /* مسافة بين النص والسهم */
         }
 
         .faq-item-div .toggle-arrow-icon {
-            width: 1.1rem;
-            height: 1.1rem;
-            color: #1a73e8;
-            transition: transform 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            width: 1rem; /* حجم أصغر لسهم الفتح/الإغلاق */
+            height: 1rem;
+            color: #38a169; /* لون أخضر أكثر وضوحاً */
+            transition: transform 0.3s ease;
         }
 
         .faq-item-div[aria-expanded="true"] .toggle-arrow-icon {
-            transform: rotate(-90deg);
-        }
-
-        /* أنيميشن فتح الإجابة */
-        @keyframes slideDownAnswer {
-            from {
-                max-height: 0;
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                max-height: 250px;
-                opacity: 1;
-                transform: translateY(0);
-            }
+            transform: rotate(-90deg); /* تدوير السهم عند الفتح */
         }
 
         .answer-content {
-            background-color: #e3f2fd;
-            color: #1976d2;
-            font-size: 0.8rem;
-            line-height: 1.6;
-            border-radius: 1rem;
-            padding: 1rem 1.2rem;
-            margin-top: 0.6rem;
-            overflow: hidden;
+            background-color: #e6ffed; /* خلفية خضراء فاتحة للإجابة */
+            color: #22543d; /* لون نص أخضر داكن */
+            font-size: 0.75rem; /* حجم خط صغير */
+            line-height: 1.5; /* تباعد أسطر أفضل */
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            margin-top: 0.5rem;
+            animation: slideDown 0.4s ease-out forwards;
+            overflow: hidden; /* لإخفاء المحتوى قبل ظهور كامل */
             max-height: 0;
             opacity: 0;
-            transition: max-height 0.5s ease-out, opacity 0.5s ease-out, padding 0.5s ease-out;
-            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+            transition: max-height 0.4s ease-out, opacity 0.4s ease-out, padding 0.4s ease-out;
         }
 
         .answer-content.show {
-            max-height: 250px;
+            max-height: 200px; /* قيمة كافية لإظهار معظم الإجابات */
             opacity: 1;
-            padding: 1rem 1.2rem;
-            animation: slideDownAnswer 0.5s ease-out forwards;
+            padding: 0.75rem 1rem; /* إعادة تطبيق البادينج بعد الظهور */
         }
 
-        /* أنيميشن ظهور المودال */
-        @keyframes modalPopIn {
-            0% {
-                transform: scale(0.8) translateY(50px);
+        @keyframes slideDown {
+            from {
+                max-height: 0;
                 opacity: 0;
-                filter: blur(5px);
             }
-            100% {
-                transform: scale(1) translateY(0);
+            to {
+                max-height: 200px; /* يجب أن تكون كافية لتضمين أطول إجابة */
                 opacity: 1;
-                filter: blur(0px);
             }
         }
 
+        /* مربع الإجابة المنبثق (Modal) */
         #answer-modal {
-            background-color: rgba(0, 0, 0, 0.7);
+            background-color: rgba(0, 0, 0, 0.6); /* خلفية داكنة أكثر للمودال */
             transition: opacity 0.3s ease-in-out;
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px); /* لدعم متصفحات الويب كيت */
         }
 
         #answer-modal .modal-content {
             background-color: #ffffff;
-            border-radius: 1.25rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25); /* ظل أعمق */
+            padding: 1.5rem;
             width: 100%;
-            max-width: 420px;
+            max-width: 360px; /* عرض أكبر للمودال */
             position: relative;
+            transform: scale(0.9); /* تأثير تكبير عند الظهور */
+            opacity: 0;
+            animation: modalPopIn 0.3s ease-out forwards;
             box-sizing: border-box;
-            animation: modalPopIn 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55) forwards;
+        }
+
+        @keyframes modalPopIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
 
         #answer-modal .close-button-modal {
             position: absolute;
-            left: 1.2rem;
-            top: 1.2rem;
-            font-size: 2rem;
-            color: #888;
-            transition: color 0.2s ease, transform 0.2s ease;
+            left: 1rem; /* تغيير الموضع ليكون على اليسار */
+            top: 1rem;
+            font-size: 1.75rem; /* حجم أكبر للزر */
+            color: #a0aec0; /* لون رمادي ناعم */
+            transition: color 0.2s ease;
+            line-height: 1; /* لضمان محاذاة النص بشكل صحيح */
         }
 
         #answer-modal .close-button-modal:hover {
-            color: #555;
-            transform: rotate(90deg) scale(1.1); /* تدوير وتكبير خفيف */
+            color: #718096; /* لون أغمق عند التمرير */
         }
 
         #answer-modal #modal-question {
             font-weight: 700;
-            font-size: 1rem;
-            color: #1a73e8;
-            margin-bottom: 0.85rem;
+            font-size: 0.9rem; /* حجم خط السؤال */
+            color: #38a169; /* لون أخضر مطابق لسهم الفتح */
+            margin-bottom: 0.75rem;
             text-align: right;
-            padding-right: 2.5rem;
+            padding-right: 2rem; /* مسافة لتجنب تداخل زر الإغلاق */
             padding-left: 0.5rem;
         }
 
         #answer-modal #modal-answer {
-            font-size: 0.85rem;
-            color: #444;
-            line-height: 1.7;
+            font-size: 0.8rem; /* حجم خط الإجابة */
+            color: #4a5568; /* لون رمادي داكن */
+            line-height: 1.6;
             text-align: right;
-        }
-
-        /* Media Queries للتجاوبية */
-        @media (max-width: 480px) {
-            .card-container {
-                padding: 1rem;
-                margin: 1rem;
-            }
-            .card-header .title {
-                font-size: 1rem;
-            }
-            .faq-item-div {
-                padding: 0.75rem;
-                margin-bottom: 0.6rem;
-            }
-            .faq-item-div .question-text {
-                font-size: 0.8rem;
-            }
-            .answer-content {
-                padding: 0.8rem 1rem;
-            }
-            #answer-modal .modal-content {
-                padding: 1.5rem;
-                margin: 1rem;
-            }
-            #answer-modal #modal-question {
-                font-size: 0.9rem;
-                padding-right: 2rem;
-            }
-            #answer-modal #modal-answer {
-                font-size: 0.75rem;
-            }
         }
     </style>
 </head>
-<body>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
     <div class="card-container">
         <div class="card-header">
             <span class="title">كارت جمعيتي</span>
@@ -319,8 +211,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
             </svg>
         </div>
-        <ul id="faq-list" class="space-y-3">
-            <li>
+        <ul id="faq-list" class="space-y-3"> <li>
                 <div class="faq-item-div" onclick="showAnswer('إيه الأوراق المطلوبة عشان أقدر أقدم على طلب كارت جمعيتي؟', 'صورة البطاقة الشخصية، صورة شهادة الميلاد، إثبات محل الإقامة، صورة شخصية حديثة.')" aria-expanded="false">
                     <svg class="toggle-arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
@@ -457,17 +348,7 @@
                 closeAnswer();
             }
         });
-
-        // أنيميشن دخول عناصر الـ FAQ بالتتالي
-        document.addEventListener('DOMContentLoaded', () => {
-            const faqItems = document.querySelectorAll('.faq-item-div');
-            const initialDelay = 1.2; // بعد 1.2 ثانية من تحميل الصفحة (بعد أنيميشن الكارد)
-            const delayIncrement = 0.1; // زيادة 0.1 ثانية لكل عنصر
-
-            faqItems.forEach((item, index) => {
-                item.style.animationDelay = `${initialDelay + (index * delayIncrement)}s`;
-            });
-        });
     </script>
 </body>
+
 </html>
