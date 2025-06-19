@@ -361,125 +361,45 @@ window.loadTurns = loadTurns;
 
 // أضف دالة فارغة أو منطقية لـ openApproveProfileModal حتى لا يظهر الخطأ
 function openApproveProfileModal(userId) {
-  // يمكنك لاحقاً إضافة منطق عرض صورة أو مستند المستخدم هنا
-  alert('مراجعة مستند المستخدم غير مفعلة حالياً.');
-}
-window.openApproveProfileModal = openApproveProfileModal;
-
-// إضافة عضو للجمعية (submit handler)
-document.addEventListener('DOMContentLoaded', () => {
-  const addMemberForm = document.getElementById('addMemberForm');
-  if (addMemberForm) {
-    addMemberForm.onsubmit = async e => {
-      e.preventDefault();
-      const assocId = +document.getElementById('addMemberAssocId').value;
-      const userId = +document.getElementById('addMemberUserId').value;
-      const turnNumber = +document.getElementById('addMemberTurnNumber').value;
-      const errorDiv = document.getElementById('addMemberError');
-      errorDiv.textContent = '';
-      try {
-        await addUserToAssociation(assocId, userId, turnNumber);
-        closeAddMemberModal();
-      } catch (err) {
-        errorDiv.textContent = 'حدث خطأ أثناء إضافة العضو.';
-      }
-    };
-  }
-});
-
-// تعديل دالة الشحن لتحديث الرصيد في الواجهة حتى لو الباك اند يرجع نص وليس رقم
-document.addEventListener('DOMContentLoaded', () => {
-  const topupForm = document.getElementById('topupForm');
-  if (topupForm) {
-    topupForm.onsubmit = async e => {
-      e.preventDefault();
-      const select = document.getElementById('topupUserSelect');
-      const userId = select.value;
-      const amount = +document.getElementById('topupAmount').value;
-      const errorDiv = document.getElementById('topupError');
-      const successDiv = document.getElementById('topupSuccess');
-      errorDiv.textContent = '';
-      successDiv.textContent = '';
-      if (!userId) {
-        errorDiv.textContent = 'اختر مستخدم أولاً';
-        return;
-      }
-      try {
-        const res = await axios.post('http://localhost:3000/api/payments/topup', { userId, amount });
-        let newBalance = res?.data?.newBalance?.val;
-        // إذا كان newBalance نص معادلة مثل "walletBalance + 5000"
-        if (typeof newBalance === "string" && newBalance.includes("+")) {
-          // استخرج الرصيد القديم من select
-          const opt = select.options[select.selectedIndex];
-          let oldBalance = Number(opt.getAttribute('data-balance')) || 0;
-          // استخرج الرقم من النص (مثلاً "walletBalance + 5000")
-          let addAmount = Number(newBalance.split("+")[1].trim()) || amount;
-          newBalance = oldBalance + addAmount;
-        }
-        if (res.data && res.data.success && !isNaN(newBalance)) {
-          successDiv.textContent = res.data.message + ` (الرصيد الجديد: ${newBalance})`;
-          select.options[select.selectedIndex].setAttribute('data-balance', newBalance);
-          document.getElementById('topupUserBalance').textContent = `الرصيد الحالي: ${newBalance}`;
-          updateUserBalanceInTable(userId, newBalance);
-        } else {
-          errorDiv.textContent = 'فشل الشحن';
-        }
-      } catch (err) {
-        errorDiv.textContent = 'حدث خطأ أثناء الشحن';
-      }
-    };
-  }
-});
-
-// Initialize
-window.onload = loadAssociations;
-
-// في الـ frontend كل شيء صحيح، لكن هذه الرسالة تظهر لأن الباك اند يرجع newBalance.val كنص وليس رقم.
-// الحل في الباك اند وليس هنا.
-// يجب أن يكون رد الباك اند هكذا (لاحظ أن val رقم وليس نص):
-// { success: true, message: "...", newBalance: { val: 10000 } }
-
-// مثال كود باك اند (Node.js/Express/Mongoose):
-// user.walletBalance += req.body.amount;
-// await user.save();
-// res.json({ success: true, message: "تمت عملية الشحن بنجاح", newBalance: { val: user.walletBalance } });
-
-// إذا ظللت ترى الرسالة، اطلب من مطور الباك اند تعديل endpoint الشحن ليعيد رقم حقيقي وليس نص معادلة.
-
-// مراجعة مستند المستخدم (Approve/Reject Profile)
-async function approveProfile(approved, reason = "") {
-  try {
-    const userId = window._currentApproveUserId;
-    if (!userId) return;
-    // تأكد أن approved نوعها boolean
-    const res = await axios.post(
-      `http://localhost:3000/api/userData/admin/approve-profile/${userId}`,
-      { approved: !!approved, reason }
-    );
-    if (res.data && res.data.message) {
-      alert(res.data.message);
-      closeApproveProfileModal();
-      fetchAndRenderUsers && fetchAndRenderUsers();
-    }
-  } catch (err) {
-    document.getElementById('profileApproveError').textContent = 'حدث خطأ أثناء مراجعة المستند';
-  }
-}
-
-// عرض مودال مراجعة مستند المستخدم
-function openApproveProfileModal(userId) {
   window._currentApproveUserId = userId;
   document.getElementById('profileApproveError').textContent = '';
   document.getElementById('rejectReasonContainer').classList.add('hidden');
   document.getElementById('rejectReasonInput').value = '';
   document.getElementById('profileImageContainer').innerHTML = 'جاري التحميل...';
+
+  // إعداد التوكن للرابط إذا كان السيرفر يتطلب Authorization header للصور
+  const token = localStorage.getItem('token');
+
   axios.get(`http://localhost:3000/api/userData/users`)
     .then(res => {
       const users = Array.isArray(res.data) ? res.data : (res.data.data || []);
       const user = users.find(u => u.id == userId);
       if (user && user.salarySlipImage) {
-        document.getElementById('profileImageContainer').innerHTML =
-          `<img src="${user.salarySlipImage}" alt="مستند الراتب" class="mx-auto max-h-64 rounded mb-2"/><div>${user.fullName || ''}</div>`;
+        let imgUrl = user.salarySlipImage;
+        if (!/^https?:\/\//.test(imgUrl)) {
+          imgUrl = 'http://localhost:3000/api/userData/uploads/' + imgUrl.replace(/^.*[\\/]/, '');
+        }
+        // إذا كان السيرفر يتطلب Authorization header للصور، استخدم fetch و Blob
+        if (token) {
+          fetch(imgUrl, {
+            headers: { 'Authorization': 'Bearer ' + token }
+          })
+            .then(r => {
+              if (!r.ok) throw new Error('Unauthorized');
+              return r.blob();
+            })
+            .then(blob => {
+              const objectUrl = URL.createObjectURL(blob);
+              document.getElementById('profileImageContainer').innerHTML =
+                `<img src="${objectUrl}" alt="مستند الراتب" class="mx-auto max-h-64 rounded mb-2"/><div>${user.fullName || ''}</div>`;
+            })
+            .catch(() => {
+              document.getElementById('profileImageContainer').innerHTML = 'غير مصرح بعرض المستند (401 Unauthorized)';
+            });
+        } else {
+          document.getElementById('profileImageContainer').innerHTML =
+            `<img src="${imgUrl}" alt="مستند الراتب" class="mx-auto max-h-64 rounded mb-2"/><div>${user.fullName || ''}</div>`;
+        }
       } else {
         document.getElementById('profileImageContainer').innerHTML = 'لا يوجد مستند مرفوع';
       }
@@ -500,38 +420,73 @@ function closeApproveProfileModal() {
 window.closeApproveProfileModal = closeApproveProfileModal;
 
 // زر قبول/رفض في المودال (تصحيح نهائي: لا recursion أبداً)
-function approveProfileHandler(approved) {
-  // لا تستدعي approveProfileHandler من داخل نفسها إطلاقاً!
+function handleApproveProfileAction(approved) {
   if (approved === true) {
     approveProfile(true, "");
   } else if (approved === false) {
     const reasonContainer = document.getElementById('rejectReasonContainer');
-    // إذا لم يظهر حقل السبب بعد، أظهره فقط ولا ترسل الطلب ولا تستدعي الدالة مرة أخرى
     if (reasonContainer.classList.contains('hidden')) {
       reasonContainer.classList.remove('hidden');
       return;
     }
-    // إذا ظهر الحقل بالفعل، أرسل السبب (حتى لو فارغ)
     const reason = document.getElementById('rejectReasonInput').value.trim();
-    // أرسل فقط إذا ضغط المستخدم على زر الرفض مرة ثانية (أي بعد ظهور الحقل)
     approveProfile(false, reason);
   }
 }
-window.approveProfile = approveProfileHandler;
+window.handleApproveProfileAction = handleApproveProfileAction;
+
+// Keep approveProfile as is:
+async function approveProfile(approved, reason = "") {
+  try {
+    const userId = window._currentApproveUserId;
+    if (!userId) return;
+    const res = await axios.post(
+      `http://localhost:3000/api/userData/admin/approve-profile/${userId}`,
+      { approved: !!approved, reason }
+    );
+    if (res.data && res.data.message) {
+      alert(res.data.message);
+      closeApproveProfileModal();
+      fetchAndRenderUsers && fetchAndRenderUsers();
+      // Mark user as reviewed/approved in the UI if possible
+      // Example: add a class or update a status cell if available
+      const row = document.querySelector(`tr[data-user-id="${userId}"]`);
+      if (row) {
+        // If you have a status cell, update it. Otherwise, add a visual mark.
+        let statusCell = row.querySelector('.user-status-cell');
+        if (statusCell) {
+          statusCell.textContent = approved ? 'تمت الموافقة' : 'مرفوض';
+          statusCell.classList.remove('text-gray-500', 'text-red-500', 'text-green-600');
+          statusCell.classList.add(approved ? 'text-green-600' : 'text-red-500');
+        } else {
+          row.classList.add(approved ? 'bg-green-50' : 'bg-red-50');
+        }
+      }
+    }
+  } catch (err) {
+    document.getElementById('profileApproveError').textContent = 'حدث خطأ أثناء مراجعة المستند';
+  }
+}
 
 // Make sure this is NOT inside approveProfileHandler!
 document.addEventListener('DOMContentLoaded', () => {
-  async function approveProfileHandler() {
+  async function approveBtnClickHandler() {
     const reasonInput = document.getElementById('reason');
     const responseMsg = document.getElementById('responseMsg');
-    if (!reasonInput || !responseMsg) {
+    const approveBtn = document.getElementById('approveBtn');
+    if (!reasonInput || !responseMsg || !approveBtn) {
       // Elements not found, do nothing
+      return;
+    }
+    const userId = approveBtn.getAttribute('data-user-id');
+    if (!userId) {
+      responseMsg.textContent = 'User ID غير متوفر';
       return;
     }
     const reason = reasonInput.value;
     responseMsg.textContent = '';
     try {
-      const res = await fetch('http://localhost:3000/api/userData/admin/approve-profile/12', {
+      const res = await fetch(`http://localhost:3000/api/userData/admin/approve-profile/${userId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ approved: true, reason })
@@ -549,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const approveBtn = document.getElementById('approveBtn');
   if (approveBtn) {
-    approveBtn.addEventListener('click', approveProfileHandler);
+    approveBtn.addEventListener('click', approveBtnClickHandler);
   }
 });
 
