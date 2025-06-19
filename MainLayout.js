@@ -1,16 +1,15 @@
+// تأكد من وجود العناصر قبل إضافة المستمع
 const profileToggle = document.getElementById("profile-toggle");
-const profileMenu = document.getElementById("popup-menu");
-const notificationToggle = document.getElementById("notification-toggle");
 const notificationDropdown = document.getElementById("notification-dropdown");
+const profileMenu = document.getElementById("popup-menu");
 
-// Toggle profile menu
-profileToggle.addEventListener("click", (e) => {
-  e.stopPropagation();
-  if (notificationDropdown) {
-    notificationDropdown.classList.add("hidden");
-  }
-  profileMenu.classList.toggle("hidden");
-});
+if (profileToggle && profileMenu) {
+  profileToggle.addEventListener("click", (e) => {
+    e.stopPropagation();
+    if (notificationDropdown) notificationDropdown.classList.add("hidden");
+    profileMenu.classList.toggle("hidden");
+  });
+}
 
 // Toggle notifications
 // notificationToggle.addEventListener("click", (e) => {
@@ -22,9 +21,7 @@ profileToggle.addEventListener("click", (e) => {
 // Close dropdowns if click outside
 document.addEventListener("click", () => {
   profileMenu.classList.add("hidden");
-  if (notificationDropdown) {
-    notificationDropdown.classList.add("hidden");
-  }
+  notificationDropdown.classList.add("hidden");
 });
 
 // Logout

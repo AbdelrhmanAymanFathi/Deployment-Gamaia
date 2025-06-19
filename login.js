@@ -1,4 +1,4 @@
-    document.getElementById('login-form').addEventListener('submit', async function(e) {
+document.getElementById('login-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const errorEl = document.getElementById('login-error');
       errorEl.textContent = '';
@@ -19,7 +19,10 @@
         try {
           data = JSON.parse(text);
         } catch {
-          throw new Error('كلمة المرور أو رقم الهوية الوطنية غير صحيح');
+          // Log raw response for debugging
+          console.error('Raw response:', text);
+          // Show backend error message if available, else generic message
+          throw new Error(text || 'كلمة المرور أو رقم الهوية الوطنية غير صحيح');
         }
 
         if (!res.ok) {

@@ -1,6 +1,13 @@
-const token = localStorage.getItem('token');
-if (!token) {
-    window.location.href = 'login.html';
+// تجنب إعادة إعلان المتغير token إذا كان معرفًا بالفعل (مثل، بواسطة سكربت آخر)
+if (typeof token === 'undefined') {
+    var token = localStorage.getItem('token');
+    if (!token) {
+        window.location.href = 'login.html';
+    }
+} else {
+    if (!token) {
+        window.location.href = 'login.html';
+    }
 }
 
 // جلب بيانات الملف شخصي
@@ -119,10 +126,52 @@ function renderRecentActivities() {
     }
 }
 
+// تحديث بيانات الملف الشخصي
+async function updateProfile() {
+    const currentName = document.getElementById('full-name').textContent;
+    const currentPhone = document.getElementById('phone').textContent;
+    const fullName = prompt('ادخل الاسم الكامل الجديد:', currentName);
+    if (!fullName) return;
+    const phone = prompt('ادخل رقم الجوال الجديد:', currentPhone);
+    if (!phone) return;
+
+    try {
+        // ملاحظة: يجب تعديل userId حسب التطبيق الفعلي
+        const userId = 5; // ثابت هنا كمثال
+        const res = await fetch(`https://money-production-bfc6.up.railway.app/api/userData/admin/update-user/${userId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify({ fullName, phone })
+        });
+        if (res.status === 403) {
+            alert('ليس لديك صلاحية لتعديل الملف الشخصي. يرجى التواصل مع الإدارة.');
+            return;
+        }
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || data.error || 'فشل تحديث الملف الشخصي');
+        alert('✅ تم تحديث الملف الشخصي بنجاح');
+        loadProfile();
+    } catch (err) {
+        alert('❌ ' + err.message);
+    }
+}
+
 // تحميل الملف الشخصي عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', () => {
     loadProfile();
     renderRecentActivities();
     // تحديث تلقائي للأنشطة كل دقيقة
-    setInterval(renderRecentActivities, 5);
+    setInterval(renderRecentActivities, 1000);
+
+    // ربط زر تعديل الملف الشخصي
+    const editBtn = document.querySelector('button.text-indigo-600');
+    if (editBtn) {
+        editBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            updateProfile();
+        });
+    }
 });
