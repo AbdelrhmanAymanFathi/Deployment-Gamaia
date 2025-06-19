@@ -185,13 +185,29 @@
       <input type="button" value="تخطي" class="btn-outline" />
     </div>
   </div>
+  <!-- مودال التأكيد -->
+  <div id="save-modal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-lg px-8 py-6 text-center">
+      <div class="text-green-600 text-3xl mb-2">
+        <i class="bi bi-check-circle"></i>
+      </div>
+      <div class="text-lg font-semibold mb-2">تم حفظ بيانات الكارت بنجاح!</div>
+    </div>
+  </div>
   <script>
-    // زرار حفظ وتخطي ينقل المستخدم إلى Nationl_id.html
+    // زرار حفظ يظهر المودال ثم يحول المستخدم إلى wallet.html بعد ثانيتين
     document.querySelector('.btn-main').onclick = function() {
-      window.location.href = 'National_id.html';
+      const modal = document.getElementById('save-modal');
+      if (modal) {
+        modal.classList.remove('hidden');
+        setTimeout(() => {
+          window.location.href = 'wallet.html';
+        }, 2000);
+      }
     };
+    // زرار تخطي يرجع المستخدم للصفحة السابقة
     document.querySelector('.btn-outline').onclick = function() {
-      window.location.href = 'National_id.html';
+      window.history.back();
     };
 
     // الضغط على العنوان يرجع المستخدم إلى Arrest_method.html

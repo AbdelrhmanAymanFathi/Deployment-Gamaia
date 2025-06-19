@@ -238,8 +238,9 @@
     <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden my-0 min-h-screen pb-20">
         <header class="flex items-center justify-between p-4 border-b border-gray-200 flex-col">
             <div class="flex items-center justify-between w-full mb-2">
-                <a href="#" class="text-gray-600 hover:text-gray-800">
-                    <i class="fas fa-arrow-right text-xl"></i> </a>
+                <a href="#" id="back-btn" class="text-gray-600 hover:text-gray-800">
+                    <i class="fas fa-arrow-right text-xl"></i>
+                </a>
                 <h1 class="text-xl font-bold text-gray-800 flex-grow text-center">ملخص الجمعية</h1>
                 <div class="w-6"></div> </div>
             
@@ -383,27 +384,19 @@
         </main>
     </div>
 
-    <nav class="bottom-nav">
-        <a href="#" class="bottom-nav-item">
-            <i class="fas fa-receipt"></i>
-            <span>المدفوعات</span>
-        </a>
-        <a href="#" class="bottom-nav-item">
-            <i class="fas fa-credit-card"></i>
-            <span>كارتي</span>
-        </a>
-        <a href="#" class="bottom-nav-item bottom-nav-center-btn">
-            <i class="fas fa-plus"></i>
-        </a>
-        <a href="#" class="bottom-nav-item">
-            <i class="fas fa-users"></i>
-            <span>جمعياتي</span>
-        </a>
-        <a href="#" class="bottom-nav-item active">
-            <i class="fas fa-home"></i>
-            <span>الرئيسية</span>
-        </a>
-    </nav>
+    <!-- أضف المودال بعد الـ </main> مباشرة -->
+    <div id="confirm-modal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden">
+      <div class="bg-white rounded-lg shadow-lg px-8 py-6 text-center">
+        <div class="text-blue-600 text-3xl mb-2">
+          <i class="fas fa-check-circle"></i>
+        </div>
+        <div class="text-lg font-semibold mb-2">تم تأكيد الإشتراك بنجاح!</div>
+        <button id="close-confirm-modal"
+          class="mt-2 px-4 py-2 bg-blue-600-custom text-white rounded hover:bg-blue-700-custom transition">
+          إغلاق
+        </button>
+      </div>
+    </div>
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -414,6 +407,54 @@
                     this.classList.add('active');
                 });
             });
+
+            // جلب id الجمعية المختارة
+            const assocId = localStorage.getItem('selectedAssociationId');
+            if (assocId) {
+                fetch(`https://money-production-bfc6.up.railway.app/api/associations/${assocId}`)
+                  .then(res => res.json())
+                  .then(data => {
+                    if (data && data.success && data.data) {
+                      // مثال: عرض اسم الجمعية في الهيدر
+                      const header = document.querySelector('h1');
+                      if (header) header.textContent = data.data.name || 'ملخص الجمعية';
+                      // يمكنك هنا تعبئة باقي البيانات في الصفحة حسب الحاجة
+                    }
+                  });
+            }
+
+            // Modal logic
+            const confirmBtn = document.querySelector('button.w-full.bg-blue-600-custom');
+            const confirmModal = document.getElementById('confirm-modal');
+            const closeConfirmModal = document.getElementById('close-confirm-modal');
+
+            if (confirmBtn && confirmModal) {
+              confirmBtn.addEventListener('click', () => {
+                confirmModal.classList.remove('hidden');
+              });
+            }
+            if (closeConfirmModal && confirmModal) {
+              closeConfirmModal.addEventListener('click', () => {
+                confirmModal.classList.add('hidden');
+              });
+            }
+            // إغلاق المودال عند الضغط خارج الصندوق
+            if (confirmModal) {
+              confirmModal.addEventListener('click', (e) => {
+                if (e.target === confirmModal) {
+                  confirmModal.classList.add('hidden');
+                }
+              });
+            }
+
+            // زر الرجوع للخلف
+            const backBtn = document.getElementById('back-btn');
+            if (backBtn) {
+              backBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                window.history.back();
+              });
+            }
         });
     </script>
 </body>

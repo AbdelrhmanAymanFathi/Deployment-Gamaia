@@ -151,7 +151,25 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
   <script src="./home.js"></script>
-    <script src="./MainLayout.js"></script>
+  <script src="./MainLayout.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const circleList = document.getElementById('circle-list');
+      if (circleList) {
+        circleList.addEventListener('click', function (e) {
+          let target = e.target;
+          // ابحث للأعلى حتى تجد العنصر الذي يحمل data-association-id
+          while (target && !target.dataset.associationId && target !== circleList) {
+            target = target.parentElement;
+          }
+          if (target && target.dataset.associationId) {
+            localStorage.setItem('selectedAssociationId', target.dataset.associationId);
+            window.location.href = 'Assembly_summary.html';
+          }
+        });
+      }
+    });
+  </script>
 
 </body>
 
