@@ -128,7 +128,7 @@
           <img id="frontImg" class="rounded-lg border border-gray-300 w-full max-w-xs mx-auto" src="" alt="وجه البطاقة">
           <img id="backImg" class="rounded-lg border border-gray-300 w-full max-w-xs mx-auto" src="" alt="خلف البطاقة">
         </div>
-        <button class="w-full border border-green-400 rounded-full py-2 text-green-900 font-medium text-base hover:bg-green-50 transition">تم</button>
+        <button id="doneBtn" class="w-full border border-green-400 rounded-full py-2 text-green-900 font-medium text-base hover:bg-green-50 transition">تم</button>
       </div>
     </div>
   </div>
@@ -250,6 +250,11 @@
       captureArea.classList.add('hidden');
       resultArea.classList.remove('hidden');
     }
+
+    // زر "تم" بعد رفع الصور
+    document.getElementById('doneBtn').onclick = function() {
+      window.location.href = 'assembly_contract.html';
+    };
   </script>
 </body>
 </html>
