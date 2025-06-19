@@ -173,6 +173,10 @@
             font-size: 26px;
             box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
             transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            aspect-ratio: 1/1; /* دائري ومتناسق الحجم */
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         #scrollToTopBtn:hover {
@@ -211,11 +215,26 @@
                 right: 20px;
                 padding: 12px;
                 font-size: 22px;
+                aspect-ratio: 1/1; /* دائري ومتناسق الحجم للموبايل */
+                display: flex;
+                align-items: center;
+                justify-content: center;
             }
         }
     </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
+
+    <!-- Header with back icon -->
+    <header style="background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0.75rem 0; margin-bottom: 1.5rem;">
+        <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center;">
+            <button onclick="window.location.href='payments.html'"
+                style="background: none; border: none; cursor: pointer; display: flex; align-items: center; color: var(--primary-green); font-size: 1.7rem; padding: 0 0.5rem;">
+                <i class="fas fa-arrow-right"></i>
+                <span style="font-size: 1rem; margin-right: 0.5rem;">رجوع</span>
+            </button>
+        </div>
+    </header>
 
     <div id="progressBar"></div>
 
@@ -323,7 +342,7 @@
 
         function scrollFunction() {
             if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
-                scrollToTopBtn.style.display = "block";
+                scrollToTopBtn.style.display = "flex"; // بدل block إلى flex
             } else {
                 scrollToTopBtn.style.display = "none";
             }
