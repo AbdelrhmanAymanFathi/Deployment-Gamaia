@@ -121,18 +121,17 @@
 <body>
   <!-- Navbar Top -->
   <div style="background-color:#90D1CA;"
-    class="navbar fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg"
+    class="navbar fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-2 shadow-md rounded-b-lg"
     dir="ltr">
 
     <!-- Left icons -->
     <div class="flex gap-4 items-center">
       <!-- Notifications -->
       <div class="relative">
-        <button id="notification-toggle" class="focus:outline-none" title="الإشعارات / Notifications">
+        <button id="notification-toggle" onclick="location.href='./Notification.html'" class="focus:outline-none" title="الإشعارات / Notifications">
           <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
         </button>
-        <div id="notification-dropdown"
-          class="hidden absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-md z-50 p-3">
+        <!-- <div id="notification-dropdown" class="hidden absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-md z-50 p-3">
           <div class="flex justify-between items-center border-b pb-2 mb-2">
             <span class="font-bold text-sm text-gray-700">الإشعارات</span>
             <span class="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full">0</span>
@@ -141,7 +140,7 @@
             <i class="bi bi-bell-slash text-2xl mb-1"></i>
             <p class="text-sm">لا توجد إشعارات جديدة</p>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <!-- Trends -->
@@ -155,8 +154,7 @@
       <button id="profile-toggle" class="focus:outline-none" title="الملف الشخصي / Profile">
         <i class="bi bi-person-circle text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
       </button>
-      <div id="popup-menu"
-        class="hidden absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-50 p-2">
+      <div id="popup-menu" class="hidden absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-50 p-2">
         <a href="./profile.html" class="block text-sm text-black py-1 hover:text-green-600">Profile</a>
         <button class="block text-sm w-full text-left py-1 hover:text-green-600">Settings</button>
         <button id="logout-btn"

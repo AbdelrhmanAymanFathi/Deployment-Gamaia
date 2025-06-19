@@ -5,22 +5,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>الإشعارات</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary: '#90D1CA',
+          }
+        }
+      }
+    }
+  </script>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-gradient-to-br from-primary/10 to-gray-100 min-h-screen flex items-center justify-center p-4">
 
-  <div class="w-full max-w-2xl bg-white shadow-xl rounded-2xl p-6 space-y-6">
-    <h1 class="text-2xl font-bold text-gray-800 border-b pb-2">📢 الإشعارات</h1>
-
-    <div id="notificationsContainer" class="space-y-4">
-      <!-- الإشعارات سيتم إضافتها هنا ديناميكيًا -->
+  <!-- Header -->
+  <div class="fixed top-0 left-0 w-full bg-white shadow z-10 py-4 px-6 flex items-center justify-between" dir="ltr">
+    <div class="flex items-center gap-2">
+      <span class="bg-primary text-white rounded-full p-2">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V4a2 2 0 10-4 0v1.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+        </svg>
+      </span>
+      <h1 class="text-xl md:text-2xl font-bold text-gray-800">الإشعارات</h1>
     </div>
+    <!-- زر الرجوع للخلف -->
+    <button onclick="window.history.back()" class="flex items-center gap-1 px-3 py-1 rounded bg-primary/10 hover:bg-primary/20 text-primary border border-primary/30 transition text-sm font-semibold">
+          رجوع
+      <!-- <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
+      </svg> -->
+    
+    </button>
+  </div>
 
-    <div id="pagination" class="flex justify-between items-center pt-4 border-t text-sm text-gray-500">
-      <button id="prevBtn" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50" disabled>السابق</button>
-      <span id="pageInfo">صفحة 1</span>
-      <button id="nextBtn" class="px-3 py-1 bg-gray-200 hover:bg-gray-300 rounded disabled:opacity-50">التالي</button>
+  <div class="w-full max-w-2xl bg-white shadow-2xl rounded-2xl p-0 mt-24">
+    <div class="divide-y">
+      <!-- Notifications List -->
+      <div id="notificationsContainer" class="space-y-0">
+        <!-- الإشعارات سيتم إضافتها هنا ديناميكيًا -->
+      </div>
+      <!-- Pagination -->
+      <div id="pagination" class="flex justify-between items-center px-6 py-4 bg-primary/5 text-sm text-gray-500 rounded-b-2xl">
+        <button id="prevBtn" class="px-4 py-2 bg-white border border-primary hover:bg-primary/10 hover:text-primary rounded transition disabled:opacity-50" disabled>
+          <svg class="inline w-4 h-4 ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+          السابق
+        </button>
+        <span id="pageInfo" class="font-semibold text-gray-700">صفحة 1</span>
+        <button id="nextBtn" class="px-4 py-2 bg-white border border-primary hover:bg-primary/10 hover:text-primary rounded transition disabled:opacity-50">
+          التالي
+          <svg class="inline w-4 h-4 mr-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+      </div>
     </div>
   </div>
+
+  <!-- يمكنك وضع هذا الزر في أي مكان مناسب في الصفحة، مثلا في الهيدر أو في أي مكان آخر -->
+  <button id="notification-toggle" class="focus:outline-none" title="الإشعارات / Notifications">
+    <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
+  </button>
 
   <script>
     const container = document.getElementById("notificationsContainer");
@@ -36,6 +79,16 @@
     if (token && token.startsWith("Bearer ")) {
       token = token.replace(/^Bearer\s+/, "");
       localStorage.setItem("token", token); // fix it for future use
+    }
+
+    const notificationIcons = {
+      default: `<svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M13 16h-1v-4h-1m1-4h.01M12 20a8 8 0 100-16 8 8 0 000 16z"/></svg>`,
+      // يمكنك إضافة أنواع أخرى لاحقًا
+    };
+
+    function getNotificationIcon(type) {
+      // يمكن التوسعة لاحقًا حسب نوع الإشعار
+      return notificationIcons.default;
     }
 
     async function fetchNotifications(page = 1) {
@@ -71,18 +124,25 @@
           container.innerHTML = `<div class="text-gray-600 text-center py-10">لا توجد إشعارات حالياً</div>`;
         } else {
           data.notifications.forEach(notif => {
-            const card = document.createElement("div");
-            card.className = `p-4 rounded-xl shadow transition duration-300 ${notif.isRead ? 'bg-gray-50' : 'bg-yellow-100'}`;
-
             const date = new Date(notif.createdAt).toLocaleString('ar-EG', {
               dateStyle: 'short',
               timeStyle: 'short'
             });
 
+            // Facebook-like notification card
+            const card = document.createElement("div");
+            card.className = `flex items-center gap-4 px-6 py-5 border-b last:border-b-0 transition duration-300 group ${notif.isRead ? 'bg-white' : 'bg-primary/10'}`;
             card.innerHTML = `
-              <div class="flex justify-between items-start">
-                <p class="text-gray-800">${notif.message}</p>
-                <span class="text-xs text-gray-500 whitespace-nowrap">${date}</span>
+              <div class="relative flex-shrink-0">
+                ${getNotificationIcon(notif.type)}
+                ${!notif.isRead ? `<span class="absolute top-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-white"></span>` : ''}
+              </div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center gap-2">
+                  <span class="font-semibold text-gray-800">${notif.title || "إشعار جديد"}</span>
+                  <span class="text-xs text-gray-400">${date}</span>
+                </div>
+                <p class="text-gray-600 mt-1 text-sm">${notif.message}</p>
               </div>
             `;
 
@@ -107,6 +167,11 @@
 
     nextBtn.addEventListener("click", () => {
       fetchNotifications(currentPage + 1);
+    });
+
+    // زر الإشعارات ينقل المستخدم إلى صفحة Notification.html
+    document.getElementById('notification-toggle')?.addEventListener('click', () => {
+      window.location.href = 'Notification.html';
     });
 
     fetchNotifications();
