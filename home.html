@@ -18,7 +18,8 @@
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_circle_left" />
 
   <!-- Tailwind -->
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <link rel="stylesheet" href="dist/tailwind.css">
 
   <style>
     /* Bottom Navbar */
@@ -176,75 +177,99 @@
   <!-- Spacer so content isn't hidden under navbar -->
   <div class="h-2"></div>
 
-  <!-- Dashboard Content -->
-  <div class="container dashboard-container" dir="ltr">
+<!-- Dashboard Content -->
+<div class="dashboard-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" dir="ltr">
+
+  <!-- Cards Grid Wrapper -->
+  <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-6 mt-5">
+
     <!-- Card 1 -->
-    <div class="w-full max-w-md bg-[#092BA712] rounded-xl p-4 shadow-md flex flex-col gap-3 mb-4 mt-5">
-      <div class="flex justify-between items-start">
-        <div class="flex flex-col gap-1">
-          <h2 class="text-[#333] font-bold text-lg">خليك جاهز للصيف</h2>
-          <a href="./join.html" class="text-[#3B82F6] text-sm font-medium">إشترك في جمعيه</a>
-          <p class="text-[#333] text-sm font-semibold mt-2">بخصم 20% علي الرسوم</p>
+<div class="overflow-hidden" id="slider">
+  <div id="slides" class="flex transition-transform duration-300 ease-in-out touch-pan-x">
+    <!-- Slide 1 -->
+    <div class="min-w-full flex-shrink-0 p-4">
+      <div class="bg-[#092BA712] rounded-xl p-4 shadow-md flex flex-col gap-3">
+        <div class="flex justify-between items-start">
+          <div class="flex flex-col gap-1">
+            <h2 class="text-[#333] font-bold text-lg">خليك جاهز للصيف</h2>
+            <a href="./join.html" class="text-[#3B82F6] text-sm font-medium">إشترك في جمعية</a>
+            <p class="text-[#333] text-sm font-semibold mt-2">بخصم 20% على الرسوم</p>
+          </div>
+          <div class="text-5xl text-[#3B82F6]">⛱️</div>
         </div>
-        <div class="text-5xl text-[#3B82F6]">⛱️</div>
+        <div class="text-yellow-400 text-xl text-end">☀️</div>
       </div>
-      <div class="text-yellow-400 text-xl text-end">☀️</div>
     </div>
+    <!-- Slide 2 -->
+    <div class="min-w-full flex-shrink-0 p-4">...نفس الكارت...</div>
+    <!-- Slide 3 -->
+    <div class="min-w-full flex-shrink-0 p-4">...نفس الكارت...</div>
+  </div>
+</div>
+
+
 
     <!-- Card 2 -->
-    <div class="w-full max-w-md bg-[#499F6882] rounded-xl p-4 shadow-md flex flex-col gap-4 mb-4">
+    <div
+      class="w-full bg-[#499F6882] rounded-xl p-4 shadow-md flex flex-col gap-4">
       <div class="flex items-center gap-3">
-        <img src="./Assets/imgs/Group 13986.svg" alt="">
+        <img src="./Assets/imgs/Group 13986.svg" alt="" class="h-8">
         <div class="flex flex-col">
-          <p class="text-[#1E1E1E] text-sm font-bold text-end">خصم 300ر.س ليك ولأصحابك.</p>
-          <p class="text-[#1E1E1E] text-sm text-end">إبعت دعوات أكتر، إستفيد بخصومات أكبر.</p>
+          <p class="text-[#1E1E1E] text-sm font-bold text-end">خصم 300 ر.س ليك ولأصحابك.</p>
+          <p class="text-[#1E1E1E] text-sm text-end">إبعت دعوات أكتر، واستفيد بخصومات أكبر.</p>
         </div>
       </div>
       <div class="flex justify-between items-center px-4">
-        <img src="./Assets/imgs/Group 13987.svg" alt="">
+        <img src="./Assets/imgs/Group 13987.svg" alt="" class="h-8">
         <button id="invite-btn"
           class="bg-white text-[#1E1E1E] font-semibold text-sm px-4 py-2 rounded-lg border border-gray-400 hover:bg-gray-100 transition">
-          إبعت دعوه
+          إبعت دعوة
         </button>
       </div>
     </div>
 
-    <!-- Copy Modal -->
-    <div id="copy-modal" class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden">
-      <div class="bg-white rounded-lg shadow-lg px-8 py-6 text-center">
-        <div class="text-green-600 text-3xl mb-2">
-          <i class="bi bi-clipboard-check"></i>
-        </div>
-        <div class="text-lg font-semibold mb-2">تم نسخ رابط الدعوة!</div>
-        <div class="text-gray-600 mb-4">يمكنك مشاركته مع أصدقائك.</div>
-        <!-- روابط المشاركة -->
-        <div id="social-share" class="flex justify-center gap-3 mb-2 hidden">
-          <a id="wa-share" href="#" target="_blank" title="واتساب">
-            <i class="bi bi-whatsapp text-2xl text-green-500"></i>
-          </a>
-          <a id="tw-share" href="#" target="_blank" title="تويتر">
-            <i class="bi bi-twitter text-2xl text-blue-400"></i>
-          </a>
-          <a id="fb-share" href="#" target="_blank" title="فيسبوك">
-            <i class="bi bi-facebook text-2xl text-blue-600"></i>
-          </a>
-        </div>
-        <button id="close-modal-btn"
-          class="mt-2 px-4 py-2 bg-[#16a34a] text-white rounded hover:bg-[#128a3a] transition">
-          إغلاق
-        </button>
-      </div>
-    </div>
+    <!-- لو عندك كروت تانية تضيفها هنا بنفس النمط -->
 
-    <!-- Joined Associations -->
-    <h3 class="hidden mb-4 text-center text-[#0FA451]">
-      جمعياتي المنضمة<br>
-      <span style="font-size:12px;">My Joined Associations</span>
-    </h3>
-    <div id="hidden circle-list">
-      <!-- associations loaded by home.js -->
+  </div>
+
+  <!-- Copy Modal (بيظهر فوق كل حاجة) -->
+  <div id="copy-modal"
+       class="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg shadow-lg px-8 py-6 text-center">
+      <div class="text-green-600 text-3xl mb-2">
+        <i class="bi bi-clipboard-check"></i>
+      </div>
+      <div class="text-lg font-semibold mb-2">تم نسخ رابط الدعوة!</div>
+      <div class="text-gray-600 mb-4">يمكنك مشاركته مع أصدقائك.</div>
+      <div id="social-share" class="flex justify-center gap-3 mb-2 hidden">
+        <a id="wa-share" href="#" target="_blank" title="واتساب">
+          <i class="bi bi-whatsapp text-2xl text-green-500"></i>
+        </a>
+        <a id="tw-share" href="#" target="_blank" title="تويتر">
+          <i class="bi bi-twitter text-2xl text-blue-400"></i>
+        </a>
+        <a id="fb-share" href="#" target="_blank" title="فيسبوك">
+          <i class="bi bi-facebook text-2xl text-blue-600"></i>
+        </a>
+      </div>
+      <button id="close-modal-btn"
+              class="mt-2 px-4 py-2 bg-[#16a34a] text-white rounded hover:bg-[#128a3a] transition">
+        إغلاق
+      </button>
     </div>
   </div>
+
+  <!-- Joined Associations -->
+  <h3 class="hidden mb-4 text-center text-[#0FA451]">
+    جمعياتي المنضمة<br>
+    <span class="text-xs">My Joined Associations</span>
+  </h3>
+  <div id="circle-list">
+    <!-- associations loaded by home.js -->
+  </div>
+
+</div>
+
   <!-- Navbar Bottom -->
   <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg"
     style="background-color:#90D1CA;" dir="rtl">
@@ -380,7 +405,51 @@
       }
     });
   </script>
+<!-- slider -->
+<script>
+  const slides = document.getElementById('slides');
+  const slider = document.getElementById('slider');
+  let isDragging = false;
+  let startPos = 0;
+  let currentTranslate = 0;
+  let prevTranslate = 0;
+  let currentIndex = 0;
 
+  slider.addEventListener("touchstart", start);
+  slider.addEventListener("touchmove", move);
+  slider.addEventListener("touchend", end);
+
+  function start(e) {
+    isDragging = true;
+    startPos = e.touches[0].clientX;
+  }
+
+  function move(e) {
+    if (!isDragging) return;
+    const currentPosition = e.touches[0].clientX;
+    const diff = currentPosition - startPos;
+    slides.style.transform = `translateX(${prevTranslate + diff}px)`;
+  }
+
+  function end(e) {
+    isDragging = false;
+    const moved = e.changedTouches[0].clientX - startPos;
+    const width = slider.clientWidth;
+
+    if (moved < -50 && currentIndex < slides.children.length - 1) currentIndex++;
+    else if (moved > 50 && currentIndex > 0) currentIndex--;
+
+    currentTranslate = -currentIndex * width;
+    slides.style.transform = `translateX(${currentTranslate}px)`;
+    prevTranslate = currentTranslate;
+  }
+
+  window.addEventListener("resize", () => {
+    currentTranslate = -currentIndex * slider.clientWidth;
+    slides.style.transform = `translateX(${currentTranslate}px)`;
+    prevTranslate = currentTranslate;
+  });
+</script>
 
 </body>
 
