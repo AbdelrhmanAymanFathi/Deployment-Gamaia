@@ -1,10 +1,11 @@
 // Constants
-const API_BASE_URL = 'http://localhost:3000'; // Update with your actual API URL
+const API_BASE_URL = 'https://money-production-bfc6.up.railway.app/api/turns/public'; // Corrected base URL
 
 // State
 let turns = [];
 let selectedTurnId = null; // Use selectedTurnId to store the ID of the selected turn
 let currentFilter = 'all';
+let totalFeesAmountFromApi = 0; // Store totalFeesAmount from API
 
 // DOM Elements
 const turnsGrid = document.getElementById('turnsGrid');
@@ -13,6 +14,7 @@ const nextBtn = document.getElementById('nextBtn');
 const durationEl = document.getElementById('duration');
 const monthlyFeeEl = document.getElementById('monthlyFee');
 const totalFeeEl = document.getElementById('totalFee');
+const feeAmount = document.getElementById('Fee');
 const errorMessage = document.getElementById('errorMessage');
 const loadingSpinner = document.querySelector('.loading-spinner');
 
@@ -39,29 +41,6 @@ function createTurnCard(turn) {
         <div class="turn-name">${turn.turnName}</div>
         <div class="turn-date">${formatDate(turn.scheduledDate)}</div>
         <div class="turn-amount">${formatAmount(turn.feeAmount)}</div>
-        ${turn.isTaken ? '<div>🔒</div>' : ''}
-    `;
-
-    card.innerHTML = content;
-
-    if (!turn.isTaken) {
-        card.addEventListener('click', () => selectTurn(turn.id));
-    }
-
-    return card;
-}
-
-// Two-click logic for turn selection
-// Two-click logic for turn selection with API call before redirect
-function createTurnCard(turn) {
-    const card = document.createElement('div');
-    card.className = `turn-card ${turn.isTaken ? 'taken' : ''}`;
-    card.dataset.turnId = turn.id;
-
-    const content = `
-        <div class="turn-name">${turn.turnName}</div>
-        <div class="turn-date">${formatDate(turn.scheduledDate)}</div>
-        <div class="turn-amount">${formatAmount(turn.feeAmount)}</div>
         ${turn.isTaken 
             ? '<div class="mt-2 text-red-600 flex items-center gap-1"><span>🔒</span> <span>غير متاح</span></div>' 
             : '<button class="lock-btn mt-3 px-3 py-1 rounded bg-green-600 text-white font-bold">احجز الدور</button>'
@@ -78,6 +57,7 @@ function createTurnCard(turn) {
             card.classList.add('selected');
             selectedTurnId = turn.id;
             nextBtn.disabled = false;
+            updateSummary(); // Update summary on selection
         });
 
         // Lock button event (stop propagation so card click doesn't fire)
@@ -106,13 +86,34 @@ function createTurnCard(turn) {
     return card;
 }
 
-function updateSummary(turn) {
+function updateSummary() {
     const selection = JSON.parse(localStorage.getItem('associationSelection'));
-    if (selection) {
-        durationEl.textContent = `${selection.duration} شهر`;
-        monthlyFeeEl.textContent = formatAmount(selection.monthlyFee);
-        totalFeeEl.textContent = formatAmount(selection.amount);
+    let monthlyFee = selection ? selection.monthlyFee : 0;
+    durationEl.textContent = `${turns.length} شهر`;
+    monthlyFeeEl.textContent = formatAmount(monthlyFee);
+
+    // Show feeAmount of selected turn
+    const selectedTurn = turns.find(t => t.id === selectedTurnId);
+    if (selectedTurn) {
+        // الفرق بين القسط الشهري و الرسوم
+        const diff = selectedTurn.feeAmount - monthlyFee;
+        let diffText = '';
+        if (diff > 0) {
+            diffText = `+${formatAmount(diff)} (زيادة)`;
+        } else if (diff < 0) {
+            diffText = `${formatAmount(diff)} (خصم)`;
+        } else {
+            diffText = 'بدون زيادة أو خصم';
+        }
+        feeAmount.textContent = `${formatAmount(selectedTurn.feeAmount)} | ${diffText}`;
+    } else {
+        feeAmount.textContent = '-';
     }
+
+    // Show totalFeesAmount from API if available
+    totalFeeEl.textContent = totalFeesAmountFromApi
+        ? formatAmount(totalFeesAmountFromApi)
+        : '-';
 }
 
 function filterTurns(filter) {
@@ -135,6 +136,7 @@ function renderTurns(turnsToRender) {
     turnsToRender.forEach(turn => {
         turnsGrid.appendChild(createTurnCard(turn));
     });
+    updateSummary(); // Update summary after rendering
 }
 
 function showError(message) {
@@ -194,28 +196,37 @@ async function initialize() {
             throw new Error('No association selected. Please select an association first.');
         }
 
-        // Fetch turns from the backend using the associationId
-        const res = await fetch(`${API_BASE_URL}/api/turns/${associationId}`, {
+        // Use associationId as a variable in the fetch URL
+        const url = `${API_BASE_URL}/${associationId}`;
+        const res = await fetch(url, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
         });
+        if (!res.ok) throw new Error('Network error');
         const data = await res.json();
 
-        if (data.success) {
+        // Handle both array and object response
+        if (Array.isArray(data)) {
+            turns = data;
+            totalFeesAmountFromApi = 0;
+        } else if (data.turns && Array.isArray(data.turns)) {
             turns = data.turns;
-            filterTurns('all');
-            // updateSummary(); // Remove or update this if summary depends on association details fetched differently
+            totalFeesAmountFromApi = data.totalFeesAmount || 0;
         } else {
-            throw new Error(data.error || 'Failed to fetch turns');
+            throw new Error('Invalid data');
         }
+
+        selectedTurnId = null;
+        nextBtn.disabled = true;
+        filterTurns(currentFilter);
+        updateSummary();
     } catch (error) {
-        console.error('Error fetching turns:', error);
-        showError(error.message || 'Failed to fetch turns. Please try again.');
+        showError(error.message || 'حدث خطأ أثناء تحميل الأدوار');
     } finally {
         loadingSpinner.style.display = 'none';
     }
 }
 
-// Start the app
+// Call initialize on script load
 initialize();

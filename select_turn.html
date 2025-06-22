@@ -48,13 +48,18 @@
         <span id="monthlyFee">-</span>
       </div>
       <div class="flex justify-between text-sm">
+        <span>إجمالي الضربية</span>
+        <span id="Fee">-</span>
+      </div>
+      <div id="feeDiffText" class="text-xs text-gray-500 text-left pr-2"></div>
+      <div class="flex justify-between text-sm">
         <span>إجمالي القبض</span>
         <span id="totalFee">-</span>
       </div>
     </div>
     <button id="nextBtn" class="w-full py-3 rounded-full bg-teal-500 text-white font-bold text-lg mt-2 transition hover:bg-teal-600 disabled:opacity-50" disabled>التالي</button>
   </div>
-    <script src="./MainLayout.js"></script>
+    <!-- <script src="./MainLayout.js"></script> -->
   <script>
     // Helpers
     function formatDate(dateString) {
@@ -140,14 +145,14 @@
     }
 
     function renderTurns() {
-  turnsGrid.innerHTML = '';
-  tabs[selectedTab].forEach(turn => {
-    const card = document.createElement('div');
-    card.className = `turn-card border-2 rounded-xl p-3 flex flex-col gap-1 cursor-pointer relative transition ${turn.taken ? 'taken border-gray-300 bg-gray-100' : 'border-teal-400 bg-white'}`;
-    card.dataset.id = turn.id;
-    if (turn.taken) card.classList.add('pointer-events-none');
-    if (selectedTurnId === turn.id) card.classList.add('selected');
-    card.innerHTML = `
+      turnsGrid.innerHTML = '';
+      tabs[selectedTab].forEach(turn => {
+        const card = document.createElement('div');
+        card.className = `turn-card border-2 rounded-xl p-3 flex flex-col gap-1 cursor-pointer relative transition ${turn.taken ? 'taken border-gray-300 bg-gray-100' : 'border-teal-400 bg-white'}`;
+        card.dataset.id = turn.id;
+        if (turn.taken) card.classList.add('pointer-events-none');
+        if (selectedTurnId === turn.id) card.classList.add('selected');
+        card.innerHTML = `
       <div class="flex items-center gap-2 mb-1">
         <input type="radio" name="turn" value="${turn.id}" ${turn.taken ? 'disabled' : ''} ${selectedTurnId === turn.id ? 'checked' : ''} class="accent-teal-500">
         <span class="font-bold">${turn.turnName}</span>
@@ -171,6 +176,7 @@
         selectedTurnId = turn.id;
         nextBtn.disabled = false;
         renderTurns();
+        renderSummary(); // Update summary on selection
       });
 
       // Add lock button event
@@ -196,7 +202,32 @@
       if (!association) return;
       durationEl.textContent = turns.length + ' شهور';
       monthlyFeeEl.textContent = formatAmount(association.monthlyAmount);
-      totalFeeEl.textContent = formatAmount(association.monthlyAmount * turns.length);
+
+      // Show feeAmount of selected turn, or '-' if none selected
+      const selectedTurn = turns.find(t => t.id === selectedTurnId);
+      document.getElementById('Fee').textContent = selectedTurn
+        ? formatAmount(selectedTurn.feeAmount)
+        : '-';
+
+      // Show sum of all feeAmount for all turns
+      const totalFees = turns.reduce((sum, t) => sum + (t.feeAmount || 0), 0);
+      totalFeeEl.textContent = formatAmount(totalFees);
+
+      // Show difference text
+      const diff = (selectedTurn ? selectedTurn.feeAmount : 0) - association.monthlyAmount;
+      const diffEl = document.getElementById('feeDiffText');
+      if (diff > 0) {
+        diffEl.textContent = `زيادة قدرها ${formatAmount(diff)}`;
+        diffEl.classList.remove('text-red-500', 'hidden');
+        diffEl.classList.add('text-green-500');
+      } else if (diff < 0) {
+        diffEl.textContent = `خصم قدره ${formatAmount(-diff)}`;
+        diffEl.classList.remove('text-green-500', 'hidden');
+        diffEl.classList.add('text-red-500');
+      } else {
+        diffEl.textContent = '';
+        diffEl.classList.add('hidden');
+      }
     }
 
     // التبديل بين التابات
@@ -205,6 +236,7 @@
         selectedTab = btn.dataset.tab;
         renderTabs();
         renderTurns();
+        renderSummary(); // Update summary on tab switch
       });
     });
 
