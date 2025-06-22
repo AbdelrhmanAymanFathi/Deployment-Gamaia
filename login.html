@@ -1,58 +1,363 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>تسجيل الدخول</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <style>
-    body {
-      background-color: #f4f6f9;
-      font-family: 'Arial', sans-serif;
-    }
-    .login-container {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    .login-btn {
-      background-color: #007bff;
-      color: white;
-    }
-    .login-btn:hover {
-      background-color: #0056b3;
-    }
-    #login-error {
-      color: #dc3545;
-      margin-top: 10px;
-      display: none;
-    }
-  </style>
-</head>
-<body>
-  <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <div class="login-container">
-      <h3 class="text-center mb-4">تسجيل الدخول</h3>
-      <form id="login-form">
-        <div class="form-group">
-          <label for="login-username">National Id</label>
-          <input type="text" class="form-control" id="login-username" required>
-        </div>
-        <div class="form-group">
-          <label for="login-password">Password</label>
-          <input type="password" class="form-control" id="login-password" required>
-        </div>
-        <div id="login-error" class="text-center"></div>
-        <button type="submit" class="btn login-btn btn-block">تسجيل الدخول</button>
-      </form>
-      <div class="text-center mt-3">
-        <a href="register.html">إنشاء حساب جديد</a>
-      </div>
-    </div>
-  </div>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل حساب جديد</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* تطبيق خط Cairo على كامل الجسم */
+        body {
+            font-family: 'Cairo', sans-serif;
+            background: #E8F5E9; /* لون أخضر فاتح جداً */
+            color: #FFFFFF; 
+        }
 
-  <script src="api.js"></script>
-  <script src="login.js"></script>
+        /* Card background shadow */
+        .card-shadow {
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.08); 
+        }
+
+        /* ألوان النصوص داخل الكارد */
+        .card-content-color {
+            color: #333; 
+        }
+        h2.card-content-color {
+            color: #1A202C; 
+        }
+        label.card-content-color {
+            color: #4A5568; 
+        }
+        p.card-content-color {
+            color: #4A5568; 
+        }
+        a.text-forgot-password {
+            color: #007B4F; 
+        }
+        a.text-forgot-password:hover {
+            color: #005C4B; 
+        }
+
+        /* Wave background effect */
+        .wave-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 250px;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .wave-background::before,
+        .wave-background::after {
+            content: "";
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 50%;
+            animation: waveAnimation 15s infinite ease-in-out;
+            opacity: 0.7;
+        }
+        .wave-background::before {
+            width: 800px;
+            height: 800px;
+            top: -600px;
+            background: rgba(156, 209, 199, 0.4); 
+            animation-delay: 0s;
+        }
+        .wave-background::after {
+            width: 700px;
+            height: 700px;
+            top: -550px;
+            background: rgba(0, 92, 75, 0.2); 
+            animation-delay: 2s;
+        }
+
+        @keyframes waveAnimation {
+            0% { transform: translateX(-50%) scale(1); }
+            50% { transform: translateX(-50%) scale(1.05); }
+            100% { transform: translateX(-50%) scale(1); }
+        }
+
+        /* Additional shapes to mimic the diffused effect */
+        .diffused-shape-1 {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: rgba(156, 209, 199, 0.5); 
+            border-radius: 50%;
+            filter: blur(50px); 
+            top: 100px;
+            right: 50px;
+            z-index: 0;
+        }
+        .diffused-shape-2 {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            background: rgba(0, 92, 75, 0.3); 
+            border-radius: 50%;
+            filter: blur(50px); 
+            bottom: 80px;
+            left: 30px;
+            z-index: 0;
+        }
+
+        /* Login button: Closer to Saudi Green, retaining good contrast */
+        .bg-login-green {
+            background-color: #00965E; 
+        }
+        .hover\:bg-login-green-hover:hover {
+            background-color: #007B4F; 
+        }
+
+        /* Create Account button: Animated gradient with more subtle and professional sparkles */
+        .animated-create-account-button {
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+            background: linear-gradient(90deg, #9cd1c7, #2DAE9A, #00965E, #9cd1c7);
+            background-size: 300% 100%;
+            animation: gradientAnimation 4s linear infinite;
+            border: none;
+            color: #000000; 
+            font-weight: bold;
+            padding: 0.5rem 1.25rem;
+            border-radius: 0.75rem;
+            transition: transform 0.2s ease-in-out;
+            box-shadow: 0 0 0 rgba(0,0,0,0); 
+        }
+
+        .animated-create-account-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* طبقة الأشكال الأولى: نجوم، دوائر ضبابية، غبار لامع - حركة أبطأ وتلاشي أهدأ */
+        .animated-create-account-button::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%; 
+            width: 200%; height: 200%; 
+            pointer-events: none;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255,255,255,0.3) 0.5px, transparent 1.5px, rgba(255,255,255,0.2) 2.5px, transparent 3.5px),
+                radial-gradient(circle at 70% 80%, rgba(255,255,255,0.3) 0.5px, transparent 1.5px, rgba(255,255,255,0.2) 2.5px, transparent 3.5px),
+                radial-gradient(circle at 30% 60%, rgba(255,255,255,0.15) 5px, transparent 15px),
+                radial-gradient(circle at 90% 10%, rgba(255,255,255,0.15) 5px, transparent 15px),
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0.2px, transparent 1px);
+            background-repeat: repeat;
+            background-size: 
+                80px 80px, 80px 80px, 
+                100px 100px, 100px 100px, 
+                20px 20px; 
+            background-position: 
+                10px 10px, 60px 70px, 
+                20px 50px, 80px 5px, 
+                0px 0px; 
+            animation: sparklesLayer1Animation 35s infinite linear, fadeOutInSubtle 18s infinite ease-in-out; 
+            filter: blur(1.2px) drop-shadow(0 0 6px rgba(255,255,255,0.4)); 
+            z-index: 0; 
+            opacity: 0; 
+        }
+
+        /* طبقة الأشكال الثانية: شرارات، علامات زائد، دوائر براقة - حركة أبطأ وتوهج أنعم */
+        .animated-create-account-button::after {
+            content: '';
+            position: absolute;
+            top: -25%; left: -25%; 
+            width: 150%; height: 150%; 
+            pointer-events: none;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(255,255,255,0.4) 0.8px, transparent 2px),
+                radial-gradient(circle at 85% 30%, rgba(255,255,255,0.4) 0.8px, transparent 2px),
+                linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.3) 50%, transparent 52%),
+                linear-gradient(135deg, transparent 48%, rgba(255,255,255,0.3) 50%, transparent 52%),
+                radial-gradient(circle at 50% 50%, rgba(255,255,255,0.25) 0.5px, transparent 1.5px);
+            background-repeat: repeat;
+            background-size: 
+                50px 50px, 50px 50px, 
+                40px 40px, 40px 40px, 
+                30px 30px; 
+            background-position: 
+                15px 70px, 70px 20px, 
+                30px 30px, 60px 10px, 
+                5px 5px; 
+            animation: sparklesLayer2Animation 25s infinite linear, fadeOutInSubtle 12s infinite ease-in-out; 
+            filter: blur(0.7px) drop-shadow(0 0 8px rgba(255,255,255,0.6)); 
+            z-index: 2; 
+            opacity: 0; 
+        }
+
+        /* أنميشن التدرج الأساسي للزر */
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
+        }
+
+        /* أنميشن حركة الطبقة الأولى */
+        @keyframes sparklesLayer1Animation {
+            0% { transform: translate(0%, 0%) rotate(0deg); }
+            50% { transform: translate(-8%, 4%) rotate(180deg); } 
+            100% { transform: translate(0%, 0%) rotate(360deg); }
+        }
+
+        /* أنميشن حركة الطبقة الثانية */
+        @keyframes sparklesLayer2Animation {
+            0% { transform: translate(0%, 0%) rotate(0deg); }
+            50% { transform: translate(6%, -3%) rotate(180deg); } 
+            100% { transform: translate(0%, 0%) rotate(360deg); }
+        }
+
+        /* أنميشن التلاشي والظهور للأشكال */
+        @keyframes fadeOutInSubtle {
+            0%, 100% { opacity: 0; }
+            25%, 75% { opacity: 0.3; } 
+            50% { opacity: 0.6; } 
+        }
+
+        /* --- التعديلات الخاصة بحقول الإدخال --- */
+        .input-permanent-animated-border {
+            position: relative; 
+            border: 1px solid #66BB6A; 
+            outline: none; 
+            box-shadow: none; 
+            overflow: hidden; 
+            z-index: 1; 
+            padding: 0.75rem 1rem; 
+            color: #333; 
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out; 
+        }
+
+        .input-permanent-animated-border::before {
+            content: none; 
+        }
+
+        .input-permanent-animated-border:focus {
+             border-color: #4CAF50; 
+             box-shadow: 0 0 0 3px rgba(102, 187, 106, 0.4); 
+             outline: none; 
+        }
+
+        /* --- شاشة التحميل (Loading Screen) - تم تحديثها لـ Boo --- */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white; /* خلفية بيضاء بالكامل */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000; 
+            opacity: 0; 
+            visibility: hidden; 
+            transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+        }
+
+        .loading-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .loading-image {
+            width: 180px; 
+            height: 180px;
+            object-fit: contain; 
+            animation: booFlying 2s infinite ease-in-out; /* أنيميشن جديد لـ Boo */
+        }
+
+        /* أنيميشن طيران الشبح (Boo) */
+        @keyframes booFlying {
+            0% { transform: translateX(-50px) translateY(0px) scale(1) rotate(0deg); opacity: 1; } /* تبدأ من الشمال شوية وتظهر */
+            25% { transform: translateX(50px) translateY(-20px) scale(1.05) rotate(5deg); opacity: 0.95; } /* تتحرك يمين وتطلع لفوق وتكبر شوية وتلف */
+            50% { transform: translateX(-30px) translateY(10px) scale(1) rotate(-5deg); opacity: 1; } /* ترجع شمال وتنزل وتصغر وتلف عكسي */
+            75% { transform: translateX(40px) translateY(-10px) scale(1.02) rotate(3deg); opacity: 0.98; } /* تتحرك يمين تاني وتطلع وتكبر شوية */
+            100% { transform: translateX(-50px) translateY(0px) scale(1) rotate(0deg); opacity: 1; } /* ترجع لنقطة البداية الأصلية */
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-size: 1.5rem; 
+            color: #333;
+            font-weight: 700; 
+        }
+        /* --- نهاية شاشة التحميل --- */
+
+        /* Responsive adjustments for very small screens */
+        @media (max-width: 390px) {
+            .login-card-responsive {
+                margin: 1.5rem;
+            }
+            .no-wrap-flex {
+                flex-wrap: nowrap;
+                justify-content: center;
+            }
+            .text-sm-responsive {
+                font-size: 0.8rem;
+            }
+            .button-compact-sm {
+                padding-left: 0.8rem;
+                padding-right: 0.8rem;
+                font-size: 0.8rem;
+            }
+        }
+
+        /*
+         * لجعل خلفية حقول الإدخال بيضاء دائمًا حتى عند الملء التلقائي (Autofill).
+         */
+        input:-webkit-autofill,
+        input:-webkit-autofill:hover, 
+        input:-webkit-autofill:focus, 
+        input:-webkit-autofill:active {
+            -webkit-box-shadow: 0 0 0px 1000px white inset !important; 
+            -webkit-text-fill-color: #333 !important; 
+            background-color: white !important; 
+        }
+    </style>
+</head>
+<body class="bg-gray-50 flex items-center justify-center min-h-screen relative overflow-hidden">
+
+    <div class="wave-background"></div>
+    <div class="diffused-shape-1"></div>
+    <div class="diffused-shape-2"></div>
+
+    <div class="bg-white rounded-3xl p-8 md:p-12 relative z-10 max-w-md w-full card-shadow login-card-responsive">
+        <h2 class="text-3xl font-semibold mb-6 text-center card-content-color">تسجيل حساب جديد</h2>
+        <form id="login-form">
+            <div class="mb-4">
+                <label for="login-username" class="block text-sm font-medium mb-2 card-content-color">الرقم القومي</label>
+                <input type="text" id="login-username" name="nationalId" class="shadow-sm appearance-none rounded-xl w-full py-3 px-4 leading-tight input-permanent-animated-border" placeholder="أدخل رقمك القومي">
+            </div>
+            <div class="mb-6">
+                <label for="login-password" class="block text-sm font-medium mb-2 card-content-color">كلمة المرور</label>
+                <input type="password" id="login-password" name="password" class="shadow-sm appearance-none rounded-xl w-full py-3 px-4 leading-tight input-permanent-animated-border" placeholder="أدخل كلمة المرور">
+            </div>
+            <div id="login-error" class="text-center text-red-600 mb-2" style="display:none"></div>
+            <button type="submit" id="loginButton" class="w-full bg-login-green hover:bg-login-green-hover text-white font-bold py-3 px-4 rounded-xl focus:outline-none focus:shadow-outline transition duration-200 ease-in-out">
+                تسجيل الدخول
+            </button>
+        </form>
+        <div class="text-center mt-4">
+            <a href="#" class="inline-block align-baseline font-medium text-sm text-forgot-password hover:text-forgot-password-hover">
+                هل نسيت كلمة المرور؟
+            </a>
+        </div>
+        <div class="flex items-center justify-center mt-8 no-wrap-flex">
+            <p class="text-sm text-sm-responsive card-content-color">ليس لديك حساب؟</p>
+            <button type="button" class="ml-2 animated-create-account-button py-2 px-5 rounded-xl focus:outline-none focus:shadow-outline">
+                إنشاء حساب
+            </button>
+        </div>
+    </div>
+
+    <div id="loadingOverlay" class="loading-overlay">
+        <img src="boo-medium.jpg" alt="Loading Animation" class="loading-image">
+        <p class="loading-text">جاري تسجيل الدخول...</p>
+    </div>
+
+    <script src="login.js"></script>
 </body>
 </html>
