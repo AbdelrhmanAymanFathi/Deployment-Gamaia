@@ -118,6 +118,8 @@
         turns = data;
         if (turns.length === 0) throw new Error('لا يوجد أدوار متاحة');
         association = turns[0].association;
+        // حساب الرسوم حسب نوع الدور
+        calculateFees();
         splitTabs();
         renderTabs();
         renderTurns();
@@ -126,6 +128,25 @@
         console.error('تفاصيل الخطأ:', e);
         alert('خطأ في تحميل الأدوار');
       }
+    }
+
+    // حساب الرسوم حسب نوع الدور
+    function calculateFees() {
+      if (!association) return;
+      const n = turns.length;
+      const perTab = Math.ceil(n / 3);
+      const totalAmount = association.monthlyAmount * n;
+      turns.forEach((turn, idx) => {
+        let percent = 0;
+        if (idx < perTab) {
+          percent = -0.07; // خصم 7%
+        } else if (idx < perTab * 2) {
+          percent = -0.05; // خصم 5%
+        } else {
+          percent = 0.02; // كاش باك 2%
+        }
+        turn.feeAmount = Math.round(association.monthlyAmount * n * percent);
+      });
     }
 
     // تقسيم الأدوار Tabs تلقائياً
@@ -209,21 +230,31 @@
         ? formatAmount(selectedTurn.feeAmount)
         : '-';
 
-      // Show sum of all feeAmount for all turns
-      const totalFees = turns.reduce((sum, t) => sum + (t.feeAmount || 0), 0);
-      totalFeeEl.textContent = formatAmount(totalFees);
+      // إجمالي القبض = القسط الشهري × المدة ± الرسوم
+      let total = association.monthlyAmount * turns.length;
+      if (selectedTurn) {
+        total += selectedTurn.feeAmount;
+      }
+      totalFeeEl.textContent = selectedTurn
+        ? formatAmount(total)
+        : '-';
 
       // Show difference text
-      const diff = (selectedTurn ? selectedTurn.feeAmount : 0) - association.monthlyAmount;
+      const diff = (selectedTurn ? selectedTurn.feeAmount : 0);
       const diffEl = document.getElementById('feeDiffText');
-      if (diff > 0) {
-        diffEl.textContent = `زيادة قدرها ${formatAmount(diff)}`;
-        diffEl.classList.remove('text-red-500', 'hidden');
-        diffEl.classList.add('text-green-500');
-      } else if (diff < 0) {
-        diffEl.textContent = `خصم قدره ${formatAmount(-diff)}`;
-        diffEl.classList.remove('text-green-500', 'hidden');
-        diffEl.classList.add('text-red-500');
+      if (selectedTurn) {
+        if (diff > 0) {
+          diffEl.textContent = `كاش باك ${formatAmount(diff)}`;
+          diffEl.classList.remove('text-red-500', 'hidden');
+          diffEl.classList.add('text-green-500');
+        } else if (diff < 0) {
+          diffEl.textContent = `خصم قدره ${formatAmount(-diff)}`;
+          diffEl.classList.remove('text-green-500', 'hidden');
+          diffEl.classList.add('text-red-500');
+        } else {
+          diffEl.textContent = '';
+          diffEl.classList.add('hidden');
+        }
       } else {
         diffEl.textContent = '';
         diffEl.classList.add('hidden');
