@@ -12,6 +12,7 @@
     <select id="association-select" class="w-full mb-6 p-2 border rounded-lg"></select>
     <h2 class="text-2xl font-bold mb-6 text-center text-blue-700">تسجيل الجمعية</h2>
     <div id="turns-list" class="space-y-3 mb-6"></div>
+    <div id="turn-info" class="mb-4 text-lg text-gray-700 text-center"></div>
     <button id="join-btn" class="w-full py-3 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 transition mb-4" disabled>تسجيل في الجمعية</button>
     <div id="result" class="text-center text-lg font-bold mt-4"></div>
   </div>
@@ -65,8 +66,19 @@
           document.querySelectorAll('.select-btn').forEach(b => b.classList.remove('ring', 'ring-2', 'ring-green-500'));
           this.classList.add('ring', 'ring-2', 'ring-green-500');
           document.getElementById('join-btn').disabled = false;
+          // Show selected turn info
+          document.getElementById('turn-info').textContent = `الدور المختار: ${turnNumber}`;
         };
       });
+      // Show selected turn info if already selected
+      const turnObj = localStorage.getItem('turnNumber');
+      let turnNumber = null;
+      if (turnObj) {
+        try {
+          turnNumber = JSON.parse(turnObj).turnNumber;
+        } catch {}
+      }
+      document.getElementById('turn-info').textContent = turnNumber ? `الدور المختار: ${turnNumber}` : '';
     }
 
     async function fetchAssociations() {
