@@ -112,6 +112,7 @@ profileToggle.addEventListener('click', () => {
 
 logoutBtn.addEventListener('click', () => {
     window.api.auth.logout();
+    localStorage.removeItem('user');
     window.location.href = 'login.html';
 });
 

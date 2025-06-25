@@ -80,6 +80,7 @@ overlay.addEventListener('click', (e) => {
 // تسجيل الخروج
 document.getElementById('logout-btn').addEventListener('click', () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     window.location.href = 'login.html';
 });
 
@@ -137,7 +138,15 @@ async function updateProfile() {
 
     try {
         // ملاحظة: يجب تعديل userId حسب التطبيق الفعلي
-        const userId = 5; // ثابت هنا كمثال
+        let userId = null;
+        try {
+            const user = JSON.parse(localStorage.getItem('user'));
+            if (user && user.id) userId = user.id;
+        } catch {}
+        if (!userId) {
+            alert('تعذر تحديد رقم المستخدم. يرجى إعادة تسجيل الدخول.');
+            return;
+        }
         const res = await fetch(`https://money-production-bfc6.up.railway.app/api/userData/admin/update-user/${userId}`, {
             method: 'PUT',
             headers: {

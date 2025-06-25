@@ -12,6 +12,7 @@ $('#profile-toggle').on('click', () => {
 });
 $('#logout-btn').on('click', () => {
   localStorage.removeItem('token');
+  localStorage.removeItem('user');
   window.location.href = 'login.html';
 });
 

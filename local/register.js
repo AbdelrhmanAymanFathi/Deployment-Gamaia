@@ -8,7 +8,6 @@ document.getElementById('register-form').addEventListener('submit', async functi
     const data = await window.api.auth.register(formData);
     // حفظ userId و user object بعد التسجيل (لو رجعهم السيرفر)
     if (data.user && data.user.id) {
-      localStorage.setItem('userId', data.user.id);
       localStorage.setItem('user', JSON.stringify(data.user));
     }
     window.location.href = 'login.html';

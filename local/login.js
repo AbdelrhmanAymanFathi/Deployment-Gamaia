@@ -1,4 +1,5 @@
 // login.js
+console.log('local/login.js loaded');
 document.getElementById("login-form").addEventListener("submit", async function(e) {
   e.preventDefault();
 
@@ -10,7 +11,7 @@ document.getElementById("login-form").addEventListener("submit", async function(
     const data = await window.api.auth.login(nationalId, password);
     // حفظ userId و user object بعد تسجيل الدخول
     if (data.user && data.user.id) {
-      localStorage.setItem('userId', data.user.id);
+      console.log('Login response user:', data.user, 'userId:', data.user && data.user.id);
       localStorage.setItem('user', JSON.stringify(data.user));
     }
     window.location.href = "./home.html";
