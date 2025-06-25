@@ -44,8 +44,21 @@ overlay.addEventListener('click', () => overlay.classList.add('hidden'));
 // تسجيل الخروج
 document.getElementById('logout-btn').addEventListener('click', () => {
   localStorage.removeItem('token');
+  localStorage.removeItem('user');
   window.location.href = 'login.html';
 });
 
 document.addEventListener('DOMContentLoaded', loadProfile);
 document.addEventListener('DOMContentLoaded', loadProfile);
+
+// ملاحظة: يجب تعديل userId حسب التطبيق الفعلي
+let userId = null;
+try {
+  const user = JSON.parse(localStorage.getItem('user'));
+  if (user && user.id) userId = user.id;
+} catch {}
+if (!userId) {
+  alert('تعذر تحديد رقم المستخدم. يرجى إعادة تسجيل الدخول.');
+  return;
+}
+const res = await fetch(`http://localhost:3000/api/userData/admin/update-user/${userId}`, {

@@ -1,3 +1,7 @@
+console.log('home.js loaded');
+const user = JSON.parse(localStorage.getItem('user'));
+console.log('Home page user object:', user, 'userId:', user && user.id);
+
 // تأكد من وجود التوكن وإعادة التوجيه للـ login إذا لم يكن موجودًا
 const token = localStorage.getItem("token");
 if (!token) {

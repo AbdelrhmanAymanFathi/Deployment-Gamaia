@@ -1,3 +1,5 @@
+console.log('login.js loaded');
+
 document.getElementById('login-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const errorEl = document.getElementById('login-error');
@@ -30,6 +32,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
         }
 
         // مثال: حفظ التوكن في localStorage
+        console.log('Login response user:', data.user, 'userId:', data.user && data.user.id);
         localStorage.setItem('token', data.token);
         // حفظ معلومات المستخدم
         localStorage.setItem('user', JSON.stringify(data.user));
