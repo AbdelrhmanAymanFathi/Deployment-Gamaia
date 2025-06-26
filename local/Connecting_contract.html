@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>توصيل العقد - جمعيتي</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* الألوان المخصصة من التصميمات السابقة */
+        .bg-saudi-green { background-color: #006C35; }
+        .text-saudi-green { color: #006C35; }
+        .border-saudi-green { border-color: #006C35; }
+        .bg-custom-light-gray { background-color: #f7fafc; }
+        .text-custom-darker-gray { color: #2d3748; }
+
+        /* الألوان الجديدة المطلوبة لـ "الستروك" والـ Focus والأزرار */
+        .border-custom-stroke { border-color: #a3d1c6; } /* اللون الجديد المطلوب للحدود */
+        .focus\:ring-custom-focus:focus { box-shadow: 0 0 0 2px rgba(112, 184, 166, 0.5); } /* لون Focus متناسق */
+        .bg-main-button { background-color: #008060; } /* لون الزرار الرئيسي متناسق */
+        .hover\:bg-main-button-dark:hover { background-color: #00664d; } /* لون هوفر للزرار الرئيسي */
+
+
+        /* ألوان حدود الأزرار الجديدة في الهيدر (شقة، فيلا، مكتب) */
+        .border-gray-300-custom { border-color: #a3d1c6; } /* استخدم اللون الجديد هنا */
+
+        /* لون مربع النص بتاع "my home" */
+        .text-pink-600-custom { color: #e53e3e; } /* اللون الأحمر "هذا الحقل مطلوب" */
+        .border-pink-300-custom { border-color: #f6ad9c; } /* حدود المربع الأحمر */
+
+        /* تنسيقات الناف بار السفلية - طبق الأصل من الصور الأخرى */
+        .bottom-nav {
+            background-color: #006C35;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: env(safe-area-inset-bottom);
+            z-index: 10;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .bottom-nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 500;
+            opacity: 0.7;
+            transition: opacity 0.3s ease;
+        }
+
+        .bottom-nav-item.active {
+            opacity: 1;
+            color: #d1fae5;
+        }
+
+        .bottom-nav-item i {
+            font-size: 1.25rem;
+            margin-bottom: 2px;
+        }
+
+        .bottom-nav-center-btn {
+            background-color: #006C35;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            transform: translateY(-20%);
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.3);
+            border: 4px solid #fff;
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+         .bottom-nav-center-btn i {
+            font-size: 1.5rem;
+        }
+
+        /* تنسيق الـ Dropdown Icon */
+        .custom-select-wrapper {
+            position: relative;
+        }
+        .custom-select-wrapper::after {
+            content: '\f078'; /* Font Awesome chevron-down icon */
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            position: absolute;
+            left: 12px; /* مسافة من اليسار عشان السهم يبقى في اليمين (عشان dir="rtl") */
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0; /* لون رمادي فاتح */
+            pointer-events: none; /* عشان السهم مايعملش block للكليك على الـ select */
+        }
+        select {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            padding-left: 35px; /* عشان السهم مايتعارضش مع النص */
+        }
+
+        /* تنسيق خاص لرقم التليفون عشان العلم والرقم */
+        .phone-input-container {
+            display: flex;
+            align-items: center;
+            border: 1px solid #a3d1c6; /* تم تحديث اللون هنا */
+            border-radius: 0.5rem; /* rounded-lg */
+            overflow: hidden;
+            background-color: #fff;
+            direction: ltr; /* نجعل الكونتينر كله LTR عشان العلم والرمز يجوا شمال */
+        }
+        .phone-input-container:focus-within {
+            border-color: #70b8a6; /* تم تحديث اللون هنا */
+            box-shadow: 0 0 0 2px rgba(112, 184, 166, 0.5); /* تم تحديث اللون هنا */
+        }
+        .country-code-display {
+            background-color: #f3f4f6; /* gray-100 */
+            padding: 0.75rem 1rem; /* p-3 */
+            display: flex;
+            align-items: center;
+            color: #4b5563; /* gray-700 */
+            border-top-left-radius: 0.5rem; /* Round the left side */
+            border-bottom-left-radius: 0.5rem; /* Round the left side */
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+            flex-shrink: 0; /* عشان مايصغرش */
+        }
+        .country-code-display img {
+            margin-right: 0.5rem; /* مسافة بين العلم والرمز */
+        }
+        .phone-number-input {
+            flex: 1;
+            padding: 0.75rem 1rem; /* p-3 */
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            color: #1f2937; /* gray-900 */
+            text-align: right; /* عشان الرقم يكون يمين */
+            direction: ltr; /* عشان الرقم يتكتب من الشمال لليمين كأرقام */
+            /* New: Adjust border radius for the input part */
+            border-top-right-radius: 0.5rem;
+            border-bottom-right-radius: 0.5rem;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 font-sans text-right">
+
+    <div class="max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden my-0 min-h-screen pb-20">
+        <header class="flex items-center p-4 border-b border-custom-stroke"> <a href="#" class="text-gray-600 hover:text-gray-800">
+                <i class="fas fa-arrow-right text-xl"></i> </a>
+            <h1 class="text-xl font-bold text-gray-800 flex-grow text-center">توصيل العقد</h1>
+            <div class="w-6"></div> </header>
+
+        <main class="p-4">
+            <h2 class="text-lg font-bold text-custom-darker-gray mb-4">عنوان المنزل</h2>
+
+            <div class="flex justify-around bg-custom-light-gray rounded-lg p-1 mb-6">
+                <button class="flex-1 py-2 px-4 rounded-md text-center text-custom-darker-gray font-medium bg-white shadow-sm border border-transparent selected-type">
+                    <i class="fas fa-building ml-2"></i> شقة
+                </button>
+                <button class="flex-1 py-2 px-4 rounded-md text-center text-gray-500 font-medium border border-gray-300-custom">
+                    <i class="fas fa-home ml-2"></i> فيلا
+                </button>
+                <button class="flex-1 py-2 px-4 rounded-md text-center text-gray-500 font-medium border border-gray-300-custom">
+                    <i class="fas fa-briefcase ml-2"></i> مكتب
+                </button>
+            </div>
+
+            <div class="space-y-4 mb-6">
+                <div>
+                    <label for="province" class="block text-sm font-medium text-gray-700 mb-1">المحافظة</label>
+                    <div class="custom-select-wrapper">
+                        <select id="province" class="block w-full p-3 border border-custom-stroke rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-focus text-gray-700"> <option value="">اختار المحافظة</option>
+                            <option value="الرياض">الرياض</option>
+                            <option value="مكة المكرمة">مكة المكرمة</option>
+                            <option value="المدينة المنورة">المدينة المنورة</option>
+                            <option value="الشرقية">الشرقية</option>
+                            <option value="عسير">عسير</option>
+                            <option value="القصيم">القصيم</option>
+                            <option value="تبوك">تبوك</option>
+                            <option value="حائل">حائل</option>
+                            <option value="نجران">نجران</option>
+                            <option value="جازان">جازان</option>
+                            <option value="الباحة">الباحة</option>
+                            <option value="الجوف">الجوف</option>
+                            <option value="الحدود الشمالية">الحدود الشمالية</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="region" class="block text-sm font-medium text-gray-700 mb-1">المنطقة</label>
+                    <div class="custom-select-wrapper">
+                        <select id="region" class="block w-full p-3 border border-custom-stroke rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-focus text-gray-700"> <option value="">اختار المنطقة</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="streetName" class="block text-sm font-medium text-gray-700 mb-1">اسم الشارع</label>
+                    <input type="text" id="streetName" placeholder="الجمهوريه" value="الجمهوريه" class="block w-full p-3 border border-custom-stroke rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-focus text-gray-700"> </div>
+
+                <div>
+                    <label for="houseNumber" class="block text-sm font-medium text-gray-700 mb-1">رقم المنزل</label>
+                    <input type="text" id="houseNumber" placeholder="رقم المنزل" value="my home" class="block w-full p-3 border border-pink-300-custom rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500 bg-white text-gray-700">
+                    <p class="text-pink-600-custom text-xs mt-1">هذا الحقل مطلوب</p>
+                </div>
+
+                <div class="flex space-x-2 rtl:space-x-reverse">
+                    <div class="flex-1">
+                        <label for="apartmentNumber" class="block text-sm font-medium text-gray-700 mb-1">رقم الشقة</label>
+                        <input type="text" id="apartmentNumber" placeholder="رقم الشقة" value="0" class="block w-full p-3 border border-custom-stroke rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-focus text-gray-700"> </div>
+                    <div class="flex-1">
+                        <label for="floorNumber" class="block text-sm font-medium text-gray-700 mb-1">رقم الدور</label>
+                        <input type="text" id="floorNumber" placeholder="رقم الدور" value="1" class="block w-full p-3 border border-custom-stroke rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-focus text-gray-700"> </div>
+                </div>
+
+                <div>
+                    <label for="additionalPhone" class="block text-sm font-medium text-gray-700 mb-1">رقم تليفون إضافي (اختياري)</label>
+                    <div class="phone-input-container">
+                        <div class="country-code-display">
+                            <img src="https://flagcdn.com/w20/sa.png" alt="Saudi Arabia flag" class="w-5 h-auto">
+                            +966
+                        </div>
+                        <input type="tel" id="additionalPhone" value="501234567" class="phone-number-input" placeholder="ادخل الرقم هنا">
+                    </div>
+                </div>
+
+                <div>
+                    <label for="deliveryNotes" class="block text-sm font-medium text-gray-700 mb-1">ملحوظة بخصوص العنوان (اختياري)</label>
+                    <textarea id="deliveryNotes" placeholder="علامة مميزة قريبة او ملحوظة عند التوصيل" class="block w-full p-3 border border-custom-stroke rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-focus text-gray-700 h-24 resize-none"></textarea> </div>
+                <div>
+                    <label for="addressName1" class="block text-sm font-medium text-gray-700 mb-1">اسم العنوان (اختياري)</label>
+                    <input type="text" id="addressName1" placeholder="اسم العنوان (اختياري)" class="block w-full p-3 border border-custom-stroke rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-focus text-gray-700"> </div>
+                <div>
+                    <label for="addressName2" class="block text-sm font-medium text-gray-700 mb-1">اسم العنوان (اختياري)</label>
+                    <input type="text" id="addressName2" placeholder="اسم العنوان (اختياري)" class="block w-full p-3 border border-custom-stroke rounded-lg focus:outline-none focus:ring-2 focus:ring-custom-focus text-gray-700"> </div>
+            </div>
+
+            <section class="p-4 pt-0">
+                <button class="w-full bg-main-button text-white py-3 rounded-lg text-lg font-semibold shadow-md hover:bg-main-button-dark transition-colors duration-300"> التالي
+                </button>
+            </section>
+        </main>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="#" class="bottom-nav-item">
+            <i class="fas fa-receipt"></i>
+            <span>المدفوعات</span>
+        </a>
+        <a href="#" class="bottom-nav-item">
+            <i class="fas fa-credit-card"></i>
+            <span>كارتي</span>
+        </a>
+        <a href="#" class="bottom-nav-item bottom-nav-center-btn">
+            <i class="fas fa-plus"></i>
+        </a>
+        <a href="#" class="bottom-nav-item">
+            <i class="fas fa-users"></i>
+            <span>جمعياتي</span>
+        </a>
+        <a href="#" class="bottom-nav-item active">
+            <i class="fas fa-home"></i>
+            <span>الرئيسية</span>
+        </a>
+    </nav>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // تفعيل زر نوع السكن (شقة/فيلا/مكتب)
+            const typeButtons = document.querySelectorAll('.flex-1.py-2.px-4.rounded-md');
+            typeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    typeButtons.forEach(btn => {
+                        btn.classList.remove('bg-white', 'shadow-sm', 'border-transparent', 'selected-type');
+                        btn.classList.add('text-gray-500', 'border-gray-300-custom');
+                    });
+                    this.classList.add('bg-white', 'shadow-sm', 'border-transparent', 'selected-type');
+                    this.classList.remove('text-gray-500', 'border-gray-300-custom');
+                });
+            });
+
+            // بيانات المحافظات والمناطق
+            const regionsData = {
+                "الرياض": ["وادي الدواسر", "الأفلاج", "الرياض", "المزاحمية", "الزلفي", "الخرج", "شقراء", "الدوادمي", "المجمعة", "عفيف", "العيينة", "حريملاء", "ثادق", "القويعية", "ضرما", "مرات", "السليل", "الأفلاج"],
+                "مكة المكرمة": ["جدة", "الطائف", "القنفذة", "الليث", "الخرمة", "تربة", "الكامل", "الجموم", "رابغ", "أضم", "العرضيات", "مكة المكرمة", "خليص"],
+                "المدينة المنورة": ["ينبع", "العيص", "بدر", "المهد", "خيبر", "الحناكية", "العلا", "وادي الفرع", "المدينة المنورة"],
+                "الشرقية": ["الدمام", "الخبر", "الظهران", "الجبيل", "الأحساء", "القطيف", "النعيرية", "بقيق", "رأس تنورة", "حفر الباطن", "الخفجي", "القطيف"],
+                "عسير": ["أبها", "خميس مشيط", "بيشة", "النماص", "محايل عسير", "رجال ألمع", "بارق", "تثليث", "ظهران الجنوب", "سراة عبيدة", "بلقرن", "طريب", "المجاردة"],
+                "القصيم": ["بريدة", "عنيزة", "الرس", "المذنب", "البكيرية", "المجمعة", "الأسياح", "الشماسية", "رياض الخبراء", "الخبراء", "عقلة الصقور", "ضرية", "عيون الجواء"],
+                "تبوك": ["تبوك", "الوجه", "ضباء", "حقل", "أملج", "تيماء", "البدع"],
+                "حائل": ["حائل", "بقعاء", "الشملي", "الخطة", "الغزالة", "موقق", "سميراء", "الحائط", "الشملي"],
+                "نجران": ["نجران", "شرورة", "حبونا", "بدر الجنوب", "ثار", "يدمة", "خباش"],
+                "جازان": ["جازان", "صبيا", "أبو عريش", "صامطة", "الدرب", "الموسم", "بيش", "العارضة", "الحرث", "الدائر", "فرسان", "الريث", "الطوال", "فيفا", "العدايا"],
+                "الباحة": ["الباحة", "بلجرشي", "المندق", "العقيق", "قلوة", "المخواة", "غامد الزناد", "بني حسن", "الحجرة"],
+                "الجوف": ["سكاكا", "دومة الجندل", "القريات", "طبرجل", "صوير", "العيساوية"],
+                "الحدود الشمالية": ["عرعر", "رفحاء", "طريف", "العويقيلة", "جديدة عرعر"]
+            };
+
+            const provinceSelect = document.getElementById('province');
+            const regionSelect = document.getElementById('region');
+
+            // Function to populate regions
+            function populateRegions() {
+                const selectedProvince = provinceSelect.value;
+                regionSelect.innerHTML = '<option value="">اختار المنطقة</option>'; // Clear existing options and add default
+
+                if (selectedProvince && regionsData[selectedProvince]) {
+                    regionsData[selectedProvince].forEach(region => {
+                        const option = document.createElement('option');
+                        option.value = region;
+                        option.textContent = region;
+                        regionSelect.appendChild(option);
+                    });
+                }
+            }
+
+            // Event listener for province change
+            provinceSelect.addEventListener('change', populateRegions);
+
+            // Initial population if a province is already selected (e.g., if page reloads with pre-selected value)
+            populateRegions(); // Call it once on load to ensure initial state is correct
+
+            // تفعيل الـ Navbar السفلية
+            const bottomNavItems = document.querySelectorAll('.bottom-nav-item');
+            bottomNavItems.forEach(item => {
+                item.addEventListener('click', function(event) {
+                    bottomNavItems.forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+        });
+    </script>
+</body>
+</html>

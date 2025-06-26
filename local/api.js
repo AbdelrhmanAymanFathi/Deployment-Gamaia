@@ -34,13 +34,6 @@ const apiRequest = async (endpoint, options = {}) => {
       headers
     });
 
-    // Handle 401 (no token or expired)
-    if (response.status === 401) {
-      removeToken();
-      window.location.href = 'login.html';
-      return;
-    }
-
     const data = await response.json();
 
     if (!response.ok) {

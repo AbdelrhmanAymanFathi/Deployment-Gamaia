@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سياسات الدفع والقبض - تصميم بسيط وأنيق</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <style>
+        /* CSS Variables */
+        :root {
+            --primary-green: #38b2ac; /* Teal/turquoise */
+            --secondary-blue: #4299e1; /* Sky blue */
+            --dark-heading: #2d3748; /* Dark text for headings */
+            --text-color: #4a5568; /* Body text color */
+            --bg-light: #f4f6f9; /* Very light gray for body background */
+            --card-bg: #ffffff; /* Pure white for card background */
+            --card-border-color: #e2e8f0; /* Light gray border for cards */
+            --shadow-subtle: 0 2px 8px rgba(0, 0, 0, 0.05); /* Very subtle shadow */
+            --shadow-hover: 0 5px 15px rgba(0, 0, 0, 0.1); /* Slightly more visible on hover */
+        }
+
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: var(--bg-light); /* Simple, elegant background */
+            line-height: 1.8;
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        /* Scroll Progress Bar - Unchanged */
+        #progressBar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--primary-green) 0%, var(--secondary-blue) 100%);
+            z-index: 100;
+            box-shadow: 0 0 15px rgba(56, 178, 172, 0.6);
+            transition: width 0.05s linear;
+        }
+
+        .section-wrapper {
+            max-width: 960px;
+            margin: 40px auto;
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Card Styling - Simple and Elegant */
+        .card {
+            background-color: var(--card-bg); /* Pure white background */
+            border-radius: 12px; /* Standard rounded corners */
+            box-shadow: var(--shadow-subtle); /* Very subtle shadow */
+            border: 1px solid var(--card-border-color); /* Simple border */
+            padding: 30px;
+            margin-bottom: 40px;
+            transition: all 0.3s ease-in-out; /* Smooth transition for hover */
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Card Hover Effect - Subtle Lift */
+        .card:hover {
+            transform: translateY(-3px); /* Subtle lift */
+            box-shadow: var(--shadow-hover); /* Slightly more visible shadow on hover */
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #e0e0e0; /* Simple border-bottom */
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-header .icon-wrapper {
+            font-size: 38px; /* Slightly adjusted icon size */
+            color: var(--primary-green);
+            margin-left: 15px;
+            position: relative;
+            z-index: 2;
+            /* No text-shadow (glow) here as per request */
+            transition: transform 0.3s ease; /* Transition for icon on hover */
+        }
+        .card:hover .card-header .icon-wrapper {
+            transform: scale(1.05); /* Slight scale on icon on hover */
+        }
+
+        .card-header h2 {
+            font-size: 30px; /* Adjusted heading size */
+            font-weight: 700; /* Regular bold */
+            color: var(--dark-heading);
+            margin: 0;
+            position: relative;
+            z-index: 2;
+        }
+
+        .card-content h3 {
+            font-size: 20px; /* Consistent subheading size */
+            font-weight: 600;
+            color: var(--dark-heading);
+            margin-top: 25px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        .card:hover .card-content h3 {
+            color: var(--secondary-blue); /* Subtle color change on subheading on hover */
+        }
+
+        .card-content h3 .icon-small {
+            font-size: 24px;
+            color: var(--secondary-blue);
+            margin-left: 12px;
+            opacity: 0.9;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover .card-content h3 .icon-small {
+            transform: scale(1.08); /* Slight scale on small icon on hover */
+        }
+
+        .card-content ul {
+            list-style: disc;
+            padding-right: 25px;
+            margin: 0;
+        }
+
+        .card-content ul li {
+            margin-bottom: 12px;
+            color: var(--text-color);
+            font-size: 16px; /* Standard text size */
+        }
+
+        .card-content ul li:last-child {
+            margin-bottom: 0;
+        }
+
+        .card-content p {
+            font-size: 16px;
+            color: var(--text-color);
+            margin-bottom: 18px;
+        }
+
+        /* Scroll to top button - Unchanged */
+        #scrollToTopBtn {
+            display: none;
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 99;
+            border: none;
+            outline: none;
+            background-color: var(--primary-green);
+            color: white;
+            cursor: pointer;
+            padding: 16px;
+            border-radius: 50%;
+            font-size: 26px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
+            transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+            aspect-ratio: 1/1; /* دائري ومتناسق الحجم */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #scrollToTopBtn:hover {
+            background-color: #319795;
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .section-wrapper {
+                margin: 20px auto;
+                padding: 15px;
+            }
+            .card {
+                padding: 25px;
+                margin-bottom: 25px;
+            }
+            .card-header h2 {
+                font-size: 26px;
+            }
+            .card-header .icon-wrapper {
+                font-size: 32px;
+            }
+            .card-content h3 {
+                font-size: 18px;
+            }
+            .card-content h3 .icon-small {
+                font-size: 20px;
+            }
+            .card-content p, .card-content ul li {
+                font-size: 15px;
+            }
+            #scrollToTopBtn {
+                bottom: 20px;
+                right: 20px;
+                padding: 12px;
+                font-size: 22px;
+                aspect-ratio: 1/1; /* دائري ومتناسق الحجم للموبايل */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+
+    <!-- Header with back icon -->
+    <header style="background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0.75rem 0; margin-bottom: 1.5rem;">
+        <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center;">
+            <button onclick="window.location.href='payments.html'"
+                style="background: none; border: none; cursor: pointer; display: flex; align-items: center; color: var(--primary-green); font-size: 1.7rem; padding: 0 0.5rem;">
+                <i class="fas fa-arrow-right"></i>
+                <span style="font-size: 1rem; margin-right: 0.5rem;">رجوع</span>
+            </button>
+        </div>
+    </header>
+
+    <div id="progressBar"></div>
+
+    <div class="section-wrapper">
+        <div class="card">
+            <div class="card-header">
+                <span class="icon-wrapper"><i class="fas fa-wallet"></i></span>
+                <h2>سياسة الدفع</h2>
+            </div>
+            <div class="card-content">
+                <h3 class="flex items-center"><span class="icon-small"><i class="fas fa-calendar-alt"></i></span>تاريخ الدفع</h3>
+                <p>ميعاد دفع القسط الشهري بيبدأ من يوم 25 من الشهر اللي قبله لحد يوم 5 من شهر القسط الجديد، بمعنى لو بتدفع قسط شهر يونيو ميعاد دفع القسط بيكون 25 مايو لحد 5 يونيو.</p>
+
+                <h3 class="flex items-center"><span class="icon-small"><i class="fas fa-exclamation-triangle"></i></span>غرامات تأخير الدفع</h3>
+                <ul>
+                    <li>من يوم 6 في الشهر: بتبدأ فترة السماح لحد يوم 10.</li>
+                    <li>من يوم 11 في الشهر: بيكون في غرامة تأخير 5% من قيمة القسط.</li>
+                    <li>من يوم 16 في الشهر: 5% إضافة غرامة تأخير.</li>
+                    <li>يوم 24 في الشهر: اشتراكك هيتم إلغاؤه من الجمعية لو أول مرة تتأخر في دفع أقساط الجمعية.</li>
+                    <li>بنهاية الشهر: لو قبضت الجمعية هيتم تحويل ملفك للشؤون القانونية ومش هتقدر تشترك في أي جمعية تانية.</li>
+                </ul>
+
+                <h3 class="flex items-center"><span class="icon-small"><i class="fas fa-credit-card"></i></span>طرق الدفع</h3>
+                <ul>
+                    <li>كارت البنك.</li>
+                    <li>فوري.</li>
+                    <li>محفظة إلكترونية.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-wrapper">
+        <div class="card">
+            <div class="card-header">
+                <span class="icon-wrapper"><i class="fas fa-piggy-bank"></i></span>
+                <h2>الدفع المسبق</h2>
+            </div>
+            <div class="card-content">
+                <h3 class="flex items-center"><span class="icon-small"><i class="fas fa-question-circle"></i></span>كيف ومتى تدفع مسبقًا؟</h3>
+                <ul>
+                    <li>من القائمة الرئيسية: اختار جمعياتي > اختار الجمعية اللي عايز تدفعها مقدمًا > المزيد > دفع مسبق.</li>
+                    <li>تقدر تدفع أي قسط مسبقًا طوال فترة الجمعية.</li>
+                </ul>
+
+                <h3 class="flex items-center"><span class="icon-small"><i class="fas fa-info-circle"></i></span>ليه تدفع مسبقًا؟</h3>
+                <p>تقدر تدفع أقساط أي جمعية مقدمًا لو عايز تخلص جمعية علشان تدخل جمعية تانية في نفس الوقت.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="section-wrapper">
+        <div class="card">
+            <div class="card-header">
+                <span class="icon-wrapper"><i class="fas fa-hand-holding-usd"></i></span>
+                <h2>القبض</h2>
+            </div>
+            <div class="card-content">
+                <h3 class="flex items-center"><span class="icon-small"><i class="fas fa-money-check-alt"></i></span>متى استلم القبض؟</h3>
+                <p>عادة بيتم تحويل القبض خلال الفترة من 15 لـ 30 من شهر قبض الجمعية.</p>
+                <ul>
+                    <li>تقدر تختار وسيلة القبض المناسبة ليك للحصول على قبض الجمعية في ميعادك.</li>
+                </ul>
+
+                <h3 class="flex items-center"><span class="icon-small"><i class="fas fa-cash-register"></i></span>طرق القبض</h3>
+                <ul>
+                    <li>تحويل بنكي.</li>
+                    <li>محفظة إلكترونية.</li>
+                </ul>
+
+                <h3 class="flex items-center"><span class="icon-small"><i class="fas fa-receipt"></i></span>إزاي القبض بيتسحب؟</h3>
+                <p>قبض جمعيتك بيوصل لك صافي بعد دفع كل من:</p>
+                <ul>
+                    <li>قسط الشهر اللي قبضت فيه.</li>
+                    <li>باقي رسوم الجمعية لو متبقي.</li>
+                    <li>قسط الشهر لأي جمعية تانية أنت فيها.</li>
+                </ul>
+
+                <h3 class="flex items-center"><span class="icon-small"><i class="fas fa-times-circle"></i></span>ليه القبض ممكن يتعلق؟</h3>
+                <p>قبض جمعيتك ممكن يكون معلق لأسباب كتيرة أشهرها:</p>
+                <ul>
+                    <li>بطاقتك غير سارية.</li>
+                    <li>محتاج تمضي العقد.</li>
+                    <li>محتاج توقع على التزام السداد بقيمة أكبر.</li>
+                    <li>متأخر في دفع الأقساط.</li>
+                    <li>محتاج تختار طريقة القبض أو تضيف بيانات حسابك البنكي.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <button id="scrollToTopBtn" title="الذهاب للأعلى">
+        <span class="fas fa-arrow-up"></span>
+    </button>
+
+    <script>
+        // Scroll to top button functionality
+        var scrollToTopBtn = document.getElementById("scrollToTopBtn");
+
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function() {
+            scrollFunction();
+            updateProgressBar();
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                scrollToTopBtn.style.display = "flex"; // بدل block إلى flex
+            } else {
+                scrollToTopBtn.style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        scrollToTopBtn.addEventListener('click', function() {
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+        });
+
+        // Scroll Progress Bar functionality
+        function updateProgressBar() {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById("progressBar").style.width = scrolled + "%";
+        }
+
+        // Initial call to set progress bar state on load
+        document.addEventListener('DOMContentLoaded', updateProgressBar);
+    </script>
+
+</body>
+</html>

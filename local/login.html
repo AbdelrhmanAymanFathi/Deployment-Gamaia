@@ -1,58 +1,70 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>تسجيل الدخول</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
     body {
-      background-color: #f4f6f9;
-      font-family: 'Arial', sans-serif;
-    }
-    .login-container {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-    .login-btn {
-      background-color: #007bff;
-      color: white;
-    }
-    .login-btn:hover {
-      background-color: #0056b3;
-    }
-    #login-error {
-      color: #dc3545;
-      margin-top: 10px;
-      display: none;
+      font-family: 'Tajawal', sans-serif;
+      background: linear-gradient(135deg, #f0f9ff, #e6f7ff);
     }
   </style>
 </head>
-<body>
-  <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-    <div class="login-container">
-      <h3 class="text-center mb-4">تسجيل الدخول</h3>
-      <form id="login-form">
-        <div class="form-group">
-          <label for="login-username">National Id</label>
-          <input type="text" class="form-control" id="login-username" required>
-        </div>
-        <div class="form-group">
-          <label for="login-password">Password</label>
-          <input type="password" class="form-control" id="login-password" required>
-        </div>
-        <div id="login-error" class="text-center"></div>
-        <button type="submit" class="btn login-btn btn-block">تسجيل الدخول</button>
-      </form>
-      <div class="text-center mt-3">
-        <a href="register.html">إنشاء حساب جديد</a>
-      </div>
+<body class="min-h-screen flex items-center justify-center p-4">
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-teal-500 to-emerald-600 py-4 px-6">
+      <h1 class="text-white text-xl font-bold text-center">تسجيل الدخول</h1>
     </div>
+
+    <!-- Form -->
+    <form id="login-form" class="p-6">
+      <!-- National ID -->
+      <label for="login-username" class="block mb-2 text-gray-700 font-bold">الرقم القومي</label>
+      <input
+        id="login-username"
+        name="nationalId"
+        type="text"
+        required
+        class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+        placeholder="أدخل الرقم القومي"
+      />
+
+      <!-- Password -->
+      <label for="login-password" class="block mb-2 text-gray-700 font-bold">كلمة المرور</label>
+      <input
+        id="login-password"
+        name="password"
+        type="password"
+        required
+        class="w-full p-3 mb-4 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+        placeholder="********"
+      />
+
+      <!-- Error Message -->
+      <div id="login-error" class="text-red-600 text-center text-sm mb-4 hidden"></div>
+
+      <!-- Submit Button -->
+      <button
+        type="submit"
+        class="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition"
+      >
+        تسجيل الدخول
+      </button>
+
+      <!-- Link to Register -->
+      <p class="mt-6 text-center text-gray-500 text-sm">
+        ليس لديك حساب؟
+        <a href="register.html" class="text-emerald-600 hover:underline">إنشاء حساب جديد</a>
+      </p>
+    </form>
   </div>
 
-  <script src="api.js"></script>
-  <script src="login.js"></script>
+  <script src="./login.js">
+
+  </script>
 </body>
 </html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>مساعدة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body class="bg-gray-50 min-h-screen font-sans">
+    <!-- Header with back icon -->
+    <header style="background: #fff; border-bottom: 1px solid #e2e8f0; padding: 0.75rem 0; margin-bottom: 1.5rem;">
+        <div style="max-width: 960px; margin: 0 auto; display: flex; align-items: center;">
+            <button onclick="window.location.href='payments.html'"
+                style="background: none; border: none; cursor: pointer; display: flex; align-items: center; color: #38b2ac; font-size: 1.5rem; padding: 0 0.5rem;">
+                <i class="fas fa-arrow-right"></i>
+                <span style="font-size: 1rem; margin-right: 0.5rem;">رجوع</span>
+            </button>
+            <!-- <span class="text-xl font-bold ml-4">مساعدة</span> -->
+        </div>
+    </header>
+
+    <!-- التصنيفات -->
+    <div class="p-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+        <button class="bg-white border rounded-lg p-4 flex flex-col items-center shadow hover:bg-green-50" onclick="scrollToSection('admin')">
+            <span class="text-green-700 text-2xl mb-2">🗂️</span>
+            <span>إدارية</span>
+        </button>
+        <button class="bg-white border rounded-lg p-4 flex flex-col items-center shadow hover:bg-green-50" onclick="scrollToSection('card')">
+            <span class="text-green-700 text-2xl mb-2">💳</span>
+            <span>كارت جمعيتي</span>
+        </button>
+        <button class="bg-white border rounded-lg p-4 flex flex-col items-center shadow hover:bg-green-50" onclick="scrollToSection('pay')">
+            <span class="text-green-700 text-2xl mb-2">💸</span>
+            <span>الدفع</span>
+        </button>
+        <button class="bg-white border rounded-lg p-4 flex flex-col items-center shadow hover:bg-green-50" onclick="scrollToSection('withdraw')">
+            <span class="text-green-700 text-2xl mb-2">🏧</span>
+            <span>السحب</span>
+        </button>
+        <button class="bg-white border rounded-lg p-4 flex flex-col items-center shadow hover:bg-green-50" onclick="scrollToSection('account')">
+            <span class="text-green-700 text-2xl mb-2">👤</span>
+            <span>الحساب</span>
+        </button>
+        <button class="bg-white border rounded-lg p-4 flex flex-col items-center shadow hover:bg-green-50" onclick="scrollToSection('contract')">
+            <span class="text-green-700 text-2xl mb-2">📄</span>
+            <span>العقد</span>
+        </button>
+    </div>
+
+    <!-- الأسئلة حسب التصنيف -->
+    <div class="p-4 space-y-8">
+
+        <!-- إدارية -->
+        <div id="admin">
+            <h2 class="font-bold text-lg mb-2">إدارية</h2>
+            <ul class="space-y-2">
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('ما هو كارت جمعيتي؟', 'كارت جمعيتي هو بطاقة رقمية تتيح لك إدارة جمعيتك بسهولة وأمان.')">
+                        ما هو كارت جمعيتي؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('هل هذا قانوني؟', 'نعم، جمعيتي مرخصة وتعمل وفق الأنظمة المحلية.')">
+                        هل هذا قانوني؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('هل يمكنني إدارة أكثر من جمعية؟', 'نعم، يمكنك إدارة أكثر من جمعية من خلال التطبيق.')">
+                        هل يمكنني إدارة أكثر من جمعية؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('هل يمكنني إضافة أعضاء جدد؟', 'نعم، يمكنك إضافة أعضاء جدد في أي وقت قبل بدء الجمعية.')">
+                        هل يمكنني إضافة أعضاء جدد؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('كيف أتابع حالة الجمعية؟', 'يمكنك متابعة حالة الجمعية من خلال لوحة التحكم في التطبيق.')">
+                        كيف أتابع حالة الجمعية؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('هل يمكنني حذف جمعية؟', 'يمكنك حذف الجمعية قبل بدء أول دورة دفع فقط.')">
+                        هل يمكنني حذف جمعية؟
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- كارت جمعيتي -->
+        <div id="card">
+            <h2 class="font-bold text-lg mb-2">كارت جمعيتي</h2>
+            <ul class="space-y-2">
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('إزاي استلم كارت جمعيتي؟', 'يمكنك استلام كارت جمعيتي من خلال التطبيق أو أحد الفروع المعتمدة.')">
+                        إزاي استلم كارت جمعيتي؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('هل الكارت له مصاريف سنوية؟', 'لا توجد مصاريف سنوية على كارت جمعيتي.')">
+                        هل الكارت له مصاريف سنوية؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('هل يمكنني استخدام الكارت في الشراء؟', 'نعم، يمكنك استخدام الكارت في الشراء من المتاجر أو عبر الإنترنت.')">
+                        هل يمكنني استخدام الكارت في الشراء؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('ماذا أفعل إذا فقدت الكارت؟', 'يرجى التواصل مع خدمة العملاء لإيقاف الكارت وإصدار بديل.')">
+                        ماذا أفعل إذا فقدت الكارت؟
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- الدفع -->
+        <div id="pay">
+            <h2 class="font-bold text-lg mb-2">الدفع</h2>
+            <ul class="space-y-2">
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('متى يجب الدفع؟', 'يجب الدفع في المواعيد المحددة حسب جدول الجمعية.')">
+                        متى يجب الدفع؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('ما هي طرق الدفع المتاحة؟', 'يمكنك الدفع عبر التحويل البنكي، المحافظ الإلكترونية، أو الدفع النقدي.')">
+                        ما هي طرق الدفع المتاحة؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('ماذا يحدث إذا تأخرت في الدفع؟', 'قد يتم فرض غرامة تأخير أو استبعادك من الجمعية حسب الشروط.')">
+                        ماذا يحدث إذا تأخرت في الدفع؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('هل يمكنني دفع أكثر من قسط مرة واحدة؟', 'نعم، يمكنك دفع أكثر من قسط إذا رغبت.')">
+                        هل يمكنني دفع أكثر من قسط مرة واحدة؟
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- السحب -->
+        <div id="withdraw">
+            <h2 class="font-bold text-lg mb-2">السحب</h2>
+            <ul class="space-y-2">
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('متى يمكنني أن استلم قسطي؟', 'يمكنك استلام القسط بعد انتهاء دورك في الجمعية.')">
+                        متى يمكنني أن استلم قسطي؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('كيف يتم تحديد دور السحب؟', 'يتم تحديد الدور تلقائياً أو بالاتفاق بين الأعضاء.')">
+                        كيف يتم تحديد دور السحب؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('هل يمكنني تغيير دوري في السحب؟', 'يمكنك تغيير دورك بالتنسيق مع باقي الأعضاء قبل بدء الجمعية.')">
+                        هل يمكنني تغيير دوري في السحب؟
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- الحساب -->
+        <div id="account">
+            <h2 class="font-bold text-lg mb-2">الحساب</h2>
+            <ul class="space-y-2">
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('ما هي الجمعيات المشمونة؟', 'الجمعيات المشمونة هي الجمعيات التي تم التحقق منها وتتمتع بمصداقية عالية.')">
+                        ما هي الجمعيات المشمونة؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('كيف أغير بياناتي الشخصية؟', 'يمكنك تغيير بياناتك من خلال إعدادات الحساب في التطبيق.')">
+                        كيف أغير بياناتي الشخصية؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('هل بياناتي آمنة؟', 'نعم، جميع بياناتك مشفرة وآمنة تماماً.')">
+                        هل بياناتي آمنة؟
+                    </button>
+                </li>
+            </ul>
+        </div>
+
+        <!-- العقد -->
+        <div id="contract">
+            <h2 class="font-bold text-lg mb-2">العقد</h2>
+            <ul class="space-y-2">
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('لا استطيع الاشتراك في جمعيه.', 'تأكد من استيفاء جميع الشروط المطلوبة للاشتراك.')">
+                        لا استطيع الاشتراك في جمعيه.
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('ما هي شروط الاشتراك؟', 'يجب أن يكون لديك حساب مفعل وأن توافق على الشروط والأحكام.')">
+                        ما هي شروط الاشتراك؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('هل يوجد عقد رسمي؟', 'نعم، يوجد عقد رسمي إلكتروني يتم توقيعه من جميع الأعضاء.')">
+                        هل يوجد عقد رسمي؟
+                    </button>
+                </li>
+                <li>
+                    <button class="w-full text-right bg-white border rounded-lg p-3 hover:bg-green-50"
+                        onclick="openModal('كيف أطلع على العقد؟', 'يمكنك الاطلاع على العقد من خلال صفحة الجمعية في التطبيق.')">
+                        كيف أطلع على العقد؟
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-lg shadow-lg max-w-md w-full p-6 relative">
+            <button onclick="closeModal()" class="absolute left-2 top-2 text-gray-400 hover:text-red-500 text-2xl">&times;</button>
+            <h3 id="modalTitle" class="font-bold text-lg mb-4"></h3>
+            <div id="modalContent" class="text-gray-700"></div>
+        </div>
+    </div>
+
+    <script>
+        function openModal(title, content) {
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalContent').innerText = content;
+            document.getElementById('modal').classList.remove('hidden');
+        }
+        function closeModal() {
+            document.getElementById('modal').classList.add('hidden');
+        }
+        // Scroll to section
+        function scrollToSection(id) {
+            document.getElementById(id).scrollIntoView({behavior: 'smooth'});
+        }
+        // إغلاق المودال عند الضغط خارج الصندوق
+        document.getElementById('modal').addEventListener('click', function(e) {
+            if (e.target === this) closeModal();
+        });
+    </script>
+</body>
+</html>

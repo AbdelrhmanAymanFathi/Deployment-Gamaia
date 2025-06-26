@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جاهزية حسابك للقبض</title>
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+      <link rel="stylesheet" href="./mainLayout.css">
+  <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Pure CSS for fine-tuning if needed */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* خط عام مقارب */
+            background-color: #f0f2f5; /* لون خلفية خفيف */
+            margin: 0; /* إزالة أي هوامش افتراضية من الـ body */
+            padding: 0; /* إزالة أي مسافات داخلية افتراضية من الـ body */
+        }
+        /* Custom styles for the checkmark icon in "الاقساط المستحقة" */
+        .checked-icon-container {
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #d1fae5; /* Light green background for checkmark */
+            border-radius: 50%;
+        }
+        .checked-icon-container i {
+            color: #0d9488; /* Darker green for the checkmark */
+            font-size: 1rem;
+        }
+
+        /* Custom styles for the nav icons if default Tailwind is not enough */
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 0; /* تقليل البادينج ليناسب الارتفاع 50px */
+            color: #000000; /* Default icon and text color to black */
+            font-size: 0.65rem; /* تصغير حجم النص ليتناسب مع الارتفاع */
+            flex-grow: 1; /* لجعل العناصر تتوزع بالتساوي */
+            text-align: center; /* Center align text for nav items */
+        }
+        .nav-item i {
+            font-size: 1.15rem; /* Icon size */
+            margin-bottom: 2px; /* تقليل المسافة بين الأيقونة والنص */
+            color: #000000; /* Ensure icon is black by default */
+        }
+        .nav-item.active {
+            color: #000000; /* Active text color to black */
+        }
+        .nav-item.active i {
+             color: #000000; /* Active icon color to black */
+        }
+        .nav-item.active .nav-icon-highlight {
+            background-color: #90d1ca; /* Active highlight color */
+            border-radius: 50%;
+            padding: 6px; /* Adjust padding to make it a circular background for 50px height */
+            color: #000000; /* Black icon on highlight background */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            bottom: 8px; /* Adjust to move it slightly up for 50px height */
+        }
+        .nav-item.active .nav-icon-highlight i {
+            font-size: 1.35rem; /* Make icon inside highlight a bit larger for 50px height */
+            color: #000000; /* Ensure icon is black when highlighted */
+        }
+        .nav-icon-highlight { /* Default styles for non-active highlight to ensure consistency */
+             background-color: transparent;
+             padding: 0;
+             border-radius: 0;
+             box-shadow: none;
+             color: inherit;
+             position: static;
+        }
+
+        /* Specific styles for the "الاقساط المستحقة" section */
+        .installments-header {
+            background-color: #e6ffed; /* لون أخضر فاتح جداً مائل للأبيض */
+            color: #059669; /* لون أخضر داكن للنص */
+            border-radius: 8px; /* زوايا دائرية */
+            padding: 1rem; /* مسافة داخلية */
+            margin-bottom: 20px; /* Add margin to push content up and allow more scroll */
+        }
+        .installments-header .fa-coins {
+            color: #059669; /* لون أيقونة العملات أخضر داكن */
+        }
+
+        /* Hover effect for document boxes */
+        .document-box {
+            transition: all 0.2s ease-in-out;
+        }
+        .document-box:hover {
+            background-color: #f0fdf4; /* Lighter green on hover */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Enhanced shadow */
+            transform: translateY(-2px); /* Slight lift on hover */
+        }
+
+        /* Ensure more scrollable area for content */
+        .flex-grow.container {
+            padding-bottom: 80px; /* Increased padding to give more scroll space above navbar */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+
+    <div class="flex-grow container mx-auto p-4 max-w-md bg-white shadow-lg rounded-lg mb-4 overflow-y-auto">
+
+        <div class="flex items-center pb-4 border-b border-gray-200">
+            <button onclick="window.history.back()" class="ml-2 text-gray-500 hover:text-gray-700 text-xl focus:outline-none" aria-label="رجوع">
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <h1 class="text-lg font-semibold text-gray-800 text-right flex-grow">جاهزية حسابك للقبض</h1>
+        </div>
+
+        <div class="mt-4 space-y-4" dir="ltr">
+            <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm document-box cursor-pointer" data-modal="modal-id-card">
+                <i class="fas fa-chevron-right text-gray-400 text-xl mr-3 ml-2"></i>
+                <div class="flex-grow">
+                    <p class="text-sm font-medium text-gray-700">البطاقة الشخصية</p>
+                    <p class="text-xs text-gray-500 mt-1">محتاج ترفع صورة بطاقتك الشخصية السارية</p>
+                </div>
+                <i class="fas fa-cloud-upload-alt text-green-500 text-2xl mr-2"></i>
+            </div>
+
+            <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm document-box cursor-pointer" data-modal="modal-receipt">
+                <i class="fas fa-chevron-right text-gray-400 text-xl mr-3 ml-2"></i>
+                <div class="flex-grow">
+                    <p class="text-sm font-medium text-gray-700">إيصال إلتزام السداد</p>
+                    <p class="text-xs text-gray-500 mt-1">ستحتاج إلي التوقيع علي مذكرة التأمين أولاً ،إذا قمت بالتوقيع عليها . فتجاهل ذلك</p>
+                </div>
+                <i class="fas fa-cloud-upload-alt text-green-500 text-2xl mr-2"></i>
+            </div>
+
+            <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm document-box cursor-pointer" data-modal="modal-method">
+                <i class="fas fa-chevron-right text-gray-400 text-xl mr-3 ml-2"></i>
+                <div class="flex-grow">
+                    <p class="text-sm font-medium text-gray-700">اختيار طريقة القبض</p>
+                    <p class="text-xs text-gray-500 mt-1">لازم تختار وسيلة قبض عشان تقدر تستلم مبلغ القبض</p>
+                </div>
+                <i class="fas fa-cloud-upload-alt text-green-500 text-2xl mr-2"></i>
+            </div>
+
+            <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm document-box cursor-pointer" data-modal="modal-contract">
+                <i class="fas fa-chevron-right text-gray-400 text-xl mr-3 ml-2"></i>
+                <div class="flex-grow">
+                    <p class="text-sm font-medium text-gray-700">العقد</p>
+                    <p class="text-xs text-gray-500 mt-1">محتاج ترفع مستند التزام السداد</p>
+                </div>
+                <i class="fas fa-cloud-upload-alt text-green-500 text-2xl mr-2"></i>
+            </div>
+        </div>
+
+        <div class="mt-8 flex items-center p-4 installments-header">
+            <div class="checked-icon-container ml-4">
+                <i class="fas fa-check"></i>
+            </div>
+            <h2 class="text-base font-semibold flex-grow">الاقساط المستحقة</h2>
+            <i class="fas fa-coins text-2xl mr-2"></i>
+        </div>
+
+        <div class="h-20"></div>
+
+    </div>
+
+    <!-- Modals -->
+    <!-- Modal: البطاقة الشخصية -->
+    <div id="modal-id-card" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+      <div class="bg-white rounded-lg shadow-lg w-[90vw] max-w-md p-6 relative flex flex-col">
+        <button class="absolute top-2 left-2 text-gray-400 hover:text-gray-700 text-2xl close-modal" data-modal="modal-id-card">
+          <i class="fas fa-times"></i>
+        </button>
+        <h3 class="text-lg font-semibold mb-2 text-right">رفع صورة البطاقة الشخصية</h3>
+        <p class="text-sm text-gray-600 mb-4 text-right">محتاج ترفع صورة بطاقتك الشخصية السارية</p>
+        <input id="id-card-file" type="file" accept="image/*" class="mb-4" />
+        <button class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700" onclick="handleUpload('id-card')">رفع</button>
+      </div>
+    </div>
+    <!-- Modal: إيصال إلتزام السداد -->
+    <div id="modal-receipt" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+      <div class="bg-white rounded-lg shadow-lg w-[90vw] max-w-md p-6 relative flex flex-col">
+        <button class="absolute top-2 left-2 text-gray-400 hover:text-gray-700 text-2xl close-modal" data-modal="modal-receipt">
+          <i class="fas fa-times"></i>
+        </button>
+        <h3 class="text-lg font-semibold mb-2 text-right">رفع إيصال إلتزام السداد</h3>
+        <p class="text-sm text-gray-600 mb-4 text-right">ستحتاج إلي التوقيع علي مذكرة التأمين أولاً ،إذا قمت بالتوقيع عليها . فتجاهل ذلك</p>
+        <input id="receipt-file" type="file" accept="image/*,application/pdf" class="mb-4" />
+        <button class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700" onclick="handleUpload('receipt')">رفع</button>
+      </div>
+    </div>
+    <!-- Modal: اختيار طريقة القبض -->
+    <div id="modal-method" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+      <div class="bg-white rounded-lg shadow-lg w-[90vw] max-w-md p-6 relative flex flex-col">
+        <button class="absolute top-2 left-2 text-gray-400 hover:text-gray-700 text-2xl close-modal" data-modal="modal-method">
+          <i class="fas fa-times"></i>
+        </button>
+        <h3 class="text-lg font-semibold mb-2 text-right">اختيار طريقة القبض</h3>
+        <p class="text-sm text-gray-600 mb-4 text-right">لازم تختار وسيلة قبض عشان تقدر تستلم مبلغ القبض</p>
+        <select id="method-select" class="mb-4 border rounded p-2">
+          <option>حساب بنكي</option>
+          <option>محفظة إلكترونية</option>
+          <option>نقدي</option>
+        </select>
+        <button class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700" onclick="handleUpload('method')">تأكيد</button>
+      </div>
+    </div>
+    <!-- Modal: العقد -->
+    <div id="modal-contract" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+      <div class="bg-white rounded-lg shadow-lg w-[90vw] max-w-md p-6 relative flex flex-col">
+        <button class="absolute top-2 left-2 text-gray-400 hover:text-gray-700 text-2xl close-modal" data-modal="modal-contract">
+          <i class="fas fa-times"></i>
+        </button>
+        <h3 class="text-lg font-semibold mb-2 text-right">رفع مستند التزام السداد</h3>
+        <p class="text-sm text-gray-600 mb-4 text-right">محتاج ترفع مستند التزام السداد</p>
+        <input id="contract-file" type="file" accept="image/*,application/pdf" class="mb-4" />
+        <button class="bg-teal-600 text-white px-4 py-2 rounded hover:bg-teal-700" onclick="handleUpload('contract')">رفع</button>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div id="success-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+      <div class="bg-white rounded-lg shadow-lg w-[90vw] max-w-xs p-6 flex flex-col items-center">
+        <i class="fas fa-check-circle text-green-500 text-4xl mb-3"></i>
+        <div class="text-lg font-semibold mb-2 text-center">تم الحفظ بنجاح</div>
+        <div class="text-sm text-gray-600 mb-4 text-center">سيتم إعادتك للصفحة السابقة</div>
+      </div>
+    </div>
+
+
+  <!-- Navbar Bottom -->
+  <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg" style="background-color:#90D1CA;" dir="rtl">
+
+    <div onclick="location.href='home.html'" class="p-0">
+      <i class="bi bi-house-door-fill text-xl "></i>
+      <div class="label ">الرئيسية</div>
+    </div>
+
+    <div onclick="location.href='circle-list.html'" class="p-0">
+      <i class="bi bi-people-fill text-xl"></i>
+      <div class="label">جمعياتي</div>
+    </div>
+
+    <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3" >
+      <!-- <span class="material-symbols-outlined text-3xl">
+        arrow_circle_left
+      </span> -->
+      <img src="./Assets/imgs/SubscribeIcon.svg" class="" alt="">
+      <div class="label" style="color:#16a34a; font-weight:700;">انضم الان</div>
+    </div>
+
+    <div onclick="location.href='./wallet.html'" class="p-0">
+      <i class="bi bi-credit-card-fill text-xl"></i>
+      <div class="label">محفظتي</div>
+    </div>
+
+    <div onclick="location.href='payments.html'" class="p-0 text-[#008D10]">
+      <i class="bi bi-file-earmark-check-fill text-xl"></i>
+      <div class="label">المدفوعات</div>
+    </div>
+
+  </div>
+    <script>
+      // Modal open/close logic
+      document.querySelectorAll('.document-box').forEach(box => {
+        box.addEventListener('click', function() {
+          const modalId = this.getAttribute('data-modal');
+          document.getElementById(modalId).classList.remove('hidden');
+        });
+      });
+      document.querySelectorAll('.close-modal').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const modalId = this.getAttribute('data-modal');
+          document.getElementById(modalId).classList.add('hidden');
+        });
+      });
+      // Close modal on background click
+      document.querySelectorAll('[id^="modal-"]').forEach(modal => {
+        modal.addEventListener('click', function(e) {
+          if (e.target === this) this.classList.add('hidden');
+        });
+      });
+
+      // Handle upload/save and show modal then go back
+      function handleUpload(type) {
+        let data = {};
+        if (type === 'id-card') {
+          const fileInput = document.getElementById('id-card-file');
+          if (fileInput.files.length > 0) {
+            data['idCard'] = fileInput.files[0].name;
+          }
+        } else if (type === 'receipt') {
+          const fileInput = document.getElementById('receipt-file');
+          if (fileInput.files.length > 0) {
+            data['receipt'] = fileInput.files[0].name;
+          }
+        } else if (type === 'method') {
+          const select = document.getElementById('method-select');
+          data['method'] = select.value;
+        } else if (type === 'contract') {
+          const fileInput = document.getElementById('contract-file');
+          if (fileInput.files.length > 0) {
+            data['contract'] = fileInput.files[0].name;
+          }
+        }
+        // Save to localStorage (append or update)
+        let prev = {};
+        try { prev = JSON.parse(localStorage.getItem('accountReceivable') || '{}'); } catch {}
+        localStorage.setItem('accountReceivable', JSON.stringify({...prev, ...data}));
+
+        // Hide all modals
+        document.querySelectorAll('[id^="modal-"]').forEach(m => m.classList.add('hidden'));
+        // Show success modal
+        document.getElementById('success-modal').classList.remove('hidden');
+        // Redirect after short delay
+        setTimeout(() => {
+          document.getElementById('success-modal').classList.add('hidden');
+          window.history.back();
+        }, 1200);
+      }
+    </script>
+</body>
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كارت جمعيتي - الأسئلة</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif; /* استخدام خط القاهرة لتحسين المظهر */
+            background: linear-gradient(to bottom right, #f0f4f8, #d9e2ec); /* تدرج لوني ناعم للخلفية */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 1rem; /* إضافة padding للبودي لضمان المسافة على الشاشات الصغيرة */
+            box-sizing: border-box; /* التأكد من أن البادينج لا يضيف عرضًا إضافيًا */
+        }
+
+        .card-container {
+            background-color: #ffffff;
+            border-radius: 1.5rem; /* زوايا مستديرة أكثر */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* ظل أعمق وأكثر نعومة */
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 380px; /* زيادة عرض الكارت قليلاً ليكون احترافياً */
+            box-sizing: border-box;
+            opacity: 0; /* إخفاء الكارت مبدئياً لتأثير الظهور */
+            transform: translateY(20px);
+            animation: fadeInSlideUp 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeInSlideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card-header {
+            display: flex;
+            flex-direction: row-reverse;
+            align-items: center;
+            justify-content: flex-end; /* ضبط الموضع ليكون في نهاية السطر */
+            margin-bottom: 1.5rem; /* مسافة أكبر بين الرأس والقائمة */
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #edf2f7; /* خط فاصل أنيق */
+        }
+
+        .card-header .title {
+            font-weight: 700; /* خط سميك */
+            font-size: 1rem; /* حجم خط أكبر قليلاً */
+            margin-left: 0.75rem; /* مسافة أكبر بين العنوان والسهم */
+            color: #333; /* لون نص أغمق */
+        }
+
+        .card-header .arrow-icon {
+            width: 1.25rem; /* حجم أكبر للسهم */
+            height: 1.25rem;
+            color: #4a5568; /* لون سهم أغمق قليلاً */
+            transition: transform 0.3s ease; /* إضافة انتقال لسلاسة الحركة */
+        }
+
+        /* تحسين عناصر قائمة الأسئلة */
+        .faq-item-div {
+            display: flex;
+            flex-direction: row-reverse; /* لجعل السهم على اليمين */
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            padding: 0.85rem; /* حشوة أكبر */
+            border-radius: 0.75rem; /* زوايا مستديرة للعنصر */
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+            position: relative;
+            z-index: 1; /* لضمان ظهور الظل بشكل صحيح */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05); /* ظل خفيف لكل عنصر */
+            margin-bottom: 0.75rem; /* مسافة بين العناصر */
+        }
+
+        .faq-item-div:hover {
+            background-color: #f0f4f8; /* خلفية أفتح عند التمرير */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* ظل أقوى عند التمرير */
+            transform: translateY(-2px); /* رفع العنصر قليلاً */
+        }
+
+        .faq-item-div .question-text {
+            font-size: 0.85rem; /* حجم خط أصغر قليلاً لمظهر أكثر أناقة */
+            font-weight: 600; /* خط شبه سميك */
+            color: #2d3748; /* لون نص أغمق قليلاً */
+            flex-grow: 1; /* السماح للنص بأخذ المساحة المتاحة */
+            text-align: right; /* محاذاة النص لليمين */
+            margin-right: 0.5rem; /* مسافة بين النص والسهم */
+        }
+
+        .faq-item-div .toggle-arrow-icon {
+            width: 1rem; /* حجم أصغر لسهم الفتح/الإغلاق */
+            height: 1rem;
+            color: #38a169; /* لون أخضر أكثر وضوحاً */
+            transition: transform 0.3s ease;
+        }
+
+        .faq-item-div[aria-expanded="true"] .toggle-arrow-icon {
+            transform: rotate(-90deg); /* تدوير السهم عند الفتح */
+        }
+
+        .answer-content {
+            background-color: #e6ffed; /* خلفية خضراء فاتحة للإجابة */
+            color: #22543d; /* لون نص أخضر داكن */
+            font-size: 0.75rem; /* حجم خط صغير */
+            line-height: 1.5; /* تباعد أسطر أفضل */
+            border-radius: 0.75rem;
+            padding: 0.75rem 1rem;
+            margin-top: 0.5rem;
+            animation: slideDown 0.4s ease-out forwards;
+            overflow: hidden; /* لإخفاء المحتوى قبل ظهور كامل */
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.4s ease-out, opacity 0.4s ease-out, padding 0.4s ease-out;
+        }
+
+        .answer-content.show {
+            max-height: 200px; /* قيمة كافية لإظهار معظم الإجابات */
+            opacity: 1;
+            padding: 0.75rem 1rem; /* إعادة تطبيق البادينج بعد الظهور */
+        }
+
+        @keyframes slideDown {
+            from {
+                max-height: 0;
+                opacity: 0;
+            }
+            to {
+                max-height: 200px; /* يجب أن تكون كافية لتضمين أطول إجابة */
+                opacity: 1;
+            }
+        }
+
+        /* مربع الإجابة المنبثق (Modal) */
+        #answer-modal {
+            background-color: rgba(0, 0, 0, 0.6); /* خلفية داكنة أكثر للمودال */
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        #answer-modal .modal-content {
+            background-color: #ffffff;
+            border-radius: 1rem;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.25); /* ظل أعمق */
+            padding: 1.5rem;
+            width: 100%;
+            max-width: 360px; /* عرض أكبر للمودال */
+            position: relative;
+            transform: scale(0.9); /* تأثير تكبير عند الظهور */
+            opacity: 0;
+            animation: modalPopIn 0.3s ease-out forwards;
+            box-sizing: border-box;
+        }
+
+        @keyframes modalPopIn {
+            from {
+                transform: scale(0.9);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        #answer-modal .close-button-modal {
+            position: absolute;
+            left: 1rem; /* تغيير الموضع ليكون على اليسار */
+            top: 1rem;
+            font-size: 1.75rem; /* حجم أكبر للزر */
+            color: #a0aec0; /* لون رمادي ناعم */
+            transition: color 0.2s ease;
+            line-height: 1; /* لضمان محاذاة النص بشكل صحيح */
+        }
+
+        #answer-modal .close-button-modal:hover {
+            color: #718096; /* لون أغمق عند التمرير */
+        }
+
+        #answer-modal #modal-question {
+            font-weight: 700;
+            font-size: 0.9rem; /* حجم خط السؤال */
+            color: #38a169; /* لون أخضر مطابق لسهم الفتح */
+            margin-bottom: 0.75rem;
+            text-align: right;
+            padding-right: 2rem; /* مسافة لتجنب تداخل زر الإغلاق */
+            padding-left: 0.5rem;
+        }
+
+        #answer-modal #modal-answer {
+            font-size: 0.8rem; /* حجم خط الإجابة */
+            color: #4a5568; /* لون رمادي داكن */
+            line-height: 1.6;
+            text-align: right;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="card-container">
+        <div class="card-header">
+            <span class="title">كارت جمعيتي</span>
+            <svg class="arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+        </div>
+        <ul id="faq-list" class="space-y-3"> <li>
+                <div class="faq-item-div" onclick="showAnswer('إيه الأوراق المطلوبة عشان أقدر أقدم على طلب كارت جمعيتي؟', 'صورة البطاقة الشخصية، صورة شهادة الميلاد، إثبات محل الإقامة، صورة شخصية حديثة.')" aria-expanded="false">
+                    <svg class="toggle-arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="question-text">إيه الأوراق المطلوبة عشان أقدر أقدم على طلب كارت جمعيتي؟</span>
+                </div>
+            </li>
+            <li>
+                <div class="faq-item-div" onclick="showAnswer('إزاي استلم كارت جمعيتي؟', 'بعد تقديم الطلب والموافقة عليه، يمكنك استلام الكارت من أقرب فرع لجمعيتي أو من خلال مندوب التوصيل.')" aria-expanded="false">
+                    <svg class="toggle-arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="question-text">إزاي استلم كارت جمعيتي؟</span>
+                </div>
+            </li>
+            <li>
+                <div class="faq-item-div" onclick="showAnswer('إزاي أفعل كارت جمعيتي؟', 'يمكنك تفعيل الكارت من خلال تطبيق جمعيتي أو الاتصال بخدمة العملاء.')" aria-expanded="false">
+                    <svg class="toggle-arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="question-text">إزاي أفعل كارت جمعيتي؟</span>
+                </div>
+            </li>
+            <li>
+                <div class="faq-item-div" onclick="showAnswer('هل في رسوم على إصدار الكارت؟', 'لا، إصدار الكارت لأول مرة مجاني تماماً.')" aria-expanded="false">
+                    <svg class="toggle-arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="question-text">هل في رسوم على إصدار الكارت؟</span>
+                </div>
+            </li>
+            <li>
+                <div class="faq-item-div" onclick="showAnswer('إيه استخدامات كارت جمعيتي؟', 'الكارت يمكن استخدامه للحصول على خصومات في المتاجر المشاركة، ولشراء مستلزماتك اليومية.')" aria-expanded="false">
+                    <svg class="toggle-arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="question-text">إيه استخدامات كارت جمعيتي؟</span>
+                </div>
+            </li>
+            <li>
+                <div class="faq-item-div" onclick="showAnswer('ممكن أجدد الكارت إزاي؟', 'يمكنك تجديد الكارت من خلال التطبيق أو زيارة أقرب فرع لجمعيتي.')" aria-expanded="false">
+                    <svg class="toggle-arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="question-text">ممكن أجدد الكارت إزاي؟</span>
+                </div>
+            </li>
+            <li>
+                <div class="faq-item-div" onclick="showAnswer('ممكن استخدم كارت جمعيتي خارج السعودية؟', 'لا، الكارت مخصص للاستخدام داخل السعودية فقط.')" aria-expanded="false">
+                    <svg class="toggle-arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="question-text">ممكن استخدم كارت جمعيتي خارج السعودية؟</span>
+                </div>
+            </li>
+            <li>
+                <div class="faq-item-div" onclick="showAnswer('ممكن استخدم كارت جمعيتي في محلات تانية غير اللي مكتوب في الدليل؟', 'نعم، يمكنك استخدام الكارت في أي محل يقبل كارت جمعيتي.')" aria-expanded="false">
+                    <svg class="toggle-arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="question-text">ممكن استخدم كارت جمعيتي في محلات تانية غير اللي مكتوب في الدليل؟</span>
+                </div>
+            </li>
+            <li>
+                <div class="faq-item-div" onclick="showAnswer('هل ممكن استخدمه في الصيدليات؟', 'نعم، يمكنك استخدام كارت جمعيتي في الصيدليات المشاركة.')" aria-expanded="false">
+                    <svg class="toggle-arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="question-text">هل ممكن استخدمه في الصيدليات؟</span>
+                </div>
+            </li>
+            <li>
+                <div class="faq-item-div" onclick="showAnswer('هل في السحب على كارت جمعيتي؟', 'لا، الكارت لا يدعم السحب النقدي.')" aria-expanded="false">
+                    <svg class="toggle-arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="question-text">هل في السحب على كارت جمعيتي؟</span>
+                </div>
+            </li>
+            <li>
+                <div class="faq-item-div" onclick="showAnswer('ممكن أطلع لأطفالي الصغار من خلال كارت جمعيتي؟', 'نعم، يمكنك إصدار كارت جمعيتي للأطفال فوق سن 12 سنة.')" aria-expanded="false">
+                    <svg class="toggle-arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="question-text">ممكن أطلع لأطفالي الصغار من خلال كارت جمعيتي؟</span>
+                </div>
+            </li>
+            <li>
+                <div class="faq-item-div" onclick="showAnswer('إزاي أتابع استخدام الكارت؟', 'يمكنك متابعة استخدام الكارت من خلال التطبيق أو من خلال كشف الحساب الشهري.')" aria-expanded="false">
+                    <svg class="toggle-arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="question-text">إزاي أتابع استخدام الكارت؟</span>
+                </div>
+            </li>
+             <li>
+                <div class="faq-item-div" onclick="showAnswer('تحصل إيه لو حد حاول يستخدم كارت غير كارت جمعيتي؟', 'في حالة محاولة استخدام كارت غير كارت جمعيتي، سيتم رفض المعاملة فوراً ولن يتمكن المستخدم من الاستفادة من أي خدمات أو عروض خاصة بالكارت. يجب التأكد دائماً من استخدام كارت جمعيتي الأصلي لضمان الحصول على جميع المميزات.')" aria-expanded="false">
+                    <svg class="toggle-arrow-icon" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                    </svg>
+                    <span class="question-text">تحصل إيه لو حد حاول يستخدم كارت غير كارت جمعيتي؟</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+    <div id="answer-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+        <div class="modal-content">
+            <button onclick="closeAnswer()" class="close-button-modal">&times;</button>
+            <div class="mb-2 font-bold text-green-700 text-sm text-right" id="modal-question"></div>
+            <div class="text-gray-700 text-xs text-right" id="modal-answer"></div>
+        </div>
+    </div>
+    <script>
+        function showAnswer(question, answer) {
+            document.getElementById('modal-question').textContent = question;
+            document.getElementById('modal-answer').textContent = answer;
+            document.getElementById('answer-modal').classList.remove('hidden');
+        }
+
+        function closeAnswer() {
+            document.getElementById('answer-modal').classList.add('hidden');
+        }
+
+        // إغلاق المودال عند النقر خارج المربع
+        document.getElementById('answer-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeAnswer();
+            }
+        });
+
+        // لتحسين تجربة المستخدم: إغلاق المودال بالضغط على زر ESC
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && !document.getElementById('answer-modal').classList.contains('hidden')) {
+                closeAnswer();
+            }
+        });
+    </script>
+</body>
+
+</html>

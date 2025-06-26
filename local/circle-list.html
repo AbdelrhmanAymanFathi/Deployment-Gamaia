@@ -10,7 +10,9 @@
   <link rel="stylesheet" href="mainLayout.css">
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_circle_left" />
-  <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind -->
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <link rel="stylesheet" href="dist/tailwind.css">
   <style>
 
 
@@ -58,18 +60,17 @@
 
   <!-- Navbar Top -->
   <div style="background-color:#90D1CA;"
-    class="navbar fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-1 shadow-md rounded-b-lg"
+    class="navbar fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-2 shadow-md rounded-b-lg"
     dir="ltr">
 
     <!-- Left icons -->
     <div class="flex gap-4 items-center">
       <!-- Notifications -->
       <div class="relative">
-        <button id="notification-toggle" class="focus:outline-none" title="الإشعارات / Notifications">
+        <button id="notification-toggle" onclick="location.href='./Notification.html'" class="focus:outline-none" title="الإشعارات / Notifications">
           <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
         </button>
-        <div id="notification-dropdown"
-          class="hidden absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-md z-50 p-3">
+        <!-- <div id="notification-dropdown" class="hidden absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-md z-50 p-3">
           <div class="flex justify-between items-center border-b pb-2 mb-2">
             <span class="font-bold text-sm text-gray-700">الإشعارات</span>
             <span class="bg-green-600 text-white text-xs px-2 py-0.5 rounded-full">0</span>
@@ -78,7 +79,7 @@
             <i class="bi bi-bell-slash text-2xl mb-1"></i>
             <p class="text-sm">لا توجد إشعارات جديدة</p>
           </div>
-        </div>
+        </div> -->
       </div>
 
       <!-- Trends -->
@@ -92,8 +93,7 @@
       <button id="profile-toggle" class="focus:outline-none" title="الملف الشخصي / Profile">
         <i class="bi bi-person-circle text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
       </button>
-      <div id="popup-menu"
-        class="hidden absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-50 p-2">
+      <div id="popup-menu" class="hidden absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-md z-50 p-2">
         <a href="./profile.html" class="block text-sm text-black py-1 hover:text-green-600">Profile</a>
         <button class="block text-sm w-full text-left py-1 hover:text-green-600">Settings</button>
         <button id="logout-btn"
@@ -103,19 +103,20 @@
   </div>
 
     <!-- Spacer so content isn't hidden under navbar -->
-  <div class="h-10"></div>
+  <div class="h-14"></div>
   
   <!-- Dashboard Content -->
-  <div class="container dashboard-container">
+  <div class="">
 
 
     <h3 class="mb-4 text-center text-[#0FA451]">جمعياتي المنضمة<br><span style="font-size:12px;">My Joined
         Associations</span></h3>
-    <div id="circle-list" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 " style="direction: rtl;">
+    <div id="circle-list" class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-6 mt-5" style="direction: rtl;">
       <!-- هنا سيُعرض محتوى الجمعيات التي انضممت إليها -->
     </div>
   </div>
 
+  <div class="h-20"></div>
   <!-- Navbar Bottom -->
   <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg" style="background-color:#90D1CA;" dir="rtl">
 
@@ -153,7 +154,25 @@
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
   <script src="./home.js"></script>
-    <script src="./MainLayout.js"></script>
+  <script src="./MainLayout.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const circleList = document.getElementById('circle-list');
+      if (circleList) {
+        circleList.addEventListener('click', function (e) {
+          let target = e.target;
+          // ابحث للأعلى حتى تجد العنصر الذي يحمل data-association-id
+          while (target && !target.dataset.associationId && target !== circleList) {
+            target = target.parentElement;
+          }
+          if (target && target.dataset.associationId) {
+            localStorage.setItem('selectedAssociationId', target.dataset.associationId);
+            window.location.href = 'Assembly_summary.html';
+          }
+        });
+      }
+    });
+  </script>
 
 </body>
 

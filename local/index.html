@@ -138,6 +138,7 @@
       const total = 3;
       const dots = document.querySelectorAll('.dot');
       const screens = Array.from({ length: total }, (_, i) => document.getElementById(`screen-${i}`));
+      const btnNext = document.getElementById('btn-next'); // إضافة متغير للزر
 
       function showScreen(index) {
         screens.forEach((el, i) => {
@@ -145,9 +146,15 @@
           dots[i].classList.toggle('bg-green-500', i === index);
           dots[i].classList.toggle('bg-gray-400', i !== index);
         });
+        // إخفاء زر التالي في الصفحة الأخيرة
+        if(index === total - 1) {
+          btnNext.style.display = 'none';
+        } else {
+          btnNext.style.display = '';
+        }
       }
 
-      document.getElementById('btn-next').addEventListener('click', () => {
+      btnNext.addEventListener('click', () => {
         if (current < total - 1) {
           current++;
           showScreen(current);

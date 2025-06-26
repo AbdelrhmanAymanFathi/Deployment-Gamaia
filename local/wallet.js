@@ -18,7 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(data => {
       balanceEl.textContent = new Intl.NumberFormat('en-US', {
         style: 'currency',
-        currency: 'EGP',
+        currency: 'SAR',
         currencyDisplay: 'code'
       }).format(data.walletBalance);
     })
@@ -70,12 +70,21 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(walletData => {
         balanceEl.textContent = new Intl.NumberFormat('en-US', {
           style: 'currency',
-          currency: 'EGP',
+          currency: 'SAR',
           currencyDisplay: 'code'
         }).format(walletData.walletBalance);
         modal.classList.add('hidden');
         inputAmt.value = '';
         alert('The shipment was successful');
+
+        // إضافة سجل شحن جديد للأنشطة الأخيرة في localStorage
+        const activities = JSON.parse(localStorage.getItem('activities') || '[]');
+        activities.unshift({
+          type: 'topup',
+          amount: amount,
+          date: new Date().toISOString()
+        });
+        localStorage.setItem('activities', JSON.stringify(activities));
       })
       .catch(err => {
         console.error('Top-up error:', err);

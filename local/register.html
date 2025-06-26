@@ -1,75 +1,132 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>إنشاء حساب / Register</title>
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تسجيل حساب جديد</title>
+  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    body { background-color: #f4f6f9; font-family: 'Arial', sans-serif; } /* خلفية الخط */
-    .form-container {
-      background-color: #fff;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap');
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background: linear-gradient(135deg, #f0f9ff, #e6f7ff);
     }
-    .submit-btn {
-      background-color: #007bff;
-      color: #fff;
+    .step-indicator {
+      height: 8px;
+      width: 30px;
+      border-radius: 4px;
+      background-color: #cbd5e0;
+      transition: all 0.3s ease;
+      cursor: pointer;
     }
-    .submit-btn:hover {
-      background-color: #0056b3;
-    }
-    #register-error {
-      color: #dc3545;
-      margin-top: 10px;
-      display: none;
+    .step-indicator.active {
+      width: 40px;
+      background-color: #10b981;
     }
   </style>
 </head>
-<body>
-  <div class="container d-flex justify-content-center align-items-center" style="height:100vh;">
-    <div class="form-container">
-      <h3 class="text-center mb-4">Register</h3>
-      <form id="register-form" enctype="multipart/form-data"> <!-- enctype للملفات -->
-        <div class="form-group">
-          <label for="fullName"> Full Name</label>
-          <input type="text" class="form-control" id="fullName" name="fullName" required>
-        </div>
-        <div class="form-group">
-          <label for="nationalId"> National ID</label>
-          <input type="text" class="form-control" id="nationalId" name="nationalId" required>
-        </div>
-        <div class="form-group">
-          <label for="phone">Phone</label>
-          <input type="text" class="form-control" id="phone" name="phone" required>
-        </div>
-        <div class="form-group">
-          <label for="address">Address</label>
-          <input type="text" class="form-control" id="address" name="address" required>
-        </div>
-        <div class="form-group">
-          <label for="password"> Password</label>
-          <input type="password" class="form-control" id="password" name="password" required>
-        </div>
-        <div class="form-group">
-          <label for="profileImage"> Profile Image</label>
-          <input type="file" class="form-control-file" id="profileImage" name="profileImage" accept="image/*">
-        </div>
-        <div class="form-group">
-          <label for="salarySlipImage"> Salary Slip Image</label>
-          <input type="file" class="form-control-file" id="salarySlipImage" name="salarySlipImage" accept="image/*">
-        </div>
-        <div id="register-error" class="text-center"></div>
-        <button type="submit" class="btn submit-btn btn-block"> Register</button>
-      </form>
-      <div class="text-center mt-3">
-        <a href="login.html">Already have an account? Login</a>
+<body class="min-h-screen flex items-center justify-center p-4">
+
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden">
+    <!-- Header -->
+    <div class="bg-gradient-to-r from-teal-500 to-emerald-600 py-4 px-6">
+      <h1 class="text-white text-xl font-bold text-center">تسجيل حساب جديد</h1>
+    </div>
+
+    <!-- Form -->
+    <form id="register-form" class="p-6">
+      <!-- Step Indicators -->
+      <div class="flex justify-center space-x-2 mb-6" >
+        <div class="step-indicator active" data-step="0"></div>
+        <div class="step-indicator" data-step="1"></div>
+        <div class="step-indicator" data-step="2"></div>
       </div>
+
+      <!-- Step 0: Full Name -->
+      <div id="step-0" class="step">
+        <label class="block mb-2 text-gray-700 font-bold">الاسم الكامل</label>
+        <input
+          name="fullName"
+          required
+          class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          placeholder="أدخل اسمك الكامل"
+        />
+        <button
+          type="button"
+          id="to-step-1"
+          class="w-full mt-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold"
+        >
+          التالي
+        </button>
+      </div>
+
+      <!-- Step 1: Phone -->
+      <div id="step-1" class="step hidden">
+        <label class="block mb-2 text-gray-700 font-bold">رقم الهاتف</label>
+        <input
+          name="phone"
+          required
+          type="tel"
+          inputmode="numeric"
+          class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          placeholder="010xxxxxxxx"
+        />
+        <button
+          type="button"
+          id="to-step-2"
+          class="w-full mt-6 py-3 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl font-bold"
+        >
+          التالي
+        </button>
+      </div>
+
+      <!-- Step 2: National ID & Password -->
+      <div id="step-2" class="step hidden">
+        <label class="block mb-2 text-gray-700 font-bold">الرقم القومي</label>
+        <input
+          name="nationalId"
+          required
+          class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          placeholder="أدخل الرقم القومي"
+        />
+
+        <label class="block mt-4 mb-2 text-gray-700 font-bold">كلمة المرور</label>
+        <input
+          name="password"
+          required
+          type="password"
+          class="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+          placeholder="********"
+        />
+
+        <div id="register-error" class="text-red-600 text-center text-sm mt-2 hidden"></div>
+
+        <button
+          type="submit"
+          class="w-full mt-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold"
+        >
+          تسجيل
+        </button>
+      </div>
+    </form>
+
+    <!-- Footer -->
+    <div class="bg-gray-50 py-4 px-6 text-center text-gray-500 text-sm">
+      <p>
+        بالنقر على "تسجيل"، أنت توافق على
+        <a href="#" class="text-teal-600 hover:underline">شروط الخدمة</a>
+        و
+        <a href="#" class="text-teal-600 hover:underline">سياسة الخصوصية</a>
+      </p>
+      <p class="mt-2">
+        لديك حساب بالفعل؟
+        <a href="login.html" class="text-blue-600 hover:underline font-bold">اذهب لتسجيل الدخول</a>
+      </p>
     </div>
   </div>
 
-  <script src="api.js"></script>
-  <script src="register.js"></script>
+  <script src="./register.js">
+
+  </script>
 </body>
 </html>

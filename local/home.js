@@ -1,3 +1,7 @@
+console.log('home.js loaded');
+const user = JSON.parse(localStorage.getItem('user'));
+console.log('Home page user object:', user, 'userId:', user && user.id);
+
 // تأكد من وجود التوكن وإعادة التوجيه للـ login إذا لم يكن موجودًا
 const token = localStorage.getItem("token");
 if (!token) {
@@ -8,7 +12,7 @@ if (!token) {
 async function loadMyAssociations() {
   try {
     const res = await fetch(
-      "http://localhost:3000/api/associations/my-associations",
+      "https://money-production-bfc6.up.railway.app/api/associations/my-associations",
       {
         headers: { Authorization: "Bearer " + token },
       }
