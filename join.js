@@ -29,21 +29,35 @@ function moveToJoined($card) {
 
 // Fetch suggestions
 $('.btn-next').on('click', function() {
-  const amount = parseFloat($('.input-amount').val());
-  if (!amount || amount < 1) {
+  const totalPayout = parseFloat($('.input-amount').val());
+  if (!totalPayout || totalPayout < 1) {
     return alert('Please enter a valid amount (minimum 1).');
   }
   const $container = $('#suggestionsContainer');
   $container.empty();
+
+  // Message area
+  let $msg = $('#suggestionsMessage');
+  if ($msg.length === 0) {
+    $msg = $('<div id="suggestionsMessage" class="col-span-full text-center text-green-700 font-bold mb-2"></div>');
+    $container.before($msg);
+  }
+  $msg.text('');
 
   $.ajax({
     type: 'POST',
     url: 'https://money-production-bfc6.up.railway.app/api/payments/pay/suggest',
     contentType: 'application/json',
     headers: { Authorization: 'Bearer ' + token },
-    data: JSON.stringify({ amount }),
+    data: JSON.stringify({ enter: totalPayout }),
     success: function(res) {
       const suggestions = res.suggestions || [];
+      // Show API message if present
+      if (res.message) {
+        $msg.text(res.message);
+      } else {
+        $msg.text('');
+      }
       if (!res.success || suggestions.length === 0) {
         return $container.html(
           '<p class="col-span-full text-center text-gray-500">No suggestions found.</p>'
@@ -52,7 +66,7 @@ $('.btn-next').on('click', function() {
       // استخدم grid responsive
       $container.removeClass().addClass('grid gap-4 px-2 mb-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5');
       suggestions.forEach(assoc => {
-        // Build card (new design)
+        // Build card (new design) - add totalPayout
         const $card = $(`
           <div class="association-card card max-w-[160px] w-full bg-white border border-teal-400 rounded-lg shadow p-0 text-center font-sans cursor-pointer select-none transition hover:shadow-lg flex flex-col mx-auto" data-association-id="${assoc.id}">
             <div class="flex justify-between items-start px-3 pt-3">
@@ -66,6 +80,9 @@ $('.btn-next').on('click', function() {
             <div class="flex flex-col items-center justify-center py-2">
               <span class="text-xl font-bold text-gray-800">${assoc.monthlyAmount.toLocaleString("ar-EG")}</span>
               <span class="text-base font-bold text-gray-900" style="font-family: Tajawal, sans-serif;">ر.س/شهر</span>
+              <span class="text-sm font-bold text-green-700 mt-2" style="font-family: Tajawal, sans-serif;">
+                إجمالي القبض: ${assoc.totalPayout.toLocaleString("ar-EG")} ر.س
+              </span>
             </div>
             <button class="join-button absolute inset-0 opacity-0" data-id="${assoc.id}" tabindex="-1" aria-label="انضم"></button>
           </div>
