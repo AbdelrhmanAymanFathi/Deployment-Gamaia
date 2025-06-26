@@ -52,6 +52,16 @@ $('.btn-next').on('click', function() {
       // استخدم grid responsive
       $container.removeClass().addClass('grid gap-4 px-2 mb-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5');
       suggestions.forEach(assoc => {
+        // Find the largest members group in totalPayouts
+        let maxMembersGroup = null;
+        if (Array.isArray(assoc.totalPayouts) && assoc.totalPayouts.length > 0) {
+          maxMembersGroup = assoc.totalPayouts.reduce((a, b) => (a.members > b.members ? a : b));
+        }
+        // Get the last payout's total from that group
+        let total = assoc.monthlyAmount;
+        if (maxMembersGroup && Array.isArray(maxMembersGroup.payouts) && maxMembersGroup.payouts.length > 0) {
+          total = maxMembersGroup.payouts[maxMembersGroup.payouts.length - 1].total;
+        }
         // Build card (new design)
         const $card = $(`
           <div class="association-card card max-w-[160px] w-full bg-white border border-teal-400 rounded-lg shadow p-0 text-center font-sans cursor-pointer select-none transition hover:shadow-lg flex flex-col mx-auto" data-association-id="${assoc.id}">
@@ -64,8 +74,8 @@ $('.btn-next').on('click', function() {
             </div>
             <div class="border-t border-teal-400 my-2"></div>
             <div class="flex flex-col items-center justify-center py-2">
-              <span class="text-xl font-bold text-gray-800">${assoc.monthlyAmount.toLocaleString("ar-EG")}</span>
-              <span class="text-base font-bold text-gray-900" style="font-family: Tajawal, sans-serif;">ر.س/شهر</span>
+              <span class="text-xl font-bold text-gray-800">${Number(total).toLocaleString("ar-EG")}</span>
+              <span class="text-base font-bold text-gray-900" style="font-family: Tajawal, sans-serif;">إجمالي الاستلام</span>
             </div>
             <button class="join-button absolute inset-0 opacity-0" data-id="${assoc.id}" tabindex="-1" aria-label="انضم"></button>
           </div>
