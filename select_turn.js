@@ -7,7 +7,9 @@ function formatDate(dateString) {
   ];
   return `${months[date.getMonth()]} ${date.getFullYear()}`;
 }
+
 function formatAmount(amount) {
+  // No multiplication or adjustment! Use as-is from backend.
   return `${amount.toLocaleString(undefined, {maximumFractionDigits: 0})} رس`;
 }
 
@@ -55,8 +57,8 @@ async function fetchTurns() {
     turns = data;
     if (turns.length === 0) throw new Error('لا يوجد أدوار متاحة');
     association = turns[0].association;
-    // حساب الرسوم حسب نوع الدور
-    calculateFees();
+    // ---- NO FEE CALCULATION HERE! ----
+    // calculateFees(); // <--- Remove or comment out this line, not needed!
     splitTabs();
     renderTabs();
     renderTurns();
@@ -67,6 +69,8 @@ async function fetchTurns() {
   }
 }
 
+/*
+// حذف أو تعطيل هذه الدالة نهائيًا! (لا نريد تعديل الرسوم)
 // حساب الرسوم حسب نوع الدور
 function calculateFees() {
   if (!association) return;
@@ -85,6 +89,7 @@ function calculateFees() {
     turn.feeAmount = Math.round(association.monthlyAmount * n * percent);
   });
 }
+*/
 
 // تقسيم الأدوار Tabs تلقائياً
 function splitTabs() {
@@ -136,7 +141,6 @@ function renderTurns() {
         renderTurns();
         renderSummary(); // Update summary on selection
 
-        // --- New code to mimic the old behavior: ---
         // Extract turnNumber from turnName (e.g. "الدور 3" => 3)
         const match = turn.turnName.match(/\d+/);
         const turnNumber = match ? parseInt(match[0], 10) : null;
@@ -153,9 +157,7 @@ function renderTurns() {
             e.stopPropagation();
             const confirmed = confirm('هل أنت متأكد أنك تريد اختيار هذا الدور؟');
             if (!confirmed) return;
-            // هنا ضع منطق الحجز الفعلي (API)
-            // مثال:
-            // await window.api.turns.select(association.id, turn.id);
+            // ضع منطق الحجز الفعلي هنا (API)
             window.location.href = 'upload.html';
           });
         }
