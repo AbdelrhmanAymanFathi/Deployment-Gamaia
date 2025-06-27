@@ -10,7 +10,9 @@
     <link rel="stylesheet" href="mainLayout.css">
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_circle_left" />
-    <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind -->
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <link rel="stylesheet" href="dist/tailwind.css">
     <style>
 
 
@@ -160,6 +162,9 @@
             background: #fafafa;
             position: relative;
             transition: box-shadow 0.2s;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
         }
 
         .card.selected,
@@ -183,17 +188,103 @@
         }
 
         .arrow {
-            position: absolute;
-            left: 18px;
-            top: 24px;
+            position: static !important;
+            margin-left: 12px;
+            margin-right: 0;
             font-size: 1.7rem;
             color: #64b730;
+            flex-shrink: 0;
         }
 
         h2 {
             text-align: center;
             color: #333;
             margin-bottom: 30px;
+        }
+
+        /* Responsive main content (excluding navbars) */
+        .container {
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 24px 8px 80px 8px;
+            width: 100%;
+        }
+        .amount-box,
+        .btn-next,
+        .card {
+            width: 90%;
+            min-width: 0;
+            max-width: 100%;
+        }
+        .input-amount {
+            width: 70%;
+            min-width: 0;
+            max-width: 100%;
+        }
+
+        @media (max-width: 900px) {
+            .container {
+                max-width: 95vw;
+                padding: 20px 2vw 80px 2vw;
+            }
+            .amount-box,
+            .btn-next,
+            .card {
+                width: 98vw;
+                font-size: 1.05rem;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                max-width: 100vw;
+                padding: 12px 1vw 70px 1vw;
+            }
+            .amount-box,
+            .btn-next,
+            .card {
+                width: 99vw;
+                font-size: 0.98rem;
+                padding-left: 2vw;
+                padding-right: 2vw;
+            }
+            .card-title {
+                font-size: 1rem;
+            }
+            .card-desc {
+                font-size: 0.93rem;
+            }
+            h2, .title {
+                font-size: 1.05rem;
+            }
+            .arrow {
+                left: 10px;
+                top: 18px;
+                font-size: 1.3rem;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .container {
+                padding: 6px 0.5vw 60px 0.5vw;
+            }
+            .amount-box,
+            .btn-next,
+            .card {
+                width: 100vw;
+                font-size: 0.92rem;
+                padding-left: 1vw;
+                padding-right: 1vw;
+            }
+            .card-title {
+                font-size: 0.92rem;
+            }
+            .card-desc {
+                font-size: 0.88rem;
+            }
+            h2, .title {
+                font-size: 0.98rem;
+            }
         }
     </style>
     <link rel="stylesheet" href="mainLayout.css">
@@ -249,11 +340,11 @@
   </div>
 
     <!-- Spacer so content isn't hidden under navbar -->
-  <div class="h-10"></div>
+  <div class="h-14"></div>
   
 
     <!-- Main Content -->
-    <div class="container text-end" dir="ltr">
+    <div class="container text-end " dir="ltr">
         <h2>انضم إلى الجمعية</h2>
         <div class="arrow-downs">
             <span></span>
@@ -261,21 +352,29 @@
             <span></span>
         </div>
         <a href="association_amount.html" style="text-decoration:none;">
-            <div class="card">
-                <div class="card-title">إشتراك في جمعيه</div>
-                <div class="card-desc">
-                    إختار الدور اللي أنت عايزه بمبالغ قبض تصل لـ 15,000 ر.س في الجمعيه الواحدة
+            <div class="card d-flex flex-row align-items-center" style="position:relative;">
+                <div class="arrow ml-2" style="position:static;">
+                    <i class="bi bi-chevron-double-right"></i>
                 </div>
-                <div class="arrow">››</div>
+                <div>
+                    <div class="card-title">إشتراك في جمعيه</div>
+                    <div class="card-desc">
+                        إختار الدور اللي أنت عايزه بمبالغ قبض تصل لـ 15,000 ر.س في الجمعيه الواحدة
+                    </div>
+                </div>
             </div>
         </a>
 
-        <div class="card" onclick="location.href='./Tahwish-Association.html'">
-            <div class="card-title">إشتراك في برنامج التحويش</div>
-            <div class="card-desc">
-                حصول لحد 1,000,000 ر.س بالتقسيط وخصم في أخر المدة اللي تختارها بكيفك، ذلك يصل لـ 20%
+        <div class="card d-flex flex-row align-items-center" style="position:relative;" onclick="location.href='./Tahwish-Association.html'">
+            <div class="arrow ml-2" style="position:static;">
+                <i class="bi bi-chevron-double-right"></i>
             </div>
-            <div class="arrow">››</div>
+            <div>
+                <div class="card-title">إشتراك في برنامج التحويش</div>
+                <div class="card-desc">
+                    حصول لحد 1,000,000 ر.س بالتقسيط وخصم في أخر المدة اللي تختارها بكيفك، ذلك يصل لـ 20%
+                </div>
+            </div>
         </div>
     </div>
     <!-- end Main Content -->

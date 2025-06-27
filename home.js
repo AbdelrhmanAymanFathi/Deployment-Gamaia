@@ -45,7 +45,7 @@ async function loadMyAssociations() {
       );
 
       const card = document.createElement("div");
-      card.className = "max-w-md mx-auto bg-white border rounded-2xl shadow p-4 text-right font-sans mb-4 cursor-pointer";
+      card.className = "mx-2 bg-white border rounded-2xl shadow p-4 text-right font-sans mb-4 cursor-pointer";
       card.setAttribute('data-association-id', a.id);
 
       card.innerHTML = `

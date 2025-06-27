@@ -25,7 +25,9 @@
       };
     })();
   </script>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Tailwind -->
+  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <link rel="stylesheet" href="dist/tailwind.css">
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="mainLayout.css">
@@ -81,14 +83,14 @@
   <!-- Spacer so content isn't hidden under navbar -->
   <div class="h-10"></div>
   <!-- Main Content -->
-  <main class="flex-grow container mx-auto py-8 px-4 mb-4">
+  <main class="flex-grow container mx-auto py-8 px-2 sm:px-4 mb-4">
 
-    <div class="mb-4">
-      <img class="w-100 img-fluid" src="./Assets/imgs/master card.svg" alt="Master Card">
+    <div class="mb-4 flex justify-center">
+      <img class="w-full max-w-xs sm:max-w-md md:max-w-lg img-fluid" src="./Assets/imgs/master card.svg" alt="Master Card">
     </div>
     <!-- Top Up Modal -->
-    <div id="topup-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
-      <div class="bg-white p-6 rounded-lg w-80">
+    <div id="topup-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
+      <div class="bg-white p-4 sm:p-6 rounded-lg w-11/12 max-w-xs sm:max-w-sm">
         <h3 class="text-lg font-semibold mb-4">Recharge Wallet</h3>
         <input id="topup-amount" type="number" placeholder="Enter Amount" min="1"
           class="w-full border rounded px-3 py-2 mb-4" />
@@ -110,15 +112,20 @@
       <img src="./Assets/imgs/card.svg" alt="credit card" class="w-full h-auto">
     </section> -->
     <!-- Wallet Balance Card -->
-    <section class="max-w-md mx-auto bg-white rounded-2xl shadow-lg p-6 mb-8 w-70">
-      <h2 class="text-2xl font-semibold mb-4 text-gray-800">Wallet Balance</h2>
-      <p id="wallet-balance" class="text-3xl font-bold text-green-500">Loading...</p>
+    <section class="max-w-xs sm:max-w-md mx-auto bg-white rounded-2xl shadow-lg p-4 sm:p-6 mb-8 w-full flex flex-col items-end text-right border border-[#e5e7eb]">
+      <h2 class="text-lg sm:text-xl md:text-2xl xl:text-3xl 2xl:text-4xl font-extrabold mb-2 text-gray-800 w-full">رصيد المحفظة</h2>
+      <div class="flex items-center gap-2 w-full justify-end mb-2">
+        <i class="bi bi-wallet2 text-green-500 text-2xl sm:text-3xl xl:text-4xl"></i>
+        <p id="wallet-balance" class="text-xl sm:text-2xl md:text-3xl xl:text-4xl 2xl:text-5xl font-bold text-green-500 m-0">جاري التحميل...</p>
+        <!-- <span class="text-base sm:text-lg md:text-xl text-gray-500 font-semibold">ر.س</span> -->
+      </div>
+      <div class="w-full h-1 rounded bg-gradient-to-l from-green-400 to-blue-300 mt-2"></div>
     </section>
 
     <!-- Top Up Button -->
     <div class="flex justify-center mb-4">
-      <button id="topup-btn" class="bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700">
-        Recharge Wallet
+      <button id="topup-btn" class="bg-[#16a34a] hover:bg-[#128a3a] text-white text-base sm:text-lg xl:text-xl 2xl:text-2xl py-2 px-4 rounded w-full max-w-xs sm:max-w-md transition-colors duration-200">
+        اشحن محفظتك
       </button>
     </div>
     <!-- 
@@ -142,67 +149,59 @@
 
 -->
 
-    <div class="max-w-xs mx-auto py-6 px-2 space-y-4">
+    <div class="py-4 sm:py-6 px-1 sm:px-2 space-y-4">
       <!-- Step 1 -->
-      <div class="bg-[#d0efcc] rounded-2xl p-4 flex flex-col items-left text-left step-box shadow-md">
-        <img src="./Assets/imgs/card.png" alt="بطاقة بنكية" class="mt-4 mb-2 rounded" />
-        <p class="text-sm ">My Gamaia Card</p>
-        <p class="text-sm font-bold">Only for 149 SAR</p>
-        <p class="text-sm mb-4">Receive your Jamiati card for only 149 Saudi riyals and benefit from exclusive benefits
-          that have no end.</p>
+      <div class="bg-[#d0efcc] rounded-2xl p-3 sm:p-4 flex flex-col items-start text-left step-box shadow-md">
+        <img src="./Assets/imgs/card.png" alt="بطاقة بنكية" class="mt-2 sm:mt-4 mb-2 rounded w-full max-w-[120px] h-auto" />
+        <p class="text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl">بطاقتي الجماعية</p>
+        <p class="text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl font-bold">بس بـ ١٤٩ ريال</p>
+        <p class="text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl mb-4">استلم بطاقتك الجماعية بسعر ١٤٩ ريال واستمتع بمزايا حصرية ما لها نهاية.</p>
       </div>
 
       <!-- Step 2 -->
-      <div class="bg-[#e8f5e9] rounded-2xl p-4 flex flex-col items-left text-left step-box shadow-md">
-        <img src="./Assets/imgs/id-card.png" alt="بطاقة هوية" class="mb-1 rounded" />
-        <p class="text-sm ">No papers, </p>
-
-        <p class="text-sm font-bold">just register with your card</p>
-        <p class="text-sm mb-4">You only need your card to be valid and upload it to the application.</p>
-
+      <div class="bg-[#e8f5e9] rounded-2xl p-3 sm:p-4 flex flex-col items-start text-left step-box shadow-md">
+        <img src="./Assets/imgs/id-card.png" alt="بطاقة هوية" class="mb-1 rounded w-full max-w-[120px] h-auto" />
+        <p class="text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl">بدون أوراق،</p>
+        <p class="text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl font-bold">سجّل بس ببطاقتك</p>
+        <p class="text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl mb-4">كل اللي تحتاجه بطاقة سارية وترفعها بالتطبيق.</p>
       </div>
 
       <!-- Step 3 -->
-      <div class="bg-[#f5f5dc] rounded-2xl p-4 flex flex-col items-left text-left step-box shadow-md">
-        <img src="./Assets/imgs/wallet.png" alt="إثبات العنوان" class="mb-2 rounded" />
-        <p class="text-sm ">It will make your life easier</p>
-        <p class="text-sm font-bold">Get paid faster</p>
-        <p class="text-sm mb-4">By using your Jamiaty card to collect, you will ensure that you collect faster than any
-          other method.</p>
+      <div class="bg-[#f5f5dc] rounded-2xl p-3 sm:p-4 flex flex-col items-start text-left step-box shadow-md">
+        <img src="./Assets/imgs/wallet.png" alt="إثبات العنوان" class="mb-2 rounded w-full max-w-[120px] h-auto" />
+        <p class="text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl">بتسهل عليك حياتك</p>
+        <p class="text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl font-bold">استلم فلوسك أسرع</p>
+        <p class="text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl mb-4">مع بطاقة جماعتي تجمع فلوسك أسرع من أي طريقة ثانية.</p>
       </div>
 
       <!-- Step 4 -->
-      <div class="bg-[#fce4ec] rounded-2xl p-4 flex flex-col items-left text-left step-box shadow-md">
-        <img src="./Assets/imgs/Group 14072.png" alt="الشروط" class="mb-2 rounded" />
-        <p class="text-sm ">Depends on it</p>
-        <p class="text-sm font-bold">Use the card everywhere</p>
-        <p class="text-sm mb-4">You can use the card for online payments, in stores, and at ATMs.</p>
+      <div class="bg-[#fce4ec] rounded-2xl p-3 sm:p-4 flex flex-col items-start text-left step-box shadow-md">
+        <img src="./Assets/imgs/Group 14072.png" alt="الشروط" class="mb-2 rounded w-full max-w-[120px] h-auto" />
+        <p class="text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl">تعتمد عليها</p>
+        <p class="text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl font-bold">استخدم البطاقة في كل مكان</p>
+        <p class="text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl mb-4">تقدر تستخدم البطاقة للشراء أونلاين، بالمحلات، أو حتى الصراف.</p>
       </div>
 
       <!-- Step 5 -->
-      <div class="bg-[#f3e5f5] rounded-2xl p-4 flex flex-col items-left text-left step-box shadow-md">
-        <img src="./Assets/imgs/maps.png" alt="الموقع" class="mb-2 rounded" />
-        <p class="text-sm ">No Effort</p>
-        <p class="text-sm font-bold">Receive the card from the nearest collection point</p>
-        <p class="text-sm mb-4">Visit your nearest contact point to receive and activate the card. Don't forget to have
-          your card with you.</p>
+      <div class="bg-[#f3e5f5] rounded-2xl p-3 sm:p-4 flex flex-col items-start text-left step-box shadow-md">
+        <img src="./Assets/imgs/maps.png" alt="الموقع" class="mb-2 rounded w-full max-w-[120px] h-auto" />
+        <p class="text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl">بدون تعب</p>
+        <p class="text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl font-bold">استلم بطاقتك من أقرب نقطة</p>
+        <p class="text-xs sm:text-sm md:text-base xl:text-lg 2xl:text-xl mb-4">مر أقرب نقطة تواصل واستلم وفعّل بطاقتك. لا تنسى تجيب بطاقتك معك.</p>
       </div>
 
       <!-- Button -->
       <div class="text-center mb-5">
         <button onclick="location.href='./Paid-card.html'"
-          class="bg-[#6048E4] hover:bg-[#5851db] text-white font-bold py-2 px-6 rounded-full transition duration-300">
-          Start subscribing now
+          class="bg-[#6048E4] hover:bg-[#5851db] text-white font-bold text-base sm:text-lg xl:text-xl 2xl:text-2xl py-2 px-4 sm:px-6 rounded-full transition duration-300 w-full max-w-xs sm:max-w-md">
+          اشترك الآن
         </button>
       </div>
     </div>
-
-
   </main>
 
   <!-- Navbar Bottom -->
-  <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg"
-    style="background-color:#90D1CA;" dir="rtl">
+  <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg" style="background-color:#90D1CA;" dir="rtl">
 
     <div onclick="location.href='home.html'" class="p-0">
       <i class="bi bi-house-door-fill  text-xl "></i>
@@ -214,7 +213,7 @@
       <div class="label">جمعياتي</div>
     </div>
 
-    <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3">
+    <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3 text-[#008D10]" >
       <!-- <span class="material-symbols-outlined text-3xl">
         arrow_circle_left
       </span> -->
@@ -222,9 +221,9 @@
       <div class="label" style="color:#16a34a; font-weight:700;">انضم الان</div>
     </div>
 
-    <div onclick="location.href='./wallet.html'" class="p-0 text-[#008D10]">
-      <i class="bi bi-credit-card-fill text-xl text-[#008D10]"></i>
-      <div class="label text-[#008D10]">محفظتي</div>
+    <div onclick="location.href='./wallet.html'" class="p-0 " style="color: #16a34a;">
+      <i class="bi bi-credit-card-fill text-xl"></i>
+      <div class="label">محفظتي</div>
     </div>
 
     <div onclick="location.href='payments.html'" class="p-0">
@@ -233,6 +232,7 @@
     </div>
 
   </div>
+    <!-- end Navbar Bottom -->
 
   <!-- Scripts -->
   <!-- External Scripts -->
