@@ -9,7 +9,6 @@ function formatDate(dateString) {
 }
 
 function formatAmount(amount) {
-  // No multiplication or adjustment! Use as-is from backend.
   return `${amount.toLocaleString(undefined, {maximumFractionDigits: 0})} رس`;
 }
 
@@ -57,8 +56,16 @@ async function fetchTurns() {
     turns = data;
     if (turns.length === 0) throw new Error('لا يوجد أدوار متاحة');
     association = turns[0].association;
-    // ---- NO FEE CALCULATION HERE! ----
-    // calculateFees(); // <--- Remove or comment out this line, not needed!
+
+    // *** Force feeAmount sign for business rule ***
+    turns.forEach((turn, idx) => {
+      if (idx === turns.length - 1) {
+        turn.feeAmount = Math.abs(turn.feeAmount); // last turn gets cashback (positive)
+      } else {
+        turn.feeAmount = -Math.abs(turn.feeAmount); // all others get discount (negative)
+      }
+    });
+
     splitTabs();
     renderTabs();
     renderTurns();
@@ -68,28 +75,6 @@ async function fetchTurns() {
     alert('خطأ في تحميل الأدوار');
   }
 }
-
-/*
-// حذف أو تعطيل هذه الدالة نهائيًا! (لا نريد تعديل الرسوم)
-// حساب الرسوم حسب نوع الدور
-function calculateFees() {
-  if (!association) return;
-  const n = turns.length;
-  const perTab = Math.ceil(n / 3);
-  const totalAmount = association.monthlyAmount * n;
-  turns.forEach((turn, idx) => {
-    let percent = 0;
-    if (idx < perTab) {
-      percent = -0.07; // خصم 7%
-    } else if (idx < perTab * 2) {
-      percent = -0.05; // خصم 5%
-    } else {
-      percent = 0.02; // كاش باك 2%
-    }
-    turn.feeAmount = Math.round(association.monthlyAmount * n * percent);
-  });
-}
-*/
 
 // تقسيم الأدوار Tabs تلقائياً
 function splitTabs() {
@@ -110,6 +95,7 @@ function renderTabs() {
 function renderTurns() {
   turnsGrid.innerHTML = '';
   tabs[selectedTab].forEach(turn => {
+    const isLastTurn = turn === turns[turns.length - 1];
     const card = document.createElement('div');
     card.className = `turn-card border-2 rounded-xl p-3 flex flex-col gap-1 cursor-pointer relative transition ${turn.taken ? 'taken border-gray-300 bg-gray-100' : 'border-teal-400 bg-white'}`;
     card.dataset.id = turn.id;
@@ -121,13 +107,11 @@ function renderTurns() {
         <span class="font-bold">${turn.turnName}</span>
       </div>
       <div class="text-xs text-gray-500 mb-1">${formatDate(turn.scheduledDate)}</div>
-      <div class="text-sm font-bold text-teal-700">
+      <div class="text-sm font-bold ${isLastTurn ? 'text-green-700' : 'text-red-700'}">
         ${
-          turn.feeAmount > 0
-            ? formatAmount(turn.feeAmount) + ' رسوم'
-            : (turn.feeAmount < 0
-              ? formatAmount(turn.feeAmount) + ' خصم'
-              : 'بدون رسوم')
+          turn.feeAmount !== 0
+            ? formatAmount(Math.abs(turn.feeAmount)) + (isLastTurn ? ' كاش باك' : ' خصم')
+            : 'بدون رسوم'
         }
       </div>
       ${turn.taken ? `<div class="absolute top-2 left-2 flex items-center gap-1 text-xs lock"><svg xmlns="http://www.w3.org/2000/svg" class="inline w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm6-10V7a4 4 0 10-8 0v2" /></svg> غير متاح</div>` 
@@ -139,9 +123,8 @@ function renderTurns() {
         selectedTurnId = turn.id;
         nextBtn.disabled = false;
         renderTurns();
-        renderSummary(); // Update summary on selection
+        renderSummary();
 
-        // Extract turnNumber from turnName (e.g. "الدور 3" => 3)
         const match = turn.turnName.match(/\d+/);
         const turnNumber = match ? parseInt(match[0], 10) : null;
         if (turnNumber) {
@@ -149,7 +132,6 @@ function renderTurns() {
         }
       });
 
-      // Add lock button event
       setTimeout(() => {
         const lockBtn = card.querySelector('.lock-btn');
         if (lockBtn) {
@@ -157,7 +139,6 @@ function renderTurns() {
             e.stopPropagation();
             const confirmed = confirm('هل أنت متأكد أنك تريد اختيار هذا الدور؟');
             if (!confirmed) return;
-            // ضع منطق الحجز الفعلي هنا (API)
             window.location.href = 'upload.html';
           });
         }
@@ -172,8 +153,10 @@ function renderSummary() {
   durationEl.textContent = turns.length + ' شهور';
   monthlyFeeEl.textContent = formatAmount(association.monthlyAmount);
 
-  // Show feeAmount of selected turn, or '-' if none selected
   const selectedTurn = turns.find(t => t.id === selectedTurnId);
+  const isLastTurn = selectedTurn === turns[turns.length - 1];
+
+  // Show feeAmount of selected turn, or '-' if none selected
   document.getElementById('Fee').textContent = selectedTurn
     ? formatAmount(selectedTurn.feeAmount)
     : '-';
@@ -181,7 +164,11 @@ function renderSummary() {
   // إجمالي القبض = القسط الشهري × المدة ± الرسوم
   let total = association.monthlyAmount * turns.length;
   if (selectedTurn) {
-    total += selectedTurn.feeAmount;
+    if (isLastTurn) {
+      total = total + selectedTurn.feeAmount; // Cashback
+    } else {
+      total = total - Math.abs(selectedTurn.feeAmount); // Discount
+    }
   }
   totalFeeEl.textContent = selectedTurn
     ? formatAmount(total)
@@ -190,18 +177,15 @@ function renderSummary() {
   // Show difference text
   const diff = (selectedTurn ? selectedTurn.feeAmount : 0);
   const diffEl = document.getElementById('feeDiffText');
-  if (selectedTurn) {
-    if (diff > 0) {
+  if (selectedTurn && diff !== 0) {
+    if (isLastTurn) {
       diffEl.textContent = `كاش باك ${formatAmount(diff)}`;
       diffEl.classList.remove('text-red-500', 'hidden');
       diffEl.classList.add('text-green-500');
-    } else if (diff < 0) {
-      diffEl.textContent = `خصم قدره ${formatAmount(-diff)}`;
+    } else {
+      diffEl.textContent = `خصم قدره ${formatAmount(Math.abs(diff))}`;
       diffEl.classList.remove('text-green-500', 'hidden');
       diffEl.classList.add('text-red-500');
-    } else {
-      diffEl.textContent = '';
-      diffEl.classList.add('hidden');
     }
   } else {
     diffEl.textContent = '';
@@ -215,7 +199,7 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     selectedTab = btn.dataset.tab;
     renderTabs();
     renderTurns();
-    renderSummary(); // Update summary on tab switch
+    renderSummary();
   });
 });
 
