@@ -91,6 +91,8 @@
           // إظهار المودال عند النجاح
           document.getElementById('result').textContent = '';
           document.getElementById('success-modal').classList.remove('hidden');
+          // حذف turnNumber من sessionStorage بعد نجاح الانضمام
+          sessionStorage.removeItem('turnNumber');
           return; // لا تعيد تفعيل الزر بعد النجاح
         } else if (res.status === 409) {
           // معالجة حالة الدور محجوز أو تعارض
