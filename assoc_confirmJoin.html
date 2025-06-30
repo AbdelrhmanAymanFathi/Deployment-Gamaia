@@ -28,22 +28,22 @@
   <script>
     // عرض رقم الدور المختار وتعطيل الزر إذا لم يتم اختيار دور
     function updateTurnInfoAndButton() {
-      // جلب رقم الدور من turnNumber أو selectedTurnId
+      // جلب رقم الدور من turnNumber في sessionStorage أو selectedTurnId في localStorage
       let turnNumber = null;
-      const turnObj = localStorage.getItem('turnNumber');
+      let turnObj = sessionStorage.getItem('turnNumber');
       if (turnObj) {
+        // إذا كانت القيمة رقم خام أو كائن JSON
         try {
-          turnNumber = JSON.parse(turnObj).turnNumber;
-        } catch {}
+          turnNumber = isNaN(turnObj) ? JSON.parse(turnObj).turnNumber : Number(turnObj);
+        } catch {
+          turnNumber = Number(turnObj);
+        }
       }
       // إذا لم يوجد، جرب selectedTurnId
       if (!turnNumber) {
         const selectedTurnId = localStorage.getItem('selectedTurnId');
-        if (selectedTurnId) {
-          // إذا كان رقم فقط أو نص رقم
-          if (!isNaN(Number(selectedTurnId))) {
-            turnNumber = Number(selectedTurnId);
-          }
+        if (selectedTurnId && !isNaN(Number(selectedTurnId))) {
+          turnNumber = Number(selectedTurnId);
         }
       }
       document.getElementById('turn-info').textContent = turnNumber ? `الدور المختار: ${turnNumber}` : 'لم يتم اختيار دور بعد';

@@ -124,12 +124,7 @@ function renderTurns() {
         nextBtn.disabled = false;
         renderTurns();
         renderSummary();
-
-        const match = turn.turnName.match(/\d+/);
-        const turnNumber = match ? parseInt(match[0], 10) : null;
-        if (turnNumber) {
-          localStorage.setItem('turnNumber', JSON.stringify({ turnNumber }));
-        }
+        storeTurnNumber(turn.turnName);
       });
 
       setTimeout(() => {
@@ -193,6 +188,13 @@ function renderSummary() {
   }
 }
 
+// دالة مساعدة لتخزين رقم الدور في sessionStorage
+const storeTurnNumber = turnName => {
+  const match = turnName.match(/\d+/);
+  const turnNumber = match ? parseInt(match[0], 10) : null;
+  if (turnNumber) sessionStorage.setItem('turnNumber', turnNumber);
+};
+
 // التبديل بين التابات
 document.querySelectorAll('.tab-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -206,9 +208,11 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
 // زر التالي
 nextBtn.addEventListener('click', function() {
   if (!selectedTurnId) return;
-  alert('تم اختيار الدور رقم: ' + selectedTurnId + '\nتم الانضمام للجمعية بنجاح!');
-  window.location.href = "home.html";
+  const confirmed = confirm('هل أنت متأكد أنك تريد اختيار هذا الدور؟');
+  if (!confirmed) return;
+  window.location.href = 'upload.html';
 });
 
 // أول تحميل
+fetchTurns();
 fetchTurns();

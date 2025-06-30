@@ -275,7 +275,7 @@
 
                 <div class="bg-white rounded-lg p-4 shadow-sm relative overflow-hidden mb-4 flex flex-col items-center">
                     <div class="flex items-center text-lg font-bold text-saudi-green mb-4">
-                        <span class="ml-2">دورك (أغسطس)</span>
+                        <span id="turn-name" class="ml-2"></span>
                         <i class="fas fa-user-circle text-2xl"></i>
                     </div>
 
@@ -292,7 +292,7 @@
                         
                         <div class="timeline-item-new">
                             <div class="timeline-dot-new"></div>
-                            <span class="month-label">يوليو 2025</span>
+                            <span id="scheduled-date-label" class="month-label">يوليو 2025</span>
                         </div>
 
                         <div class="timeline-item-new">
@@ -324,20 +324,20 @@
                 <div class="bg-white rounded-lg p-4 shadow-sm">
                     <div class="flex justify-between items-center mb-2">
                         <span class="text-gray-700 text-sm">مبلغ الجمعية</span>
-                        <span class="text-gray-900 font-bold">12,000 <span class="text-xs font-normal">ر.س</span></span>
+                        <span id="assoc-amount" class="text-gray-900 font-bold"><!-- سيتم تعبئته ديناميكياً --></span>
                     </div>
                     <div class="flex justify-between items-center mb-2">
                         <span class="text-gray-700 text-sm">قسط شهر القبض</span>
-                        <span class="text-red-500 font-bold">2,000 - <span class="text-xs font-normal">ر.س</span></span>
+                        <span id="installment" class="text-red-500 font-bold"><!-- سيتم تعبئته ديناميكياً --></span>
                     </div>
                     <div class="flex justify-between items-center mb-2">
                         <span class="text-gray-700 text-sm">المتبقي من المصاريف الإدارية</span>
-                        <span class="text-red-500 font-bold">420 - <span class="text-xs font-normal">ر.س</span></span>
+                        <span id="admin-fees" class="text-red-500 font-bold"><!-- سيتم تعبئته ديناميكياً --></span>
                     </div>
                     <div class="border-t border-gray-200 my-3"></div>
                     <div class="flex justify-between items-center">
                         <span class="text-gray-700 text-lg font-bold">إجمالي القبض</span>
-                        <span class="text-saudi-green text-xl font-bold">9,580 <span class="text-sm font-normal">ر.س</span></span>
+                        <span id="total-receive" class="text-saudi-green text-xl font-bold"><!-- سيتم تعبئته ديناميكياً --></span>
                     </div>
                 </div>
             </section>
@@ -348,14 +348,14 @@
                 <div class="bg-white rounded-lg p-4 shadow-sm mb-4">
                     <div class="flex justify-between items-center mb-2">
                         <span class="text-gray-700 text-sm">إجمالي رسوم الجمعية</span>
-                        <span class="text-gray-900 font-bold">840 <span class="text-xs font-normal">ر.س</span></span>
+                        <span id="total-fees" class="text-gray-900 font-bold"><!-- سيتم تعبئته ديناميكياً --></span>
                     </div>
                     <p class="text-xs text-gray-500 mb-4">
                         رسوم الجمعية بتنقسم على عدة شهور محددة لحد شهر القبض
                     </p>
                     <div class="flex justify-between items-center">
                         <span class="text-custom-light-blue text-sm font-bold">رسوم توصيل العقد <i class="fas fa-question-circle text-gray-400 text-xs mr-1"></i></span>
-                        <span class="text-gray-900 font-bold">150 <span class="text-xs font-normal">ر.س</span></span>
+                        <span id="delivery-fee" class="text-gray-900 font-bold"><!-- سيتم تعبئته ديناميكياً --></span>
                     </div>
                     <p class="text-xs text-gray-500">
                         يتم دفعها مرة واحدة فقط نقدًا عند التسليم
@@ -414,18 +414,115 @@
 
             // جلب id الجمعية المختارة
             const assocId = localStorage.getItem('selectedAssociationId');
-            if (assocId) {
-                fetch(`https://money-production-bfc6.up.railway.app/api/associations/${assocId}`)
-                  .then(res => res.json())
-                  .then(data => {
-                    if (data && data.success && data.data) {
-                      // مثال: عرض اسم الجمعية في الهيدر
-                      const header = document.querySelector('h1');
-                      if (header) header.textContent = data.data.name || 'ملخص الجمعية';
-                      // يمكنك هنا تعبئة باقي البيانات في الصفحة حسب الحاجة
+            const token = localStorage.getItem('token');
+
+            // إعداد الهيدر مع التوكن إذا وجد
+            const fetchWithAuth = (url) => {
+                return fetch(url, {
+                    headers: {
+                        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+                        'Accept': 'application/json'
                     }
-                  });
+                });
+            };
+
+            // جلب بيانات الجمعية وتحديث الصفحة ديناميكياً
+            let adminFees = 0;
+            let deliveryFee = 0;
+
+            // جلب بيانات الدور الخاص بالمستخدم أولاً للحصول على الرسوم
+            function fetchTurnAndThenAssociation() {
+                fetchWithAuth('https://money-production-bfc6.up.railway.app/api/turns/my-turn')
+                    .then(res => {
+                        if (res.status === 401) {
+                            alert('يجب تسجيل الدخول للوصول إلى بيانات الجمعية.');
+                            localStorage.removeItem('token');
+                            localStorage.removeItem('user');
+                            window.location.href = '/login.html';
+                            return Promise.reject();
+                        }
+                        if (!res.ok) throw new Error('فشل في جلب بيانات الدور');
+                        return res.json();
+                    })
+                    .then(data => {
+                        if (data && data.success && data.turn) {
+                            // تحديث اسم الدور
+                            const turnNameEl = document.getElementById('turn-name');
+                            if (turnNameEl) {
+                                turnNameEl.textContent = data.turn.turnName || '';
+                            }
+                            // تحديث تاريخ الجدولة (مثال: "يوليو 2025")
+                            const scheduledDateEl = document.getElementById('scheduled-date-label');
+                            if (scheduledDateEl && data.turn.scheduledDate) {
+                                const date = new Date(data.turn.scheduledDate);
+                                const months = [
+                                    "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+                                    "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+                                ];
+                                const monthName = months[date.getMonth()];
+                                const year = date.getFullYear();
+                                scheduledDateEl.textContent = `${monthName} ${year}`;
+                            }
+                            // جلب الرسوم من الدور
+                            adminFees = data.turn.feeAmount || 0;
+                            deliveryFee = data.turn.feeAmount || 0;
+                        }
+                    })
+                    .then(() => {
+                        // بعد جلب بيانات الدور، جلب بيانات الجمعية وتحديث الصفحة
+                        if (assocId) {
+                            fetchWithAuth(`https://money-production-bfc6.up.railway.app/api/associations/${assocId}`)
+                                .then(res => {
+                                    if (res.status === 401) {
+                                        alert('يجب تسجيل الدخول للوصول إلى بيانات الجمعية.');
+                                        localStorage.removeItem('token');
+                                        localStorage.removeItem('user');
+                                        window.location.href = '/login.html';
+                                        return Promise.reject();
+                                    }
+                                    if (!res.ok) throw new Error('جمعية غير موجودة');
+                                    return res.json();
+                                })
+                                .then(data => {
+                                    if (data && data.success && data.data) {
+                                        const assoc = data.data;
+                                        // مبلغ الجمعية = monthlyAmount * duration
+                                        const assocAmount = assoc.monthlyAmount * assoc.duration;
+                                        // قسط شهر القبض = monthlyAmount فقط
+                                        const installment = assoc.monthlyAmount;
+                                        // إجمالي القبض = مبلغ الجمعية - قسط شهر القبض - المصاريف الإدارية
+                                        const totalReceive = assocAmount - installment - adminFees;
+                                        // إجمالي الرسوم (مثال: monthlyAmount * 0.07 * duration)
+                                        const totalFees = Math.round(assoc.monthlyAmount * 0.07 * assoc.duration);
+
+                                        // تحديث الصفحة
+                                        document.getElementById('assoc-amount').innerHTML = assocAmount.toLocaleString() + ' <span class="text-xs font-normal">ر.س</span>';
+                                        document.getElementById('installment').innerHTML = installment.toLocaleString() + ' - <span class="text-xs font-normal">ر.س</span>';
+                                        document.getElementById('admin-fees').innerHTML = adminFees.toLocaleString() + ' - <span class="text-xs font-normal">ر.س</span>';
+                                        document.getElementById('total-receive').innerHTML = totalReceive.toLocaleString() + ' <span class="text-sm font-normal">ر.س</span>';
+                                        document.getElementById('total-fees').innerHTML = totalFees.toLocaleString() + ' <span class="text-xs font-normal">ر.س</span>';
+                                        document.getElementById('delivery-fee').innerHTML = deliveryFee.toLocaleString() + ' <span class="text-xs font-normal">ر.س</span>';
+
+                                        // تحديث اسم الجمعية في الهيدر
+                                        const header = document.querySelector('h1');
+                                        if (header) header.textContent = assoc.name || 'ملخص الجمعية';
+                                    }
+                                })
+                                .catch(err => {
+                                    if (err === undefined) return; // Already handled (401)
+                                    alert('الجمعية غير موجودة أو تم حذفها. سيتم إعادتك للصفحة الرئيسية.');
+                                    localStorage.removeItem('selectedAssociationId');
+                                    window.location.href = '/';
+                                });
+                        }
+                    })
+                    .catch(err => {
+                        if (err === undefined) return; // Already handled (401)
+                        alert('حدث خطأ أثناء جلب بيانات الجمعية.');
+                    });
             }
+
+            fetchTurnAndThenAssociation();
 
             // Modal logic
             const confirmBtn = document.querySelector('button.w-full.bg-blue-600-custom');

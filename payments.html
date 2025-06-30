@@ -532,7 +532,7 @@
 
 
         <!-- Spacer so content isn't hidden under navbar -->
-  <div class="h-30"></div>
+  <div class="h-24"></div>
 
 
   <!-- Navbar Bottom -->
@@ -582,30 +582,34 @@
 
     // Helper: close both
     function closeAll() {
-      notifDropdown.classList.add("hidden");
-      profMenu.classList.add("hidden");
+      if (notifDropdown) notifDropdown.classList.add("hidden");
+      if (profMenu) profMenu.classList.add("hidden");
     }
 
     // Toggle notifications
     notifToggle.addEventListener("click", (e) => {
       e.stopPropagation();
-      profMenu.classList.add("hidden");
-      notifDropdown.classList.toggle("hidden");
+      if (profMenu) profMenu.classList.add("hidden");
+      if (notifDropdown) notifDropdown.classList.toggle("hidden");
     });
 
     // Toggle profile menu
     profToggle.addEventListener("click", (e) => {
       e.stopPropagation();
-      notifDropdown.classList.add("hidden");
-      profMenu.classList.toggle("hidden");
+      if (notifDropdown) notifDropdown.classList.add("hidden");
+      if (profMenu) profMenu.classList.toggle("hidden");
     });
 
     // Click outside closes all
     document.addEventListener("click", closeAll);
 
     // Prevent clicks inside dropdown from closing
-    notifDropdown.addEventListener("click", (e) => e.stopPropagation());
-    profMenu.addEventListener("click", (e) => e.stopPropagation());
+    if (notifDropdown) {
+      notifDropdown.addEventListener("click", (e) => e.stopPropagation());
+    }
+    if (profMenu) {
+      profMenu.addEventListener("click", (e) => e.stopPropagation());
+    }
 
     // Logout
     if (logoutBtn) {
