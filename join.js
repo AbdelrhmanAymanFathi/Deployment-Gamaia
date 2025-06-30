@@ -64,24 +64,26 @@ $('.btn-next').on('click', function() {
         );
       }
       // استخدم grid responsive
-      $container.removeClass().addClass('grid gap-4 px-2 mb-4 grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5');
+      $container
+        .removeClass()
+        .addClass('grid gap-4 px-2 mb-4 grid-cols-2');
       suggestions.forEach(assoc => {
-        // Build card (new design) - add totalPayout
         const $card = $(`
           <div class="association-card card max-w-[160px] w-full bg-white border border-teal-400 rounded-lg shadow p-0 text-center font-sans cursor-pointer select-none transition hover:shadow-lg flex flex-col mx-auto" data-association-id="${assoc.id}">
             <div class="flex justify-between items-start px-3 pt-3">
               <span class="inline-block w-5 h-5 border-2 border-teal-400 rounded-full"></span>
               <div class="flex flex-col items-end">
                 <span class="text-lg font-bold text-gray-800">${assoc.duration}</span>
-                <span class="text-base font-bold text-gray-900" style="font-family: Tajawal, sans-serif;">شهور</span>
+                <span class="text-base font-bold text-gray-900">شهور</span>
               </div>
             </div>
             <div class="border-t border-teal-400 my-2"></div>
             <div class="flex flex-col items-center justify-center py-2">
-              <span class="text-xl font-bold text-gray-800">${assoc.monthlyAmount.toLocaleString("ar-EG")}</span>
-              <span class="text-base font-bold text-gray-900" style="font-family: Tajawal, sans-serif;">ر.س/شهر</span>
-              <span class="text-sm font-bold text-green-700 mt-2" style="font-family: Tajawal, sans-serif;">
+              <span class="text-xl font-bold text-gray-800">
                 إجمالي القبض: ${assoc.totalPayout.toLocaleString("ar-EG")} ر.س
+              </span>
+              <span class="text-sm font-bold text-green-700 mt-2">
+                ${assoc.monthlyAmount.toLocaleString("ar-EG")} <span class="text-base font-bold text-green-700">ر.س/شهر</span>
               </span>
             </div>
             <button class="join-button absolute inset-0 opacity-0" data-id="${assoc.id}" tabindex="-1" aria-label="انضم"></button>

@@ -17,6 +17,14 @@
     <button id="join-btn" class="w-full py-3 rounded-lg bg-green-600 text-white font-bold hover:bg-green-700 transition mb-4">انضمام للجمعية</button>
     <div id="result" class="text-center text-lg font-bold mt-4"></div>
   </div>
+  <!-- Modal -->
+  <div id="success-modal" class="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 hidden">
+    <div class="bg-white rounded-lg p-8 shadow-lg text-center max-w-xs w-full">
+      <div class="text-green-600 text-4xl mb-4">✔️</div>
+      <div class="text-xl font-bold mb-4">تم الانضمام بنجاح</div>
+      <button id="modal-ok-btn" class="w-full py-2 rounded bg-blue-600 text-white font-bold hover:bg-blue-700 transition">تم</button>
+    </div>
+  </div>
   <script>
     // عرض رقم الدور المختار وتعطيل الزر إذا لم يتم اختيار دور
     function updateTurnInfoAndButton() {
@@ -79,11 +87,22 @@
           body: JSON.stringify({ turnNumber })
         });
         const data = await res.json();
-        document.getElementById('result').textContent = data.message || 'تم التسجيل!';
+        if (res.ok) {
+          // إظهار المودال عند النجاح
+          document.getElementById('success-modal').classList.remove('hidden');
+        } else {
+          document.getElementById('result').textContent = data.message || 'حدث خطأ أثناء الانضمام';
+        }
       } catch (e) {
         document.getElementById('result').textContent = 'حدث خطأ أثناء الانضمام';
       }
       this.disabled = false;
+    };
+
+    // عند الضغط على زر "تم" في المودال
+    document.getElementById('modal-ok-btn').onclick = function() {
+      // إعادة التوجيه للصفحة الرئيسية (غير اسم الملف إذا لزم)
+      window.location.href = 'home.html';
     };
   </script>
 </body>
