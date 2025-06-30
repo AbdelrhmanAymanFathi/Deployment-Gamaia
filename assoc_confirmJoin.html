@@ -89,7 +89,12 @@
         const data = await res.json();
         if (res.ok) {
           // إظهار المودال عند النجاح
+          document.getElementById('result').textContent = '';
           document.getElementById('success-modal').classList.remove('hidden');
+          return; // لا تعيد تفعيل الزر بعد النجاح
+        } else if (res.status === 409) {
+          // معالجة حالة الدور محجوز أو تعارض
+          document.getElementById('result').textContent = data.message || 'هذا الدور محجوز بالفعل أو لا يمكن الانضمام به';
         } else {
           document.getElementById('result').textContent = data.message || 'حدث خطأ أثناء الانضمام';
         }
