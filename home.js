@@ -12,7 +12,7 @@ if (!token) {
 async function loadMyAssociations() {
   try {
     const res = await fetch(
-      "https://money-production-bfc6.up.railway.app/api/associations/my-associations",
+      "http://31.97.179.227/api/associations/my-associations",
       {
         headers: { Authorization: "Bearer " + token },
       }

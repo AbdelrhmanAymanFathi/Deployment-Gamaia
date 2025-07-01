@@ -13,7 +13,7 @@ if (typeof token === 'undefined') {
 // جلب بيانات الملف شخصي
 async function loadProfile() {
     try {
-        const res = await fetch('https://money-production-bfc6.up.railway.app/api/userData/profile', {
+        const res = await fetch('http://31.97.179.227/api/userData/profile', {
             headers: { 'Authorization': 'Bearer ' + token }
         });
         const data = await res.json();
@@ -40,7 +40,7 @@ async function loadProfile() {
 
         if (data.profileImage) {
             // إصلاح المشكلة: استخدام المسار الصحيح للصورة
-            const imageUrl = `https://money-production-bfc6.up.railway.app/uploads/${data.profileImage.replace('uploads/', '')}?t=${new Date().getTime()}`;
+            const imageUrl = `http://31.97.179.227/uploads/${data.profileImage.replace('uploads/', '')}?t=${new Date().getTime()}`;
 
             // تحميل الصورة أولاً للتحقق من وجودها
             const testImage = new Image();
@@ -147,7 +147,7 @@ async function updateProfile() {
             alert('تعذر تحديد رقم المستخدم. يرجى إعادة تسجيل الدخول.');
             return;
         }
-        const res = await fetch(`https://money-production-bfc6.up.railway.app/api/userData/admin/update-user/${userId}`, {
+        const res = await fetch(`http://31.97.179.227/api/userData/admin/update-user/${userId}`, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',

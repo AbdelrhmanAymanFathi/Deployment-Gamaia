@@ -78,7 +78,7 @@
       this.disabled = true;
       document.getElementById('result').textContent = 'جاري الانضمام...';
       try {
-        const res = await fetch(`https://money-production-bfc6.up.railway.app/api/associations/${associationId}/join`, {
+        const res = await fetch(`http://31.97.179.227/api/associations/${associationId}/join`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

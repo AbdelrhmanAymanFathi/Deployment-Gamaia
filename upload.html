@@ -271,7 +271,7 @@
       formData.append('salarySlipImage', selectedFile, selectedFile.name);
       formData.append('userId', String(userId));
 
-      const res = await fetch('https://money-production-bfc6.up.railway.app/api/userData/upload-documents', {
+      const res = await fetch('http://31.97.179.227/api/userData/upload-documents', {
         method: 'POST',
         body: formData,
         headers: {

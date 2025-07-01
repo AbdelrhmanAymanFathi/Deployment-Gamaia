@@ -35,7 +35,7 @@
         document.getElementById('result').textContent = 'لم يتم العثور على التوكن في التخزين المحلي أو في الكود';
         return;
       }
-      const res = await fetch(`https://money-production-bfc6.up.railway.app/api/turns/public/${associationId}`,
+      const res = await fetch(`http://31.97.179.227/api/turns/public/${associationId}`,
         {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -94,7 +94,7 @@
         document.getElementById('result').textContent = 'لم يتم العثور على التوكن في التخزين المحلي أو في الكود';
         return;
       }
-      const res = await fetch('https://money-production-bfc6.up.railway.app/api/associations', {
+      const res = await fetch('http://31.97.179.227/api/associations', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await res.json();
@@ -147,7 +147,7 @@
         return;
       }
       this.disabled = true;
-      const res = await fetch(`https://money-production-bfc6.up.railway.app/api/associations/${associationId}/join`, {
+      const res = await fetch(`http://31.97.179.227/api/associations/${associationId}/join`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json',
                  'Authorization': `Bearer ${token}` },

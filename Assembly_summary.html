@@ -432,7 +432,7 @@
 
             // جلب بيانات الدور الخاص بالمستخدم أولاً للحصول على الرسوم
             function fetchTurnAndThenAssociation() {
-                fetchWithAuth('https://money-production-bfc6.up.railway.app/api/turns/my-turn')
+                fetchWithAuth('http://31.97.179.227/api/turns/my-turn')
                     .then(res => {
                         if (res.status === 401) {
                             alert('يجب تسجيل الدخول للوصول إلى بيانات الجمعية.');
@@ -471,7 +471,7 @@
                     .then(() => {
                         // بعد جلب بيانات الدور، جلب بيانات الجمعية وتحديث الصفحة
                         if (assocId) {
-                            fetchWithAuth(`https://money-production-bfc6.up.railway.app/api/associations/${assocId}`)
+                            fetchWithAuth(`http://31.97.179.227/api/associations/${assocId}`)
                                 .then(res => {
                                     if (res.status === 401) {
                                         alert('يجب تسجيل الدخول للوصول إلى بيانات الجمعية.');
