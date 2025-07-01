@@ -1,6 +1,7 @@
 // API utility functions
 const API_BASE_URL = 'http://31.97.179.227/api';
 
+
 // Get the stored token
 const getToken = () => localStorage.getItem('token');
 
