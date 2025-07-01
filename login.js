@@ -10,7 +10,7 @@ document.getElementById('login-form').addEventListener('submit', async function(
       const password  = document.getElementById('login-password').value;
 
       try {
-        const res = await fetch('http://31.97.179.227/api/auth/login', {
+        const res = await fetch('https://api.technologytanda.com/api/auth/login', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ nationalId, password })
