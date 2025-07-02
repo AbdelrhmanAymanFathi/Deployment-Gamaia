@@ -11,52 +11,51 @@
 <body class="bg-gray-50 min-h-screen font-sans">
     <!-- Header with back icon -->
     <header class="bg-white border-b border-gray-200 py-3 mb-6">
-        <div class="max-w-3xl mx-auto flex items-center px-4 sm:px-6">
+        <div class="w-full md:max-w-3xl md:mx-auto flex items-center px-2 sm:px-6">
             <button onclick="window.location.href='payments.html'"
                 class="bg-none border-none cursor-pointer flex items-center text-teal-500 text-2xl px-2 focus:outline-none">
                 <i class="fas fa-arrow-right"></i>
                 <span class="text-base mr-2">رجوع</span>
             </button>
-            <!-- <span class="text-xl font-bold ml-4">مساعدة</span> -->
         </div>
     </header>
 
     <!-- التصنيفات -->
-    <div class="p-2 sm:p-4 grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 gap-4 max-w-md sm:max-w-2xl md:max-w-3xl mx-auto">
-        <button class="w-full bg-white border rounded-lg p-5 min-h-[60px] flex flex-col items-center shadow hover:bg-green-50 transition text-lg sm:text-base"
+    <div class="px-1 sm:px-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 sm:gap-4 w-full md:max-w-3xl md:mx-auto mb-4">
+        <button class="w-full bg-white border rounded-xl p-6 min-h-[64px] flex flex-col items-center shadow-md hover:bg-green-50 transition text-lg my-2"
             onclick="scrollToSection('admin')">
             <span class="text-green-700 text-4xl mb-2">🗂️</span>
-            <span class="text-lg sm:text-base">إدارية</span>
+            <span class="text-lg">إدارية</span>
         </button>
-        <button class="w-full bg-white border rounded-lg p-5 min-h-[60px] flex flex-col items-center shadow hover:bg-green-50 transition text-lg sm:text-base"
+        <button class="w-full bg-white border rounded-xl p-6 min-h-[64px] flex flex-col items-center shadow-md hover:bg-green-50 transition text-lg my-2"
             onclick="scrollToSection('card')">
             <span class="text-green-700 text-4xl mb-2">💳</span>
-            <span class="text-lg sm:text-base">كارت جمعيتي</span>
+            <span class="text-lg">كارت جمعيتي</span>
         </button>
-        <button class="w-full bg-white border rounded-lg p-5 min-h-[60px] flex flex-col items-center shadow hover:bg-green-50 transition text-lg sm:text-base"
+        <button class="w-full bg-white border rounded-xl p-6 min-h-[64px] flex flex-col items-center shadow-md hover:bg-green-50 transition text-lg my-2"
             onclick="scrollToSection('pay')">
             <span class="text-green-700 text-4xl mb-2">💸</span>
-            <span class="text-lg sm:text-base">الدفع</span>
+            <span class="text-lg">الدفع</span>
         </button>
-        <button class="w-full bg-white border rounded-lg p-5 min-h-[60px] flex flex-col items-center shadow hover:bg-green-50 transition text-lg sm:text-base"
+        <button class="w-full bg-white border rounded-xl p-6 min-h-[64px] flex flex-col items-center shadow-md hover:bg-green-50 transition text-lg my-2"
             onclick="scrollToSection('withdraw')">
             <span class="text-green-700 text-4xl mb-2">🏧</span>
-            <span class="text-lg sm:text-base">السحب</span>
+            <span class="text-lg">السحب</span>
         </button>
-        <button class="w-full bg-white border rounded-lg p-5 min-h-[60px] flex flex-col items-center shadow hover:bg-green-50 transition text-lg sm:text-base"
+        <button class="w-full bg-white border rounded-xl p-6 min-h-[64px] flex flex-col items-center shadow-md hover:bg-green-50 transition text-lg my-2"
             onclick="scrollToSection('account')">
             <span class="text-green-700 text-4xl mb-2">👤</span>
-            <span class="text-lg sm:text-base">الحساب</span>
+            <span class="text-lg">الحساب</span>
         </button>
-        <button class="w-full bg-white border rounded-lg p-5 min-h-[60px] flex flex-col items-center shadow hover:bg-green-50 transition text-lg sm:text-base"
+        <button class="w-full bg-white border rounded-xl p-6 min-h-[64px] flex flex-col items-center shadow-md hover:bg-green-50 transition text-lg my-2"
             onclick="scrollToSection('contract')">
             <span class="text-green-700 text-4xl mb-2">📄</span>
-            <span class="text-lg sm:text-base">العقد</span>
+            <span class="text-lg">العقد</span>
         </button>
     </div>
 
     <!-- الأسئلة حسب التصنيف -->
-    <div class="p-2 sm:p-4 space-y-4 sm:space-y-8 max-w-md sm:max-w-2xl md:max-w-3xl mx-auto">
+    <div class="px-1 sm:px-4 space-y-4 sm:space-y-8 w-full md:max-w-3xl md:mx-auto">
         <!-- إدارية -->
         <div id="admin">
             <h2 class="font-bold text-lg mb-2">إدارية</h2>
@@ -272,4 +271,5 @@
         });
     </script>
 </body>
+</html>
 </html>
