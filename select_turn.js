@@ -41,7 +41,7 @@ async function fetchTurns() {
     return;
   }
   try {
-    const res = await fetch(`http://31.97.179.227/api/turns/public/${associationId}`, {
+    const res = await fetch(`https://api.technologytanda.com/api/turns/public/${associationId}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
