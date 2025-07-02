@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // جلب الرصيد الحالي من السيرفر
-  fetch('http://31.97.179.227/api/userData/wallet', {
+  fetch('https://api.technologytanda.com/api/userData/wallet', {
     headers: { 'Authorization': `Bearer ${token}` }
   })
     .then(res => res.ok ? res.json() : Promise.reject(res.status))
@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // POST لعملية التوب أب
-    fetch('http://31.97.179.227/api/payments/topup', {
+    fetch('https://api.technologytanda.com/api/payments/topup', {
       method: 'POST',
       headers: {
         'Authorization': `Bearer ${token}`,
@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
           return Promise.reject();
         }
         // لو نجح الشحن، نعيد جلب الرصيد الفعلي
-        return fetch('http://31.97.179.227/api/userData/wallet', {
+        return fetch('https://api.technologytanda.com/api/userData/wallet', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
       })
