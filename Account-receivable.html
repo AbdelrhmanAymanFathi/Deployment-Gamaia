@@ -128,6 +128,9 @@
                 </div>
                 <i class="fas fa-cloud-upload-alt text-green-500 text-2xl mr-2"></i>
             </div>
+            <!-- Start: Uploaded National ID Images -->
+            <div id="uploaded-id-images" class="flex flex-wrap gap-2 mt-2"></div>
+            <!-- End: Uploaded National ID Images -->
 
             <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm document-box cursor-pointer" data-modal="modal-receipt">
                 <i class="fas fa-chevron-right text-gray-400 text-xl mr-3 ml-2"></i>
@@ -288,12 +291,30 @@
       });
 
       // Handle upload/save and show modal then go back
-      function handleUpload(type) {
+      async function handleUpload(type) {
         let data = {};
         if (type === 'id-card') {
           const fileInput = document.getElementById('id-card-file');
           if (fileInput.files.length > 0) {
-            data['idCard'] = fileInput.files[0].name;
+            const file = fileInput.files[0];
+            // Upload to backend
+            const formData = new FormData();
+            formData.append('nationalIdImage', file);
+            try {
+              const res = await fetch('https://api.technologytanda.com/api/nationalID/upload', {
+                method: 'POST',
+                body: formData
+              });
+              if (!res.ok) throw new Error('Upload failed');
+              const result = await res.json();
+              data['idCard'] = result.filePath;
+            } catch (e) {
+              alert('فشل رفع صورة البطاقة. حاول مرة أخرى.');
+              return;
+            }
+          } else {
+            alert('يرجى اختيار صورة البطاقة');
+            return;
           }
         } else if (type === 'receipt') {
           const fileInput = document.getElementById('receipt-file');
@@ -324,6 +345,27 @@
           window.history.back();
         }, 1200);
       }
+
+      // Fetch and display uploaded national ID images on page load
+      async function fetchNationalIdImages() {
+        try {
+          const res = await fetch('https://api.technologytanda.com/api/nationalID/all');
+          if (!res.ok) return;
+          const data = await res.json();
+          const container = document.getElementById('uploaded-id-images');
+          container.innerHTML = '';
+          if (data.images && data.images.length > 0) {
+            data.images.forEach(img => {
+              const imgElem = document.createElement('img');
+              imgElem.src = `https://api.technologytanda.com/api/nationalID/${img}`;
+              imgElem.className = "w-24 h-24 object-cover rounded border border-gray-200";
+              imgElem.alt = "صورة بطاقة شخصية";
+              container.appendChild(imgElem);
+            });
+          }
+        } catch {}
+      }
+      fetchNationalIdImages();
     </script>
 </body>
 </html>

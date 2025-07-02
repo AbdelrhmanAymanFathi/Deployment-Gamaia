@@ -146,8 +146,8 @@
 
     // التقاط الصور
     let videoStream = null;
-    let frontImage = null;
-    let backImage = null;
+    let frontImageUrl = null;
+    let backImageUrl = null;
     let captureStep = 0; // 0: front, 1: back
 
     // زر "إرفع البطاقة الشخصية"
@@ -210,10 +210,36 @@
       video.srcObject = null;
     }
 
+    // مؤشر تحميل
+    function showLoading(msg = 'جاري رفع الصورة...') {
+      captureMsg.textContent = msg;
+      captureBtn.disabled = true;
+      captureBtn.textContent = '...جاري الرفع';
+    }
+    function hideLoading() {
+      captureBtn.disabled = false;
+      captureBtn.textContent = 'التقط الصورة';
+    }
+
+    // رفع الصورة إلى السيرفر
+    async function uploadImage(dataUrl) {
+      const blob = await (await fetch(dataUrl)).blob();
+      const formData = new FormData();
+      formData.append('nationalIdImage', blob, 'national_id.png');
+      const res = await fetch('https://api.technologytanda.com/api/nationalID/upload', {
+        method: 'POST',
+        body: formData
+      });
+      if (!res.ok) throw new Error('فشل رفع الصورة');
+      const json = await res.json();
+      // ارجع رابط الصورة الكامل
+      return 'https://api.technologytanda.com/api/nationalID/' + json.filePath.split('/').pop();
+    }
+
     function resetCapture() {
       captureStep = 0;
-      frontImage = null;
-      backImage = null;
+      frontImageUrl = null;
+      backImageUrl = null;
       captureArea.classList.remove('hidden');
       resultArea.classList.add('hidden');
     }
@@ -229,26 +255,34 @@
       }
     }
 
-    captureBtn.onclick = function() {
+    captureBtn.onclick = async function() {
       const canvas = document.createElement('canvas');
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       const ctx = canvas.getContext('2d');
       ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
       const imgData = canvas.toDataURL('image/png');
-      if (captureStep === 0) {
-        frontImage = imgData;
-        showCaptureStep(1);
-      } else {
-        backImage = imgData;
-        stopCamera();
-        showResult();
+      showLoading();
+      try {
+        if (captureStep === 0) {
+          frontImageUrl = await uploadImage(imgData);
+          hideLoading();
+          showCaptureStep(1);
+        } else {
+          backImageUrl = await uploadImage(imgData);
+          hideLoading();
+          stopCamera();
+          showResult();
+        }
+      } catch (e) {
+        hideLoading();
+        alert('حدث خطأ أثناء رفع الصورة. حاول مرة أخرى.');
       }
     };
 
     function showResult() {
-      frontImg.src = frontImage;
-      backImg.src = backImage;
+      frontImg.src = frontImageUrl || '';
+      backImg.src = backImageUrl || '';
       captureArea.classList.add('hidden');
       resultArea.classList.remove('hidden');
     }
