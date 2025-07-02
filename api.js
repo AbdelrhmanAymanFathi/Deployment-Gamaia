@@ -1,5 +1,5 @@
 // API utility functions
-const API_BASE_URL = 'http://31.97.179.227/api';
+const API_BASE_URL = 'https://api.technologytanda.com/api';
 
 
 // Get the stored token

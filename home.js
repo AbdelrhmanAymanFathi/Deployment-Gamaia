@@ -12,7 +12,7 @@ if (!token) {
 async function loadMyAssociations() {
   try {
     const res = await fetch(
-      "http://31.97.179.227/api/associations/my-associations",
+      "https://api.technologytanda.com/api/associations/my-associations",
       {
         headers: { Authorization: "Bearer " + token },
       }

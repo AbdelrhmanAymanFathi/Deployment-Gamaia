@@ -432,7 +432,7 @@
 
             // جلب بيانات الدور الخاص بالمستخدم أولاً للحصول على الرسوم
             function fetchTurnAndThenAssociation() {
-                fetchWithAuth('http://31.97.179.227/api/turns/my-turn')
+                fetchWithAuth('https://api.technologytanda.com/api/turns/my-turn')
                     .then(res => {
                         if (res.status === 401) {
                             alert('يجب تسجيل الدخول للوصول إلى بيانات الجمعية.');
@@ -471,7 +471,7 @@
                     .then(() => {
                         // بعد جلب بيانات الدور، جلب بيانات الجمعية وتحديث الصفحة
                         if (assocId) {
-                            fetchWithAuth(`http://31.97.179.227/api/associations/${assocId}`)
+                            fetchWithAuth(`https://api.technologytanda.com/api/associations/${assocId}`)
                                 .then(res => {
                                     if (res.status === 401) {
                                         alert('يجب تسجيل الدخول للوصول إلى بيانات الجمعية.');

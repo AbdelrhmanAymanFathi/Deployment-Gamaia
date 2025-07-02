@@ -46,7 +46,7 @@ $('.btn-next').on('click', function() {
 
   $.ajax({
     type: 'POST',
-    url: 'http://31.97.179.227/api/payments/pay/suggest',
+    url: 'https://api.technologytanda.com/api/payments/pay/suggest',
     contentType: 'application/json',
     headers: { Authorization: 'Bearer ' + token },
     data: JSON.stringify({ enter: totalPayout }),
@@ -108,7 +108,7 @@ function loadJoinedAssociations() {
 
   $.ajax({
     type: 'GET',
-    url: 'http://31.97.179.227/api/associations/joined',
+    url: 'https://api.technologytanda.com/api/associations/joined',
     headers: { Authorization: 'Bearer ' + token },
     success: function(res) {
       if (!res.success) {
