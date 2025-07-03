@@ -210,23 +210,45 @@
         toggleWalletFields(false);
         return;
       }
-      
+
+      // معالجة حالة "تحويل بنكي"
+      if (data.paymentChoice === 'تحويل بنكي') {
+        document.getElementById('enable-wallet').checked = false;
+        toggleWalletFields(false);
+        document.getElementById('egateway-select').value = 'Fawry';
+        // إشعارات
+        if (data.notificationCategory) {
+          let notifEmail = false;
+          let notifSms = false;
+          if (typeof data.notificationCategory === 'string') {
+            notifEmail = data.notificationCategory.includes('email');
+            notifSms = data.notificationCategory.includes('sms');
+          } else if (Array.isArray(data.notificationCategory)) {
+            notifEmail = data.notificationCategory.includes('email');
+            notifSms = data.notificationCategory.includes('sms');
+          }
+          document.getElementById('notif-email').checked = notifEmail;
+          document.getElementById('notif-sms').checked = notifSms;
+        }
+        return;
+      }
+
       // طريقة الدفع
       const isWallet = data.paymentChoice === 'محفظة رقمية';
       document.getElementById('enable-wallet').checked = isWallet;
       toggleWalletFields(isWallet);
-      
+
       // بوابة الدفع
       const eGatewaySelect = document.getElementById('egateway-select');
       if (eGatewaySelect && data.eGateway) {
         eGatewaySelect.value = data.eGateway;
       }
-      
+
       // إشعارات
       if (data.notificationCategory) {
         let notifEmail = false;
         let notifSms = false;
-        
+
         if (typeof data.notificationCategory === 'string') {
           notifEmail = data.notificationCategory.includes('email');
           notifSms = data.notificationCategory.includes('sms');
@@ -234,11 +256,11 @@
           notifEmail = data.notificationCategory.includes('email');
           notifSms = data.notificationCategory.includes('sms');
         }
-        
+
         document.getElementById('notif-email').checked = notifEmail;
         document.getElementById('notif-sms').checked = notifSms;
       }
-      
+
       // بيانات المحفظة
       if (isWallet && appState.walletDetails) {
         document.getElementById('wallet-phone').value = appState.walletDetails.phone || '';
