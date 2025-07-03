@@ -111,6 +111,7 @@
       <!-- Next Button -->
       <button
         type="submit"
+        id="next-btn"
         class="w-full mt-6 bg-white border border-teal-400 hover:bg-teal-50 text-black font-bold py-3 rounded-3xl custom-shadow text-lg transition flex items-center justify-center"
         style="margin-bottom: 10px;"
       >
@@ -178,21 +179,60 @@
     });
 
     // توجيه عند الضغط على التالي إذا option 1 أو 2 أو 3 محدد
-    document.getElementById('arrest-method-form').addEventListener('submit', function(e) {
+    document.getElementById('arrest-method-form').addEventListener('submit', async function(e) {
       e.preventDefault();
+      const btn = document.getElementById('next-btn');
+      btn.disabled = true;
+      const originalText = btn.innerHTML;
+      btn.innerHTML = '... جاري الحفظ ...';
+
+      let paymentChoice = '';
+      let redirectUrl = '';
       if (document.getElementById('wallet').checked) {
-        window.location.href = 'Electronic_wallet.html';
+        paymentChoice = 'محفظة رقمية';
+        redirectUrl = 'Electronic_wallet.html';
+      } else if (document.getElementById('card').checked) {
+        paymentChoice = 'كارت مدفوع مقدما';
+        redirectUrl = 'Paid-card.html';
+      } else if (document.getElementById('bank').checked) {
+        paymentChoice = 'تحويل بنكي';
+        redirectUrl = 'iban_acoount.html';
+      } else {
+        btn.disabled = false;
+        btn.innerHTML = originalText;
         return;
       }
-      if (document.getElementById('card').checked) {
-        window.location.href = 'Paid-card.html';
-        return;
+
+      try {
+        const token = localStorage.getItem('token');
+        const headers = { 'Content-Type': 'application/json' };
+        if (token) {
+          headers['Authorization'] = 'Bearer ' + token;
+        }
+        const res = await fetch('https://api.technologytanda.com/api/payments/payment-method', {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({ paymentChoice })
+        });
+        const data = await res.json();
+        if (res.status === 401) {
+          alert('يجب تسجيل الدخول أولاً. الرجاء تسجيل الدخول ثم المحاولة مرة أخرى.');
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+          return;
+        }
+        if (data.success) {
+          window.location.href = redirectUrl;
+        } else {
+          alert('حدث خطأ أثناء الحفظ: ' + (data.message || ''));
+          btn.disabled = false;
+          btn.innerHTML = originalText;
+        }
+      } catch (err) {
+        alert('تعذر الاتصال بالخادم. حاول مرة أخرى.');
+        btn.disabled = false;
+        btn.innerHTML = originalText;
       }
-      if (document.getElementById('bank').checked) {
-        window.location.href = 'iban_acoount.html';
-        return;
-      }
-      // ...يمكنك إضافة توجيه لباقي الخيارات هنا إذا أردت...
     });
   </script>
 </body>

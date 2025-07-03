@@ -324,6 +324,28 @@
         } else if (type === 'method') {
           const select = document.getElementById('method-select');
           data['method'] = select.value;
+          // Send PATCH request to update payment method with Authorization header
+          const token = localStorage.getItem('token'); // Adjust key if your token is stored under a different name
+          if (!token) {
+            alert('يرجى تسجيل الدخول أولاً');
+            return;
+          }
+          try {
+            const res = await fetch('https://api.technologytanda.com/api/payments/update-payment-method/7', {
+              method: 'PATCH',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + token
+              },
+              body: JSON.stringify({ qabdMethod: select.value })
+            });
+            if (!res.ok) throw new Error('فشل تحديث طريقة الدفع');
+            const result = await res.json();
+            if (!result.success) throw new Error(result.message || 'فشل تحديث طريقة الدفع');
+          } catch (e) {
+            alert(e.message || 'حدث خطأ أثناء تحديث طريقة الدفع');
+            return;
+          }
         } else if (type === 'contract') {
           const fileInput = document.getElementById('contract-file');
           if (fileInput.files.length > 0) {
@@ -366,6 +388,34 @@
         } catch {}
       }
       fetchNationalIdImages();
+
+      // Fetch and set current payment method in the select box
+      async function fetchCurrentPaymentMethod() {
+        const token = localStorage.getItem('token');
+        if (!token) return;
+        try {
+          const res = await fetch('https://api.technologytanda.com/api/payments/payment-method/my', {
+            headers: {
+              'Authorization': 'Bearer ' + token
+            }
+          });
+          if (!res.ok) return;
+          const data = await res.json();
+          if (data.success && data.paymentMethod && data.paymentMethod.qabdMethod) {
+            const select = document.getElementById('method-select');
+            if (select) {
+              // Try to match the option by value
+              for (let i = 0; i < select.options.length; i++) {
+                if (select.options[i].text === data.paymentMethod.qabdMethod) {
+                  select.selectedIndex = i;
+                  break;
+                }
+              }
+            }
+          }
+        } catch {}
+      }
+      fetchCurrentPaymentMethod();
     </script>
 </body>
 </html>
