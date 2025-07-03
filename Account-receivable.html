@@ -140,6 +140,10 @@
                 </div>
                 <i class="fas fa-cloud-upload-alt text-green-500 text-2xl mr-2"></i>
             </div>
+            <!-- صورة ثابتة لإيصال إلتزام السداد -->
+            <div class="flex justify-end mt-2 mb-2">
+                <img src="Assets/imgs/slip.webp" alt="إيصال إلتزام السداد" class="w-32 h-auto rounded border border-gray-200 enlargeable cursor-pointer">
+            </div>
 
             <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm document-box cursor-pointer" data-modal="modal-method">
                 <i class="fas fa-chevron-right text-gray-400 text-xl mr-3 ml-2"></i>
@@ -157,6 +161,10 @@
                     <p class="text-xs text-gray-500 mt-1">محتاج ترفع مستند التزام السداد</p>
                 </div>
                 <i class="fas fa-cloud-upload-alt text-green-500 text-2xl mr-2"></i>
+            </div>
+            <!-- صورة ثابتة للعقد -->
+            <div class="flex justify-end mt-2 mb-2">
+                <img src="Assets/imgs/slip2.webp" alt="مستند التزام السداد" class="w-32 h-auto rounded border border-gray-200 enlargeable cursor-pointer">
             </div>
         </div>
 
@@ -416,6 +424,39 @@
         } catch {}
       }
       fetchCurrentPaymentMethod();
+
+      // تكبير الصور عند الضغط عليها (بعد التأكد من وجود العناصر)
+      document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.enlargeable').forEach(img => {
+          img.addEventListener('click', function(e) {
+            const modal = document.getElementById('image-modal');
+            const modalImg = document.getElementById('modal-img');
+            if (modal && modalImg) {
+              modalImg.src = this.src;
+              modal.classList.remove('hidden');
+            }
+          });
+        });
+        const imageModal = document.getElementById('image-modal');
+        if (imageModal) {
+          imageModal.addEventListener('click', function(e) {
+            if (e.target === this) this.classList.add('hidden');
+          });
+        }
+        const closeImageModal = document.getElementById('close-image-modal');
+        if (closeImageModal) {
+          closeImageModal.addEventListener('click', function() {
+            document.getElementById('image-modal').classList.add('hidden');
+          });
+        }
+      });
     </script>
+
+    <!-- مودال تكبير الصورة -->
+    <div id="image-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 hidden">
+      <span id="close-image-modal" class="absolute top-4 left-4 text-white text-3xl cursor-pointer" style="z-index:60;">&times;</span>
+      <img id="modal-img" src="" alt="صورة مكبرة" class="max-h-[80vh] max-w-[90vw] rounded shadow-lg border-4 border-white" style="z-index:55;">
+    </div>
+
 </body>
 </html>
