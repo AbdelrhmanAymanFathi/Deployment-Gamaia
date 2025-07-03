@@ -110,7 +110,7 @@ function renderTurns() {
       <div class="text-sm font-bold ${isLastTurn ? 'text-green-700' : 'text-red-700'}">
         ${
           turn.feeAmount !== 0
-            ? formatAmount(Math.abs(turn.feeAmount)) + (isLastTurn ? ' كاش باك' : ' خصم')
+            ? formatAmount(Math.abs(turn.feeAmount)) + (isLastTurn ? ' كاش باك' : ' رسوم الاشتراك')
             : 'بدون رسوم'
         }
       </div>

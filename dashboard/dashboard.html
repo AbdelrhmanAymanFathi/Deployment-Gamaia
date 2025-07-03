@@ -410,7 +410,7 @@
 
       // جلب الأدوار المتاحة من الباك اند
       try {
-        const res = await axios.get(`http://localhost:3000/api/associations/${assocId}/available-turns`);
+        const res = await axios.get(`https://api.technologytanda.com/api/associations/${assocId}/available-turns`);
         const turns = res.data && res.data.availableTurns ? res.data.availableTurns : [];
         if (turns.length === 0) {
           select.innerHTML = `<option value="">لا يوجد أدوار متاحة</option>`;
@@ -465,7 +465,7 @@
 
       // جلب المستخدمين
       try {
-        const res = await axios.get('http://localhost:3000/api/userData/users');
+        const res = await axios.get('https://api.technologytanda.com/api/userData/users');
         const users = Array.isArray(res.data) ? res.data : (res.data.data || []);
         if (users.length === 0) {
           select.innerHTML = `<option value="">لا يوجد مستخدمين</option>`;
@@ -518,7 +518,7 @@
             return;
           }
           try {
-            const res = await axios.post('http://localhost:3000/api/payments/topup', { userId, amount });
+            const res = await axios.post('https://api.technologytanda.com/api/payments/topup', { userId, amount });
             if (res.data && res.data.success && typeof res.data.newBalance.val !== "string") {
               successDiv.textContent = res.data.message + ` (الرصيد الجديد: ${res.data.newBalance.val})`;
               // تحديث الرصيد في القائمة وفي النص تلقائياً
@@ -567,7 +567,7 @@
       document.getElementById('notificationModal').classList.add('flex');
       // جلب المستخدمين
       try {
-        const res = await axios.get('http://localhost:3000/api/userData/users');
+        const res = await axios.get('https://api.technologytanda.com/api/userData/users');
         const users = Array.isArray(res.data) ? res.data : (res.data.data || []);
         if (users.length === 0) {
           select.innerHTML = `<option value="">لا يوجد مستخدمين</option>`;

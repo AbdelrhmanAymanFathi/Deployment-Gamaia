@@ -7,10 +7,10 @@ axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
 // --- Main logic (keep only one copy of each function/const) ---
 
-const assocApi = 'http://localhost:3000/api/associations';
-const userApi = 'http://localhost:3000/api/admin/create-user';
-const createuserApi = "http://localhost:3000/api/userData/admin/create-user";
-const usersApi = 'http://localhost:3000/api/userData/users'; // Users endpoint
+const assocApi = 'https://api.technologytanda.com/api/associations';
+const userApi = 'https://api.technologytanda.com/api/admin/create-user';
+const createuserApi = "https://api.technologytanda.com/api/userData/admin/create-user";
+const usersApi = 'https://api.technologytanda.com/api/userData/users'; // Users endpoint
 
 // Render helper
 function renderAssociationCard(assoc) {
@@ -255,7 +255,7 @@ async function loadMembers(assocId) {
   container.innerHTML = '<tr><td colspan="5" class="text-center p-4">جاري التحميل...</td></tr>';
 
   try {
-    const res = await axios.get(`http://localhost:3000/api/associations/${assocId}/members`);
+    const res = await axios.get(`https://api.technologytanda.com/api/associations/${assocId}/members`);
     const members = res.data && Array.isArray(res.data.data) ? res.data.data : [];
     if (members.length === 0) {
       container.innerHTML = '<tr><td colspan="5" class="text-center p-4 text-red-500">لا يوجد أعضاء في هذه الجمعية</td></tr>';
@@ -275,7 +275,7 @@ async function loadMembers(assocId) {
  */
 async function addUserToAssociation(assocId, userId, turnNumber) {
   try {
-    const res = await axios.post(`http://localhost:3000/api/associations/${assocId}/add-user`, {
+    const res = await axios.post(`https://api.technologytanda.com/api/associations/${assocId}/add-user`, {
       userId,
       turnNumber
     });
@@ -319,7 +319,7 @@ async function loadTurns() {
   `;
 
   try {
-    const res = await axios.get('http://localhost:3000/api/turns');
+    const res = await axios.get('https://api.technologytanda.com/api/turns');
     const turns = Array.isArray(res.data) ? res.data : [];
     const tbody = document.getElementById('turnsContainer');
     if (!turns.length) {
@@ -370,14 +370,14 @@ function openApproveProfileModal(userId) {
   // إعداد التوكن للرابط إذا كان السيرفر يتطلب Authorization header للصور
   const token = localStorage.getItem('token');
 
-  axios.get(`http://localhost:3000/api/userData/users`)
+  axios.get(`https://api.technologytanda.com/api/userData/users`)
     .then(res => {
       const users = Array.isArray(res.data) ? res.data : (res.data.data || []);
       const user = users.find(u => u.id == userId);
       if (user && user.salarySlipImage) {
         let imgUrl = user.salarySlipImage;
         if (!/^https?:\/\//.test(imgUrl)) {
-          imgUrl = 'http://localhost:3000/api/userData/uploads/' + imgUrl.replace(/^.*[\\/]/, '');
+          imgUrl = 'https://api.technologytanda.com/api/userData/uploads/' + imgUrl.replace(/^.*[\\/]/, '');
         }
         // إذا كان السيرفر يتطلب Authorization header للصور، استخدم fetch و Blob
         if (token) {
@@ -441,7 +441,7 @@ async function approveProfile(approved, reason = "") {
     const userId = window._currentApproveUserId;
     if (!userId) return;
     const res = await axios.post(
-      `http://localhost:3000/api/userData/admin/approve-profile/${userId}`,
+      `https://api.technologytanda.com/api/userData/admin/approve-profile/${userId}`,
       { approved: !!approved, reason }
     );
     if (res.data && res.data.message) {
@@ -486,7 +486,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const reason = reasonInput.value;
     responseMsg.textContent = '';
     try {
-      const res = await fetch(`http://localhost:3000/api/userData/admin/approve-profile/${userId}`, {
+      const res = await fetch(`https://api.technologytanda.com/api/userData/admin/approve-profile/${userId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ approved: true, reason })
@@ -511,7 +511,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // إرسال إشعار لمستخدم
 async function sendNotification(userId, message) {
   try {
-    const res = await axios.post('http://localhost:3000/api/userData/notifications', {
+    const res = await axios.post('https://api.technologytanda.com/api/userData/notifications', {
       userId,
       message
     });
