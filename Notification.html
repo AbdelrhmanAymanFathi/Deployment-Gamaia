@@ -7,17 +7,7 @@
   <!-- Tailwind -->
   <!-- <script src="https://cdn.tailwindcss.com"></script> -->
   <link rel="stylesheet" href="dist/tailwind.css">
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            primary: '#90D1CA',
-          }
-        }
-      }
-    }
-  </script>
+
 </head>
 <body class="bg-gradient-to-br from-primary/10 to-gray-100 min-h-screen flex items-center justify-center p-4">
 
@@ -131,6 +121,9 @@
               timeStyle: 'short'
             });
 
+            // Use a default title if notif.title is missing or empty
+            const notifTitle = notif.title && notif.title.trim() !== "" ? notif.title : "إشعار جديد";
+
             // Facebook-like notification card
             const card = document.createElement("div");
             card.className = `flex items-center gap-4 px-6 py-5 border-b last:border-b-0 transition duration-300 group ${notif.isRead ? 'bg-white' : 'bg-primary/10'}`;
@@ -141,7 +134,7 @@
               </div>
               <div class="flex-1 min-w-0">
                 <div class="flex items-center gap-2">
-                  <span class="font-semibold text-gray-800">${notif.title || "إشعار جديد"}</span>
+                  <span class="font-semibold text-gray-800">${notifTitle}</span>
                   <span class="text-xs text-gray-400">${date}</span>
                 </div>
                 <p class="text-gray-600 mt-1 text-sm">${notif.message}</p>
