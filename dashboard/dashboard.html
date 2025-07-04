@@ -1,122 +1,424 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>لوحة التحكم - الإدارة</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <link rel="stylesheet"
-    href="https://fonts.googleap is.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=dashboard" />
-  <!-- Bootstrap Icons CDN -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
-    aside {
-      background-color: #129990;
-      color: #eee;
+    :root {
+      --primary: #129990;
+      --primary-dark: #0f7a7a;
+      --secondary: #0d9488;
+      --light: #f0fdfa;
+      --dark: #042f2e;
     }
-
-    aside nav button {
-      background-color: #129990;
-      color: #eee;
+    
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f3f4f6;
     }
-
-    aside nav button:hover {
-      background-color: #0f7a7a;
+    
+    .card {
+      background: white;
+      border-radius: 0.75rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      transition: all 0.3s ease;
+    }
+    
+    .card:hover {
+      box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+      transform: translateY(-2px);
+    }
+    
+    .btn-primary {
+      background-color: var(--primary);
+      color: white;
+      border-radius: 0.5rem;
+      padding: 0.5rem 1rem;
+      font-weight: 600;
+      transition: background-color 0.2s;
+    }
+    
+    .btn-primary:hover {
+      background-color: var(--primary-dark);
+    }
+    
+    .btn-danger {
+      background-color: #ef4444;
+      color: white;
+    }
+    
+    .btn-danger:hover {
+      background-color: #dc2626;
+    }
+    
+    .loading-spinner {
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      border: 3px solid rgba(255,255,255,.3);
+      border-radius: 50%;
+      border-top-color: #fff;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+    }
+    
+    .modal-content {
+      background: white;
+      border-radius: 0.75rem;
+      max-width: 95%;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      width: 100%;
+    }
+    
+    @media (min-width: 640px) {
+      .modal-content {
+        width: 500px;
+      }
+    }
+    
+    .table-responsive {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .table th, .table td {
+      padding: 0.75rem;
+      text-align: right;
+      vertical-align: middle;
+    }
+    
+    .table th {
+      background-color: #f1f5f9;
+      font-weight: 600;
+      color: #334155;
+    }
+    
+    .table tr:nth-child(even) {
+      background-color: #f8fafc;
+    }
+    
+    .table tr:hover {
+      background-color: #f1f5f9;
+    }
+    
+    /* Desktop Sidebar */
+    #sidebar {
+      background-color: var(--primary);
+      color: #eee;
+      transition: all 0.3s ease;
+    }
+    
+    #sidebar .sidebar-btn {
+      background-color: var(--primary);
+      color: #eee;
+      transition: all 0.2s ease;
+    }
+    
+    #sidebar .sidebar-btn:hover {
+      background-color: var(--primary-dark);
       color: #fff;
-      padding: 3% 5%;
     }
-
-      @media (max-width: 768px) {
-    table th, table td {
+    
+    /* Mobile Top Nav */
+    .top-navbar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      background-color: var(--primary);
+      color: white;
+      z-index: 40;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    .mobile-menu-btn {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       padding: 0.5rem;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
+      color: white;
+      transition: all 0.2s;
+      border-radius: 0.5rem;
     }
-  }
-
-  @media (max-width: 480px) {
-    table th, table td {
-      font-size: 0.7rem;
+    
+    .mobile-menu-btn:hover {
+      background-color: var(--primary-dark);
     }
-  }
-
-  /* Sidebar collapsed/expanded logic */
-  #sidebar {
-      width: 4rem; /* collapsed */
+    
+    .mobile-menu-btn i {
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
     }
-    #sidebar.sidebar-expanded {
-      width: 16rem; /* expanded */
+    
+    .action-btn {
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+      font-weight: 500;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
     }
-    #sidebar .sidebar-label {
-      display: none;
+    
+    .action-btn i {
+      font-size: 1rem;
     }
-    #sidebar.sidebar-expanded .sidebar-label {
-      display: inline;
+    
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
     }
-    #sidebar .sidebar-label-collapsed {
-      display: block;
+    
+    @media (max-width: 640px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
     }
-    #sidebar.sidebar-expanded .sidebar-label-collapsed {
-      display: none;
-    }
-    /* Main content padding matches sidebar width */
-    @media (min-width: 0px) {
+    
+    /* Responsive Sidebar */
+    @media (max-width: 1023px) {
+      #sidebar {
+        width: 4rem;
+      }
+      
+      #sidebar .sidebar-label {
+        display: none;
+      }
+      
       main {
-        transition: padding-right 0.3s;
+        padding-right: 4rem;
       }
+      
+      #sidebar.sidebar-expanded {
+        width: 16rem;
+      }
+      
+      #sidebar.sidebar-expanded .sidebar-label {
+        display: inline;
+      }
+      
       #sidebar.sidebar-expanded ~ main {
-        padding-right: 16rem !important;
+        padding-right: 16rem;
       }
-      #sidebar ~ main {
-        padding-right: 4rem !important;
+    }
+    
+    @media (min-width: 1024px) {
+      #sidebar {
+        width: 16rem;
       }
+      
+      #sidebar .sidebar-label {
+        display: inline;
+      }
+      
+      main {
+        padding-right: 16rem;
+      }
+    }
+    
+    @media (max-width: 767px) {
+      #sidebar {
+        display: none;
+      }
+      
+      main {
+        padding-right: 0 !important;
+      }
+      
+      .top-navbar {
+        display: flex;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      .top-navbar {
+        display: none;
+      }
+    }
+    
+    /* User details */
+    .user-details-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+    
+    @media (max-width: 640px) {
+      .user-details-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    .user-details-card {
+      background: white;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    
+    .user-details-label {
+      font-weight: 600;
+      color: #4b5563;
+      margin-bottom: 0.25rem;
+    }
+    
+    .user-details-value {
+      color: #1f2937;
+      font-size: 1rem;
+    }
+    
+    .history-card {
+      background: white;
+      border-radius: 0.5rem;
+      padding: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+      margin-top: 1rem;
+    }
+    
+    .history-item {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    
+    .history-item:last-child {
+      border-bottom: none;
+    }
+    
+    .history-item-header {
+      font-weight: 600;
+      color: #4b5563;
+      margin-bottom: 0.25rem;
+    }
+    
+    .history-item-content {
+      color: #1f2937;
+      font-size: 0.9rem;
+    }
+    
+    .profile-image-container {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto;
+      border: 3px solid #f3f4f6;
+      background-color: #f9fafb;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .profile-image-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    .user-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      justify-content: center;
     }
   </style>
 </head>
 
 <body class="flex bg-gray-100 min-h-screen text-right">
-  <!-- Sidebar (collapsible) -->
-  <aside id="sidebar" class="fixed top-0 right-0 h-full bg-[#129990] text-[#eee] shadow-md z-40 flex flex-col justify-between transition-all duration-300 sidebar-collapsed">
+  <!-- Top Navbar (Mobile only) -->
+  <nav class="top-navbar">
+    <button id="mobileMenuBtn" class="text-white focus:outline-none">
+      <i class="bi bi-list text-2xl"></i>
+    </button>
+    <h1 class="text-xl font-bold">لوحة التحكم</h1>
+    <div></div> <!-- Placeholder for alignment -->
+  </nav>
+
+  <!-- Sidebar (Desktop and Tablet) -->
+  <aside id="sidebar" class="fixed top-0 right-0 h-full shadow-md z-40 flex flex-col justify-between transition-all duration-300">
     <div>
-      <!-- Collapse/Expand Button -->
-      <div class="flex justify-end items-center mt-4 mb-8 px-2">
+      <!-- Collapse/Expand Button (Tablet only) -->
+      <div class="flex justify-end items-center mt-4 mb-8 px-2 md:hidden">
         <button id="sidebarCollapseBtn" class="text-white focus:outline-none">
           <i class="bi bi-chevron-double-left text-xl transition-transform duration-300" id="collapseIcon"></i>
         </button>
       </div>
       <nav class="space-y-2">
-        <button onclick="loadAssociations()" class="sidebar-btn w-full flex items-center gap-3 px-4 py-2 rounded transition-colors hover:bg-[#0f7a7a]">
+        <button onclick="loadAssociations()" class="sidebar-btn w-full flex items-center gap-3 px-4 py-2 rounded transition-colors">
           <i class="bi bi-people-fill text-xl"></i>
-          <span class="sidebar-label hidden">عرض الجمعيات</span>
+          <span class="sidebar-label">عرض الجمعيات</span>
         </button>
-        <button onclick="openCreateAssociationModal()" class="sidebar-btn w-full flex items-center gap-3 px-4 py-2 rounded transition-colors hover:bg-[#0f7a7a]">
+        <button onclick="openCreateAssociationModal()" class="sidebar-btn w-full flex items-center gap-3 px-4 py-2 rounded transition-colors">
           <i class="bi bi-plus-circle text-xl"></i>
-          <span class="sidebar-label hidden">إنشاء جمعية</span>
+          <span class="sidebar-label">إنشاء جمعية</span>
         </button>
-        <button onclick="openCreateUserModal()" class="sidebar-btn w-full flex items-center gap-3 px-4 py-2 rounded transition-colors hover:bg-[#0f7a7a]">
+        <button onclick="openCreateUserModal()" class="sidebar-btn w-full flex items-center gap-3 px-4 py-2 rounded transition-colors">
           <i class="bi bi-person-plus text-xl"></i>
-          <span class="sidebar-label hidden">إنشاء مستخدم</span>
+          <span class="sidebar-label">إنشاء مستخدم</span>
         </button>
-        <button onclick="loadUsers()" class="sidebar-btn w-full flex items-center gap-3 px-4 py-2 rounded transition-colors hover:bg-[#0f7a7a]">
+        <button onclick="loadUsers()" class="sidebar-btn w-full flex items-center gap-3 px-4 py-2 rounded transition-colors">
           <i class="bi bi-people text-xl"></i>
-          <span class="sidebar-label hidden">عرض المستخدمين</span>
+          <span class="sidebar-label">عرض المستخدمين</span>
         </button>
-        <button onclick="openTopupModal()" class="sidebar-btn w-full flex items-center gap-3 px-4 py-2 rounded transition-colors hover:bg-[#0f7a7a]">
+        <button onclick="openTopupModal()" class="sidebar-btn w-full flex items-center gap-3 px-4 py-2 rounded transition-colors">
           <i class="bi bi-wallet2 text-xl"></i>
-          <span class="sidebar-label hidden">شحن الرصيد</span>
+          <span class="sidebar-label">شحن الرصيد</span>
         </button>
       </nav>
     </div>
     <div class="text-sm text-white mt-4 mb-6 text-center">
-      <span class="sidebar-label hidden">© 2025 FundCircle</span>
-      <span class="sidebar-label-collapsed block">©</span>
+      <span class="sidebar-label">© 2025 FundCircle</span>
     </div>
   </aside>
 
+<!-- spacer -->
+ <div class="h-20"></div>
   <!-- Main Content -->
-  <main class="flex-1 pr-16 md:pr-16 p-2 md:p-6 overflow-y-auto">
-    <section id="contentContainer"></section>
+  <main class="flex-1 p-4 md:p-6 overflow-y-auto pb-20 md:pb-0">
+    <section id="contentContainer" class="max-w-7xl mx-auto mt-4 md:mt-0">
+      <!-- Main content will be loaded here dynamically -->
+      <div class="text-center py-12" id="welcomeMessage">
+        <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">مرحباً بك في لوحة التحكم</h1>
+        <p class="text-gray-600 max-w-2xl mx-auto">يمكنك إدارة الجمعيات والمستخدمين والعمليات المالية من خلال هذه اللوحة</p>
+        <div class="mt-8">
+          <button onclick="loadAssociations()" class="btn-primary mr-3">
+            <i class="bi bi-people-fill mr-2"></i> عرض الجمعيات
+          </button>
+          <button onclick="loadUsers()" class="btn-primary">
+            <i class="bi bi-people mr-2"></i> عرض المستخدمين
+          </button>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- Bottom Navbar (Mobile only) -->
@@ -141,480 +443,376 @@
 
   <!-- Association Cards Container -->
   <template id="associationsTemplate">
-    <div id="associationsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+    <div class="mb-6 mt-12">
+      <div class="flex flex-wrap justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold text-gray-800">الجمعيات</h2>
+        <button onclick="openCreateAssociationModal()" class="action-btn bg-[#129990] text-white">
+          <i class="bi bi-plus-circle"></i> إنشاء جمعية
+        </button>
+      </div>
+      <div id="associationsContainer" class="grid-container"></div>
+    </div>
   </template>
 
   <!-- Add Member Modal -->
-  <div id="addMemberModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white p-4 md:p-6 rounded-xl shadow-md w-full max-w-xs sm:max-w-md mx-2 flex flex-col gap-2">
-      <h2 class="text-xl font-bold mb-2">إضافة عضو للجمعية</h2>
-      <form id="addMemberForm" class="space-y-3">
-        <input type="hidden" name="assocId" id="addMemberAssocId" />
-        <label class="block">
-          <span class="text-sm">رقم المستخدم (userId)</span>
-          <input name="userId" id="addMemberUserId" type="number" class="w-full border p-2 rounded mt-1" required />
-        </label>
-        <label class="block">
-          <span class="text-sm">اختر الدور المتاح</span>
-          <select name="turnNumber" id="addMemberTurnNumber" class="w-full border p-2 rounded mt-1" required>
-            <option value="">اختر الدور...</option>
-          </select>
-        </label>
-        <div id="addMemberFeeInfo" class="text-xs text-gray-600"></div>
-        <div id="addMemberError" class="text-red-500 text-sm"></div>
-        <div class="flex justify-end space-x-2 rtl:space-x-reverse">
-          <button type="button" onclick="closeAddMemberModal()" class="bg-gray-300 px-4 py-2 rounded">إلغاء</button>
-          <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">إضافة</button>
-        </div>
-      </form>
+  <div id="addMemberModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="bg-white p-4 md:p-6 rounded-xl flex flex-col gap-2">
+        <h2 class="text-xl font-bold mb-2">إضافة عضو للجمعية</h2>
+        <form id="addMemberForm" class="space-y-3">
+          <input type="hidden" name="assocId" id="addMemberAssocId" />
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">رقم المستخدم (userId)</label>
+            <input name="userId" id="addMemberUserId" type="number" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">اختر الدور المتاح</label>
+            <select name="turnNumber" id="addMemberTurnNumber" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required>
+              <option value="">اختر الدور...</option>
+            </select>
+          </div>
+          <div id="addMemberFeeInfo" class="text-sm text-gray-600 p-2 bg-gray-50 rounded-md"></div>
+          <div id="addMemberError" class="text-red-500 text-sm"></div>
+          <div class="flex justify-end space-x-2 rtl:space-x-reverse">
+            <button type="button" onclick="closeAddMemberModal()" class="action-btn bg-gray-300">إلغاء</button>
+            <button type="submit" class="action-btn bg-green-600 text-white">إضافة</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
   <!-- Create Association Modal -->
-  <div id="createAssociationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-30">
-    <div class="bg-white p-4 md:p-6 rounded-xl shadow-md w-full max-w-xs sm:max-w-md mx-2">
-      <h2 class="text-xl font-bold mb-4">إنشاء جمعية جديدة</h2>
-      <form id="createAssociationForm" class="space-y-3">
-        <input name="name" placeholder="الاسم" class="w-full border p-2 rounded" required />
-        <input name="monthlyAmount" type="number" placeholder="المبلغ الشهري" class="w-full border p-2 rounded"
-          required />
-        <input name="duration" type="number" placeholder="المدة" class="w-full border p-2 rounded" required />
-        <input name="durationUnit" placeholder="وحدة المدة (مثلاً: weeks)" class="w-full border p-2 rounded" required />
-        <input name="type" placeholder="النوع (مثلاً: B)" class="w-full border p-2 rounded" required />
-        <input name="maxMembers" type="number" placeholder="الحد الأعلى للأعضاء" class="w-full border p-2 rounded"
-          min="2" max="15" required />
-        <div class="flex justify-end space-x-2 rtl:space-x-reverse">
-          <button type="button" onclick="closeCreateAssociationModal()"
-            class="bg-gray-300 px-4 py-2 rounded">إلغاء</button>
-          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">إنشاء</button>
-        </div>
-      </form>
+  <div id="createAssociationModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="bg-white p-4 md:p-6 rounded-xl">
+        <h2 class="text-xl font-bold mb-4">إنشاء جمعية جديدة</h2>
+        <form id="createAssociationForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">اسم الجمعية</label>
+            <input name="name" placeholder="الاسم" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">المبلغ الشهري</label>
+            <input name="monthlyAmount" type="number" placeholder="المبلغ الشهري" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">المدة</label>
+            <input name="duration" type="number" placeholder="المدة" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">وحدة المدة</label>
+            <input name="durationUnit" placeholder="مثلاً: weeks" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">نوع الجمعية</label>
+            <input name="type" placeholder="مثلاً: B" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">الحد الأعلى للأعضاء</label>
+            <input name="maxMembers" type="number" placeholder="الحد الأعلى للأعضاء" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" min="2" max="15" required />
+          </div>
+          <div class="flex justify-end space-x-2 rtl:space-x-reverse">
+            <button type="button" onclick="closeCreateAssociationModal()" class="action-btn bg-gray-300">إلغاء</button>
+            <button type="submit" class="action-btn bg-blue-600 text-white">إنشاء</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
   <!-- Edit Association Modal -->
-  <div id="editAssociationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-30">
-    <div class="bg-white p-4 md:p-6 rounded-xl shadow-md w-full max-w-xs sm:max-w-md mx-2">
-      <h2 class="text-xl font-bold mb-4">تعديل الجمعية</h2>
-      <form id="editAssociationForm" class="space-y-3">
-        <input name="id" type="hidden" />
-        <input name="monthlyAmount" type="number" placeholder="المبلغ الشهري" class="w-full border p-2 rounded"
-          required />
-        <input name="duration" type="number" placeholder="المدة" class="w-full border p-2 rounded" required />
-        <input name="durationUnit" placeholder="وحدة المدة (مثلاً: weeks)" class="w-full border p-2 rounded" required />
-        <input name="type" placeholder="النوع (مثلاً: B)" class="w-full border p-2 rounded" required />
-        <input name="maxMembers" type="number" placeholder="الحد الأعلى للأعضاء" class="w-full border p-2 rounded"
-          min="2" max="15" required />
-        <select name="status" class="w-full border p-2 rounded">
-          <option value="pending">قيد الانتظار</option>
-          <option value="active">نشطة</option>
-        </select>
-        <div class="flex justify-end space-x-2 rtl:space-x-reverse">
-          <button type="button" onclick="closeEditAssociationModal()"
-            class="bg-gray-300 px-4 py-2 rounded">إلغاء</button>
-          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">حفظ</button>
-        </div>
-      </form>
+  <div id="editAssociationModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="bg-white p-4 md:p-6 rounded-xl">
+        <h2 class="text-xl font-bold mb-4">تعديل الجمعية</h2>
+        <form id="editAssociationForm" class="space-y-4">
+          <input name="id" type="hidden" />
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">المبلغ الشهري</label>
+            <input name="monthlyAmount" type="number" placeholder="المبلغ الشهري" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">المدة</label>
+            <input name="duration" type="number" placeholder="المدة" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">وحدة المدة</label>
+            <input name="durationUnit" placeholder="مثلاً: weeks" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">نوع الجمعية</label>
+            <input name="type" placeholder="مثلاً: B" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">الحد الأعلى للأعضاء</label>
+            <input name="maxMembers" type="number" placeholder="الحد الأعلى للأعضاء" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" min="2" max="15" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">حالة الجمعية</label>
+            <select name="status" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]">
+              <option value="pending">قيد الانتظار</option>
+              <option value="active">نشطة</option>
+            </select>
+          </div>
+          <div class="flex justify-end space-x-2 rtl:space-x-reverse">
+            <button type="button" onclick="closeEditAssociationModal()" class="action-btn bg-gray-300">إلغاء</button>
+            <button type="submit" class="action-btn bg-blue-600 text-white">حفظ</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
   <!-- Delete Association Modal -->
-  <div id="deleteAssociationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-30">
-    <div class="bg-white p-4 md:p-6 rounded-xl shadow-md w-full max-w-xs sm:max-w-sm mx-2 text-center">
-      <p class="mb-4 text-lg">هل أنت متأكد من حذف الجمعية؟</p>
-      <input type="hidden" id="deleteAssocId" />
-      <div class="flex justify-center space-x-2 rtl:space-x-reverse">
-        <button onclick="closeDeleteAssociationModal()" class="bg-gray-300 px-4 py-2 rounded">إلغاء</button>
-        <button onclick="confirmDeleteAssociation()" class="bg-red-600 text-white px-4 py-2 rounded">حذف</button>
+  <div id="deleteAssociationModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="bg-white p-4 md:p-6 rounded-xl text-center">
+        <p class="mb-4 text-lg font-medium">هل أنت متأكد من حذف الجمعية؟</p>
+        <input type="hidden" id="deleteAssocId" />
+        <div class="flex justify-center space-x-2 rtl:space-x-reverse">
+          <button onclick="closeDeleteAssociationModal()" class="action-btn bg-gray-300">إلغاء</button>
+          <button onclick="confirmDeleteAssociation()" class="action-btn bg-red-600 text-white">حذف</button>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Create User Modal -->
-  <div id="createUserModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-30">
-    <div class="bg-white p-4 md:p-6 rounded-xl shadow-md w-full max-w-xs sm:max-w-md mx-2">
-      <h2 class="text-xl font-bold mb-4">إنشاء مستخدم جديد</h2>
-      <form id="createUserForm" class="space-y-3">
-        <input name="fullName" placeholder="الاسم الكامل" class="w-full border p-2 rounded" required />
-        <input name="nationalId" placeholder="الرقم القومي" class="w-full border p-2 rounded" required />
-        <input name="phone" placeholder="الهاتف" class="w-full border p-2 rounded" required />
-        <input name="address" placeholder="العنوان" class="w-full border p-2 rounded" required />
-        <select name="role" class="w-full border p-2 rounded" required>
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
-        </select>
-        <input name="password" type="password" placeholder="كلمة المرور" class="w-full border p-2 rounded" required />
-        <div class="flex justify-end space-x-2 rtl:space-x-reverse">
-          <button type="button" onclick="closeCreateUserModal()" class="bg-gray-300 px-4 py-2 rounded">إلغاء</button>
-          <button type="submit" class="bg-indigo-600 text-white px-4 py-2 rounded">إنشاء</button>
-        </div>
-      </form>
+  <div id="createUserModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="bg-white p-4 md:p-6 rounded-xl">
+        <h2 class="text-xl font-bold mb-4">إنشاء مستخدم جديد</h2>
+        <form id="createUserForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">الاسم الكامل</label>
+            <input name="fullName" placeholder="الاسم الكامل" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">الرقم القومي</label>
+            <input name="nationalId" placeholder="الرقم القومي" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">الهاتف</label>
+            <input name="phone" placeholder="الهاتف" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">العنوان</label>
+            <input name="address" placeholder="العنوان" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">الدور</label>
+            <select name="role" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required>
+              <option value="user">User</option>
+              <option value="admin">Admin</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">كلمة المرور</label>
+            <input name="password" type="password" placeholder="كلمة المرور" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div class="flex justify-end space-x-2 rtl:space-x-reverse">
+            <button type="button" onclick="closeCreateUserModal()" class="action-btn bg-gray-300">إلغاء</button>
+            <button type="submit" class="action-btn bg-indigo-600 text-white">إنشاء</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
   <!-- Users Table Template -->
   <template id="usersTemplate">
-    <div class="flex flex-col sm:flex-row justify-start mb-4 gap-2">
-      <button onclick="openCreateUserModal()"
-        class="bg-[#129990] hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 w-full sm:w-auto">
-        + إنشاء مستخدم
-      </button>
-      <!-- زر إرسال إشعار -->
-      <button onclick="openNotificationModal()"
-        class="bg-blue-600 hover:bg-blue-800 text-white font-semibold py-2 px-4 rounded-lg shadow-md transition duration-300 w-full sm:w-auto">
-        إرسال إشعار
-      </button>
-    </div>
-    <div class="overflow-x-auto">
-      <table class="min-w-full bg-white rounded-lg shadow text-xs sm:text-sm">
-        <thead class="bg-gray-300">
-          <tr>
-            <th class="px-4 py-2 text-sm  whitespace-nowrap">#</th>
-            <th class="px-4 py-2 text-sm  whitespace-nowrap">الاسم الكامل</th>
-            <th class="px-4 py-2 text-sm  whitespace-nowrap">الرقم القومي</th>
-            <th class="px-4 py-2 text-sm  whitespace-nowrap">الهاتف</th>
-            <th class="px-4 py-2 text-sm  whitespace-nowrap">واتساب</th>
-            <th class="px-4 py-2 text-sm  whitespace-nowrap">الرصيد</th>
-            <th class="px-4 py-2 text-sm  whitespace-nowrap">الدور</th>
-            <th class="px-4 py-2 text-sm  whitespace-nowrap">تاريخ الإنشاء</th>
-            <th class="px-4 py-2 text-sm  whitespace-nowrap">مستند الراتب</th> <!-- NEW COLUMN -->
-          </tr>
-        </thead>
-
-        <tbody id="usersContainer"></tbody>
-      </table>
+    <div class="mb-6 mt-12">
+      <div class="flex flex-wrap justify-between items-center mb-4 gap-2">
+        <h2 class="text-2xl font-bold text-gray-800">المستخدمين</h2>
+        <div class="flex flex-wrap gap-2">
+          <button onclick="openCreateUserModal()" class="action-btn bg-[#129990] text-white">
+            <i class="bi bi-person-plus"></i> إنشاء مستخدم
+          </button>
+          <button onclick="openNotificationModal()" class="action-btn bg-blue-600 text-white">
+            <i class="bi bi-bell"></i> إرسال إشعار
+          </button>
+        </div>
+      </div>
+      <div class="table-responsive">
+        <table class="min-w-full bg-white rounded-lg shadow table-auto">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="px-4 py-3 text-sm font-medium text-gray-700 whitespace-nowrap">#</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-700 whitespace-nowrap">الاسم الكامل</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-700 whitespace-nowrap">الرقم القومي</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-700 whitespace-nowrap">الهاتف</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-700 whitespace-nowrap">واتساب</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-700 whitespace-nowrap">الرصيد</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-700 whitespace-nowrap">الدور</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-700 whitespace-nowrap">تاريخ الإنشاء</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-700 whitespace-nowrap">مستند الراتب</th>
+            </tr>
+          </thead>
+          <tbody id="usersContainer" class="divide-y divide-gray-200"></tbody>
+        </table>
+      </div>
     </div>
   </template>
 
   <!-- Members Table Template -->
   <template id="membersTemplate">
-    <div class="overflow-x-auto w-full">
-      <h2 class="text-xl font-bold mb-4">أعضاء الجمعية</h2>
-      <table class="min-w-full bg-white table-auto border-collapse border border-gray-200 text-xs sm:text-sm">
-        <thead class="bg-gray-200">
-          <tr>
-            <th class="px-4 py-2  text-red-500">#</th>
-            <th class="px-4 py-2 ">الاسم</th>
-            <th class="px-4 py-2 ">الهاتف</th>
-            <th class="px-4 py-2 ">استلمت؟</th>
-            <th class="px-4 py-2 ">آخر استلام</th>
-          </tr>
-        </thead>
-        <tbody id="membersContainer"></tbody>
-      </table>
+    <div class="mb-6">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold text-gray-800">أعضاء الجمعية</h2>
+        <button onclick="history.back()" class="action-btn bg-gray-300">
+          <i class="bi bi-arrow-right"></i> رجوع
+        </button>
+      </div>
+      <div class="table-responsive">
+        <table class="min-w-full bg-white rounded-lg shadow table-auto">
+          <thead class="bg-gray-100">
+            <tr>
+              <th class="px-4 py-3 text-sm font-medium text-gray-700 whitespace-nowrap">#</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-700 whitespace-nowrap">الاسم</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-700 whitespace-nowrap">الهاتف</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-700 whitespace-nowrap">استلمت؟</th>
+              <th class="px-4 py-3 text-sm font-medium text-gray-700 whitespace-nowrap">آخر استلام</th>
+            </tr>
+          </thead>
+          <tbody id="membersContainer" class="divide-y divide-gray-200"></tbody>
+        </table>
+      </div>
     </div>
   </template>
 
   <!-- Approve Profile Modal -->
-  <div id="approveProfileModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white p-4 md:p-6 rounded-xl shadow-md w-full max-w-xs sm:max-w-md mx-2">
-      <h2 class="text-xl font-bold mb-4">مراجعة مستند المستخدم</h2>
-      <div id="profileImageContainer" class="mb-4 text-center"></div>
-      <div id="profileApproveError" class="text-red-500 mb-2"></div>
-      <div class="flex justify-end space-x-2 rtl:space-x-reverse">
-        <button type="button" onclick="closeApproveProfileModal()" class="bg-gray-300 px-4 py-2 rounded">إلغاء</button>
-        <button type="button" onclick="approveProfile(true)" class="bg-green-600 text-white px-4 py-2 rounded">قبول</button>
-        <button type="button" onclick="approveProfile(false)" class="bg-red-600 text-white px-4 py-2 rounded">رفض</button>
-      </div>
-      <div id="rejectReasonContainer" class="mt-2 hidden">
-        <input id="rejectReasonInput" class="w-full border p-2 rounded" placeholder="سبب الرفض (اختياري)" />
+  <div id="approveProfileModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="bg-white p-4 md:p-6 rounded-xl">
+        <h2 class="text-xl font-bold mb-4">مراجعة مستند المستخدم</h2>
+        <div id="profileImageContainer" class="mb-4 text-center"></div>
+        <div id="profileApproveError" class="text-red-500 mb-2"></div>
+        <div id="rejectReasonContainer" class="mt-2 hidden">
+          <input id="rejectReasonInput" class="w-full border p-2 rounded" placeholder="سبب الرفض (اختياري)" />
+        </div>
+        <div class="flex justify-end space-x-2 rtl:space-x-reverse">
+          <button type="button" onclick="closeApproveProfileModal()" class="action-btn bg-gray-300">إلغاء</button>
+          <button type="button" onclick="handleApproveProfileAction(false)" class="action-btn bg-red-600 text-white">رفض</button>
+          <button type="button" onclick="handleApproveProfileAction(true)" class="action-btn bg-green-600 text-white">قبول</button>
+        </div>
       </div>
     </div>
   </div>
 
   <!-- Topup Modal -->
-  <div id="topupModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white p-4 md:p-6 rounded-xl shadow-md w-full max-w-xs sm:max-w-md mx-2 flex flex-col gap-2">
-      <h2 class="text-xl font-bold mb-2">شحن الرصيد</h2>
-      <form id="topupForm" class="space-y-3">
-        <label class="block">
-          <span class="text-sm">اختر المستخدم</span>
-          <select id="topupUserSelect" name="userId" class="w-full border p-2 rounded mt-1" required>
-            <option value="">جاري التحميل...</option>
-          </select>
-        </label>
-        <div id="topupUserBalance" class="text-xs text-gray-600 mb-1"></div>
-        <label class="block">
-          <span class="text-sm">المبلغ</span>
-          <input name="amount" id="topupAmount" type="number" min="1" class="w-full border p-2 rounded mt-1" required />
-        </label>
-        <div id="topupError" class="text-red-500 text-sm"></div>
-        <div id="topupSuccess" class="text-green-600 text-sm"></div>
-        <div class="flex justify-end space-x-2 rtl:space-x-reverse">
-          <button type="button" onclick="closeTopupModal()" class="bg-gray-300 px-4 py-2 rounded">إلغاء</button>
-          <button type="submit" class="bg-green-600 text-white px-4 py-2 rounded">شحن</button>
-        </div>
-      </form>
+  <div id="topupModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="bg-white p-4 md:p-6 rounded-xl flex flex-col gap-2">
+        <h2 class="text-xl font-bold mb-2">شحن الرصيد</h2>
+        <form id="topupForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">اختر المستخدم</label>
+            <select id="topupUserSelect" name="userId" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required>
+              <option value="">جاري التحميل...</option>
+            </select>
+          </div>
+          <div id="topupUserBalance" class="text-sm text-gray-600 mb-1 p-2 bg-gray-50 rounded-md"></div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">المبلغ</label>
+            <input name="amount" id="topupAmount" type="number" min="1" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+          </div>
+          <div id="topupError" class="text-red-500 text-sm"></div>
+          <div id="topupSuccess" class="text-green-600 text-sm"></div>
+          <div class="flex justify-end space-x-2 rtl:space-x-reverse">
+            <button type="button" onclick="closeTopupModal()" class="action-btn bg-gray-300">إلغاء</button>
+            <button type="submit" class="action-btn bg-green-600 text-white">شحن</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
   <!-- Notification Modal -->
-  <div id="notificationModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-    <div class="bg-white p-4 md:p-6 rounded-xl shadow-md w-full max-w-xs sm:max-w-md mx-2 flex flex-col gap-2">
-      <h2 class="text-xl font-bold mb-2">إرسال إشعار لمستخدم</h2>
-      <form id="notificationForm" class="space-y-3">
-        <label class="block">
-          <span class="text-sm">اختر المستخدم</span>
-          <select id="notificationUserSelect" name="userId" class="w-full border p-2 rounded mt-1" required>
-            <option value="">جاري التحميل...</option>
-          </select>
-        </label>
-        <label class="block">
-          <span class="text-sm">نص الإشعار</span>
-          <textarea name="message" id="notificationMessage" class="w-full border p-2 rounded mt-1" required></textarea>
-        </label>
-        <div id="notificationError" class="text-red-500 text-sm"></div>
-        <div id="notificationSuccess" class="text-green-600 text-sm"></div>
-        <div class="flex justify-end space-x-2 rtl:space-x-reverse">
-          <button type="button" onclick="closeNotificationModal()" class="bg-gray-300 px-4 py-2 rounded">إلغاء</button>
-          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">إرسال</button>
-        </div>
-      </form>
+  <div id="notificationModal" class="modal-overlay hidden">
+    <div class="modal-content">
+      <div class="bg-white p-4 md:p-6 rounded-xl flex flex-col gap-2">
+        <h2 class="text-xl font-bold mb-2">إرسال إشعار لمستخدم</h2>
+        <form id="notificationForm" class="space-y-4">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">اختر المستخدم</label>
+            <select id="notificationUserSelect" name="userId" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required>
+              <option value="">جاري التحميل...</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">نص الإشعار</label>
+            <textarea name="message" id="notificationMessage" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" rows="3" required></textarea>
+          </div>
+          <div id="notificationError" class="text-red-500 text-sm"></div>
+          <div id="notificationSuccess" class="text-green-600 text-sm"></div>
+          <div class="flex justify-end space-x-2 rtl:space-x-reverse">
+            <button type="button" onclick="closeNotificationModal()" class="action-btn bg-gray-300">إلغاء</button>
+            <button type="submit" class="action-btn bg-blue-600 text-white">إرسال</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 
-  <!-- NOTE: For production, do NOT use cdn.tailwindcss.com. Use Tailwind CLI or PostCSS build. See https://tailwindcss.com/docs/installation -->
-  <script src="./dashboard.js"></script>
-  <script>
-    // Sidebar collapse/expand logic
-    const sidebar = document.getElementById('sidebar');
-    const collapseBtn = document.getElementById('sidebarCollapseBtn');
-    const collapseIcon = document.getElementById('collapseIcon');
-    function toggleSidebar() {
-      sidebar.classList.toggle('sidebar-expanded');
-      sidebar.classList.toggle('sidebar-collapsed');
-      // Flip icon direction
-      if (sidebar.classList.contains('sidebar-expanded')) {
-        collapseIcon.classList.remove('bi-chevron-double-left');
-        collapseIcon.classList.add('bi-chevron-double-right');
-      } else {
-        collapseIcon.classList.add('bi-chevron-double-left');
-        collapseIcon.classList.remove('bi-chevron-double-right');
-      }
-    }
-    collapseBtn.onclick = toggleSidebar;
-    // Start collapsed by default
-    sidebar.classList.add('sidebar-collapsed');
-    sidebar.classList.remove('sidebar-expanded');
+  <!-- Mobile Menu Drawer -->
+  <div id="mobileMenu" class="fixed inset-0 z-50 hidden">
+    <div class="absolute inset-0 bg-black bg-opacity-50" onclick="closeMobileMenu()"></div>
+    <div class="absolute top-0 right-0 h-full bg-[#129990] text-white w-64 shadow-lg">
+      <div class="flex justify-between items-center p-4 border-b">
+        <h2 class="text-xl font-bold">القائمة</h2>
+        <button onclick="closeMobileMenu()" class="text-white focus:outline-none">
+          <i class="bi bi-x-lg"></i>
+        </button>
+      </div>
+      <nav class="space-y-2 p-4">
+        <button onclick="loadAssociations(); closeMobileMenu();" class="w-full flex items-center gap-3 px-4 py-2 rounded transition-colors bg-[#129990] hover:bg-[#0f7a7a] text-white">
+          <i class="bi bi-people-fill text-xl"></i>
+          <span>عرض الجمعيات</span>
+        </button>
+        <button onclick="openCreateAssociationModal(); closeMobileMenu();" class="w-full flex items-center gap-3 px-4 py-2 rounded transition-colors bg-[#129990] hover:bg-[#0f7a7a] text-white">
+          <i class="bi bi-plus-circle text-xl"></i>
+          <span>إنشاء جمعية</span>
+        </button>
+        <button onclick="openCreateUserModal(); closeMobileMenu();" class="w-full flex items-center gap-3 px-4 py-2 rounded transition-colors bg-[#129990] hover:bg-[#0f7a7a] text-white">
+          <i class="bi bi-person-plus text-xl"></i>
+          <span>إنشاء مستخدم</span>
+        </button>
+        <button onclick="loadUsers(); closeMobileMenu();" class="w-full flex items-center gap-3 px-4 py-2 rounded transition-colors bg-[#129990] hover:bg-[#0f7a7a] text-white">
+          <i class="bi bi-people text-xl"></i>
+          <span>عرض المستخدمين</span>
+        </button>
+        <button onclick="openTopupModal(); closeMobileMenu();" class="w-full flex items-center gap-3 px-4 py-2 rounded transition-colors bg-[#129990] hover:bg-[#0f7a7a] text-white">
+          <i class="bi bi-wallet2 text-xl"></i>
+          <span>شحن الرصيد</span>
+        </button>
+      </nav>
+    </div>
+  </div>
 
-    // Modal logic
-    async function openAddMemberModal(assocId) {
-      document.getElementById('addMemberAssocId').value = assocId;
-      document.getElementById('addMemberUserId').value = '';
-      document.getElementById('addMemberError').textContent = '';
-      document.getElementById('addMemberFeeInfo').textContent = '';
-      const select = document.getElementById('addMemberTurnNumber');
-      select.innerHTML = `<option value="">جاري تحميل الأدوار...</option>`;
-      document.getElementById('addMemberModal').classList.remove('hidden');
-      document.getElementById('addMemberModal').classList.add('flex');
+  <!-- User Details Modal -->
+  <div id="userDetailsModal" class="modal-overlay hidden">
+    <div class="modal-content" style="max-width: 800px;">
+      <div class="bg-white p-4 md:p-6 rounded-xl">
+        <div class="flex justify-between items-center mb-4">
+          <h2 class="text-xl font-bold">تفاصيل المستخدم</h2>
+          <button onclick="closeUserDetailsModal()" class="text-gray-500 hover:text-gray-700">
+            <i class="bi bi-x-lg text-xl"></i>
+          </button>
+        </div>
+        
+        <div id="userDetailsContent">
+          <div class="text-center">
+            <div class="loading-spinner mx-auto"></div>
+            <p>جاري تحميل بيانات المستخدم...</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-      // جلب الأدوار المتاحة من الباك اند
-      try {
-        const res = await axios.get(`https://api.technologytanda.com/api/associations/${assocId}/available-turns`);
-        const turns = res.data && res.data.availableTurns ? res.data.availableTurns : [];
-        if (turns.length === 0) {
-          select.innerHTML = `<option value="">لا يوجد أدوار متاحة</option>`;
-        } else {
-          select.innerHTML = `<option value="">اختر الدور...</option>` +
-            turns.map(t =>
-              `<option value="${t.turnNumber}" data-fee="${t.feeAmount}" data-percent="${t.feePercent}" data-cat="${t.category}">
-                الدور ${t.turnNumber} - الرسوم: ${t.feeAmount} (${t.feePercent * 100}%) - ${t.category}
-              </option>`
-            ).join('');
-        }
-      } catch (err) {
-        select.innerHTML = `<option value="">تعذر تحميل الأدوار</option>`;
-      }
-    }
-    function closeAddMemberModal() {
-      document.getElementById('addMemberModal').classList.remove('flex');
-      document.getElementById('addMemberModal').classList.add('hidden');
-    }
-    window.openAddMemberModal = openAddMemberModal;
-    window.closeAddMemberModal = closeAddMemberModal;
+<script src="./dashboard.js">
 
-    // عرض تفاصيل الرسوم عند اختيار الدور
-    document.addEventListener('DOMContentLoaded', () => {
-      const select = document.getElementById('addMemberTurnNumber');
-      if (select) {
-        select.onchange = function () {
-          const opt = select.options[select.selectedIndex];
-          const fee = opt.getAttribute('data-fee');
-          const percent = opt.getAttribute('data-percent');
-          const cat = opt.getAttribute('data-cat');
-          if (fee !== null && percent !== null && cat !== null && select.value) {
-            document.getElementById('addMemberFeeInfo').textContent =
-              `الرسوم: ${fee} (${percent * 100}%) - الفئة: ${cat}`;
-          } else {
-            document.getElementById('addMemberFeeInfo').textContent = '';
-          }
-        };
-      }
-    });
-
-    // Topup Modal logic
-    async function openTopupModal() {
-      document.getElementById('topupAmount').value = '';
-      document.getElementById('topupError').textContent = '';
-      document.getElementById('topupSuccess').textContent = '';
-      document.getElementById('topupUserBalance').textContent = '';
-      const select = document.getElementById('topupUserSelect');
-      select.innerHTML = `<option value="">جاري التحميل...</option>`;
-      document.getElementById('topupModal').classList.remove('hidden');
-      document.getElementById('topupModal').classList.add('flex');
-
-      // جلب المستخدمين
-      try {
-        const res = await axios.get('https://api.technologytanda.com/api/userData/users');
-        const users = Array.isArray(res.data) ? res.data : (res.data.data || []);
-        if (users.length === 0) {
-          select.innerHTML = `<option value="">لا يوجد مستخدمين</option>`;
-        } else {
-          select.innerHTML = `<option value="">اختر المستخدم...</option>` +
-            users.map(u =>
-              `<option value="${u.id}" data-balance="${u.walletBalance}">
-            ${u.fullName} (${u.phone}) - الرصيد: ${u.walletBalance}
-          </option>`
-            ).join('');
-        }
-        // تحديث الرصيد تلقائياً عند الفتح إذا كان هناك مستخدم محدد
-        select.onchange && select.onchange();
-      } catch (err) {
-        select.innerHTML = `<option value="">تعذر تحميل المستخدمين</option>`;
-      }
-    }
-    function closeTopupModal() {
-      document.getElementById('topupModal').classList.remove('flex');
-      document.getElementById('topupModal').classList.add('hidden');
-    }
-    window.openTopupModal = openTopupModal;
-    window.closeTopupModal = closeTopupModal;
-
-    // عرض الرصيد عند اختيار المستخدم وتحديثه تلقائياً بعد الشحن
-    document.addEventListener('DOMContentLoaded', () => {
-      const select = document.getElementById('topupUserSelect');
-      if (select) {
-        select.onchange = function () {
-          const opt = select.options[select.selectedIndex];
-          const balance = opt.getAttribute('data-balance');
-          document.getElementById('topupUserBalance').textContent =
-            (balance !== null && select.value) ? `الرصيد الحالي: ${balance}` : '';
-        };
-      }
-
-      const topupForm = document.getElementById('topupForm');
-      if (topupForm) {
-        topupForm.onsubmit = async e => {
-          e.preventDefault();
-          const select = document.getElementById('topupUserSelect');
-          const userId = select.value;
-          const amount = +document.getElementById('topupAmount').value;
-          const errorDiv = document.getElementById('topupError');
-          const successDiv = document.getElementById('topupSuccess');
-          errorDiv.textContent = '';
-          successDiv.textContent = '';
-          if (!userId) {
-            errorDiv.textContent = 'اختر مستخدم أولاً';
-            return;
-          }
-          try {
-            const res = await axios.post('https://api.technologytanda.com/api/payments/topup', { userId, amount });
-            if (res.data && res.data.success && typeof res.data.newBalance.val !== "string") {
-              successDiv.textContent = res.data.message + ` (الرصيد الجديد: ${res.data.newBalance.val})`;
-              // تحديث الرصيد في القائمة وفي النص تلقائياً
-              select.options[select.selectedIndex].setAttribute('data-balance', res.data.newBalance.val);
-              document.getElementById('topupUserBalance').textContent = `الرصيد الحالي: ${res.data.newBalance.val}`;
-              // تحديث الرصيد في جدول المستخدمين إذا كان ظاهر
-              updateUserBalanceInTable(userId, res.data.newBalance.val);
-            } else if (res.data && typeof res.data.newBalance.val === "string") {
-              errorDiv.textContent = '⚠️ لم يتم تحديث الرصيد فعلياً في قاعدة البيانات. راجع الباك اند.';
-            } else {
-              errorDiv.textContent = 'فشل الشحن';
-            }
-          } catch (err) {
-            errorDiv.textContent = 'حدث خطأ أثناء الشحن';
-          }
-        };
-      }
-    });
-
-    // تحديث الرصيد في جدول المستخدمين مباشرة بعد الشحن (اختياري)
-    function updateUserBalanceInTable(userId, newBalance) {
-      const rows = document.querySelectorAll('#usersContainer tr');
-      rows.forEach(row => {
-        const tds = row.querySelectorAll('td');
-        if (tds.length > 0 && tds[3] && tds[3].textContent.trim() && tds[0]) {
-          // رقم الهاتف في العمود الرابع، نبحث عن userId في الداتا أو نضيف data-user-id في المستقبل
-          // هنا سنبحث عن userId في الداتا إذا أضفتها في المستقبل
-        }
-        // إذا أضفت data-user-id في <tr> يمكنك تحديثه هكذا:
-        if (row.getAttribute('data-user-id') == userId) {
-          // الرصيد في العمود السادس (index 5)
-          const balanceTd = row.querySelectorAll('td')[5];
-          if (balanceTd) balanceTd.textContent = newBalance;
-        }
-      });
-    }
-
-    // إشعار: فتح وغلق المودال
-    async function openNotificationModal() {
-      document.getElementById('notificationMessage').value = '';
-      document.getElementById('notificationError').textContent = '';
-      document.getElementById('notificationSuccess').textContent = '';
-      const select = document.getElementById('notificationUserSelect');
-      select.innerHTML = `<option value="">جاري التحميل...</option>`;
-      document.getElementById('notificationModal').classList.remove('hidden');
-      document.getElementById('notificationModal').classList.add('flex');
-      // جلب المستخدمين
-      try {
-        const res = await axios.get('https://api.technologytanda.com/api/userData/users');
-        const users = Array.isArray(res.data) ? res.data : (res.data.data || []);
-        if (users.length === 0) {
-          select.innerHTML = `<option value="">لا يوجد مستخدمين</option>`;
-        } else {
-          select.innerHTML = `<option value="">اختر المستخدم...</option>` +
-            users.map(u =>
-              `<option value="${u.id}">${u.fullName} (${u.phone})</option>`
-            ).join('');
-        }
-      } catch (err) {
-        select.innerHTML = `<option value="">تعذر تحميل المستخدمين</option>`;
-      }
-    }
-    function closeNotificationModal() {
-      document.getElementById('notificationModal').classList.remove('flex');
-      document.getElementById('notificationModal').classList.add('hidden');
-    }
-    window.openNotificationModal = openNotificationModal;
-    window.closeNotificationModal = closeNotificationModal;
-
-    // إرسال الإشعار عند submit
-    document.addEventListener('DOMContentLoaded', () => {
-      const notificationForm = document.getElementById('notificationForm');
-      if (notificationForm) {
-        notificationForm.onsubmit = async e => {
-          e.preventDefault();
-          const userId = document.getElementById('notificationUserSelect').value;
-          const message = document.getElementById('notificationMessage').value.trim();
-          const errorDiv = document.getElementById('notificationError');
-          const successDiv = document.getElementById('notificationSuccess');
-          errorDiv.textContent = '';
-          successDiv.textContent = '';
-          if (!userId || !message) {
-            errorDiv.textContent = 'اختر مستخدم وأدخل نص الإشعار';
-            return;
-          }
-          try {
-            await window.sendNotification(Number(userId), message);
-            successDiv.textContent = 'تم إرسال الإشعار بنجاح';
-            notificationForm.reset();
-          } catch (err) {
-            errorDiv.textContent = 'حدث خطأ أثناء إرسال الإشعار';
-          }
-        };
-      }
-    });
-  </script>
+</script>
 </body>
-
 </html>
