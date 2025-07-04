@@ -1,4 +1,4 @@
-      // تحقق من وجود التوكن
+// تحقق من وجود التوكن
     let token = localStorage.getItem('token');
     if (!token) {
       window.location.href = 'index.html';
@@ -92,7 +92,8 @@
       container.innerHTML = '<div class="col-span-full text-center py-8"><div class="loading-spinner mx-auto"></div><p class="mt-2 text-gray-600">جاري تحميل الجمعيات...</p></div>';
       
       try {
-        const res = await axios.get(`${assocApi}?page=1&pageSize=5&status=pending`);
+        // changed: removed status=pending from the API call
+        const res = await axios.get(`${assocApi}?page=1&pageSize=5`);
         const data = res.data;
         if (!Array.isArray(data.data)) throw new Error();
         container.innerHTML = data.data.map(renderAssociationCard).join('');
