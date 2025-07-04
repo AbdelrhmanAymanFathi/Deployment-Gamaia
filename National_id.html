@@ -221,11 +221,39 @@
       captureBtn.textContent = 'التقط الصورة';
     }
 
+    // Helper: Convert dataURL to File
+    function dataURLtoFile(dataurl, filename) {
+      const arr = dataurl.split(',');
+      const mime = arr[0].match(/:(.*?);/)[1];
+      const bstr = atob(arr[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, { type: mime });
+    }
+
     // رفع الصورة إلى السيرفر
     async function uploadImage(dataUrl) {
-      const blob = await (await fetch(dataUrl)).blob();
+      let file;
+      if (!dataUrl) {
+        // إذا لم تتوفر صورة، استخدم صورة مجهولة (حقيقية)
+        const response = await fetch('/Assets/imgs/anynoums.jpg');
+        const blob = await response.blob();
+        file = new File([blob], 'national_id.jpg', { type: blob.type || 'image/jpeg' });
+      } else {
+        try {
+          file = dataURLtoFile(dataUrl, 'national_id.png');
+        } catch (e) {
+          // إذا فشل التحويل، استخدم صورة مجهولة
+          const response = await fetch('/Assets/imgs/anynoums.jpg');
+          const blob = await response.blob();
+          file = new File([blob], 'national_id.jpg', { type: blob.type || 'image/jpeg' });
+        }
+      }
       const formData = new FormData();
-      formData.append('nationalIdImage', blob, 'national_id.png');
+      formData.append('nationalIdImage', file, file.name);
       const res = await fetch('https://api.technologytanda.com/api/nationalID/upload', {
         method: 'POST',
         body: formData

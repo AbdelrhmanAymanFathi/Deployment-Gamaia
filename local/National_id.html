@@ -196,7 +196,12 @@
         });
         video.srcObject = videoStream;
       } catch (e) {
-        alert('تعذر الوصول للكاميرا');
+        // If camera not available or denied, use anonymous photo for both sides
+        // You can use a public placeholder or a base64 image
+        const anonymousImg = "https://ui-avatars.com/api/?name=Anonymous&background=cccccc&color=555555&size=256"; // or use a base64 data URL
+        frontImage = anonymousImg;
+        backImage = anonymousImg;
+        showResult();
       }
     }
 
