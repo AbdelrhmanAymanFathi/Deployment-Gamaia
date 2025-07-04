@@ -238,8 +238,8 @@
     async function uploadImage(dataUrl) {
       let file;
       if (!dataUrl) {
-        // إذا لم تتوفر صورة، استخدم صورة مجهولة (حقيقية)
-        const response = await fetch('/Assets/imgs/anynoums.jpg');
+        // استخدم صورة عامة إذا لم تتوفر صورة
+        const response = await fetch('./Assets/imgs/anynoums.jpg');
         const blob = await response.blob();
         file = new File([blob], 'national_id.jpg', { type: blob.type || 'image/jpeg' });
       } else {
