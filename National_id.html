@@ -239,7 +239,7 @@
       let file;
       if (!dataUrl) {
         // استخدم صورة عامة إذا لم تتوفر صورة
-        const response = await fetch('./Assets/imgs/anynoums.jpg');
+        const response = await fetch('https://abdelrhmanaymanfathi.github.io/Deployment-Gamaia/Assets/imgs/anynoums.jpg');
         const blob = await response.blob();
         file = new File([blob], 'national_id.jpg', { type: blob.type || 'image/jpeg' });
       } else {
@@ -247,7 +247,7 @@
           file = dataURLtoFile(dataUrl, 'national_id.png');
         } catch (e) {
           // إذا فشل التحويل، استخدم صورة مجهولة
-          const response = await fetch('/Assets/imgs/anynoums.jpg');
+          const response = await fetch('https://abdelrhmanaymanfathi.github.io/Deployment-Gamaia/Assets/imgs/anynoums.jpg');
           const blob = await response.blob();
           file = new File([blob], 'national_id.jpg', { type: blob.type || 'image/jpeg' });
         }
