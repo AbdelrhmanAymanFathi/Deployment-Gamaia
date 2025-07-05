@@ -146,15 +146,15 @@
         <i class="bi bi-credit-card"></i>
         رقم الكارت
       </label>
-      <input type="text" class="input-box" placeholder="اكتب رقم الكارت" />
+      <input id="card-number" type="text" class="input-box" placeholder="اكتب رقم الكارت" />
       <label class="input-label flex items-center gap-2">
         اسم صاحب الكارت باللغه الانجليزيه
       </label>
-      <input type="text" class="input-box" placeholder="ادخل اسمك الرباعي هنا باللغه الانجليزيه" />
+      <input id="card-owner" type="text" class="input-box" placeholder="ادخل اسمك الرباعي هنا باللغه الانجليزيه" />
       <label class="input-label flex items-center gap-2">
         جهة الإصدار
       </label>
-      <select class="select-box">
+      <select id="issuer" class="select-box">
         <option selected disabled>اختر جهة الإصدار او البنك المصدر</option>
         <option>البنك الأهلي السعودي</option>
         <option>بنك الرياض</option>
@@ -183,6 +183,9 @@
       <div class="info-box">
         خلي بالك/ البيانات اللي بتدخلها علي مسؤوليتك الشخصيه جمعيتي غير مسئوله عن أي بيانات خاطئه.
       </div>
+      <div id="validation-msg" style="display:none;color:#e11d48;font-weight:bold;text-align:center;margin-bottom:0.7rem;">
+        من فضلك أدخل جميع البيانات المطلوبة.
+      </div>
       <input type="button" value="حفظ" class="btn-main" />
       <input type="button" value="تخطي" class="btn-outline" />
     </div>
@@ -199,6 +202,17 @@
   <script>
     // زرار حفظ يظهر المودال ثم يحول المستخدم إلى wallet.html بعد ثانيتين
     document.querySelector('.btn-main').onclick = function() {
+      // التحقق من الحقول
+      const cardNumber = document.getElementById('card-number').value.trim();
+      const cardOwner = document.getElementById('card-owner').value.trim();
+      const issuer = document.getElementById('issuer').value;
+      const validationMsg = document.getElementById('validation-msg');
+      if (!cardNumber || !cardOwner || issuer === "اختر جهة الإصدار او البنك المصدر") {
+        validationMsg.style.display = 'block';
+        return;
+      } else {
+        validationMsg.style.display = 'none';
+      }
       const modal = document.getElementById('save-modal');
       if (modal) {
         modal.classList.remove('hidden');
