@@ -10,7 +10,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
   <style>
-    /* .shadow-custom { box-shadow: 0 2px 4px 0 #d9d9d9; } */
     .section-title {
       background: #b6e2da;
       color: #222;
@@ -133,7 +132,7 @@
 <body class="">
   <div class="w-full   rounded-lg overflow-hidden ">
     <!-- Header -->
-    <div class="section-title"  onclick="history.back()" style="cursor: pointer;">
+    <div class="section-title" onclick="history.back()" style="cursor: pointer;">
       <i class="bi bi-arrow-right-short text-2xl teal-icon"></i>
       <span id="backToArrest" class="cursor-pointer">كارت مدفوع مقدما</span>
     </div>
@@ -200,9 +199,8 @@
     </div>
   </div>
   <script>
-    // زرار حفظ يظهر المودال ثم يحول المستخدم إلى wallet.html بعد ثانيتين
+    // زرار حفظ يظهر المودال ثم يحول المستخدم إلى arrive.html بعد ثانيتين
     document.querySelector('.btn-main').onclick = function() {
-      // التحقق من الحقول
       const cardNumber = document.getElementById('card-number').value.trim();
       const cardOwner = document.getElementById('card-owner').value.trim();
       const issuer = document.getElementById('issuer').value;
@@ -217,13 +215,13 @@
       if (modal) {
         modal.classList.remove('hidden');
         setTimeout(() => {
-          window.location.href = 'wallet.html';
+          window.location.href = 'arrive.html';
         }, 2000);
       }
     };
-    // زرار تخطي يرجع المستخدم للصفحة السابقة
+    // زرار تخطي يوجه المستخدم إلى arrive.html مباشرةً
     document.querySelector('.btn-outline').onclick = function() {
-      window.history.back();
+      window.location.href = 'arrive.html';
     };
 
     // الضغط على العنوان يرجع المستخدم إلى Arrest_method.html
