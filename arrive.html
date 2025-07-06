@@ -3,395 +3,395 @@
 <head>
   <meta charset="UTF-8">
   <title>نقاط استلام جمعيتي</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 font-sans">
-
-  <!-- Header -->
-  <div class="bg-teal-200 px-4 py-3 flex items-center justify-between">
-        <span class="text-xl" onclick="window.history.back()">&#8594;</span>
-
-    <span class="font-bold text-lg">نقاط استلام جمعيتي</span>
-  </div>
-
-  <!-- Main Selection Screen -->
-  <div id="main-screen" class="flex flex-col items-center mt-8">
-    <div id="selected-distributor-info" class="mb-4 w-full max-w-md"></div>
-    <p class="mb-8 text-center">شوف أقرب نقطة استلام ليك عشان تستلم الكارت</p>
-    <div class="flex gap-4">
-      <button onclick="openModal('region-modal')" class="flex items-center gap-2 border-2 border-teal-200 rounded-lg px-4 py-2 shadow-md hover:bg-teal-50">
-        <span class="text-2xl">&#8595;</span>
-        اختر المحافظه
-      </button>
-      <button onclick="openModal('city-modal')" id="city-btn" disabled class="flex items-center gap-2 border-2 border-teal-200 rounded-lg px-4 py-2 shadow-md text-gray-400">
-        <span class="text-2xl">&#8595;</span>
-        إختر المدينه
-      </button>
+<body class="bg-gray-100 font-sans overflow-x-hidden">
+  <div class="min-h-screen w-screen max-w-none mx-auto bg-white flex flex-col">
+    <!-- Header -->
+    <div class="bg-teal-200 px-4 py-3 flex items-center justify-between rounded-b-lg w-full">
+      <span class="text-xl" onclick="window.history.back()">&#8594;</span>
+      <span class="font-bold text-lg">نقاط استلام جمعيتي</span>
     </div>
-  </div>
 
-  <!-- Modal Overlay -->
-  <div id="modal-overlay" class="fixed inset-0 bg-black bg-opacity-30 z-40 hidden"></div>
+    <!-- Main Selection Screen -->
+    <div id="main-screen" class="flex flex-col items-center mt-4 px-2 w-full">
+      <div id="selected-distributor-info" class="mb-3 w-full max-w-full"></div>
+      <p class="mb-4 text-center text-base">شوف أقرب نقطة استلام ليك عشان تستلم الكارت</p>
+      <div class="flex flex-col gap-2 w-full max-w-full">
+        <button onclick="openModal('region-modal')" class="flex items-center gap-2 border-2 border-teal-200 rounded-lg px-3 py-3 shadow-sm hover:bg-teal-50 w-full justify-center text-base">
+          <span class="text-xl">&#8595;</span>
+          اختر المحافظه
+        </button>
+        <button onclick="openModal('city-modal')" id="city-btn" disabled class="flex items-center gap-2 border-2 border-teal-200 rounded-lg px-3 py-3 shadow-sm text-gray-400 w-full justify-center text-base">
+          <span class="text-xl">&#8595;</span>
+          إختر المدينه
+        </button>
+      </div>
+    </div>
+    <!-- Modal Overlay -->
+    <div id="modal-overlay" class="fixed inset-0 bg-black bg-opacity-30 z-40 hidden"></div>
 
-  <!-- Region Modal -->
-  <div id="region-modal" class="fixed z-50 top-1/2 left-1/2 w-80 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-4 hidden">
-    <div class="flex justify-between items-center mb-4">
-      <button onclick="closeModal('region-modal')" class="text-2xl font-bold">&times;</button>
+    <!-- Region Modal -->
+    <div id="region-modal" class="fixed z-50 top-1/2 left-1/2 w-full max-w-none px-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-3 hidden">
+      <div class="flex justify-between items-center mb-2">
+        <button onclick="closeModal('region-modal')" class="text-xl font-bold">&times;</button>
+      </div>
+      <div class="flex flex-col gap-2 max-h-[65vh] overflow-y-auto">
+        <!-- المحافظات -->
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الرياض">الرياض <span>&#171;</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="مكة المكرمة">مكة المكرمة <span>&#171;</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="المدينة المنورة">المدينة المنورة <span>&#171;</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الشرقية">الشرقية <span>&#171;</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="عسير">عسير <span>&#171;</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="القصيم">القصيم <span>&#171;</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="تبوك">تبوك <span>&#171;</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="حائل">حائل <span>&#171;</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="نجران">نجران <span>&#171;</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="جازان">جازان <span>&#171;</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الباحة">الباحة <span>&#171;</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الجوف">الجوف <span>&#171;</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الحدود الشمالية">الحدود الشمالية <span>&#171;</span></button>
+      </div>
     </div>
-    <div class="flex flex-col gap-2 max-h-[80vh] overflow-y-auto">
-      <!-- المحافظات -->
-      <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الرياض">الرياض <span>&#171;</span></button>
-      <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="مكة المكرمة">مكة المكرمة <span>&#171;</span></button>
-      <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="المدينة المنورة">المدينة المنورة <span>&#171;</span></button>
-      <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الشرقية">الشرقية <span>&#171;</span></button>
-      <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="عسير">عسير <span>&#171;</span></button>
-      <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="القصيم">القصيم <span>&#171;</span></button>
-      <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="تبوك">تبوك <span>&#171;</span></button>
-      <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="حائل">حائل <span>&#171;</span></button>
-      <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="نجران">نجران <span>&#171;</span></button>
-      <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="جازان">جازان <span>&#171;</span></button>
-      <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الباحة">الباحة <span>&#171;</span></button>
-      <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الجوف">الجوف <span>&#171;</span></button>
-      <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الحدود الشمالية">الحدود الشمالية <span>&#171;</span></button>
-    </div>
-  </div>
 
-  <!-- City Modal -->
-  <div id="city-modal" class="fixed z-50 top-1/2 left-1/2 w-96 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-4 hidden">
-    <div class="flex justify-between items-center mb-4">
-      <button onclick="closeModal('city-modal')" class="text-2xl font-bold">&times;</button>
-      <input id="city-search" type="text" placeholder="بحث" class="border rounded px-2 py-1 w-1/2">
+    <!-- City Modal -->
+    <div id="city-modal" class="fixed z-50 top-1/2 left-1/2 w-full max-w-none px-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-3 hidden">
+      <div class="flex flex-col sm:flex-row justify-between items-center mb-2 gap-2">
+        <button onclick="closeModal('city-modal')" class="text-xl font-bold">&times;</button>
+        <input id="city-search" type="text" placeholder="بحث" class="border rounded px-2 py-1 w-full text-base">
+      </div>
+      <div id="city-list" class="flex flex-col gap-2 max-h-60 overflow-y-auto">
+        <!-- المدن تظهر هنا -->
+      </div>
     </div>
-    <div id="city-list" class="flex flex-col gap-2 max-h-72 overflow-y-auto">
-      <!-- المدن تظهر هنا -->
-    </div>
-  </div>
 
-  <!-- Distributors Modal -->
-  <div id="distributors-modal" class="fixed z-50 top-1/2 left-1/2 w-96 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-4 hidden">
-    <div class="flex justify-between items-center mb-4">
-      <span class="font-bold">جميع الموزعين</span>
-      <button onclick="closeModal('distributors-modal')" class="text-2xl font-bold">&times;</button>
+    <!-- Distributors Modal -->
+    <div id="distributors-modal" class="fixed z-50 top-1/2 left-1/2 w-full max-w-none px-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-3 hidden">
+      <div class="flex justify-between items-center mb-2">
+        <span class="font-bold text-base">جميع الموزعين</span>
+        <button onclick="closeModal('distributors-modal')" class="text-xl font-bold">&times;</button>
+      </div>
+      <div id="distributors-list" class="space-y-2">
+        <!-- نقاط التوزيع تظهر هنا -->
+      </div>
+      <!-- مكان عرض الخريطة -->
+      <div id="map-container" class="mt-2 hidden">
+        <iframe id="map-iframe" class="w-full h-44 rounded border" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <div id="save-distributor-container" class="mt-2 hidden">
+        <button id="save-distributor-btn" class="bg-teal-500 hover:bg-teal-600 text-white px-3 py-2 rounded w-full text-base">حفظ اختياري</button>
+      </div>
     </div>
-    <div id="distributors-list" class="space-y-4">
-      <!-- نقاط التوزيع تظهر هنا -->
-    </div>
-    <!-- مكان عرض الخريطة -->
-    <div id="map-container" class="mt-4 hidden">
-      <iframe id="map-iframe" class="w-full h-64 rounded border" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-    </div>
-    <div id="save-distributor-container" class="mt-4 hidden">
-      <button id="save-distributor-btn" class="bg-teal-500 hover:bg-teal-600 text-white px-4 py-2 rounded w-full">حفظ اختياري</button>
-    </div>
-  </div>
 
-  <script>
-    // بيانات المحافظات والمدن
-    const regions = {
-      "الرياض": ["وادي الدواسر", "الرياض", "الدرعية", "الزلفي", "الخرج", "الأفلاج", "المجمعة"],
-      "مكة المكرمة": ["جدة", "الطائف", "الليث", "رابغ", "القنفذة", "المدينة", "الحجوم"],
-      "المدينة المنورة": ["المدينة المنورة", "ينبع", "العلا", "الحناكية", "خيبر", "بدر", "مهد الذهب"],
-      "الشرقية": ["الدمام", "الخبر", "الظهران", "الجبيل", "الأحساء", "القطيف"],
-      "عسير": ["أبها", "خميس مشيط", "النماص", "محايل عسير", "رجال ألمع"],
-      "القصيم": ["بريدة", "عنيزة", "الرس", "البكيرية", "المذنب", "البدائع"],
-      "تبوك": ["تبوك", "الوجه", "ضباء", "حقل", "تيماء", "أملج"],
-      "حائل": ["حائل", "بقعاء", "الشنان", "الغزالة"],
-      "نجران": ["نجران", "شرورة", "حبونا"],
-      "جازان": ["جيزان", "صبيا", "أبو عريش", "الدرب", "العارضة", "الريث"],
-      "الباحة": ["الباحة", "المخواة", "بلجرشي", "العقيق", "قلوة"],
-      "الجوف": ["سكاكا", "دومة الجندل", "القريات", "طبرجل"],
-      "الحدود الشمالية": ["عرعر", "رفحاء", "طريف", "العويقيلة"]
-    };
+    <script>
+      // بيانات المحافظات والمدن
+      const regions = {
+        "الرياض": ["وادي الدواسر", "الرياض", "الدرعية", "الزلفي", "الخرج", "الأفلاج", "المجمعة"],
+        "مكة المكرمة": ["جدة", "الطائف", "الليث", "رابغ", "القنفذة", "المدينة", "الحجوم"],
+        "المدينة المنورة": ["المدينة المنورة", "ينبع", "العلا", "الحناكية", "خيبر", "بدر", "مهد الذهب"],
+        "الشرقية": ["الدمام", "الخبر", "الظهران", "الجبيل", "الأحساء", "القطيف"],
+        "عسير": ["أبها", "خميس مشيط", "النماص", "محايل عسير", "رجال ألمع"],
+        "القصيم": ["بريدة", "عنيزة", "الرس", "البكيرية", "المذنب", "البدائع"],
+        "تبوك": ["تبوك", "الوجه", "ضباء", "حقل", "تيماء", "أملج"],
+        "حائل": ["حائل", "بقعاء", "الشنان", "الغزالة"],
+        "نجران": ["نجران", "شرورة", "حبونا"],
+        "جازان": ["جيزان", "صبيا", "أبو عريش", "الدرب", "العارضة", "الريث"],
+        "الباحة": ["الباحة", "المخواة", "بلجرشي", "العقيق", "قلوة"],
+        "الجوف": ["سكاكا", "دومة الجندل", "القريات", "طبرجل"],
+        "الحدود الشمالية": ["عرعر", "رفحاء", "طريف", "العويقيلة"]
+      };
 
-    // بيانات نقاط التوزيع (كل المدن)
-    const distributors = {
-      "الرياض": [
-        { city: "وادي الدواسر", name: "وادي الدواسر - موزع 1", address: "شارع الملك عبدالعزيز", map: "#" },
-        { city: "الرياض", name: "الرياض - فوري بلس", address: "شارع الأمير محمد بن عبدالعزيز", map: "#" },
-        { city: "الرياض", name: "الرياض - مركز النور", address: "حي النور، شارع العليا", map: "#" },
-        { city: "الدرعية", name: "الدرعية - موزع 1", address: "حي البجيري", map: "#" },
-        { city: "الزلفي", name: "الزلفي - فوري بلس", address: "شارع الأمير تركي الأول", map: "#" },
-        { city: "الخرج", name: "الخرج - موزع 1", address: "حي الخزامى", map: "#" },
-        { city: "الأفلاج", name: "الأفلاج - فوري بلس", address: "طريق الدائري الشمالي", map: "#" },
-        { city: "المجمعة", name: "المجمعة - فوري بلس", address: "طريق الإمام سعود بن عبدالعزيز بن محمد", map: "#" }
-      ],
-      "مكة المكرمة": [
-        { city: "جدة", name: "جدة - موزع 1", address: "حي الصفا", map: "#" },
-        { city: "جدة", name: "جدة - موزع 2", address: "حي النعيم", map: "#" },
-        { city: "الطائف", name: "الطائف - موزع 1", address: "حي شهار", map: "#" },
-        { city: "الليث", name: "الليث - موزع 1", address: "حي الليث", map: "#" },
-        { city: "رابغ", name: "رابغ - موزع 1", address: "حي رابغ", map: "#" },
-        { city: "القنفذة", name: "القنفذة - موزع 1", address: "حي القنفذة", map: "#" },
-        { city: "المدينة", name: "المدينة - موزع 1", address: "حي المدينة", map: "#" },
-        { city: "الحجوم", name: "الحجوم - موزع 1", address: "حي الحجوم", map: "#" }
-      ],
-      "المدينة المنورة": [
-        { city: "المدينة المنورة", name: "المدينة المنورة - موزع 1", address: "حي العزيزية", map: "#" },
-        { city: "ينبع", name: "ينبع - موزع 1", address: "حي ينبع", map: "#" },
-        { city: "العلا", name: "العلا - موزع 1", address: "حي العلا", map: "#" },
-        { city: "الحناكية", name: "الحناكية - موزع 1", address: "حي الحناكية", map: "#" },
-        { city: "خيبر", name: "خيبر - موزع 1", address: "حي خيبر", map: "#" },
-        { city: "بدر", name: "بدر - موزع 1", address: "حي بدر", map: "#" },
-        { city: "مهد الذهب", name: "مهد الذهب - موزع 1", address: "حي مهد الذهب", map: "#" }
-      ],
-      "الشرقية": [
-        { city: "الدمام", name: "الدمام - موزع 1", address: "حي الشاطئ", map: "#" },
-        { city: "الخبر", name: "الخبر - موزع 1", address: "حي العقربية", map: "#" },
-        { city: "الظهران", name: "الظهران - موزع 1", address: "حي الدوحة", map: "#" },
-        { city: "الجبيل", name: "الجبيل - موزع 1", address: "حي الجبيل", map: "#" },
-        { city: "الأحساء", name: "الأحساء - موزع 1", address: "حي الأحساء", map: "#" },
-        { city: "القطيف", name: "القطيف - موزع 1", address: "حي القطيف", map: "#" }
-      ],
-      "عسير": [
-        { city: "أبها", name: "أبها - موزع 1", address: "حي أبها", map: "#" },
-        { city: "خميس مشيط", name: "خميس مشيط - موزع 1", address: "حي خميس مشيط", map: "#" },
-        { city: "النماص", name: "النماص - موزع 1", address: "حي النماص", map: "#" },
-        { city: "محايل عسير", name: "محايل عسير - موزع 1", address: "حي محايل", map: "#" },
-        { city: "رجال ألمع", name: "رجال ألمع - موزع 1", address: "حي رجال ألمع", map: "#" }
-      ],
-      "القصيم": [
-        { city: "بريدة", name: "بريدة - موزع 1", address: "حي بريدة", map: "#" },
-        { city: "عنيزة", name: "عنيزة - موزع 1", address: "حي عنيزة", map: "#" },
-        { city: "الرس", name: "الرس - موزع 1", address: "حي الرس", map: "#" },
-        { city: "البكيرية", name: "البكيرية - موزع 1", address: "حي البكيرية", map: "#" },
-        { city: "المذنب", name: "المذنب - موزع 1", address: "حي المذنب", map: "#" },
-        { city: "البدائع", name: "البدائع - موزع 1", address: "حي البدائع", map: "#" }
-      ],
-      "تبوك": [
-        { city: "تبوك", name: "تبوك - موزع 1", address: "حي تبوك", map: "#" },
-        { city: "الوجه", name: "الوجه - موزع 1", address: "حي الوجه", map: "#" },
-        { city: "ضباء", name: "ضباء - موزع 1", address: "حي ضباء", map: "#" },
-        { city: "حقل", name: "حقل - موزع 1", address: "حي حقل", map: "#" },
-        { city: "تيماء", name: "تيماء - موزع 1", address: "حي تيماء", map: "#" },
-        { city: "أملج", name: "أملج - موزع 1", address: "حي أملج", map: "#" }
-      ],
-      "حائل": [
-        { city: "حائل", name: "حائل - موزع 1", address: "حي حائل", map: "#" },
-        { city: "بقعاء", name: "بقعاء - موزع 1", address: "حي بقعاء", map: "#" },
-        { city: "الشنان", name: "الشنان - موزع 1", address: "حي الشنان", map: "#" },
-        { city: "الغزالة", name: "الغزالة - موزع 1", address: "حي الغزالة", map: "#" }
-      ],
-      "نجران": [
-        { city: "نجران", name: "نجران - موزع 1", address: "حي نجران", map: "#" },
-        { city: "شرورة", name: "شرورة - موزع 1", address: "حي شرورة", map: "#" },
-        { city: "حبونا", name: "حبونا - موزع 1", address: "حي حبونا", map: "#" }
-      ],
-      "جازان": [
-        { city: "جيزان", name: "جيزان - موزع 1", address: "حي جيزان", map: "#" },
-        { city: "صبيا", name: "صبيا - موزع 1", address: "حي صبيا", map: "#" },
-        { city: "أبو عريش", name: "أبو عريش - موزع 1", address: "حي أبو عريش", map: "#" },
-        { city: "الدرب", name: "الدرب - موزع 1", address: "حي الدرب", map: "#" },
-        { city: "العارضة", name: "العارضة - موزع 1", address: "حي العارضة", map: "#" },
-        { city: "الريث", name: "الريث - موزع 1", address: "حي الريث", map: "#" }
-      ],
-      "الباحة": [
-        { city: "الباحة", name: "الباحة - موزع 1", address: "حي الباحة", map: "#" },
-        { city: "المخواة", name: "المخواة - موزع 1", address: "حي المخواة", map: "#" },
-        { city: "بلجرشي", name: "بلجرشي - موزع 1", address: "حي بلجرشي", map: "#" },
-        { city: "العقيق", name: "العقيق - موزع 1", address: "حي العقيق", map: "#" },
-        { city: "قلوة", name: "قلوة - موزع 1", address: "حي قلوة", map: "#" }
-      ],
-      "الجوف": [
-        { city: "سكاكا", name: "سكاكا - موزع 1", address: "حي سكاكا", map: "#" },
-        { city: "دومة الجندل", name: "دومة الجندل - موزع 1", address: "حي دومة الجندل", map: "#" },
-        { city: "القريات", name: "القريات - موزع 1", address: "حي القريات", map: "#" },
-        { city: "طبرجل", name: "طبرجل - موزع 1", address: "حي طبرجل", map: "#" }
-      ],
-      "الحدود الشمالية": [
-        { city: "عرعر", name: "عرعر - موزع 1", address: "حي عرعر", map: "#" },
-        { city: "رفحاء", name: "رفحاء - موزع 1", address: "حي رفحاء", map: "#" },
-        { city: "طريف", name: "طريف - موزع 1", address: "حي طريف", map: "#" },
-        { city: "العويقيلة", name: "العويقيلة - موزع 1", address: "حي العويقيلة", map: "#" }
-      ]
-    };
+      // بيانات نقاط التوزيع (كل المدن)
+      const distributors = {
+        "الرياض": [
+          { city: "وادي الدواسر", name: "وادي الدواسر - موزع 1", address: "شارع الملك عبدالعزيز", map: "#" },
+          { city: "الرياض", name: "الرياض - فوري بلس", address: "شارع الأمير محمد بن عبدالعزيز", map: "#" },
+          { city: "الرياض", name: "الرياض - مركز النور", address: "حي النور، شارع العليا", map: "#" },
+          { city: "الدرعية", name: "الدرعية - موزع 1", address: "حي البجيري", map: "#" },
+          { city: "الزلفي", name: "الزلفي - فوري بلس", address: "شارع الأمير تركي الأول", map: "#" },
+          { city: "الخرج", name: "الخرج - موزع 1", address: "حي الخزامى", map: "#" },
+          { city: "الأفلاج", name: "الأفلاج - فوري بلس", address: "طريق الدائري الشمالي", map: "#" },
+          { city: "المجمعة", name: "المجمعة - فوري بلس", address: "طريق الإمام سعود بن عبدالعزيز بن محمد", map: "#" }
+        ],
+        "مكة المكرمة": [
+          { city: "جدة", name: "جدة - موزع 1", address: "حي الصفا", map: "#" },
+          { city: "جدة", name: "جدة - موزع 2", address: "حي النعيم", map: "#" },
+          { city: "الطائف", name: "الطائف - موزع 1", address: "حي شهار", map: "#" },
+          { city: "الليث", name: "الليث - موزع 1", address: "حي الليث", map: "#" },
+          { city: "رابغ", name: "رابغ - موزع 1", address: "حي رابغ", map: "#" },
+          { city: "القنفذة", name: "القنفذة - موزع 1", address: "حي القنفذة", map: "#" },
+          { city: "المدينة", name: "المدينة - موزع 1", address: "حي المدينة", map: "#" },
+          { city: "الحجوم", name: "الحجوم - موزع 1", address: "حي الحجوم", map: "#" }
+        ],
+        "المدينة المنورة": [
+          { city: "المدينة المنورة", name: "المدينة المنورة - موزع 1", address: "حي العزيزية", map: "#" },
+          { city: "ينبع", name: "ينبع - موزع 1", address: "حي ينبع", map: "#" },
+          { city: "العلا", name: "العلا - موزع 1", address: "حي العلا", map: "#" },
+          { city: "الحناكية", name: "الحناكية - موزع 1", address: "حي الحناكية", map: "#" },
+          { city: "خيبر", name: "خيبر - موزع 1", address: "حي خيبر", map: "#" },
+          { city: "بدر", name: "بدر - موزع 1", address: "حي بدر", map: "#" },
+          { city: "مهد الذهب", name: "مهد الذهب - موزع 1", address: "حي مهد الذهب", map: "#" }
+        ],
+        "الشرقية": [
+          { city: "الدمام", name: "الدمام - موزع 1", address: "حي الشاطئ", map: "#" },
+          { city: "الخبر", name: "الخبر - موزع 1", address: "حي العقربية", map: "#" },
+          { city: "الظهران", name: "الظهران - موزع 1", address: "حي الدوحة", map: "#" },
+          { city: "الجبيل", name: "الجبيل - موزع 1", address: "حي الجبيل", map: "#" },
+          { city: "الأحساء", name: "الأحساء - موزع 1", address: "حي الأحساء", map: "#" },
+          { city: "القطيف", name: "القطيف - موزع 1", address: "حي القطيف", map: "#" }
+        ],
+        "عسير": [
+          { city: "أبها", name: "أبها - موزع 1", address: "حي أبها", map: "#" },
+          { city: "خميس مشيط", name: "خميس مشيط - موزع 1", address: "حي خميس مشيط", map: "#" },
+          { city: "النماص", name: "النماص - موزع 1", address: "حي النماص", map: "#" },
+          { city: "محايل عسير", name: "محايل عسير - موزع 1", address: "حي محايل", map: "#" },
+          { city: "رجال ألمع", name: "رجال ألمع - موزع 1", address: "حي رجال ألمع", map: "#" }
+        ],
+        "القصيم": [
+          { city: "بريدة", name: "بريدة - موزع 1", address: "حي بريدة", map: "#" },
+          { city: "عنيزة", name: "عنيزة - موزع 1", address: "حي عنيزة", map: "#" },
+          { city: "الرس", name: "الرس - موزع 1", address: "حي الرس", map: "#" },
+          { city: "البكيرية", name: "البكيرية - موزع 1", address: "حي البكيرية", map: "#" },
+          { city: "المذنب", name: "المذنب - موزع 1", address: "حي المذنب", map: "#" },
+          { city: "البدائع", name: "البدائع - موزع 1", address: "حي البدائع", map: "#" }
+        ],
+        "تبوك": [
+          { city: "تبوك", name: "تبوك - موزع 1", address: "حي تبوك", map: "#" },
+          { city: "الوجه", name: "الوجه - موزع 1", address: "حي الوجه", map: "#" },
+          { city: "ضباء", name: "ضباء - موزع 1", address: "حي ضباء", map: "#" },
+          { city: "حقل", name: "حقل - موزع 1", address: "حي حقل", map: "#" },
+          { city: "تيماء", name: "تيماء - موزع 1", address: "حي تيماء", map: "#" },
+          { city: "أملج", name: "أملج - موزع 1", address: "حي أملج", map: "#" }
+        ],
+        "حائل": [
+          { city: "حائل", name: "حائل - موزع 1", address: "حي حائل", map: "#" },
+          { city: "بقعاء", name: "بقعاء - موزع 1", address: "حي بقعاء", map: "#" },
+          { city: "الشنان", name: "الشنان - موزع 1", address: "حي الشنان", map: "#" },
+          { city: "الغزالة", name: "الغزالة - موزع 1", address: "حي الغزالة", map: "#" }
+        ],
+        "نجران": [
+          { city: "نجران", name: "نجران - موزع 1", address: "حي نجران", map: "#" },
+          { city: "شرورة", name: "شرورة - موزع 1", address: "حي شرورة", map: "#" },
+          { city: "حبونا", name: "حبونا - موزع 1", address: "حي حبونا", map: "#" }
+        ],
+        "جازان": [
+          { city: "جيزان", name: "جيزان - موزع 1", address: "حي جيزان", map: "#" },
+          { city: "صبيا", name: "صبيا - موزع 1", address: "حي صبيا", map: "#" },
+          { city: "أبو عريش", name: "أبو عريش - موزع 1", address: "حي أبو عريش", map: "#" },
+          { city: "الدرب", name: "الدرب - موزع 1", address: "حي الدرب", map: "#" },
+          { city: "العارضة", name: "العارضة - موزع 1", address: "حي العارضة", map: "#" },
+          { city: "الريث", name: "الريث - موزع 1", address: "حي الريث", map: "#" }
+        ],
+        "الباحة": [
+          { city: "الباحة", name: "الباحة - موزع 1", address: "حي الباحة", map: "#" },
+          { city: "المخواة", name: "المخواة - موزع 1", address: "حي المخواة", map: "#" },
+          { city: "بلجرشي", name: "بلجرشي - موزع 1", address: "حي بلجرشي", map: "#" },
+          { city: "العقيق", name: "العقيق - موزع 1", address: "حي العقيق", map: "#" },
+          { city: "قلوة", name: "قلوة - موزع 1", address: "حي قلوة", map: "#" }
+        ],
+        "الجوف": [
+          { city: "سكاكا", name: "سكاكا - موزع 1", address: "حي سكاكا", map: "#" },
+          { city: "دومة الجندل", name: "دومة الجندل - موزع 1", address: "حي دومة الجندل", map: "#" },
+          { city: "القريات", name: "القريات - موزع 1", address: "حي القريات", map: "#" },
+          { city: "طبرجل", name: "طبرجل - موزع 1", address: "حي طبرجل", map: "#" }
+        ],
+        "الحدود الشمالية": [
+          { city: "عرعر", name: "عرعر - موزع 1", address: "حي عرعر", map: "#" },
+          { city: "رفحاء", name: "رفحاء - موزع 1", address: "حي رفحاء", map: "#" },
+          { city: "طريف", name: "طريف - موزع 1", address: "حي طريف", map: "#" },
+          { city: "العويقيلة", name: "العويقيلة - موزع 1", address: "حي العويقيلة", map: "#" }
+        ]
+      };
 
-    let selectedRegion = null;
-    let selectedCity = null;
-    let selectedDistributor = null;
+      let selectedRegion = null;
+      let selectedCity = null;
+      let selectedDistributor = null;
 
-    // فتح مودال
-    function openModal(id) {
-      document.getElementById('modal-overlay').classList.remove('hidden');
-      document.getElementById(id).classList.remove('hidden');
-      if (id === 'city-modal') {
-        renderCities();
-        document.getElementById('city-search').value = '';
+      // فتح مودال
+      function openModal(id) {
+        document.getElementById('modal-overlay').classList.remove('hidden');
+        document.getElementById(id).classList.remove('hidden');
+        if (id === 'city-modal') {
+          renderCities();
+          document.getElementById('city-search').value = '';
+        }
+        if (id === 'distributors-modal') {
+          renderDistributors();
+        }
       }
-      if (id === 'distributors-modal') {
-        renderDistributors();
-      }
-    }
 
-    // غلق مودال
-    function closeModal(id) {
-      document.getElementById('modal-overlay').classList.add('hidden');
-      document.getElementById(id).classList.add('hidden');
-      if (id === 'distributors-modal') {
-        document.getElementById('map-container').classList.add('hidden');
-        document.getElementById('map-iframe').src = '';
+      // غلق مودال
+      function closeModal(id) {
+        document.getElementById('modal-overlay').classList.add('hidden');
+        document.getElementById(id).classList.add('hidden');
+        if (id === 'distributors-modal') {
+          document.getElementById('map-container').classList.add('hidden');
+          document.getElementById('map-iframe').src = '';
+        }
       }
-    }
 
-    // عند اختيار المحافظة
-    document.querySelectorAll('.region-btn').forEach(btn => {
-      btn.addEventListener('click', e => {
-        selectedRegion = btn.dataset.region;
-        selectedCity = null;
-        document.getElementById('city-btn').disabled = false;
-        document.getElementById('city-btn').classList.remove('text-gray-400');
-        document.getElementById('city-btn').classList.add('text-black');
-        closeModal('region-modal');
+      // عند اختيار المحافظة
+      document.querySelectorAll('.region-btn').forEach(btn => {
+        btn.addEventListener('click', e => {
+          selectedRegion = btn.dataset.region;
+          selectedCity = null;
+          document.getElementById('city-btn').disabled = false;
+          document.getElementById('city-btn').classList.remove('text-gray-400');
+          document.getElementById('city-btn').classList.add('text-black');
+          closeModal('region-modal');
+        });
       });
-    });
 
-    // عند الضغط على زر المدينة
-    document.getElementById('city-btn').addEventListener('click', () => {
-      if (selectedRegion) openModal('city-modal');
-    });
-
-    // عرض المدن في المودال
-    function renderCities() {
-      const list = document.getElementById('city-list');
-      list.innerHTML = '';
-      if (!selectedRegion) return;
-      const cities = regions[selectedRegion];
-      cities.forEach(city => {
-        const btn = document.createElement('button');
-        btn.className = "city-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50 w-full";
-        btn.innerHTML = `${city} <span>&#171;</span>`;
-        btn.onclick = () => {
-          selectedCity = city;
-          closeModal('city-modal');
-          openModal('distributors-modal');
-        };
-        list.appendChild(btn);
+      // عند الضغط على زر المدينة
+      document.getElementById('city-btn').addEventListener('click', () => {
+        if (selectedRegion) openModal('city-modal');
       });
-    }
 
-    // بحث المدن
-    document.getElementById('city-search').addEventListener('input', function() {
-      const val = this.value.trim();
-      const list = document.getElementById('city-list');
-      list.innerHTML = '';
-      if (!selectedRegion) return;
-      const cities = regions[selectedRegion].filter(city => city.includes(val));
-      cities.forEach(city => {
-        const btn = document.createElement('button');
-        btn.className = "city-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50 w-full";
-        btn.innerHTML = `${city} <span>&#171;</span>`;
-        btn.onclick = () => {
-          selectedCity = city;
-          closeModal('city-modal');
-          openModal('distributors-modal');
-        };
-        list.appendChild(btn);
-      });
-    });
-
-    // عرض نقاط التوزيع مع إمكانية الاختيار والحفظ
-    function renderDistributors() {
-      const list = document.getElementById('distributors-list');
-      const saveContainer = document.getElementById('save-distributor-container');
-      const mapContainer = document.getElementById('map-container');
-      const mapIframe = document.getElementById('map-iframe');
-      list.innerHTML = '';
-      saveContainer.classList.add('hidden');
-      mapContainer.classList.add('hidden');
-      mapIframe.src = '';
-      selectedDistributor = null;
-      if (!selectedRegion || !selectedCity) return;
-      const regionDistributors = distributors[selectedRegion] || [];
-      const filtered = regionDistributors.filter(d => d.city === selectedCity);
-      if (filtered.length === 0) {
-        list.innerHTML = '<div class="text-center text-gray-500">لا توجد نقاط توزيع متاحة</div>';
-        return;
+      // عرض المدن في المودال
+      function renderCities() {
+        const list = document.getElementById('city-list');
+        list.innerHTML = '';
+        if (!selectedRegion) return;
+        const cities = regions[selectedRegion];
+        cities.forEach(city => {
+          const btn = document.createElement('button');
+          btn.className = "city-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50 w-full";
+          btn.innerHTML = `${city} <span>&#171;</span>`;
+          btn.onclick = () => {
+            selectedCity = city;
+            closeModal('city-modal');
+            openModal('distributors-modal');
+          };
+          list.appendChild(btn);
+        });
       }
-      filtered.forEach((d, idx) => {
-        const id = `distributor-radio-${idx}`;
-        // استخدم data-attributes لتمرير كل البيانات المطلوبة
-        list.innerHTML += `
-          <label class="block border border-green-600 rounded-lg p-3 mb-2 cursor-pointer flex items-start gap-2">
-            <input type="radio" name="distributor" value="${d.name}" id="${id}" class="mt-1" onclick="selectDistributor('${selectedRegion}','${selectedCity}',${idx})">
-            <div>
-              <div class="font-bold mb-1">${d.city} - ${d.name}</div>
+
+      // بحث المدن
+      document.getElementById('city-search').addEventListener('input', function() {
+        const val = this.value.trim();
+        const list = document.getElementById('city-list');
+        list.innerHTML = '';
+        if (!selectedRegion) return;
+        const cities = regions[selectedRegion].filter(city => city.includes(val));
+        cities.forEach(city => {
+          const btn = document.createElement('button');
+          btn.className = "city-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50 w-full";
+          btn.innerHTML = `${city} <span>&#171;</span>`;
+          btn.onclick = () => {
+            selectedCity = city;
+            closeModal('city-modal');
+            openModal('distributors-modal');
+          };
+          list.appendChild(btn);
+        });
+      });
+
+      // عرض نقاط التوزيع مع إمكانية الاختيار والحفظ
+      function renderDistributors() {
+        const list = document.getElementById('distributors-list');
+        const saveContainer = document.getElementById('save-distributor-container');
+        const mapContainer = document.getElementById('map-container');
+        const mapIframe = document.getElementById('map-iframe');
+        list.innerHTML = '';
+        saveContainer.classList.add('hidden');
+        mapContainer.classList.add('hidden');
+        mapIframe.src = '';
+        selectedDistributor = null;
+        if (!selectedRegion || !selectedCity) return;
+        const regionDistributors = distributors[selectedRegion] || [];
+        const filtered = regionDistributors.filter(d => d.city === selectedCity);
+        if (filtered.length === 0) {
+          list.innerHTML = '<div class="text-center text-gray-500">لا توجد نقاط توزيع متاحة</div>';
+          return;
+        }
+        filtered.forEach((d, idx) => {
+          const id = `distributor-radio-${idx}`;
+          // استخدم data-attributes لتمرير كل البيانات المطلوبة
+          list.innerHTML += `
+            <label class="block border border-green-600 rounded-lg p-3 mb-2 cursor-pointer flex items-start gap-2">
+              <input type="radio" name="distributor" value="${d.name}" id="${id}" class="mt-1" onclick="selectDistributor('${selectedRegion}','${selectedCity}',${idx})">
+              <div>
+                <div class="font-bold mb-1">${d.city} - ${d.name}</div>
+                <div class="mb-1">${d.address}</div>
+                <a href="#" 
+                  class="text-blue-600 underline text-sm show-map-btn" 
+                  data-city="${d.city}" 
+                  data-name="${d.name}" 
+                  data-address="${d.address}"
+                >عرض الموقع على الخريطة</a>
+              </div>
+            </label>
+          `;
+        });
+        // أظهر زر الحفظ عند الاختيار
+        document.querySelectorAll('input[name="distributor"]').forEach(input => {
+          input.addEventListener('change', () => {
+            saveContainer.classList.remove('hidden');
+          });
+        });
+        // إضافة حدث لعرض الخريطة باستخدام جميع البيانات
+        document.querySelectorAll('.show-map-btn').forEach(btn => {
+          btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            const city = this.getAttribute('data-city');
+            const name = this.getAttribute('data-name');
+            const address = this.getAttribute('data-address');
+            // استخدم كل البيانات لتكوين عنوان البحث
+            const searchQuery = `${city} ${name} ${address}`;
+            const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(searchQuery)}&output=embed`;
+            mapIframe.src = mapSrc;
+            mapContainer.classList.remove('hidden');
+          });
+        });
+      }
+
+      // اختيار نقطة توزيع
+      function selectDistributor(region, city, idx) {
+        const regionDistributors = distributors[region] || [];
+        const filtered = regionDistributors.filter(d => d.city === city);
+        selectedDistributor = filtered[idx];
+      }
+
+      // عرض نقطة التوزيع المختارة في الصفحة الرئيسية
+      function showSelectedDistributor() {
+        const container = document.getElementById('selected-distributor-info');
+        const data = localStorage.getItem('selectedDistributor');
+        if (data) {
+          const d = JSON.parse(data);
+          container.innerHTML = `
+            <div class="bg-green-100 border border-green-400 rounded-lg p-3 mb-2">
+              <div class="flex items-center gap-2 mb-1">
+                <span class="font-bold">${d.city} - ${d.name}</span>
+                <span class="text-green-600 text-xl">&#128205;</span>
+              </div>
               <div class="mb-1">${d.address}</div>
-              <a href="#" 
-                class="text-blue-600 underline text-sm show-map-btn" 
-                data-city="${d.city}" 
-                data-name="${d.name}" 
-                data-address="${d.address}"
-              >عرض الموقع على الخريطة</a>
+              <a href="${d.map}" class="text-blue-600 underline text-sm">عرض الموقع على الخريطة</a>
             </div>
-          </label>
-        `;
-      });
-      // أظهر زر الحفظ عند الاختيار
-      document.querySelectorAll('input[name="distributor"]').forEach(input => {
-        input.addEventListener('change', () => {
-          saveContainer.classList.remove('hidden');
-        });
-      });
-      // إضافة حدث لعرض الخريطة باستخدام جميع البيانات
-      document.querySelectorAll('.show-map-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          const city = this.getAttribute('data-city');
-          const name = this.getAttribute('data-name');
-          const address = this.getAttribute('data-address');
-          // استخدم كل البيانات لتكوين عنوان البحث
-          const searchQuery = `${city} ${name} ${address}`;
-          const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(searchQuery)}&output=embed`;
-          mapIframe.src = mapSrc;
-          mapContainer.classList.remove('hidden');
-        });
-      });
-    }
-
-    // اختيار نقطة توزيع
-    function selectDistributor(region, city, idx) {
-      const regionDistributors = distributors[region] || [];
-      const filtered = regionDistributors.filter(d => d.city === city);
-      selectedDistributor = filtered[idx];
-    }
-
-    // عرض نقطة التوزيع المختارة في الصفحة الرئيسية
-    function showSelectedDistributor() {
-      const container = document.getElementById('selected-distributor-info');
-      const data = localStorage.getItem('selectedDistributor');
-      if (data) {
-        const d = JSON.parse(data);
-        container.innerHTML = `
-          <div class="bg-green-100 border border-green-400 rounded-lg p-3 mb-2">
-            <div class="flex items-center gap-2 mb-1">
-              <span class="font-bold">${d.city} - ${d.name}</span>
-              <span class="text-green-600 text-xl">&#128205;</span>
-            </div>
-            <div class="mb-1">${d.address}</div>
-            <a href="${d.map}" class="text-blue-600 underline text-sm">عرض الموقع على الخريطة</a>
-          </div>
-        `;
-      } else {
-        container.innerHTML = "";
+          `;
+        } else {
+          container.innerHTML = "";
+        }
       }
-    }
 
-    // حفظ الاختيار في localStorage
-    document.getElementById('save-distributor-btn').onclick = function() {
-      if (selectedDistributor) {
-        localStorage.setItem('selectedDistributor', JSON.stringify(selectedDistributor));
-        closeModal('distributors-modal');
-        alert('تم حفظ نقطة التوزيع بنجاح!');
-        showSelectedDistributor();
-      }
-    };
+      // حفظ الاختيار في localStorage
+      document.getElementById('save-distributor-btn').onclick = function() {
+        if (selectedDistributor) {
+          localStorage.setItem('selectedDistributor', JSON.stringify(selectedDistributor));
+          closeModal('distributors-modal');
+          alert('تم حفظ نقطة التوزيع بنجاح!');
+          showSelectedDistributor();
+        }
+      };
 
-    // غلق المودال عند الضغط خارجها
-    document.getElementById('modal-overlay').onclick = () => {
-      ['region-modal', 'city-modal', 'distributors-modal'].forEach(id => closeModal(id));
-    };
+      // غلق المودال عند الضغط خارجها
+      document.getElementById('modal-overlay').onclick = () => {
+        ['region-modal', 'city-modal', 'distributors-modal'].forEach(id => closeModal(id));
+      };
 
-    // عند تحميل الصفحة، اعرض نقطة التوزيع المختارة إن وجدت
-    window.onload = showSelectedDistributor;
-  </script>
+      // عند تحميل الصفحة، اعرض نقطة التوزيع المختارة إن وجدت
+      window.onload = showSelectedDistributor;
+    </script>
+  </div>
 </body>
 </html>
