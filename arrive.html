@@ -5,12 +5,14 @@
   <title>نقاط استلام جمعيتي</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- إضافة خط أيقونات Google Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 </head>
 <body class="bg-gray-100 font-sans overflow-x-hidden">
   <div class="min-h-screen w-screen max-w-none mx-auto bg-white flex flex-col">
     <!-- Header -->
     <div class="bg-teal-200 px-4 py-3 flex items-center justify-between rounded-b-lg w-full">
-      <span class="text-2xl" onclick="window.history.back()">&#8594;</span>
+      <span class="material-icons text-2xl cursor-pointer" onclick="window.history.back()">arrow_back</span>
       <span class="font-bold text-lg">نقاط استلام جمعيتي</span>
     </div>
 
@@ -20,11 +22,11 @@
       <p class="mb-4 text-center text-base">شوف أقرب نقطة استلام ليك عشان تستلم الكارت</p>
       <div class="flex flex-col gap-2 w-full max-w-full">
         <button onclick="openModal('region-modal')" class="flex items-center gap-2 border-2 border-teal-200 rounded-lg px-3 py-3 shadow-sm hover:bg-teal-50 w-full justify-center text-base">
-          <span class="text-xl">&#8595;</span>
+          <span class="material-icons text-xl">expand_more</span>
           اختر المحافظه
         </button>
         <button onclick="openModal('city-modal')" id="city-btn" disabled class="flex items-center gap-2 border-2 border-teal-200 rounded-lg px-3 py-3 shadow-sm text-gray-400 w-full justify-center text-base">
-          <span class="text-xl">&#8595;</span>
+          <span class="material-icons text-xl">expand_more</span>
           إختر المدينه
         </button>
       </div>
@@ -35,30 +37,34 @@
     <!-- Region Modal -->
     <div id="region-modal" class="fixed z-50 top-1/2 left-1/2 w-full max-w-none px-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-3 hidden">
       <div class="flex justify-between items-center mb-2">
-        <button onclick="closeModal('region-modal')" class="text-xl font-bold">&times;</button>
+        <button onclick="closeModal('region-modal')" class="text-xl font-bold">
+          <span class="material-icons">close</span>
+        </button>
       </div>
       <div class="flex flex-col gap-2 max-h-[65vh] overflow-y-auto">
         <!-- المحافظات -->
-        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الرياض">الرياض <span>&#171;</span></button>
-        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="مكة المكرمة">مكة المكرمة <span>&#171;</span></button>
-        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="المدينة المنورة">المدينة المنورة <span>&#171;</span></button>
-        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الشرقية">الشرقية <span>&#171;</span></button>
-        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="عسير">عسير <span>&#171;</span></button>
-        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="القصيم">القصيم <span>&#171;</span></button>
-        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="تبوك">تبوك <span>&#171;</span></button>
-        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="حائل">حائل <span>&#171;</span></button>
-        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="نجران">نجران <span>&#171;</span></button>
-        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="جازان">جازان <span>&#171;</span></button>
-        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الباحة">الباحة <span>&#171;</span></button>
-        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الجوف">الجوف <span>&#171;</span></button>
-        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الحدود الشمالية">الحدود الشمالية <span>&#171;</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الرياض">الرياض <span class="material-icons text-base">chevron_left</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="مكة المكرمة">مكة المكرمة <span class="material-icons text-base">chevron_left</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="المدينة المنورة">المدينة المنورة <span class="material-icons text-base">chevron_left</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الشرقية">الشرقية <span class="material-icons text-base">chevron_left</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="عسير">عسير <span class="material-icons text-base">chevron_left</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="القصيم">القصيم <span class="material-icons text-base">chevron_left</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="تبوك">تبوك <span class="material-icons text-base">chevron_left</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="حائل">حائل <span class="material-icons text-base">chevron_left</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="نجران">نجران <span class="material-icons text-base">chevron_left</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="جازان">جازان <span class="material-icons text-base">chevron_left</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الباحة">الباحة <span class="material-icons text-base">chevron_left</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الجوف">الجوف <span class="material-icons text-base">chevron_left</span></button>
+        <button class="region-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50" data-region="الحدود الشمالية">الحدود الشمالية <span class="material-icons text-base">chevron_left</span></button>
       </div>
     </div>
 
     <!-- City Modal -->
     <div id="city-modal" class="fixed z-50 top-1/2 left-1/2 w-full max-w-none px-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-3 hidden">
       <div class="flex flex-col sm:flex-row justify-between items-center mb-2 gap-2">
-        <button onclick="closeModal('city-modal')" class="text-xl font-bold">&times;</button>
+        <button onclick="closeModal('city-modal')" class="text-xl font-bold">
+          <span class="material-icons">close</span>
+        </button>
         <input id="city-search" type="text" placeholder="بحث" class="border rounded px-2 py-1 w-full text-base">
       </div>
       <div id="city-list" class="flex flex-col gap-2 max-h-60 overflow-y-auto">
@@ -70,7 +76,9 @@
     <div id="distributors-modal" class="fixed z-50 top-1/2 left-1/2 w-full max-w-none px-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-3 hidden">
       <div class="flex justify-between items-center mb-2">
         <span class="font-bold text-base">جميع الموزعين</span>
-        <button onclick="closeModal('distributors-modal')" class="text-xl font-bold">&times;</button>
+        <button onclick="closeModal('distributors-modal')" class="text-xl font-bold">
+          <span class="material-icons">close</span>
+        </button>
       </div>
       <div id="distributors-list" class="space-y-2">
         <!-- نقاط التوزيع تظهر هنا -->
@@ -257,7 +265,7 @@
         cities.forEach(city => {
           const btn = document.createElement('button');
           btn.className = "city-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50 w-full";
-          btn.innerHTML = `${city} <span>&#171;</span>`;
+          btn.innerHTML = `${city} <span class="material-icons text-base">chevron_left</span>`;
           btn.onclick = () => {
             selectedCity = city;
             closeModal('city-modal');
@@ -277,7 +285,7 @@
         cities.forEach(city => {
           const btn = document.createElement('button');
           btn.className = "city-btn flex justify-between items-center border border-teal-200 rounded px-3 py-2 hover:bg-teal-50 w-full";
-          btn.innerHTML = `${city} <span>&#171;</span>`;
+          btn.innerHTML = `${city} <span class="material-icons text-base">chevron_left</span>`;
           btn.onclick = () => {
             selectedCity = city;
             closeModal('city-modal');
@@ -357,13 +365,7 @@
       function showSelectedDistributor() {
         const container = document.getElementById('selected-distributor-info');
         const data = localStorage.getItem('selectedDistributor');
-        if (data) {
-          const d = JSON.parse(data);
-          container.innerHTML = `
-            <div class="bg-green-100 border border-green-400 rounded-lg p-3 mb-2">
-              <div class="flex items-center gap-2 mb-1">
-                <span class="font-bold">${d.city} - ${d.name}</span>
-                <span class="text-green-600 text-xl">&#128205;</span>
+        if
               </div>
               <div class="mb-1">${d.address}</div>
               <a href="${d.map}" class="text-blue-600 underline text-sm">عرض الموقع على الخريطة</a>
