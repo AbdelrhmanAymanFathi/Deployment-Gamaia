@@ -92,6 +92,19 @@
       </div>
     </div>
 
+    <!-- Map Modal for Saved Distributor -->
+    <div id="saved-map-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+      <div class="bg-white rounded-lg shadow-lg w-full max-w-md mx-2 p-0 overflow-hidden">
+        <div class="flex justify-between items-center px-4 py-2 border-b">
+          <span class="font-bold text-base">موقع نقطة التوزيع</span>
+          <button id="close-saved-map-modal" class="material-icons text-2xl text-gray-700 hover:text-red-500">close</button>
+        </div>
+        <div class="w-full h-64">
+          <iframe id="saved-map-iframe" class="w-full h-full border-0 rounded-b-lg" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+      </div>
+    </div>
+
     <script>
       // بيانات المحافظات والمدن
       const regions = {
@@ -374,16 +387,50 @@
                 <span class="material-icons text-green-600 text-xl">location_on</span>
               </div>
               <div class="mb-1">${d.address}</div>
-              <a href="${d.map}" class="text-blue-600 underline text-sm">
+              <a href="#" id="show-saved-map" class="text-blue-600 underline text-sm">
                 <span class="material-icons align-middle text-base">map</span>
                 عرض الموقع على الخريطة
               </a>
             </div>
           `;
+          // إضافة حدث عرض الخريطة في مودال خاص
+          setTimeout(() => {
+            const mapBtn = document.getElementById('show-saved-map');
+            if (mapBtn) {
+              mapBtn.onclick = function(e) {
+                e.preventDefault();
+                const modal = document.getElementById('saved-map-modal');
+                const iframe = document.getElementById('saved-map-iframe');
+                const searchQuery = `${d.city} ${d.name} ${d.address}`;
+                const mapSrc = `https://www.google.com/maps?q=${encodeURIComponent(searchQuery)}&output=embed`;
+                iframe.src = mapSrc;
+                modal.classList.remove('hidden');
+              };
+            }
+          }, 0);
         } else {
           container.innerHTML = "";
         }
       }
+
+      // غلق مودال الخريطة المحفوظة
+      document.addEventListener('DOMContentLoaded', () => {
+        const closeBtn = document.getElementById('close-saved-map-modal');
+        const modal = document.getElementById('saved-map-modal');
+        if (closeBtn && modal) {
+          closeBtn.onclick = () => {
+            modal.classList.add('hidden');
+            document.getElementById('saved-map-iframe').src = '';
+          };
+          // غلق عند الضغط خارج المودال
+          modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+              modal.classList.add('hidden');
+              document.getElementById('saved-map-iframe').src = '';
+            }
+          });
+        }
+      });
 
       // حفظ الاختيار في localStorage
       document.getElementById('save-distributor-btn').onclick = function() {
