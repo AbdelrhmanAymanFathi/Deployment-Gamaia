@@ -50,13 +50,13 @@ async function fetchTurns() {
       throw new Error('Network response was not ok: ' + res.status);
     }
     const data = await res.json();
-    if (!Array.isArray(data)) {
-      throw new Error('البيانات المستلمة ليست مصفوفة');
+    // --- changed: handle new API structure ---
+    if (!Array.isArray(data.turns)) {
+      throw new Error('البيانات المستلمة لا تحتوي على مصفوفة أدوار');
     }
-    turns = data;
+    turns = data.turns;
     if (turns.length === 0) throw new Error('لا يوجد أدوار متاحة');
     association = turns[0].association;
-
     // *** Force feeAmount sign for business rule ***
     turns.forEach((turn, idx) => {
       if (idx === turns.length - 1) {
@@ -65,7 +65,6 @@ async function fetchTurns() {
         turn.feeAmount = -Math.abs(turn.feeAmount); // all others get discount (negative)
       }
     });
-
     splitTabs();
     renderTabs();
     renderTurns();
@@ -214,5 +213,6 @@ nextBtn.addEventListener('click', function() {
 });
 
 // أول تحميل
+fetchTurns();
 fetchTurns();
 fetchTurns();
