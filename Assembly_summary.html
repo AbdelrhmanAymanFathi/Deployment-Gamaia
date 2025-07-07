@@ -427,34 +427,49 @@
             };
 
             // جلب بيانات الجمعية وتحديث الصفحة ديناميكياً
-            let adminFees = 0;
-            let deliveryFee = 0;
-
-            // جلب بيانات الدور الخاص بالمستخدم أولاً للحصول على الرسوم
-            function fetchTurnAndThenAssociation() {
-                fetchWithAuth('https://api.technologytanda.com/api/turns/my-turn')
-                    .then(res => {
-                        if (res.status === 401) {
-                            alert('يجب تسجيل الدخول للوصول إلى بيانات الجمعية.');
-                            localStorage.removeItem('token');
-                            localStorage.removeItem('user');
-                            window.location.href = '/login.html';
-                            return Promise.reject();
+            // تم التعديل: جلب كل البيانات من endpoint واحد
+            function fetchPublicTurnData() {
+                const token = localStorage.getItem('token');
+                const assocId = localStorage.getItem('selectedAssociationId') || '1';
+                fetch(`https://api.technologytanda.com/api/turns/public/${assocId}`, {
+                    headers: {
+                        'Accept': 'application/json',
+                        ...(token ? { 'Authorization': `Bearer ${token}` } : {})
+                    }
+                })
+                .then(res => {
+                    if (res.status === 401) {
+                        alert('يجب تسجيل الدخول للوصول إلى بيانات الجمعية.');
+                        localStorage.removeItem('token');
+                        localStorage.removeItem('user');
+                        window.location.href = '/login.html';
+                        return Promise.reject();
+                    }
+                    if (!res.ok) throw new Error('فشل في جلب بيانات الجمعية');
+                    return res.json();
+                })
+                .then(data => {
+                    if (data && data.turns && data.currentTurn) {
+                        // استخدم أول دور أو الدور الحالي حسب الحاجة
+                        const currentTurn = data.currentTurn;
+                        const turns = data.turns;
+                        const assoc = turns[0]?.association || {};
+                        // اسم الدور
+                        const turnNameEl = document.getElementById('turn-name');
+                        // استخراج رقم الدور من turnName (مثلاً: "الدور 3" => 3)
+                        function extractTurnNumber(turnName) {
+                            const match = turnName && turnName.match(/\d+$/);
+                            return match ? parseInt(match[0], 10) : null;
                         }
-                        if (!res.ok) throw new Error('فشل في جلب بيانات الدور');
-                        return res.json();
-                    })
-                    .then(data => {
-                        if (data && data.success && data.turn) {
-                            // تحديث اسم الدور
-                            const turnNameEl = document.getElementById('turn-name');
-                            if (turnNameEl) {
-                                turnNameEl.textContent = data.turn.turnName || '';
-                            }
-                            // تحديث تاريخ الجدولة (مثال: "يوليو 2025")
-                            const scheduledDateEl = document.getElementById('scheduled-date-label');
-                            if (scheduledDateEl && data.turn.scheduledDate) {
-                                const date = new Date(data.turn.scheduledDate);
+                        let userTurn = turns.find(t => extractTurnNumber(t.turnName) === currentTurn.currentTurnMember?.turnNumber) || turns[0];
+                        if (turnNameEl) {
+                            turnNameEl.textContent = userTurn?.turnName || '';
+                        }
+                        // تاريخ الجدولة
+                        const scheduledDateEl = document.getElementById('scheduled-date-label');
+                        if (scheduledDateEl) {
+                            if (userTurn?.scheduledDate) {
+                                const date = new Date(userTurn.scheduledDate);
                                 const months = [
                                     "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
                                     "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
@@ -463,66 +478,67 @@
                                 const year = date.getFullYear();
                                 scheduledDateEl.textContent = `${monthName} ${year}`;
                             }
-                            // جلب الرسوم من الدور
-                            adminFees = data.turn.feeAmount || 0;
-                            deliveryFee = 50; // اجعلها ثابتة 50 ريال
                         }
-                    })
-                    .then(() => {
-                        // بعد جلب بيانات الدور، جلب بيانات الجمعية وتحديث الصفحة
-                        if (assocId) {
-                            fetchWithAuth(`https://api.technologytanda.com/api/associations/${assocId}`)
-                                .then(res => {
-                                    if (res.status === 401) {
-                                        alert('يجب تسجيل الدخول للوصول إلى بيانات الجمعية.');
-                                        localStorage.removeItem('token');
-                                        localStorage.removeItem('user');
-                                        window.location.href = '/login.html';
-                                        return Promise.reject();
-                                    }
-                                    if (!res.ok) throw new Error('جمعية غير موجودة');
-                                    return res.json();
-                                })
-                                .then(data => {
-                                    if (data && data.success && data.data) {
-                                        const assoc = data.data;
-                                        // مبلغ الجمعية = monthlyAmount * duration
-                                        const assocAmount = assoc.monthlyAmount * assoc.duration;
-                                        // قسط شهر القبض = monthlyAmount فقط
-                                        const installment = assoc.monthlyAmount;
-                                        // إجمالي القبض = مبلغ الجمعية - قسط شهر القبض - المصاريف الإدارية
-                                        const totalReceive = assocAmount - installment - adminFees;
-                                        // إجمالي الرسوم (مثال: monthlyAmount * 0.07 * duration)
-                                        const totalFees = Math.round(assoc.monthlyAmount * 0.07 * assoc.duration);
-
-                                        // تحديث الصفحة
-                                        document.getElementById('assoc-amount').innerHTML = assocAmount.toLocaleString() + ' <span class="text-xs font-normal">ر.س</span>';
-                                        document.getElementById('installment').innerHTML = installment.toLocaleString() + ' - <span class="text-xs font-normal">ر.س</span>';
-                                        document.getElementById('admin-fees').innerHTML = adminFees.toLocaleString() + ' - <span class="text-xs font-normal">ر.س</span>';
-                                        document.getElementById('total-receive').innerHTML = totalReceive.toLocaleString() + ' <span class="text-sm font-normal">ر.س</span>';
-                                        document.getElementById('total-fees').innerHTML = totalFees.toLocaleString() + ' <span class="text-xs font-normal">ر.س</span>';
-                                        document.getElementById('delivery-fee').innerHTML = deliveryFee.toLocaleString() + ' <span class="text-xs font-normal">ر.س</span>';
-
-                                        // تحديث اسم الجمعية في الهيدر
-                                        const header = document.querySelector('h1');
-                                        if (header) header.textContent = assoc.name || 'ملخص الجمعية';
-                                    }
-                                })
-                                .catch(err => {
-                                    if (err === undefined) return; // Already handled (401)
-                                    alert('الجمعية غير موجودة أو تم حذفها. سيتم إعادتك للصفحة الرئيسية.');
-                                    localStorage.removeItem('selectedAssociationId');
-                                    window.location.href = '/';
-                                });
+                        // تحديث شريط التقدم (progress bar)
+                        const progressContainer = document.querySelector('.progress-segments-container');
+                        if (progressContainer) {
+                            progressContainer.innerHTML = '';
+                            turns.forEach((turn, idx) => {
+                                const div = document.createElement('div');
+                                div.className = 'progress-segment' + (extractTurnNumber(turn.turnName) === currentTurn.currentTurnMember?.turnNumber ? ' active' : '');
+                                progressContainer.appendChild(div);
+                            });
                         }
-                    })
-                    .catch(err => {
-                        if (err === undefined) return; // Already handled (401)
-                        alert('حدث خطأ أثناء جلب بيانات الجمعية.');
-                    });
+                        // تحديث الجدول الزمني (timeline)
+                        const timelineContainer = document.querySelector('.timeline-flex-container');
+                        if (timelineContainer) {
+                            // Remove all timeline items except the horizontal line
+                            Array.from(timelineContainer.querySelectorAll('.timeline-item-new')).forEach(e => e.remove());
+                            // Add timeline items for each turn
+                            turns.forEach((turn, idx) => {
+                                const item = document.createElement('div');
+                                item.className = 'timeline-item-new';
+                                if (extractTurnNumber(turn.turnName) === currentTurn.currentTurnMember?.turnNumber) item.style.fontWeight = 'bold';
+                                const dot = document.createElement('div');
+                                dot.className = 'timeline-dot-new';
+                                item.appendChild(dot);
+                                const date = new Date(turn.scheduledDate);
+                                const months = [
+                                    "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
+                                    "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
+                                ];
+                                const monthName = months[date.getMonth()];
+                                const year = date.getFullYear();
+                                const label = document.createElement('span');
+                                label.className = 'month-label';
+                                label.textContent = `${monthName} ${year}`;
+                                item.appendChild(label);
+                                timelineContainer.appendChild(item);
+                            });
+                        }
+                        // مبلغ الجمعية = totalPayout
+                        document.getElementById('assoc-amount').innerHTML = currentTurn.totalPayout.toLocaleString() + ' <span class="text-xs font-normal">ر.س</span>';
+                        // قسط شهر القبض = monthlyAmount
+                        document.getElementById('installment').innerHTML = (assoc.monthlyAmount || 0).toLocaleString() + ' - <span class="text-xs font-normal">ر.س</span>';
+                        // المتبقي من المصاريف الإدارية = feeAmount
+                        document.getElementById('admin-fees').innerHTML = (currentTurn.feeAmount || 0).toLocaleString() + ' - <span class="text-xs font-normal">ر.س</span>';
+                        // إجمالي القبض = finalAmount
+                        document.getElementById('total-receive').innerHTML = (currentTurn.finalAmount || 0).toLocaleString() + ' <span class="text-sm font-normal">ر.س</span>';
+                        // إجمالي الرسوم = نفس المتبقي من المصاريف الإدارية بدون أي حساب إضافي
+                        document.getElementById('total-fees').innerHTML = (currentTurn.feeAmount || 0).toLocaleString() + ' <span class="text-xs font-normal">ر.س</span>';
+                        // رسوم توصيل العقد
+                        document.getElementById('delivery-fee').innerHTML = (currentTurn.contractDeliveryFee || 0).toLocaleString() + ' <span class="text-xs font-normal">ر.س</span>';
+                        // تحديث اسم الجمعية في الهيدر (إذا أردت)
+                        const header = document.querySelector('h1');
+                        if (header && assoc.name) header.textContent = assoc.name;
+                    }
+                })
+                .catch(err => {
+                    alert('حدث خطأ أثناء جلب بيانات الجمعية.');
+                });
             }
 
-            fetchTurnAndThenAssociation();
+            fetchPublicTurnData();
 
             // Modal logic
             const confirmBtn = document.querySelector('button.w-full.bg-blue-600-custom');
