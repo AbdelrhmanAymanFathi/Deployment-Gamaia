@@ -172,9 +172,9 @@
   <main class="flex-grow container mx-auto py-8 px-2 mb-10 " dir="ltr">
     <div class="container">
       <div class="title">كام هيكون مبلغ القبض؟</div>
-      <div class="desc">أكتب من 3000 ر.س إلى 15,000 ر.س</div>
+      <div class="desc">أكتب من 1000 ر.س إلى 15,000 ر.س</div>
       <div class="amount-box">
-        <input type="number" class="input-amount" id="amountInput" min="3000" max="1200000" placeholder="٠ ر.س" value="0"> ر.س
+        <input type="number" class="input-amount" id="amountInput" min="1000" max="1200000" placeholder="٠ ر.س" value="0"> ر.س
       </div>
       <button class="btn-next" id="nextButton">التالي</button>
     </div>
@@ -232,7 +232,7 @@
       // Validate amount on input
       amountInput.addEventListener('input', () => {
         const amount = parseInt(amountInput.value);
-        if (amount < 3000 || amount > 1200000) {
+        if (amount < 1000 || amount > 1200000) {
           nextButton.disabled = true;
           nextButton.style.opacity = '0.5';
         } else {
@@ -243,7 +243,7 @@
       // Handle next button click
       nextButton.addEventListener('click', async () => {
         const amount = parseInt(amountInput.value);
-        if (amount < 3000 || amount > 1200000) {
+        if (amount < 1000 || amount > 1200000) {
           alert('الرجاء إدخال مبلغ بين ٣٠٠٠ و ١,٢٠٠,٠٠٠ ريال');
           return;
         }
