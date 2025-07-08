@@ -106,6 +106,14 @@
         .flex-grow.container {
             padding-bottom: 80px; /* Increased padding to give more scroll space above navbar */
         }
+        /* Add hover effect for installments */
+        .installment-item {
+            transition: box-shadow .15s;
+        }
+        .installment-item:hover {
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.11);
+            background-color: #ecfdf5;
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
@@ -176,6 +184,10 @@
             <i class="fas fa-coins text-2xl mr-2"></i>
         </div>
 
+        <!-- START: الاقساط المستحقة LOG LIST -->
+        <div id="installment-log" class="flex flex-col gap-3"></div>
+        <!-- END: الاقساط المستحقة LOG LIST -->
+
         <div class="h-20"></div>
 
     </div>
@@ -243,7 +255,6 @@
       </div>
     </div>
 
-
   <!-- Navbar Bottom -->
   <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg" style="background-color:#90D1CA;" dir="rtl">
 
@@ -258,9 +269,6 @@
     </div>
 
     <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3" >
-      <!-- <span class="material-symbols-outlined text-3xl">
-        arrow_circle_left
-      </span> -->
       <img src="./Assets/imgs/SubscribeIcon.svg" class="" alt="">
       <div class="label" style="color:#16a34a; font-weight:700;">انضم الان</div>
     </div>
@@ -450,6 +458,63 @@
           });
         }
       });
+    </script>
+
+    <!-- الاقساط المستحقة - Fetch and render from backend -->
+    <script>
+    async function fetchInstallments() {
+        const token = localStorage.getItem('token');
+        let installments = [];
+        try {
+            const res = await fetch('https://api.technologytanda.com/api/turns/my-turn', {
+                headers: token ? { 'Authorization': 'Bearer ' + token } : {}
+            });
+            const data = await res.json();
+            if (data.success && data.turns) {
+                installments = data.turns;
+            }
+        } catch (e) {}
+        renderInstallmentLog(installments);
+    }
+
+    function renderInstallmentLog(installments) {
+        const container = document.getElementById('installment-log');
+        container.innerHTML = '';
+        if (!installments.length) {
+            container.innerHTML = '<div class="text-gray-500 text-center">لا يوجد أقساط مستحقة حالياً</div>';
+            return;
+        }
+        installments.forEach(inst => {
+            const association = inst.associationName || '-';
+            const turn = inst.turnName || `الدور ${inst.turnNumber}`;
+            const date = new Date(inst.scheduledDate).toLocaleDateString('ar-EG', {year: 'numeric', month: 'long', day: 'numeric'});
+            const fee = (inst.currentTurn && inst.currentTurn.feeAmount !== undefined) ? inst.currentTurn.feeAmount : '—';
+            const payout = (inst.currentTurn && inst.currentTurn.totalPayout !== undefined) ? inst.currentTurn.totalPayout : '';
+            const finalAmount = (inst.currentTurn && inst.currentTurn.finalAmount !== undefined) ? inst.currentTurn.finalAmount : '';
+            const received = (inst.currentTurn &&
+                            inst.currentTurn.currentTurnMember &&
+                            inst.currentTurn.currentTurnMember.hasReceived)
+                ? '<span class="text-green-600 font-semibold">تم الاستلام</span>'
+                : '<span class="text-red-500 font-semibold">لم يتم الاستلام</span>';
+
+            container.innerHTML += `
+              <div class="installment-item flex flex-col sm:flex-row sm:justify-between items-start sm:items-center bg-gray-100 p-3 rounded shadow-sm border border-gray-200 gap-2">
+                <div class="flex flex-col text-right">
+                    <span class="font-bold text-lg text-teal-700 mb-1">${association}</span>
+                    <span class="font-medium">${turn}</span>
+                    <span class="text-xs text-gray-500">تاريخ الاستحقاق: ${date}</span>
+                </div>
+                <div class="flex flex-col items-end gap-1 mt-2 sm:mt-0">
+                    <span class="font-bold text-lg">المبلغ المستحق: <span class="text-teal-700">${fee} ج.م</span></span>
+                    ${received}
+                    ${payout ? `<span class="text-xs text-gray-500">إجمالي القبض: ${payout} ج.م</span>` : ""}
+                    ${finalAmount ? `<span class="text-xs text-gray-500">الصافي بعد المصاريف: ${finalAmount} ج.م</span>` : ""}
+                </div>
+              </div>
+            `;
+        });
+    }
+    fetchInstallments();
     </script>
 
     <!-- مودال تكبير الصورة -->
