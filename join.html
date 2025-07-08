@@ -2,309 +2,79 @@
 <html lang="ar" dir="rtl">
 
 <head>
-    <meta charset="UTF-8">
-    <title>انضم إلى الجمعية</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="mainLayout.css">
-    <link rel="stylesheet"
-        href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=arrow_circle_left" />
-  <!-- Tailwind -->
-  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+  <meta charset="UTF-8">
+  <title>انضم إلى الجمعية</title>
+    <link rel="stylesheet" href="mainLayout.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Tailwind CSS -->
   <link rel="stylesheet" href="dist/tailwind.css">
-    <style>
+  <!-- Bootstrap Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
+  <!-- Google Material Symbols -->
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+  <!-- Custom CSS -->
 
+  <style>
+    .material-symbols-outlined {
+      font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+    }
 
-        .bottom-navbar {
-            position: fixed;
-            bottom: 0;
-            right: 0;
-            left: 0;
-            width: 100%;
-            background: #fff;
-            border-top: 1.5px solid #eee;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            height: 54px;
-            z-index: 10;
-            box-shadow: 0 2px 10px #0001;
-            font-size: 13px;
-        }
+     /* Bottom Navbar */
+    .bottom-navbar {
+      position: fixed;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      width: 100%;
+      background: #fff;
+      border-top: 1.5px solid #eee;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      height: 54px;
+      z-index: 10;
+      box-shadow: 0 2px 10px #0001;
+      font-size: 13px;
+    }
 
-        .bottom-navbar .label {
-            margin-top: 3px;
-            font-weight: 500;
-            text-align: center;
-            line-height: 1.1;
-        }
+    .bottom-navbar .label {
+      margin-top: 3px;
+      font-weight: 500;
+      text-align: center;
+      line-height: 1.1;
+    }
 
-        .bottom-navbar>div {
-            flex: 1 1 0;
-            text-align: center;
-            cursor: pointer;
-            padding: 7px 0 0 0;
-        }
+    .bottom-navbar>div {
+      flex: 1 1 0;
+      text-align: center;
+      cursor: pointer;
+      padding: 7px 0 0 0;
+    }
 
-        .bottom-navbar .active-footer,
-        .bottom-navbar .active-footer .label {
-            color: #16a34a !important;
-            font-weight: 700;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 32px 8px 80px 8px;
-        }
-
-        .title {
-            color: #222;
-            font-weight: bold;
-            font-size: 1.2rem;
-            margin-bottom: 10px;
-            margin-top: 38px;
-            text-align: center;
-        }
-
-        .desc {
-            color: #58b231;
-            font-size: 1rem;
-            text-align: center;
-            margin-bottom: 24px;
-        }
-
-        .amount-box {
-            background: #f6f6f6;
-            border-radius: 16px;
-            padding: 26px 0;
-            margin: 0 auto 42px auto;
-            text-align: center;
-            font-size: 1.22rem;
-            color: #444;
-            width: 90%;
-            border: none;
-            outline: none;
-        }
-
-        .input-amount {
-            background: transparent;
-            border: none;
-            outline: none;
-            text-align: center;
-            font-size: 1.22rem;
-            color: #444;
-            width: 70%;
-            direction: rtl;
-        }
-
-        .btn-next {
-            display: block;
-            width: 90%;
-            margin: 30px auto 0 auto;
-            padding: 14px 0;
-            border-radius: 22px;
-            background: linear-gradient(90deg, #50a535, #388b1a);
-            color: #fff;
-            border: none;
-            font-size: 1.12rem;
-            font-weight: bold;
-            cursor: pointer;
-            letter-spacing: 2px;
-            transition: background 0.2s;
-        }
-
-        .btn-next:active {
-            background: #277e18;
-        }
-
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 24px 8px 80px 8px;
-        }
-
-        .title {
-            color: #64b730;
-            font-weight: bold;
-            font-size: 1.25rem;
-            margin-bottom: 8px;
-            margin-top: 28px;
-            text-align: center;
-        }
-
-        .subtitle {
-            text-align: center;
-            margin-bottom: 18px;
-            color: #333;
-        }
-
-        .arrow-downs {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .arrow-downs span {
-            font-size: 2rem;
-            color: #c4c4c4;
-            margin: -10px 0;
-        }
-
-        .card {
-            border: 1.5px solid #eee;
-            border-radius: 18px;
-            box-shadow: 0 2px 12px 0 #00000012;
-            padding: 18px;
-            margin-bottom: 20px;
-            background: #fafafa;
-            position: relative;
-            transition: box-shadow 0.2s;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-        }
-
-        .card.selected,
-        .card:hover {
-            border: 1.5px solid #64b730;
-            box-shadow: 0 2px 18px 0 #64b73033;
-            background: #fff;
-        }
-
-        .card-title {
-            font-weight: bold;
-            margin-bottom: 6px;
-            color: #444;
-            font-size: 1.1rem;
-        }
-
-        .card-desc {
-            color: #555;
-            margin-bottom: 10px;
-            font-size: 1rem;
-        }
-
-        .arrow {
-            position: static !important;
-            margin-left: 12px;
-            margin-right: 0;
-            font-size: 1.7rem;
-            color: #64b730;
-            flex-shrink: 0;
-        }
-
-        h2 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 30px;
-        }
-
-        /* Responsive main content (excluding navbars) */
-        .container {
-            max-width: 400px;
-            margin: 0 auto;
-            padding: 24px 8px 80px 8px;
-            width: 100%;
-        }
-        .amount-box,
-        .btn-next,
-        .card {
-            width: 90%;
-            min-width: 0;
-            max-width: 100%;
-        }
-        .input-amount {
-            width: 70%;
-            min-width: 0;
-            max-width: 100%;
-        }
-
-        @media (max-width: 900px) {
-            .container {
-                max-width: 95vw;
-                padding: 20px 2vw 80px 2vw;
-            }
-            .amount-box,
-            .btn-next,
-            .card {
-                width: 98vw;
-                font-size: 1.05rem;
-            }
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                max-width: 100vw;
-                padding: 12px 1vw 70px 1vw;
-            }
-            .amount-box,
-            .btn-next,
-            .card {
-                width: 99vw;
-                font-size: 0.98rem;
-                padding-left: 2vw;
-                padding-right: 2vw;
-            }
-            .card-title {
-                font-size: 1rem;
-            }
-            .card-desc {
-                font-size: 0.93rem;
-            }
-            h2, .title {
-                font-size: 1.05rem;
-            }
-            .arrow {
-                left: 10px;
-                top: 18px;
-                font-size: 1.3rem;
-            }
-        }
-
-        @media (max-width: 400px) {
-            .container {
-                padding: 6px 0.5vw 60px 0.5vw;
-            }
-            .amount-box,
-            .btn-next,
-            .card {
-                width: 100vw;
-                font-size: 0.92rem;
-                padding-left: 1vw;
-                padding-right: 1vw;
-            }
-            .card-title {
-                font-size: 0.92rem;
-            }
-            .card-desc {
-                font-size: 0.88rem;
-            }
-            h2, .title {
-                font-size: 0.98rem;
-            }
-        }
-    </style>
-    <link rel="stylesheet" href="mainLayout.css">
-
-    <!-- Tajawal font for better Arabic rendering -->
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    .bottom-navbar .active-footer,
+    .bottom-navbar .active-footer .label {
+      color: #16a34a !important;
+      font-weight: 700;
+    }
+  
+  </style>
 </head>
 
-<body>
+<body class="bg-gray-50">
+  <!-- Navbar Top (unchanged) -->
+ <div style="background-color:#90D1CA; padding-left: 1.5rem; padding-right: 1.5rem;" class="navbar fixed top-0 left-0 w-full z-50 flex justify-between items-center py-2 shadow-md rounded-b-lg" dir="ltr">
 
-  <!-- Navbar Top -->
-  <div style="background-color:#90D1CA;"
-    class="navbar fixed top-0 left-0 w-full z-50 flex justify-between items-center px-4 py-2 shadow-md rounded-b-lg"
-    dir="ltr">
 
     <!-- Left icons -->
     <div class="flex gap-4 items-center">
       <!-- Notifications -->
       <div class="relative">
-        <button id="notification-toggle" onclick="location.href='./Notification.html'" class="focus:outline-none" title="الإشعارات / Notifications">
+        <button id="notification-toggle" onclick="location.href='./Notification.html'" class="focus:outline-none"
+          title="الإشعارات / Notifications">
           <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
         </button>
         <!-- <div id="notification-dropdown" class="hidden absolute left-0 mt-2 w-64 bg-white shadow-lg rounded-md z-50 p-3">
@@ -339,48 +109,49 @@
     </div>
   </div>
 
-    <!-- Spacer so content isn't hidden under navbar -->
   <div class="h-14"></div>
-  
 
-    <!-- Main Content -->
-    <div class="container text-end " dir="ltr">
-        <h2>انضم إلى الجمعية</h2>
-        <div class="arrow-downs">
-            <span></span>
-            <span></span>
-            <span></span>
-        </div>
-        <a href="association_amount.html" style="text-decoration:none;">
-            <div class="card d-flex flex-row align-items-center" style="position:relative;">
-                <div class="arrow ml-2" style="position:static;">
-                    <i class="bi bi-chevron-double-right"></i>
-                </div>
-                <div>
-                    <div class="card-title">إشتراك في جمعيه</div>
-                    <div class="card-desc">
-                        إختار الدور اللي أنت عايزه بمبالغ قبض تصل لـ 15,000 ر.س في الجمعيه الواحدة
-                    </div>
-                </div>
-            </div>
-        </a>
-
-        <div class="card d-flex flex-row align-items-center" style="position:relative;" onclick="location.href='./Tahwish-Association.html'">
-            <div class="arrow ml-2" style="position:static;">
-                <i class="bi bi-chevron-double-right"></i>
-            </div>
-            <div >
-                <div class="card-title">إشتراك في برنامج التحويش</div>
-                <div class="card-desc">
-حوش لحد 1،000،000 ر.س بالتقسيط واقبض في اخر المده اللي اخترتها بكاش باك يوصل ل 20%                </div>
-            </div>
-        </div>
+  <!-- Main Content -->
+  <main class="max-w-md w-full mx-auto px-4 pt-4 pb-20 text-end" dir="ltr">
+    <h2 class="text-center text-xl font-bold text-gray-800 mb-6">انضم إلى الجمعية</h2>
+    <!-- Arrow Section using Material Symbols Outlined -->
+    <div class="flex flex-col items-center mb-6 space-y-1 text-gray-400">
+      <span class="material-symbols-outlined text-4xl md:text-4xl">keyboard_double_arrow_down</span>
+      <span class="material-symbols-outlined text-4xl md:text-4xl">keyboard_double_arrow_down</span>
+      <span class="material-symbols-outlined text-4xl md:text-4xl">keyboard_double_arrow_down</span>
     </div>
-    <!-- end Main Content -->
-    <!-- Navbar Bottom -->
-  <!-- Navbar Bottom -->
-  <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg" style="background-color:#90D1CA;" dir="rtl">
+    <!-- Option 1 -->
+    <a href="association_amount.html" class="block mb-4">
+      <div class="flex items-center p-4 w-full bg-white rounded-2xl shadow hover:shadow-lg transition relative">
+        <div class="ml-2">
+          <i class="bi bi-chevron-double-right text-2xl text-green-600"></i>
+        </div>
+        <div class="flex-1">
+          <div class="font-semibold text-lg text-gray-700">إشتراك في جمعية</div>
+          <div class="text-gray-600 text-sm leading-relaxed">
+            إختار الدور اللي أنت عايزه بمبالغ قبض تصل لـ 15,000 ر.س في الجمعية الواحدة
+          </div>
+        </div>
+      </div>
+    </a>
+    <!-- Option 2 -->
+    <button onclick="location.href='./Tahwish-Association.html'" type="button" class="block w-full mb-4">
+      <div class="flex items-center p-4 w-full bg-white rounded-2xl shadow hover:shadow-lg transition relative">
+        <div class="ml-2">
+          <i class="bi bi-chevron-double-right text-2xl text-green-600"></i>
+        </div>
+        <div class="flex-1 text-end">
+          <div class="font-semibold text-lg text-gray-700">إشتراك في برنامج التحويش</div>
+          <div class="text-gray-600 text-sm leading-relaxed text-end">
+            حوش لحد 1،000،000 ر.س بالتقسيط واقبض في اخر المده اللي اخترتها بكاش باك يوصل لـ 20%
+          </div>
+        </div>
+      </div>
+    </button>
+  </main>
 
+  <!-- Navbar Bottom (unchanged) -->
+  <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg" style="background-color:#90D1CA; color:#212529; padding-bottom: 2%;" dir="rtl">
     <div onclick="location.href='home.html'" class="p-0">
       <i class="bi bi-house-door-fill  text-xl "></i>
       <div class="label ">الرئيسية</div>
@@ -392,9 +163,6 @@
     </div>
 
     <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3 text-[#008D10]" >
-      <!-- <span class="material-symbols-outlined text-3xl">
-        arrow_circle_left
-      </span> -->
       <img src="./Assets/imgs/SubscribeIcon.svg" class="" alt="">
       <div class="label" style="color:#16a34a; font-weight:700;">انضم الان</div>
     </div>
@@ -408,35 +176,24 @@
       <i class="bi bi-file-earmark-check-fill text-xl"></i>
       <div class="label">المدفوعات</div>
     </div>
-
   </div>
-    <!-- end Navbar Bottom -->
 
-    <script>
-        /* JavaScript */
-        // تأكد من وجود التوكن وإعادة التوجيه للـ login إذا لم يكن موجودًا
-        const token = localStorage.getItem("token");
-        if (!token) {
-            window.location.href = "login.html";
-        }
-
-        // Dropdown للملف الشخصي
-        document.getElementById("profile-toggle").addEventListener("click", () => {
-            document.getElementById("popup-menu").classList.toggle("active");
-        });
-
-        // زر تسجيل الخروج
-        document.getElementById("logout-btn").addEventListener("click", () => {
-            localStorage.removeItem("token");
-            window.location.href = "login.html";
-        });
-    </script>
-    <!-- Scripts -->
-     <script src="./join.js"></script>
-      <script src="./MainLayout.js"></script>
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
+  <!-- Scripts -->
+  <script>
+    const token = localStorage.getItem("token");
+    if (!token) window.location.href = "login.html";
+    document.getElementById("profile-toggle").addEventListener("click", () => {
+      document.getElementById("popup-menu").classList.toggle("active");
+    });
+    document.getElementById("logout-btn").addEventListener("click", () => {
+      localStorage.removeItem("token");
+      window.location.href = "login.html";
+    });
+  </script>
+  <script src="./join.js"></script>
+  <script src="./MainLayout.js"></script>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
