@@ -4,14 +4,13 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>الملف الشخصي / Profile</title>
-  <!-- Tailwind -->
-  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-  <link rel="stylesheet" href="dist/tailwind.css">
-      <!-- Bootstrap Icons -->
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
-    <link rel="stylesheet" href="./mainLayout.css">
     <!-- Google Fonts: Tajawal -->
     <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./mainLayout.css">
     <style>
         /* Custom styles for the bottom navbar */
         .bottom-navbar {
@@ -55,7 +54,6 @@
             font-weight: 700;
         }
 
-
         .navbar {
             font-family: 'Tajawal', sans-serif;
         }
@@ -78,6 +76,100 @@
         }
         .ease-in-out {
             transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Specific styles for the new design */
+        .profile-header {
+            background-color: #90D1CA;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
+            border-bottom-left-radius: 2rem;
+            border-bottom-right-radius: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .profile-image-container {
+            position: relative;
+            width: 120px;
+            height: 120px;
+            margin: 0 auto;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid white;
+            box-shadow: 0 0 0 4px #90D1CA; /* Outer ring color */
+        }
+
+        .camera-icon {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            background-color: #5A67D8; /* Indigo-500 equivalent */
+            color: white;
+            border-radius: 50%;
+            padding: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid white;
+        }
+
+        .input-field-group {
+            background-color: #F3F4F6; /* Gray-100 */
+            border-radius: 0.75rem; /* rounded-xl */
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .input-label {
+            font-size: 0.875rem; /* text-sm */
+            color: #6B7280; /* Gray-500 */
+            margin-bottom: 0.25rem;
+        }
+
+        .input-value {
+            font-size: 1rem; /* text-base */
+            color: #1F2937; /* Gray-900 */
+            font-weight: 500;
+            width: 100%;
+            background-color: transparent;
+            border: none;
+            outline: none;
+        }
+
+        .input-value:focus {
+            outline: none;
+        }
+
+        .button-primary {
+            background-color: #16A34A; /* green-600 */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .button-primary:hover {
+            background-color: #15803D; /* green-700 */
+        }
+
+        .button-secondary {
+            background-color: #EF4444; /* red-500 */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.75rem;
+            font-weight: 600;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .button-secondary:hover {
+            background-color: #DC2626; /* red-600 */
         }
     </style>
 </head>
@@ -117,121 +209,181 @@
         </div>
     </div>
 
-    <!-- Spacer so content isn't hidden under navbar -->
-    <div class="h-20"></div>
+    <!-- Spacer for top navbar -->
+    <div class="h-16 sm:h-20"></div>
 
-    <!-- content -->
-    <div class="min-h-screen flex flex-col">
-        <!-- المحتوى الرئيسي -->
-        <main class="flex-grow container mx-auto px-4 py-8">
-            <div class="max-w-4xl mx-auto">
-                <div class="bg-white overflow-hidden rounded-2xl shadow-card transition-all duration-300 ease-in-out hover:shadow-card-hover hover:-translate-y-1">
-                    <!-- الصورة الكبيرة عند النقر -->
-                    <div id="img-overlay" class="fixed inset-0 bg-black bg-opacity-85 hidden flex items-center justify-center z-50">
-                        <button class="close-btn absolute top-5 right-5 text-white text-2xl w-10 h-10 rounded-full bg-white bg-opacity-10 hover:bg-opacity-20 transition duration-300">&times;</button>
-                        <img id="img-large-view" class="max-h-[85vh] max-w-[90vw] object-contain border-4 border-white shadow-img-large" alt="صورة الملف الشخصي">
-                    </div>
-                    
-                    <div class="p-6 sm:p-8">
-                        <div class="flex flex-col sm:flex-row items-center">
-                            <div class="relative mb-6 sm:mb-0 sm:mr-8">
-                                <img id="profile-image" class="w-40 h-40 rounded-full object-cover border-4 border-indigo-100 transition-all duration-300 ease-in-out cursor-pointer hover:scale-105 hover:border-indigo-300" 
-                                    src="https://via.placeholder.com/150?text=جار+التحميل..." 
-                                    alt="صورة الملف الشخصي"
-                                    onerror="this.onerror=null;this.src='./Assets/imgs/anonymus.jpg';">
-                                <div class="absolute bottom-2 right-2 bg-indigo-500 text-white rounded-full p-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 002-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
-                                    </svg>
-                                </div>
-                            </div>
-                            
-                            <div class="flex-grow">
-                                <h2 class="text-3xl font-bold text-gray-800 mb-4">معلومات المستخدم</h2>
-                                
-                                <div class="space-y-4">
-                                    <div class="border-b border-gray-200 pb-4">
-                                        <div class="text-sm text-gray-500 font-medium">الاسم الكامل</div>
-                                        <div id="full-name" class="text-xl font-semibold text-gray-800">جار التحميل...</div>
-                                    </div>
-                                    
-                                    <div class="border-b border-gray-200 pb-4">
-                                        <div class="text-sm text-gray-500 font-medium">رقم الهوية</div>
-                                        <div id="national-id" class="text-xl font-semibold text-gray-800">جار التحميل...</div>
-                                    </div>
-                                    
-                                    <div class="pb-2">
-                                        <div class="text-sm text-gray-500 font-medium">رقم الجوال</div>
-                                        <div id="phone" class="text-xl font-semibold text-gray-800">جار التحميل...</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="bg-gray-50 px-6 py-4 border-t border-gray-200">
-                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center">
-                            <div class="text-gray-600 mb-2 md:mb-0">
-                                <span class="font-medium">آخر تحديث:</span> 
-                                <span id="last-updated">جار التحميل...</span>
-                            </div>
-                            <button id="edit-profile-btn" class="text-indigo-600 hover:text-indigo-800 font-medium flex items-center transition-colors duration-300">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
-                                    <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
-                                </svg>
-                                تعديل الملف الشخصي
-                            </button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="mt-8 bg-white rounded-2xl shadow-card p-6 transition-all duration-300 ease-in-out hover:shadow-card-hover hover:-translate-y-1">
-                    <h3 class="text-xl font-bold text-gray-800 mb-4">الأنشطة الأخيرة</h3>
-                    <div id="recent-activities" class="space-y-4">
-                        <!-- سيتم تعبئته من جافاسكريبت -->
-                    </div>
+    <!-- Main Content Area -->
+    <div class="min-h-screen flex flex-col items-center pb-24">
+        <!-- Profile Header Section -->
+        <div class="profile-header w-full text-center pb-12">
+            <h1 class="text-white text-2xl font-bold mb-6">الملف الشخصي</h1>
+            <div class="profile-image-container mb-4">
+                <img id="profile-image" class="profile-image cursor-pointer"
+                    src="https://via.placeholder.com/150?text=جار+التحميل..."
+                    alt="صورة الملف الشخصي"
+                    onerror="this.onerror=null;this.src='./Assets/imgs/anonymus.jpg';">
+                <div class="camera-icon absolute bottom-0 right-0">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 002-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
                 </div>
             </div>
-        </main>
+            <p id="header-full-name" class="text-white text-lg font-medium">جار التحميل...</p>
+            <p class="text-white text-sm">إضغط لتغيير الصورة</p>
+        </div>
+
+        <!-- Image enlargement overlay -->
+        <div id="img-overlay" class="fixed inset-0 bg-black bg-opacity-85 hidden flex items-center justify-center z-50">
+            <button class="close-btn absolute top-5 right-5 text-white text-2xl w-10 h-10 rounded-full bg-white bg-opacity-10 hover:bg-opacity-20 transition duration-300">&times;</button>
+            <img id="img-large-view" class="max-h-[85vh] max-w-[90vw] object-contain border-4 border-white shadow-img-large" alt="صورة الملف الشخصي">
+        </div>
+
+        <!-- Profile Details Card -->
+        <div class="w-full max-w-md mx-auto -mt-16 relative z-20 p-4">
+            <div class="bg-white rounded-2xl shadow-card p-6 sm:p-8">
+                <h2 class="text-xl font-bold text-gray-800 mb-6 text-center">معلومات الحساب الأساسية</h2>
+
+                <div class="space-y-4">
+                    <div class="input-field-group">
+                        <div class="input-label">الاسم الكامل</div>
+                        <input type="text" id="full-name" class="input-value" value="جار التحميل..." readonly>
+                    </div>
+
+                    <div class="input-field-group">
+                        <div class="input-label">البريد الإلكتروني</div>
+                        <input type="email" id="email" class="input-value" value="جار التحميل..." readonly>
+                        <p class="text-xs text-gray-500 mt-1">يمكن تغيير البريد الإلكتروني لأسباب أمنية. يرجى التواصل مع الدعم لتغييره.</p>
+                    </div>
+
+                    <div class="input-field-group">
+                        <div class="input-label">رقم الهاتف</div>
+                        <input type="tel" id="phone" class="input-value" value="جار التحميل..." readonly>
+                        <p class="text-xs text-gray-500 mt-1">سيتم إرسال رمز تحقق لتأكيد أي تغيير.</p>
+                    </div>
+
+                    <div class="input-field-group">
+                        <div class="input-label">الرقم القومي (آخر 4 أرقام):</div>
+                        <input type="text" id="national-id" class="input-value" value="جار التحميل..." readonly>
+                        <p class="text-xs text-gray-500 mt-1">الرقم القومي هوية مؤكدة ولا يمكن تغييره.</p>
+                    </div>
+                </div>
+
+                <div class="mt-6 flex justify-center">
+                    <button id="edit-profile-btn" class="button-primary w-full max-w-xs">تعديل الملف الشخصي</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- My Associations Section -->
+        <div class="w-full max-w-md mx-auto p-4 mt-8">
+            <div class="bg-white rounded-2xl shadow-card p-6 sm:p-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">الجمعيات الخاصة بي</h3>
+                <p class="text-sm text-gray-600 text-center mb-6">
+                    استعرض كل تفاصيل مشاركاتك في الجمعيات، سواء كانت نشطة أو مكتملة. إدارة دفعاتك، استخداماتك، وتفاصيل أدوارك بكل سهولة ووضوح.
+                </p>
+                <div class="flex justify-center">
+                    <button onclick="location.href='circle-list.html'" class="button-primary flex items-center justify-center gap-2 px-6 py-3">
+                        <i class="bi bi-eye-fill text-lg"></i>
+                        عرض كل الجمعيات
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Settings and Support Section -->
+        <div class="w-full max-w-md mx-auto p-4 mt-8">
+            <div class="bg-white rounded-2xl shadow-card p-6 sm:p-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">الإعدادات والدعم</h3>
+
+                <div class="space-y-4">
+                    <div class="input-field-group flex justify-between items-center cursor-pointer hover:bg-gray-200 transition-colors" onclick="showCustomModal('تغيير كلمة المرور غير متاح حالياً.');">
+                        <div class="input-label mb-0">تغيير كلمة المرور</div>
+                        <i class="bi bi-chevron-left text-gray-500"></i>
+                    </div>
+                    <div class="input-field-group flex justify-between items-center cursor-pointer hover:bg-gray-200 transition-colors" onclick="showCustomModal('تغيير اللغة غير متاح حالياً.');">
+                        <div class="input-label mb-0">اللغة</div>
+                        <div class="input-value text-right mb-0">العربية</div>
+                    </div>
+                </div>
+
+                <h4 class="text-lg font-bold text-gray-800 mt-8 mb-4 text-center">الدعم والمساعدة</h4>
+                <div class="space-y-4">
+                    <div class="input-field-group flex justify-between items-center cursor-pointer hover:bg-gray-200 transition-colors" onclick="showCustomModal('الأسئلة الشائعة غير متاحة حالياً.');">
+                        <div class="input-label mb-0">الأسئلة الشائعة</div>
+                        <i class="bi bi-chevron-left text-gray-500"></i>
+                    </div>
+                    <div class="input-field-group flex justify-between items-center cursor-pointer hover:bg-gray-200 transition-colors" onclick="showCustomModal('التواصل معنا غير متاح حالياً.');">
+                        <div class="input-label mb-0">تواصل معنا</div>
+                        <i class="bi bi-chevron-left text-gray-500"></i>
+                    </div>
+                    <div class="input-field-group flex justify-between items-center cursor-pointer hover:bg-gray-200 transition-colors" onclick="showCustomModal('شروط الخدمة وسياسة الخصوصية غير متاحة حالياً.');">
+                        <div class="input-label mb-0">شروط الخدمة وسياسة الخصوصية</div>
+                        <i class="bi bi-chevron-left text-gray-500"></i>
+                    </div>
+                    <div class="input-field-group flex justify-between items-center cursor-pointer hover:bg-gray-200 transition-colors" onclick="showCustomModal('إصدار التطبيق: 1.2.5');">
+                        <div class="input-label mb-0">إصدار التطبيق</div>
+                        <div class="input-value text-right mb-0">1.2.5</div>
+                    </div>
+                </div>
+
+                <div class="mt-8 flex justify-center gap-4">
+                    <button id="logout-btn-large" class="button-secondary w-full max-w-[150px]">تسجيل الخروج</button>
+                    <button class="button-secondary bg-gray-400 hover:bg-gray-500 w-full max-w-[150px]" onclick="showCustomModal('حذف الحساب غير متاح حالياً.');">حذف الحساب</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activities Section -->
+        <div class="w-full max-w-md mx-auto p-4 mt-8">
+            <div class="bg-white rounded-2xl shadow-card p-6 sm:p-8">
+                <h3 class="text-xl font-bold text-gray-800 mb-4 text-center">الأنشطة الأخيرة</h3>
+                <div id="recent-activities" class="space-y-4">
+                    <!-- Activities will be populated here by JavaScript -->
+                    <div class="text-gray-500 text-center">جار التحميل...</div>
+                </div>
+            </div>
+        </div>
+
     </div>
 
     <!-- Spacer so content isn't hidden under navbar -->
     <div class="h-24"></div>
 
-  <!-- Navbar Bottom -->
-  <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg"
-    style="background-color:#90D1CA;" dir="rtl">
+    <!-- Navbar Bottom (Existing code, unchanged) -->
+<!-- Navbar Bottom -->
+<div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg"
+  style="background-color:#90D1CA;" dir="rtl">
 
-    <div onclick="location.href='home.html'" class="p-0 ">
-      <i class="bi bi-house-door-fill text-xl "></i>
-      <div class="label ">الرئيسية</div>
-    </div>
-
-    <div onclick="location.href='circle-list.html'" class="p-0">
-      <i class="bi bi-people-fill text-xl"></i>
-      <div class="label">جمعياتي</div>
-    </div>
-
-    <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3">
-      <!-- <span class="material-symbols-outlined text-3xl">
-        arrow_circle_left
-      </span> -->
-      <img src="./Assets/imgs/SubscribeIcon.svg" class="z-index:10;" alt="error">
-      <div class="label" style=" font-weight:700;">انضم الان</div>
-    </div>
-
-    <div onclick="location.href='./wallet.html'" class="p-0">
-      <i class="bi bi-credit-card-fill text-xl"></i>
-      <div class="label">محفظتي</div>
-    </div>
-
-    <div onclick="location.href='payments.html'" class="p-0 ">
-      <i class="bi bi-file-earmark-check-fill text-xl"></i>
-      <div class="label">المدفوعات</div>
-    </div>
-
+  <div onclick="location.href='home.html'" class="p-0 ">
+    <i class="bi bi-house-door-fill text-xl "></i>
+    <div class="label ">الرئيسية</div>
   </div>
+
+  <div onclick="location.href='circle-list.html'" class="p-0">
+    <i class="bi bi-people-fill text-xl"></i>
+    <div class="label">جمعياتي</div>
+  </div>
+
+  <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3">
+    <!-- <span class="material-symbols-outlined text-3xl">
+      arrow_circle_left
+    </span> -->
+    <img src="./Assets/imgs/SubscribeIcon.svg" class="z-index:10;" alt="error">
+    <div class="label" style=" font-weight:700;">انضم الان</div>
+  </div>
+
+  <div onclick="location.href='./wallet.html'" class="p-0">
+    <i class="bi bi-credit-card-fill text-xl"></i>
+    <div class="label">محفظتي</div>
+  </div>
+
+  <div onclick="location.href='payments.html'" class="p-0 ">
+    <i class="bi bi-file-earmark-check-fill text-xl"></i>
+    <div class="label">المدفوعات</div>
+  </div>
+
+</div>
 
     <!-- Custom Modal for Messages -->
     <div id="custom-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-[100]">
@@ -242,6 +394,5 @@
     </div>
 
 <script src="./profile.js"></script>
-<script src="./MainLayout.js"></script>
 </body>
 </html>
