@@ -4,109 +4,96 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>جاهزية حسابك للقبض</title>
-      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-      <link rel="stylesheet" href="./mainLayout.css">
-  <!-- Tailwind -->
-  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-  <link rel="stylesheet" href="dist/tailwind.css">
+    <link rel="stylesheet" href="./mainLayout.css">
+    <link rel="stylesheet" href="dist/tailwind.css">
     <style>
-        /* Pure CSS for fine-tuning if needed */
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* خط عام مقارب */
-            background-color: #f0f2f5; /* لون خلفية خفيف */
-            margin: 0; /* إزالة أي هوامش افتراضية من الـ body */
-            padding: 0; /* إزالة أي مسافات داخلية افتراضية من الـ body */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
         }
-        /* Custom styles for the checkmark icon in "الاقساط المستحقة" */
         .checked-icon-container {
             width: 24px;
             height: 24px;
             display: flex;
             align-items: center;
             justify-content: center;
-            background-color: #d1fae5; /* Light green background for checkmark */
+            background-color: #d1fae5;
             border-radius: 50%;
         }
         .checked-icon-container i {
-            color: #0d9488; /* Darker green for the checkmark */
+            color: #0d9488;
             font-size: 1rem;
         }
-
-        /* Custom styles for the nav icons if default Tailwind is not enough */
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 4px 0; /* تقليل البادينج ليناسب الارتفاع 50px */
-            color: #000000; /* Default icon and text color to black */
-            font-size: 0.65rem; /* تصغير حجم النص ليتناسب مع الارتفاع */
-            flex-grow: 1; /* لجعل العناصر تتوزع بالتساوي */
-            text-align: center; /* Center align text for nav items */
+            padding: 4px 0;
+            color: #000000;
+            font-size: 0.65rem;
+            flex-grow: 1;
+            text-align: center;
         }
         .nav-item i {
-            font-size: 1.15rem; /* Icon size */
-            margin-bottom: 2px; /* تقليل المسافة بين الأيقونة والنص */
-            color: #000000; /* Ensure icon is black by default */
+            font-size: 1.15rem;
+            margin-bottom: 2px;
+            color: #000000;
         }
         .nav-item.active {
-            color: #000000; /* Active text color to black */
+            color: #000000;
         }
         .nav-item.active i {
-             color: #000000; /* Active icon color to black */
+            color: #000000;
         }
         .nav-item.active .nav-icon-highlight {
-            background-color: #90d1ca; /* Active highlight color */
+            background-color: #90d1ca;
             border-radius: 50%;
-            padding: 6px; /* Adjust padding to make it a circular background for 50px height */
-            color: #000000; /* Black icon on highlight background */
+            padding: 6px;
+            color: #000000;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             position: relative;
-            bottom: 8px; /* Adjust to move it slightly up for 50px height */
+            bottom: 8px;
         }
         .nav-item.active .nav-icon-highlight i {
-            font-size: 1.35rem; /* Make icon inside highlight a bit larger for 50px height */
-            color: #000000; /* Ensure icon is black when highlighted */
+            font-size: 1.35rem;
+            color: #000000;
         }
-        .nav-icon-highlight { /* Default styles for non-active highlight to ensure consistency */
-             background-color: transparent;
-             padding: 0;
-             border-radius: 0;
-             box-shadow: none;
-             color: inherit;
-             position: static;
+        .nav-icon-highlight {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            box-shadow: none;
+            color: inherit;
+            position: static;
         }
-
-        /* Specific styles for the "الاقساط المستحقة" section */
         .installments-header {
-            background-color: #e6ffed; /* لون أخضر فاتح جداً مائل للأبيض */
-            color: #059669; /* لون أخضر داكن للنص */
-            border-radius: 8px; /* زوايا دائرية */
-            padding: 1rem; /* مسافة داخلية */
-            margin-bottom: 20px; /* Add margin to push content up and allow more scroll */
+            background-color: #e6ffed;
+            color: #059669;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 20px;
         }
         .installments-header .fa-coins {
-            color: #059669; /* لون أيقونة العملات أخضر داكن */
+            color: #059669;
         }
-
-        /* Hover effect for document boxes */
         .document-box {
             transition: all 0.2s ease-in-out;
         }
         .document-box:hover {
-            background-color: #f0fdf4; /* Lighter green on hover */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Enhanced shadow */
-            transform: translateY(-2px); /* Slight lift on hover */
+            background-color: #f0fdf4;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            transform: translateY(-2px);
         }
-
-        /* Ensure more scrollable area for content */
         .flex-grow.container {
-            padding-bottom: 80px; /* Increased padding to give more scroll space above navbar */
+            padding-bottom: 80px;
         }
-        /* Add hover effect for installments */
         .installment-item {
             transition: box-shadow .15s;
         }
@@ -136,9 +123,7 @@
                 </div>
                 <i class="fas fa-cloud-upload-alt text-green-500 text-2xl mr-2"></i>
             </div>
-            <!-- Start: Uploaded National ID Images -->
             <div id="uploaded-id-images" class="flex flex-wrap gap-2 mt-2"></div>
-            <!-- End: Uploaded National ID Images -->
 
             <div class="flex items-center bg-gray-50 p-4 rounded-lg shadow-sm document-box cursor-pointer" data-modal="modal-receipt">
                 <i class="fas fa-chevron-right text-gray-400 text-xl mr-3 ml-2"></i>
@@ -148,7 +133,6 @@
                 </div>
                 <i class="fas fa-cloud-upload-alt text-green-500 text-2xl mr-2"></i>
             </div>
-            <!-- صورة ثابتة لإيصال إلتزام السداد -->
             <div class="flex justify-end mt-2 mb-2">
                 <img src="Assets/imgs/slip.webp" alt="إيصال إلتزام السداد" class="w-32 h-auto rounded border border-gray-200 enlargeable cursor-pointer">
             </div>
@@ -170,7 +154,6 @@
                 </div>
                 <i class="fas fa-cloud-upload-alt text-green-500 text-2xl mr-2"></i>
             </div>
-            <!-- صورة ثابتة للعقد -->
             <div class="flex justify-end mt-2 mb-2">
                 <img src="Assets/imgs/slip2.webp" alt="مستند التزام السداد" class="w-32 h-auto rounded border border-gray-200 enlargeable cursor-pointer">
             </div>
@@ -184,15 +167,13 @@
             <i class="fas fa-coins text-2xl mr-2"></i>
         </div>
 
-        <!-- START: الاقساط المستحقة LOG LIST -->
         <div id="installment-log" class="flex flex-col gap-3"></div>
-        <!-- END: الاقساط المستحقة LOG LIST -->
-
         <div class="h-20"></div>
 
     </div>
 
     <!-- Modals -->
+    <!-- ... all your modals unchanged ... -->
     <!-- Modal: البطاقة الشخصية -->
     <div id="modal-id-card" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
       <div class="bg-white rounded-lg shadow-lg w-[90vw] max-w-md p-6 relative flex flex-col">
@@ -282,186 +263,169 @@
       <i class="bi bi-file-earmark-check-fill text-xl"></i>
       <div class="label">المدفوعات</div>
     </div>
-
   </div>
-    <script>
-      // Modal open/close logic
-      document.querySelectorAll('.document-box').forEach(box => {
-        box.addEventListener('click', function() {
-          const modalId = this.getAttribute('data-modal');
-          document.getElementById(modalId).classList.remove('hidden');
-        });
-      });
-      document.querySelectorAll('.close-modal').forEach(btn => {
-        btn.addEventListener('click', function(e) {
-          e.stopPropagation();
-          const modalId = this.getAttribute('data-modal');
-          document.getElementById(modalId).classList.add('hidden');
-        });
-      });
-      // Close modal on background click
-      document.querySelectorAll('[id^="modal-"]').forEach(modal => {
-        modal.addEventListener('click', function(e) {
-          if (e.target === this) this.classList.add('hidden');
-        });
-      });
 
-      // Handle upload/save and show modal then go back
-      async function handleUpload(type) {
-        let data = {};
-        if (type === 'id-card') {
-          const fileInput = document.getElementById('id-card-file');
-          if (fileInput.files.length > 0) {
-            const file = fileInput.files[0];
-            // Upload to backend
-            const formData = new FormData();
-            formData.append('nationalIdImage', file);
-            try {
-              const res = await fetch('https://api.technologytanda.com/api/nationalID/upload', {
-                method: 'POST',
-                body: formData
-              });
-              if (!res.ok) throw new Error('Upload failed');
-              const result = await res.json();
-              data['idCard'] = result.filePath;
-            } catch (e) {
-              alert('فشل رفع صورة البطاقة. حاول مرة أخرى.');
-              return;
-            }
-          } else {
-            alert('يرجى اختيار صورة البطاقة');
-            return;
-          }
-        } else if (type === 'receipt') {
-          const fileInput = document.getElementById('receipt-file');
-          if (fileInput.files.length > 0) {
-            data['receipt'] = fileInput.files[0].name;
-          }
-        } else if (type === 'method') {
-          const select = document.getElementById('method-select');
-          data['method'] = select.value;
-          // Send PATCH request to update payment method with Authorization header
-          const token = localStorage.getItem('token'); // Adjust key if your token is stored under a different name
-          if (!token) {
-            alert('يرجى تسجيل الدخول أولاً');
-            return;
-          }
+  <script>
+    // Modal open/close logic and uploads remain unchanged
+    document.querySelectorAll('.document-box').forEach(box => {
+      box.addEventListener('click', function() {
+        const modalId = this.getAttribute('data-modal');
+        document.getElementById(modalId).classList.remove('hidden');
+      });
+    });
+    document.querySelectorAll('.close-modal').forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const modalId = this.getAttribute('data-modal');
+        document.getElementById(modalId).classList.add('hidden');
+      });
+    });
+    document.querySelectorAll('[id^="modal-"]').forEach(modal => {
+      modal.addEventListener('click', function(e) {
+        if (e.target === this) this.classList.add('hidden');
+      });
+    });
+    async function handleUpload(type) {
+      let data = {};
+      if (type === 'id-card') {
+        const fileInput = document.getElementById('id-card-file');
+        if (fileInput.files.length > 0) {
+          const file = fileInput.files[0];
+          const formData = new FormData();
+          formData.append('nationalIdImage', file);
           try {
-            const res = await fetch('https://api.technologytanda.com/api/payments/update-payment-method/7', {
-              method: 'PATCH',
-              headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + token
-              },
-              body: JSON.stringify({ qabdMethod: select.value })
+            const res = await fetch('https://api.technologytanda.com/api/nationalID/upload', {
+              method: 'POST',
+              body: formData
             });
-            if (!res.ok) throw new Error('فشل تحديث طريقة الدفع');
+            if (!res.ok) throw new Error('Upload failed');
             const result = await res.json();
-            if (!result.success) throw new Error(result.message || 'فشل تحديث طريقة الدفع');
+            data['idCard'] = result.filePath;
           } catch (e) {
-            alert(e.message || 'حدث خطأ أثناء تحديث طريقة الدفع');
+            alert('فشل رفع صورة البطاقة. حاول مرة أخرى.');
             return;
           }
-        } else if (type === 'contract') {
-          const fileInput = document.getElementById('contract-file');
-          if (fileInput.files.length > 0) {
-            data['contract'] = fileInput.files[0].name;
-          }
+        } else {
+          alert('يرجى اختيار صورة البطاقة');
+          return;
         }
-        // Save to localStorage (append or update)
-        let prev = {};
-        try { prev = JSON.parse(localStorage.getItem('accountReceivable') || '{}'); } catch {}
-        localStorage.setItem('accountReceivable', JSON.stringify({...prev, ...data}));
-
-        // Hide all modals
-        document.querySelectorAll('[id^="modal-"]').forEach(m => m.classList.add('hidden'));
-        // Show success modal
-        document.getElementById('success-modal').classList.remove('hidden');
-        // Redirect after short delay
-        setTimeout(() => {
-          document.getElementById('success-modal').classList.add('hidden');
-          window.history.back();
-        }, 1200);
-      }
-
-      // Fetch and display uploaded national ID images on page load
-      async function fetchNationalIdImages() {
-        try {
-          const res = await fetch('https://api.technologytanda.com/api/nationalID/all');
-          if (!res.ok) return;
-          const data = await res.json();
-          const container = document.getElementById('uploaded-id-images');
-          container.innerHTML = '';
-          if (data.images && data.images.length > 0) {
-            data.images.forEach(img => {
-              const imgElem = document.createElement('img');
-              imgElem.src = `https://api.technologytanda.com/api/nationalID/${img}`;
-              imgElem.className = "w-24 h-24 object-cover rounded border border-gray-200";
-              imgElem.alt = "صورة بطاقة شخصية";
-              container.appendChild(imgElem);
-            });
-          }
-        } catch {}
-      }
-      fetchNationalIdImages();
-
-      // Fetch and set current payment method in the select box
-      async function fetchCurrentPaymentMethod() {
+      } else if (type === 'receipt') {
+        const fileInput = document.getElementById('receipt-file');
+        if (fileInput.files.length > 0) {
+          data['receipt'] = fileInput.files[0].name;
+        }
+      } else if (type === 'method') {
+        const select = document.getElementById('method-select');
+        data['method'] = select.value;
         const token = localStorage.getItem('token');
-        if (!token) return;
+        if (!token) {
+          alert('يرجى تسجيل الدخول أولاً');
+          return;
+        }
         try {
-          const res = await fetch('https://api.technologytanda.com/api/payments/payment-method/my', {
+          const res = await fetch('https://api.technologytanda.com/api/payments/update-payment-method/7', {
+            method: 'PATCH',
             headers: {
+              'Content-Type': 'application/json',
               'Authorization': 'Bearer ' + token
-            }
+            },
+            body: JSON.stringify({ qabdMethod: select.value })
           });
-          if (!res.ok) return;
-          const data = await res.json();
-          if (data.success && data.paymentMethod && data.paymentMethod.qabdMethod) {
-            const select = document.getElementById('method-select');
-            if (select) {
-              // Try to match the option by value
-              for (let i = 0; i < select.options.length; i++) {
-                if (select.options[i].text === data.paymentMethod.qabdMethod) {
-                  select.selectedIndex = i;
-                  break;
-                }
+          if (!res.ok) throw new Error('فشل تحديث طريقة الدفع');
+          const result = await res.json();
+          if (!result.success) throw new Error(result.message || 'فشل تحديث طريقة الدفع');
+        } catch (e) {
+          alert(e.message || 'حدث خطأ أثناء تحديث طريقة الدفع');
+          return;
+        }
+      } else if (type === 'contract') {
+        const fileInput = document.getElementById('contract-file');
+        if (fileInput.files.length > 0) {
+          data['contract'] = fileInput.files[0].name;
+        }
+      }
+      let prev = {};
+      try { prev = JSON.parse(localStorage.getItem('accountReceivable') || '{}'); } catch {}
+      localStorage.setItem('accountReceivable', JSON.stringify({...prev, ...data}));
+      document.querySelectorAll('[id^="modal-"]').forEach(m => m.classList.add('hidden'));
+      document.getElementById('success-modal').classList.remove('hidden');
+      setTimeout(() => {
+        document.getElementById('success-modal').classList.add('hidden');
+        window.history.back();
+      }, 1200);
+    }
+    async function fetchNationalIdImages() {
+      try {
+        const res = await fetch('https://api.technologytanda.com/api/nationalID/all');
+        if (!res.ok) return;
+        const data = await res.json();
+        const container = document.getElementById('uploaded-id-images');
+        container.innerHTML = '';
+        if (data.images && data.images.length > 0) {
+          data.images.forEach(img => {
+            const imgElem = document.createElement('img');
+            imgElem.src = `https://api.technologytanda.com/api/nationalID/${img}`;
+            imgElem.className = "w-24 h-24 object-cover rounded border border-gray-200";
+            imgElem.alt = "صورة بطاقة شخصية";
+            container.appendChild(imgElem);
+          });
+        }
+      } catch {}
+    }
+    fetchNationalIdImages();
+    async function fetchCurrentPaymentMethod() {
+      const token = localStorage.getItem('token');
+      if (!token) return;
+      try {
+        const res = await fetch('https://api.technologytanda.com/api/payments/payment-method/my', {
+          headers: {
+            'Authorization': 'Bearer ' + token
+          }
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.success && data.paymentMethod && data.paymentMethod.qabdMethod) {
+          const select = document.getElementById('method-select');
+          if (select) {
+            for (let i = 0; i < select.options.length; i++) {
+              if (select.options[i].text === data.paymentMethod.qabdMethod) {
+                select.selectedIndex = i;
+                break;
               }
             }
           }
-        } catch {}
-      }
-      fetchCurrentPaymentMethod();
-
-      // تكبير الصور عند الضغط عليها (بعد التأكد من وجود العناصر)
-      document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('.enlargeable').forEach(img => {
-          img.addEventListener('click', function(e) {
-            const modal = document.getElementById('image-modal');
-            const modalImg = document.getElementById('modal-img');
-            if (modal && modalImg) {
-              modalImg.src = this.src;
-              modal.classList.remove('hidden');
-            }
-          });
+        }
+      } catch {}
+    }
+    fetchCurrentPaymentMethod();
+    document.addEventListener('DOMContentLoaded', function() {
+      document.querySelectorAll('.enlargeable').forEach(img => {
+        img.addEventListener('click', function(e) {
+          const modal = document.getElementById('image-modal');
+          const modalImg = document.getElementById('modal-img');
+          if (modal && modalImg) {
+            modalImg.src = this.src;
+            modal.classList.remove('hidden');
+          }
         });
-        const imageModal = document.getElementById('image-modal');
-        if (imageModal) {
-          imageModal.addEventListener('click', function(e) {
-            if (e.target === this) this.classList.add('hidden');
-          });
-        }
-        const closeImageModal = document.getElementById('close-image-modal');
-        if (closeImageModal) {
-          closeImageModal.addEventListener('click', function() {
-            document.getElementById('image-modal').classList.add('hidden');
-          });
-        }
       });
-    </script>
+      const imageModal = document.getElementById('image-modal');
+      if (imageModal) {
+        imageModal.addEventListener('click', function(e) {
+          if (e.target === this) this.classList.add('hidden');
+        });
+      }
+      const closeImageModal = document.getElementById('close-image-modal');
+      if (closeImageModal) {
+        closeImageModal.addEventListener('click', function() {
+          document.getElementById('image-modal').classList.add('hidden');
+        });
+      }
+    });
+  </script>
 
-    <!-- الاقساط المستحقة - Fetch and render from backend -->
-    <script>
+  <!-- الاقساط المستحقة - Fetch and render from backend -->
+  <script>
     async function fetchInstallments() {
         const token = localStorage.getItem('token');
         let installments = [];
@@ -478,50 +442,51 @@
     }
 
     function renderInstallmentLog(installments) {
-        const container = document.getElementById('installment-log');
-        container.innerHTML = '';
-        if (!installments.length) {
-            container.innerHTML = '<div class="text-gray-500 text-center">لا يوجد أقساط مستحقة حالياً</div>';
-            return;
-        }
-        installments.forEach(inst => {
-            const association = inst.associationName || '-';
-            const turn = inst.turnName || `الدور ${inst.turnNumber}`;
-            const date = new Date(inst.scheduledDate).toLocaleDateString('ar-EG', {year: 'numeric', month: 'long', day: 'numeric'});
-            const fee = (inst.currentTurn && inst.currentTurn.feeAmount !== undefined) ? inst.currentTurn.feeAmount : '—';
-            const payout = (inst.currentTurn && inst.currentTurn.totalPayout !== undefined) ? inst.currentTurn.totalPayout : '';
-            const finalAmount = (inst.currentTurn && inst.currentTurn.finalAmount !== undefined) ? inst.currentTurn.finalAmount : '';
-            const received = (inst.currentTurn &&
-                            inst.currentTurn.currentTurnMember &&
-                            inst.currentTurn.currentTurnMember.hasReceived)
-                ? '<span class="text-green-600 font-semibold">تم الاستلام</span>'
-                : '<span class="text-red-500 font-semibold">لم يتم الاستلام</span>';
-
-            container.innerHTML += `
-              <div class="installment-item flex flex-col sm:flex-row sm:justify-between items-start sm:items-center bg-gray-100 p-3 rounded shadow-sm border border-gray-200 gap-2">
-                <div class="flex flex-col text-right">
-                    <span class="font-bold text-lg text-teal-700 mb-1">${association}</span>
-                    <span class="font-medium">${turn}</span>
-                    <span class="text-xs text-gray-500">تاريخ الاستحقاق: ${date}</span>
-                </div>
-                <div class="flex flex-col items-end gap-1 mt-2 sm:mt-0">
-                    <span class="font-bold text-lg">المبلغ المستحق: <span class="text-teal-700">${fee} ج.م</span></span>
-                    ${received}
-                    ${payout ? `<span class="text-xs text-gray-500">إجمالي القبض: ${payout} ج.م</span>` : ""}
-                    ${finalAmount ? `<span class="text-xs text-gray-500">الصافي بعد المصاريف: ${finalAmount} ج.م</span>` : ""}
-                </div>
-              </div>
-            `;
-        });
+    const container = document.getElementById('installment-log');
+    container.innerHTML = '';
+    if (!installments.length) {
+        container.innerHTML = '<div class="text-gray-500 text-center">لا يوجد أقساط مستحقة حالياً</div>';
+        return;
     }
-    fetchInstallments();
-    </script>
+    installments.forEach(inst => {
+        const turn = inst.turnName || `الدور ${inst.turnNumber}`;
+        const date = new Date(inst.scheduledDate).toLocaleDateString('ar-EG', {year: 'numeric', month: 'long', day: 'numeric'});
+        const fee = inst.monthlyAmount !== undefined ? inst.monthlyAmount : '—';
+        const payout = (inst.currentTurn && inst.currentTurn.totalPayout !== undefined) ? inst.currentTurn.totalPayout : '';
+        const feeAmount = (inst.currentTurn && inst.currentTurn.feeAmount !== undefined) ? inst.currentTurn.feeAmount : '';
+        const finalAmount = (inst.currentTurn && inst.currentTurn.finalAmount !== undefined) ? inst.currentTurn.finalAmount : '';
+        const received = (inst.currentTurn &&
+                        inst.currentTurn.currentTurnMember &&
+                        inst.currentTurn.currentTurnMember.hasReceived)
+            ? '<span class="text-green-600 font-semibold">تم الاستلام</span>'
+            : '<span class="text-red-500 font-semibold">لم يتم الاستلام</span>';
 
-    <!-- مودال تكبير الصورة -->
-    <div id="image-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 hidden">
-      <span id="close-image-modal" class="absolute top-4 left-4 text-white text-3xl cursor-pointer" style="z-index:60;">&times;</span>
-      <img id="modal-img" src="" alt="صورة مكبرة" class="max-h-[80vh] max-w-[90vw] rounded shadow-lg border-4 border-white" style="z-index:55;">
-    </div>
+        container.innerHTML += `
+          <div class="installment-item flex flex-col sm:flex-row sm:justify-between items-start sm:items-center bg-gray-100 p-3 rounded shadow-sm border border-gray-200 gap-2">
+            <div class="flex flex-col text-right">
+                <span class="font-medium">${turn}</span>
+                <span class="text-xs text-gray-500">تاريخ الاستحقاق: ${date}</span>
+            </div>
+            <div class="flex flex-col items-end gap-1 mt-2 sm:mt-0">
+                <span class="font-bold text-lg">المبلغ المستحق: <span class="text-teal-700">${fee} ج.م</span></span>
+                ${received}
+                ${payout ? `<span class="text-xs text-gray-500">إجمالي القبض: ${payout} ج.م</span>` : ""}
+                ${feeAmount ? `<span class="text-xs text-gray-500">رسوم الاشتراك: ${feeAmount} ج.م</span>` : ""}
+                ${finalAmount ? `<span class="text-xs text-gray-500">و الصافي بعد الرسوم: ${finalAmount} ج.م</span>` : ""}
+            </div>
+          </div>
+        `;
+    });
+}
+
+    fetchInstallments();
+  </script>
+
+  <!-- مودال تكبير الصورة -->
+  <div id="image-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-70 hidden">
+    <span id="close-image-modal" class="absolute top-4 left-4 text-white text-3xl cursor-pointer" style="z-index:60;">&times;</span>
+    <img id="modal-img" src="" alt="صورة مكبرة" class="max-h-[80vh] max-w-[90vw] rounded shadow-lg border-4 border-white" style="z-index:55;">
+  </div>
 
 </body>
 </html>
