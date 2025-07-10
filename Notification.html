@@ -75,6 +75,18 @@
     </div>
   </div>
 
+  <!-- Custom Confirmation Modal -->
+  <div id="confirmationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden">
+    <div class="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full mx-4 text-center">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">تأكيد الحذف</h3>
+      <p class="text-gray-600 mb-6">هل أنت متأكد أنك تريد حذف هذا الإشعار؟</p>
+      <div class="flex justify-center gap-4">
+        <button id="cancelDeleteBtn" class="px-5 py-2 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300 transition">إلغاء</button>
+        <button id="confirmDeleteBtn" class="px-5 py-2 bg-red-600 text-white rounded-full hover:bg-red-700 transition">حذف</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Notification Toggle Button (if used elsewhere) -->
   <button id="notification-toggle" class="focus:outline-none hidden" title="الإشعارات / Notifications">
     <i class="bi bi-bell-fill text-2xl text-black hover:text-[#16a34a] transition-colors duration-200"></i>
@@ -87,9 +99,13 @@
     const pageInfo = document.getElementById("pageInfo");
     const markAllReadBtn = document.getElementById("markAllReadBtn");
     const statusMessageDiv = document.getElementById("statusMessage");
+    const confirmationModal = document.getElementById("confirmationModal");
+    const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+    const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
 
     let currentPage = 1;
     const limit = 10;
+    let notificationToDeleteId = null; // To store the ID of the notification to be deleted
 
     // Always get the raw token (no Bearer prefix)
     let token = localStorage.getItem("token");
@@ -137,7 +153,7 @@
         // Optimistically update UI
         notificationElement.classList.remove('bg-primary/10');
         notificationElement.classList.add('bg-white');
-        const unreadDot = notificationElement.querySelector('.absolute.top-0.right-0.w-3.h-3.bg-primary.rounded-full');
+        const unreadDot = notificationElement.querySelector('.unread-dot');
         if (unreadDot) {
           unreadDot.remove();
         }
@@ -207,6 +223,57 @@
       }
     }
 
+    /**
+     * Deletes a single notification.
+     * @param {number} notificationId - The ID of the notification to delete.
+     */
+    async function deleteNotification(notificationId) {
+      try {
+        if (!token) {
+          displayStatusMessage("🛑 يجب تسجيل الدخول أولاً", true);
+          return;
+        }
+
+        displayStatusMessage("جاري حذف الإشعار...");
+
+        const res = await fetch(`https://api.technologytanda.com/api/userData/notifications/${notificationId}`, {
+          method: 'DELETE',
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+
+        if (!res.ok) {
+          throw new Error(`⚠️ فشل في حذف الإشعار. رمز الحالة: ${res.status}`);
+        }
+
+        const data = await res.json();
+        displayStatusMessage(data.message || "تم حذف الإشعار بنجاح!");
+        await fetchNotifications(currentPage); // Re-fetch to update UI
+      } catch (error) {
+        displayStatusMessage(error.message, true);
+        console.error("Error deleting notification:", error);
+      } finally {
+        hideConfirmationModal(); // Always hide the modal
+      }
+    }
+
+    /**
+     * Shows the confirmation modal.
+     * @param {number} id - The ID of the notification to be deleted.
+     */
+    function showConfirmationModal(id) {
+      notificationToDeleteId = id;
+      confirmationModal.classList.remove('hidden');
+    }
+
+    /**
+     * Hides the confirmation modal.
+     */
+    function hideConfirmationModal() {
+      notificationToDeleteId = null;
+      confirmationModal.classList.add('hidden');
+    }
 
     /**
      * Fetches and displays notifications for the given page.
@@ -257,27 +324,43 @@
             // Add data attributes for ID and read status
             card.dataset.id = notif.id;
             card.dataset.isRead = notif.isRead;
-            card.className = `flex items-center gap-4 px-6 py-5 border-b border-gray-200 last:border-b-0 transition duration-300 cursor-pointer hover:bg-gray-50 ${notif.isRead ? 'bg-white' : 'bg-primary/10'}`;
+            card.className = `flex items-center justify-between gap-4 px-6 py-5 border-b border-gray-200 last:border-b-0 transition duration-300 cursor-pointer hover:bg-gray-50 ${notif.isRead ? 'bg-white' : 'bg-primary/10'}`;
             card.innerHTML = `
-              <div class="relative flex-shrink-0">
-                ${getNotificationIcon(notif.type)}
-                ${!notif.isRead ? `<span class="unread-dot absolute top-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-white animate-pulse"></span>` : ''}
-              </div>
-              <div class="flex-1 min-w-0">
-                <div class="flex flex-wrap items-center gap-2">
-                  <span class="font-semibold text-gray-800 text-base">${notifTitle}</span>
-                  <span class="text-xs text-gray-500">${date}</span>
+              <div class="flex items-center gap-4 flex-1 min-w-0">
+                <div class="relative flex-shrink-0">
+                  ${getNotificationIcon(notif.type)}
+                  ${!notif.isRead ? `<span class="unread-dot absolute top-0 right-0 w-3 h-3 bg-primary rounded-full border-2 border-white animate-pulse"></span>` : ''}
                 </div>
-                <p class="text-gray-600 mt-1 text-sm">${notif.message}</p>
+                <div class="flex-1 min-w-0">
+                  <div class="flex flex-wrap items-center gap-2">
+                    <span class="font-semibold text-gray-800 text-base">${notifTitle}</span>
+                    <span class="text-xs text-gray-500">${date}</span>
+                  </div>
+                  <p class="text-gray-600 mt-1 text-sm">${notif.message}</p>
+                </div>
               </div>
+              <button class="delete-btn flex-shrink-0 text-red-500 hover:text-red-700 transition" data-id="${notif.id}">
+                <i class="fas fa-trash-alt"></i>
+              </button>
             `;
-            // Add click listener to each notification card
+            // Add click listener to each notification card (for marking as read)
             card.addEventListener('click', (event) => {
-              const clickedId = event.currentTarget.dataset.id;
-              const isRead = event.currentTarget.dataset.isRead === 'true';
-              if (clickedId && !isRead) { // Only mark as read if not already read
-                markNotificationAsRead(parseInt(clickedId), event.currentTarget);
+              // Ensure the click is not on the delete button itself
+              if (!event.target.closest('.delete-btn')) {
+                const clickedId = event.currentTarget.dataset.id;
+                const isRead = event.currentTarget.dataset.isRead === 'true';
+                if (clickedId && !isRead) { // Only mark as read if not already read
+                  markNotificationAsRead(parseInt(clickedId), event.currentTarget);
+                }
               }
+            });
+
+            // Add click listener for the delete button
+            const deleteButton = card.querySelector('.delete-btn');
+            deleteButton.addEventListener('click', (event) => {
+              event.stopPropagation(); // Prevent the card's click listener from firing
+              const idToDelete = parseInt(event.currentTarget.dataset.id);
+              showConfirmationModal(idToDelete);
             });
 
             container.appendChild(card);
@@ -305,6 +388,15 @@
     });
 
     markAllReadBtn.addEventListener("click", markAllNotificationsAsRead);
+
+    // Confirmation modal button listeners
+    confirmDeleteBtn.addEventListener('click', () => {
+      if (notificationToDeleteId) {
+        deleteNotification(notificationToDeleteId);
+      }
+    });
+
+    cancelDeleteBtn.addEventListener('click', hideConfirmationModal);
 
     // Notification toggle button (if used elsewhere, currently hidden)
     document.getElementById('notification-toggle')?.addEventListener('click', () => {
