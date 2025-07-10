@@ -7,6 +7,19 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- إضافة خط أيقونات Google Material Icons -->
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <style>
+    /* Custom styles for better modal appearance and responsiveness */
+    .modal-content {
+      max-width: 90%; /* Ensure modals don't stretch too wide on larger screens */
+      max-height: 90vh; /* Limit modal height to viewport height */
+      overflow-y: auto; /* Allow scrolling within modal if content overflows */
+    }
+    @media (min-width: 640px) { /* Small screens (sm) */
+      .modal-content {
+        max-width: 500px; /* Max width for modals on desktop */
+      }
+    }
+  </style>
 </head>
 <body class="bg-gray-100 font-sans overflow-x-hidden">
   <div class="min-h-screen w-screen max-w-none mx-auto bg-white flex flex-col">
@@ -30,12 +43,19 @@
           إختر المدينه
         </button>
       </div>
+      <!-- New "Back to Home" button container -->
+      <div id="back-to-home-container" class="mt-4 w-full max-w-full hidden">
+        <button onclick="window.location.href='home.html'" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-3 rounded-lg w-full text-base shadow-md">
+          العودة إلى الرئيسية
+        </button>
+      </div>
     </div>
+
     <!-- Modal Overlay -->
     <div id="modal-overlay" class="fixed inset-0 bg-black bg-opacity-30 z-40 hidden"></div>
 
     <!-- Region Modal -->
-    <div id="region-modal" class="fixed z-50 top-1/2 left-1/2 w-full max-w-none px-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-3 hidden">
+    <div id="region-modal" class="fixed z-50 top-1/2 left-1/2 w-full modal-content px-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-3 hidden">
       <div class="flex justify-between items-center mb-2">
         <button onclick="closeModal('region-modal')" class="text-xl font-bold">
           <span class="material-icons">close</span>
@@ -60,7 +80,7 @@
     </div>
 
     <!-- City Modal -->
-    <div id="city-modal" class="fixed z-50 top-1/2 left-1/2 w-full max-w-none px-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-3 hidden">
+    <div id="city-modal" class="fixed z-50 top-1/2 left-1/2 w-full modal-content px-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-3 hidden">
       <div class="flex flex-col sm:flex-row justify-between items-center mb-2 gap-2">
         <button onclick="closeModal('city-modal')" class="text-xl font-bold">
           <span class="material-icons">close</span>
@@ -73,7 +93,7 @@
     </div>
 
     <!-- Distributors Modal -->
-    <div id="distributors-modal" class="fixed z-50 top-1/2 left-1/2 w-full max-w-none px-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-3 hidden">
+    <div id="distributors-modal" class="fixed z-50 top-1/2 left-1/2 w-full modal-content px-2 -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-lg p-3 hidden">
       <div class="flex justify-between items-center mb-2">
         <span class="font-bold text-base">جميع الموزعين</span>
         <button onclick="closeModal('distributors-modal')" class="text-xl font-bold">
@@ -102,6 +122,19 @@
         <div class="w-full h-64">
           <iframe id="saved-map-iframe" class="w-full h-full border-0 rounded-b-lg" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
+      </div>
+    </div>
+
+    <!-- Success Message Modal -->
+    <div id="success-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+      <div class="bg-white rounded-lg shadow-lg w-full max-w-sm mx-2 p-6 text-center">
+        <div class="flex justify-center items-center mb-4">
+          <span class="material-icons text-green-500 text-5xl">check_circle</span>
+        </div>
+        <p class="text-lg font-bold mb-4">تم حفظ نقطة التوزيع بنجاح!</p>
+        <button onclick="closeModal('success-modal'); window.location.href='home.html';" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg w-full text-base shadow-md">
+          العودة إلى الرئيسية
+        </button>
       </div>
     </div>
 
@@ -335,10 +368,10 @@
               <div>
                 <div class="font-bold mb-1">${d.city} - ${d.name}</div>
                 <div class="mb-1">${d.address}</div>
-                <a href="#" 
-                  class="text-blue-600 underline text-sm show-map-btn" 
-                  data-city="${d.city}" 
-                  data-name="${d.name}" 
+                <a href="#"
+                  class="text-blue-600 underline text-sm show-map-btn"
+                  data-city="${d.city}"
+                  data-name="${d.name}"
                   data-address="${d.address}"
                 >عرض الموقع على الخريطة</a>
               </div>
@@ -377,6 +410,7 @@
       // عرض نقطة التوزيع المختارة في الصفحة الرئيسية
       function showSelectedDistributor() {
         const container = document.getElementById('selected-distributor-info');
+        const backToHomeBtnContainer = document.getElementById('back-to-home-container');
         const data = localStorage.getItem('selectedDistributor');
         if (data) {
           const d = JSON.parse(data);
@@ -393,6 +427,7 @@
               </a>
             </div>
           `;
+          backToHomeBtnContainer.classList.remove('hidden'); // Show the "Back to Home" button
           // إضافة حدث عرض الخريطة في مودال خاص
           setTimeout(() => {
             const mapBtn = document.getElementById('show-saved-map');
@@ -410,6 +445,7 @@
           }, 0);
         } else {
           container.innerHTML = "";
+          backToHomeBtnContainer.classList.add('hidden'); // Hide if no distributor is selected
         }
       }
 
@@ -437,15 +473,21 @@
         if (selectedDistributor) {
           localStorage.setItem('selectedDistributor', JSON.stringify(selectedDistributor));
           closeModal('distributors-modal');
-          alert('تم حفظ نقطة التوزيع بنجاح!');
-          showSelectedDistributor();
+          openModal('success-modal'); // Open the new success modal
+          showSelectedDistributor(); // Update the main screen to show the saved distributor and the "Back to Home" button
         }
       };
 
       // غلق المودال عند الضغط خارجها
       document.getElementById('modal-overlay').onclick = () => {
-        ['region-modal', 'city-modal', 'distributors-modal'].forEach(id => closeModal(id));
+        ['region-modal', 'city-modal', 'distributors-modal', 'success-modal'].forEach(id => {
+          const modalElement = document.getElementById(id);
+          if (modalElement && !modalElement.classList.contains('hidden')) {
+            closeModal(id);
+          }
+        });
       };
+
 
       // عند تحميل الصفحة، اعرض نقطة التوزيع المختارة إن وجدت
       window.onload = showSelectedDistributor;
