@@ -451,26 +451,41 @@
       document.getElementById('notificationMessage').value = '';
       document.getElementById('notificationError').textContent = '';
       document.getElementById('notificationSuccess').textContent = '';
-      
-      const select = document.getElementById('notificationUserSelect');
-      select.innerHTML = `<option value="">جاري التحميل...</option>`;
-      
+
+      // Fetch users
+      const userSelect = document.getElementById('notificationUserSelect');
+      userSelect.innerHTML = `<option value="">جاري التحميل...</option>`;
+
+      // Fetch associations
+      const assocSelect = document.getElementById('notificationAssociationSelect');
+      assocSelect.innerHTML = `<option value="">جاري التحميل...</option>`;
+
       document.getElementById('notificationModal').classList.remove('hidden');
-    
+
       try {
-        const res = await axios.get('https://api.technologytanda.com/api/userData/users');
-        const users = Array.isArray(res.data) ? res.data : (res.data.data || []);
-        
-        if (users.length === 0) {
-          select.innerHTML = `<option value="">لا يوجد مستخدمين</option>`;
-        } else {
-          select.innerHTML = `<option value="">اختر المستخدم...</option>` +
-            users.map(u =>
+        // Fill users
+        const usersRes = await axios.get('https://api.technologytanda.com/api/userData/users');
+        const users = Array.isArray(usersRes.data) ? usersRes.data : (usersRes.data.data || []);
+        userSelect.innerHTML = users.length === 0
+          ? `<option value="">لا يوجد مستخدمين</option>`
+          : `<option value="">اختر المستخدم...</option>` + users.map(u =>
               `<option value="${u.id}">${u.fullName} (${u.phone})</option>`
             ).join('');
-        }
       } catch (err) {
-        select.innerHTML = `<option value="">تعذر تحميل المستخدمين</option>`;
+        userSelect.innerHTML = `<option value="">تعذر تحميل المستخدمين</option>`;
+      }
+
+      try {
+        // Fill associations
+        const assocRes = await axios.get('https://api.technologytanda.com/api/associations?page=1&pageSize=100');
+        const assocs = Array.isArray(assocRes.data.data) ? assocRes.data.data : [];
+        assocSelect.innerHTML = assocs.length === 0
+          ? `<option value="">لا يوجد جمعيات</option>`
+          : `<option value="">اختر جمعية (اختياري)...</option>` + assocs.map(a =>
+              `<option value="${a.id}">${a.name}</option>`
+            ).join('');
+      } catch (err) {
+        assocSelect.innerHTML = `<option value="">تعذر تحميل الجمعيات</option>`;
       }
     }
     
@@ -481,24 +496,26 @@
     document.getElementById('notificationForm').onsubmit = async e => {
       e.preventDefault();
       const userId = document.getElementById('notificationUserSelect').value;
+      const associationId = document.getElementById('notificationAssociationSelect').value; // New!
       const message = document.getElementById('notificationMessage').value.trim();
       const errorDiv = document.getElementById('notificationError');
       const successDiv = document.getElementById('notificationSuccess');
-      
+
       errorDiv.textContent = '';
       successDiv.textContent = '';
-      
+
       if (!userId || !message) {
         errorDiv.textContent = 'اختر مستخدم وأدخل نص الإشعار';
         return;
       }
-      
+
       try {
         await axios.post('https://api.technologytanda.com/api/userData/notifications', {
           userId,
+          associationId: associationId || undefined, // Don't send if empty
           message
         });
-        
+
         successDiv.textContent = 'تم إرسال الإشعار بنجاح';
         document.getElementById('notificationForm').reset();
       } catch (err) {
