@@ -702,6 +702,8 @@
             color: white;
             padding: 1.5rem;
             text-align: center;
+            position: relative; /* أضف هذا السطر */
+            padding-top: 2.5rem; /* مساحة للزر */
         }
         .service-modal-body {
             padding: 1.5rem;
@@ -1026,21 +1028,58 @@
     </div>
 
     <!-- مودال بيانات الخدمة -->
-    <div id="serviceModal" class="modal-overlay">
-        <div class="modal-content service-modal-content">
-            <div class="service-modal-header">
-                <h3 id="serviceModalTitle" class="text-xl font-bold text-white"></h3>
+    <div id="serviceModal" class="modal-overlay open">
+        <div class="modal-content service-modal-content p-0" style="max-width:420px;">
+            <!-- Header -->
+            <div class="flex items-center justify-between px-5 py-4 border-b bg-[#006C35] rounded-t-2xl relative">
+                <h3 id="serviceModalTitle" class="text-lg md:text-xl font-bold text-white flex-1 text-right">كارت جمعيتي</h3>
+                <button id="closeServiceModalButton" class="absolute left-4 top-1/2 -translate-y-1/2 text-white hover:text-gray-200 text-2xl focus:outline-none" title="إغلاق">
+                    &times;
+                </button>
             </div>
-            <div id="serviceModalBody" class="service-modal-body">
-                <!-- سيتم ملء المحتوى هنا -->
+            <!-- Body -->
+            <div id="serviceModalBody" class="service-modal-body bg-white px-5 py-6">
+                <div>
+                    <p class="mb-4 text-gray-700 text-right">كارت جمعيتي هو بطاقة رقمية أو فعلية تتيح لك الاستفادة من خدمات جمعيتي بسهولة وأمان. يمكنك من خلالها إدارة الجمعيات، دفع الأقساط، واستلام الأرباح أو المبالغ المستحقة.</p>
+                    <h4 class="font-bold text-gray-900 mb-3 text-right">الأسئلة الشائعة:</h4>
+                    <ul id="faq-list" class="space-y-2">
+                        <li>
+                            <div class="faq-item-div flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition" onclick="showAnswer('إيه الأوراق المطلوبة عشان أقدر أقدم على طلب كارت جمعيتي؟', 'صورة البطاقة الشخصية، صورة شهادة الميلاد، إثبات محل الإقامة، صورة شخصية حديثة.')">
+                                <svg class="toggle-arrow-icon w-5 h-5 text-[#006C35]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                <span class="question-text flex-1 text-right">إيه الأوراق المطلوبة عشان أقدر أقدم على طلب كارت جمعيتي؟</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="faq-item-div flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition" onclick="showAnswer('إزاي استلم كارت جمعيتي؟', 'بعد تقديم الطلب والموافقة عليه، يمكنك استلام الكارت من أقرب فرع لجمعيتي أو من خلال مندوب التوصيل.')">
+                                <svg class="toggle-arrow-icon w-5 h-5 text-[#006C35]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                <span class="question-text flex-1 text-right">إزاي استلم كارت جمعيتي؟</span>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="faq-item-div flex items-center gap-2 p-3 rounded-lg hover:bg-gray-50 cursor-pointer transition" onclick="showAnswer('إزاي أفعل كارت جمعيتي؟', 'يمكنك تفعيل الكارت من خلال تطبيق جمعيتي أو الاتصال بخدمة العملاء.')">
+                                <svg class="toggle-arrow-icon w-5 h-5 text-[#006C35]" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                <span class="question-text flex-1 text-right">إزاي أفعل كارت جمعيتي؟</span>
+                            </div>
+                        </li>
+                        <!-- ... باقي الأسئلة بنفس النمط ... -->
+                    </ul>
+                </div>
             </div>
-            <button id="closeServiceModalButton" class="absolute left-3 top-3 text-black hover:text-gray-700 text-2xl focus:outline-none" title="إغلاق">
-                &times;
-            </button>
             <div class="static-shape circle top-right"></div>
             <div class="static-shape square bottom-left"></div>
         </div>
     </div>
+    <script>
+function showAnswer(question, answer) {
+    alert(question + "\n\n" + answer);
+}
+</script>
 
     <script>
         // --- JavaScript for Modals ---
