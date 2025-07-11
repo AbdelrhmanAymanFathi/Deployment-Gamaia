@@ -50,6 +50,16 @@
     </button>
   </div>
 
+  <!-- Filter Tabs -->
+  <div id="filterTabs" class="flex justify-center gap-2 mt-5 mb-2 flex-wrap">
+    <button class="filter-btn bg-primary text-white px-4 py-1 rounded-full" data-category="all">الكل</button>
+    <button class="filter-btn bg-gray-200 text-primary px-4 py-1 rounded-full" data-category="registration">التسجيلات</button>
+    <button class="filter-btn bg-gray-200 text-primary px-4 py-1 rounded-full" data-category="profile">الملف الشخصي</button>
+    <button class="filter-btn bg-gray-200 text-primary px-4 py-1 rounded-full" data-category="payment">الدفع</button>
+    <button class="filter-btn bg-gray-200 text-primary px-4 py-1 rounded-full" data-category="society">الجمعيات</button>
+    <!-- Add more as needed -->
+  </div>
+
   <div class="w-full max-w-2xl bg-white shadow-2xl rounded-2xl p-0 mt-32 overflow-hidden">
     <!-- Status Message Display -->
     <div id="statusMessage" class="text-center py-2 text-sm font-medium transition-all duration-300 ease-in-out opacity-0 h-0 overflow-hidden"></div>
@@ -106,6 +116,7 @@
     let currentPage = 1;
     const limit = 10;
     let notificationToDeleteId = null; // To store the ID of the notification to be deleted
+    let currentCategory = "all";
 
     // Always get the raw token (no Bearer prefix)
     let token = localStorage.getItem("token");
@@ -286,8 +297,13 @@
           container.innerHTML = `<div class="text-red-600 text-center py-10">🛑 يجب تسجيل الدخول أولاً</div>`;
           return;
         }
+        // --- Add category to API query if not 'all' ---
+        let apiUrl = `https://api.technologytanda.com/api/userData/notifications?page=${page}&limit=${limit}`;
+        if (currentCategory && currentCategory !== "all") {
+          apiUrl += `&category=${encodeURIComponent(currentCategory)}`;
+        }
 
-        const res = await fetch(`https://api.technologytanda.com/api/userData/notifications?page=${page}&limit=${limit}`, {
+        const res = await fetch(apiUrl, {
           headers: {
             "Authorization": `Bearer ${token}`,
           },
@@ -319,6 +335,14 @@
             });
 
             const notifTitle = notif.title && notif.title.trim() !== "" ? notif.title : "إشعار جديد";
+            // Category label
+            const categoryLabel = {
+              registration: "تسجيل",
+              profile: "الملف الشخصي",
+              payment: "دفع",
+              society: "جمعية",
+              general: "عام"
+            }[notif.category] || notif.category || "";
 
             const card = document.createElement("div");
             card.dataset.id = notif.id;
@@ -341,6 +365,7 @@
                   <div class="flex flex-wrap items-center gap-2">
                     <span class="font-semibold text-gray-800 text-base">${notifTitle}</span>
                     <span class="text-xs text-gray-500">${date}</span>
+                    <span class="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">${categoryLabel}</span>
                   </div>
                   <p class="text-gray-600 mt-1 text-sm">${notif.message}</p>
                 </div>
@@ -422,6 +447,22 @@
     // Notification toggle button (if used elsewhere, currently hidden)
     document.getElementById('notification-toggle')?.addEventListener('click', () => {
       window.location.href = 'Notification.html';
+    });
+
+    // Add event listeners to filter buttons
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+      btn.addEventListener("click", function() {
+        // Change button styles (active/inactive)
+        document.querySelectorAll(".filter-btn").forEach(b => {
+          b.classList.remove("bg-primary", "text-white");
+          b.classList.add("bg-gray-200", "text-primary");
+        });
+        btn.classList.add("bg-primary", "text-white");
+        btn.classList.remove("bg-gray-200", "text-primary");
+
+        currentCategory = btn.dataset.category;
+        fetchNotifications(1); // Go to page 1 when filter changes
+      });
     });
 
     // Initial fetch of notifications when the page loads
