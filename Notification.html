@@ -321,9 +321,15 @@
             const notifTitle = notif.title && notif.title.trim() !== "" ? notif.title : "إشعار جديد";
 
             const card = document.createElement("div");
-            // Add data attributes for ID and read status
             card.dataset.id = notif.id;
             card.dataset.isRead = notif.isRead;
+
+            // Style for actionable notifications (optional)
+            if (notif.associationId) {
+              card.classList.add("hover:bg-green-50", "cursor-pointer", "ring-2", "ring-primary/40");
+              card.title = "انقر نقرتين لاختيار دورك في الجمعية";
+            }
+
             card.className = `flex items-center justify-between gap-4 px-6 py-5 border-b border-gray-200 last:border-b-0 transition duration-300 cursor-pointer hover:bg-gray-50 ${notif.isRead ? 'bg-white' : 'bg-primary/10'}`;
             card.innerHTML = `
               <div class="flex items-center gap-4 flex-1 min-w-0">
@@ -343,22 +349,37 @@
                 <i class="fas fa-trash-alt"></i>
               </button>
             `;
-            // Add click listener to each notification card (for marking as read)
+
+            // SINGLE CLICK: Mark as read, update localStorage with associationId (if exists)
             card.addEventListener('click', (event) => {
-              // Ensure the click is not on the delete button itself
               if (!event.target.closest('.delete-btn')) {
                 const clickedId = event.currentTarget.dataset.id;
                 const isRead = event.currentTarget.dataset.isRead === 'true';
-                if (clickedId && !isRead) { // Only mark as read if not already read
+
+                // If associationId is present, update localStorage
+                if (notif.associationId) {
+                  localStorage.setItem('selectedAssociationId', notif.associationId);
+                }
+
+                if (clickedId && !isRead) {
                   markNotificationAsRead(parseInt(clickedId), event.currentTarget);
                 }
               }
             });
 
-            // Add click listener for the delete button
+            // DOUBLE CLICK: redirect if associationId exists
+            card.addEventListener('dblclick', (event) => {
+              if (!event.target.closest('.delete-btn')) {
+                if (notif.associationId) {
+                  window.location.href = `select_turn.html?associationId=${notif.associationId}`;
+                }
+              }
+            });
+
+            // Delete button logic stays the same
             const deleteButton = card.querySelector('.delete-btn');
             deleteButton.addEventListener('click', (event) => {
-              event.stopPropagation(); // Prevent the card's click listener from firing
+              event.stopPropagation();
               const idToDelete = parseInt(event.currentTarget.dataset.id);
               showConfirmationModal(idToDelete);
             });
