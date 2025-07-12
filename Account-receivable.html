@@ -187,13 +187,19 @@
       </div>
     </div>
 
-    <div class="mt-8 flex items-center p-4 installments-header">
-      <div class="checked-icon-container ml-4">
-        <i class="fas fa-check"></i>
-      </div>
-      <h2 class="text-base font-semibold flex-grow">الاقساط المستحقة</h2>
-      <i class="fas fa-coins text-2xl mr-2"></i>
-    </div>
+<div class="mt-8 flex items-center justify-between p-4 installments-header" dir="rtl">
+  <!-- الجهة اليمين: العنوان + أيقونة -->
+  <div class="flex items-center gap-2">
+    <h2 class="text-base font-semibold">الأقساط المستحقة</h2>
+    <i class="fas fa-coins text-2xl text-yellow-600"></i>
+  </div>
+
+  <!-- الجهة الشمال: الأيقونة -->
+  <div class="checked-icon-container">
+    <i class="fas fa-check text-green-600"></i>
+  </div>
+</div>
+
 
     <div id="installment-log" class="flex flex-col gap-3"></div>
     <div class="h-20"></div>
