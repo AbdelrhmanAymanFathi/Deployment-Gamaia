@@ -103,6 +103,7 @@
             object-fit: cover;
             border: 4px solid white;
             box-shadow: 0 0 0 4px #90D1CA; /* Outer ring color */
+            cursor: pointer;
         }
 
         .camera-icon {
@@ -117,6 +118,8 @@
             align-items: center;
             justify-content: center;
             border: 2px solid white;
+            cursor: pointer;
+            z-index: 20;
         }
 
         .input-field-group {
@@ -171,6 +174,49 @@
         .button-secondary:hover {
             background-color: #DC2626; /* red-600 */
         }
+        
+        /* Enlarged image overlay */
+        .img-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .img-overlay img {
+            max-width: 90%;
+            max-height: 90%;
+            border: 4px solid white;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            background: rgba(255, 255, 255, 0.1);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
     </style>
 </head>
 <body class="bg-gray-100 font-sans" style="font-family: 'Tajawal', sans-serif;">
@@ -218,15 +264,15 @@
         <div class="profile-header w-full text-center pb-12">
             <h1 class="text-white text-2xl font-bold mb-6">الملف الشخصي</h1>
             <div class="profile-image-container mb-4">
-                <img id="profile-image" class="profile-image cursor-pointer"
+                <img id="profile-image" class="profile-image"
                     src="https://via.placeholder.com/150?text=جار+التحميل..."
                     alt="صورة الملف الشخصي"
                     onerror="this.onerror=null;this.src='./Assets/imgs/anonymus.jpg';">
                 <input type="file" id="profile-image-input" accept="image/*" class="hidden">
-                <div class="camera-icon absolute bottom-0 right-0">
+                <div class="camera-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 002-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 002-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
                     </svg>
                 </div>
             </div>
@@ -235,9 +281,9 @@
         </div>
 
         <!-- Image enlargement overlay -->
-        <div id="img-overlay" class="fixed inset-0 bg-black bg-opacity-85 hidden flex items-center justify-center z-50">
-            <button class="close-btn absolute top-5 right-5 text-white text-2xl w-10 h-10 rounded-full bg-white bg-opacity-10 hover:bg-opacity-20 transition duration-300">&times;</button>
-            <img id="img-large-view" class="max-h-[85vh] max-w-[90vw] object-contain border-4 border-white shadow-img-large" alt="صورة الملف الشخصي">
+        <div id="img-overlay" class="img-overlay hidden">
+            <div class="close-btn">&times;</div>
+            <img id="img-large-view" alt="صورة الملف الشخصي">
         </div>
 
         <!-- Profile Details Card -->
@@ -329,8 +375,7 @@
                 </div>
 
                 <div class="mt-8 flex justify-center gap-4">
-                    <button id="logout-btn-large" class="button-secondary w-full max-w-[150px]">تسجيل الخروج</button>
-                    <button class="button-secondary bg-gray-400 hover:bg-gray-500 w-full max-w-[150px]" onclick="showCustomModal('حذف الحساب غير متاح حالياً.');">حذف الحساب</button>
+                    <button id="logout-btn-large" class="button-secondary w-full max-w-[150px]" >تسجيل الخروج</button>
                 </div>
             </div>
         </div>
@@ -351,40 +396,35 @@
     <!-- Spacer so content isn't hidden under navbar -->
     <div class="h-24"></div>
 
-    <!-- Navbar Bottom (Existing code, unchanged) -->
-<!-- Navbar Bottom -->
-<div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg"
-  style="background-color:#90D1CA;" dir="rtl">
+    <!-- Navbar Bottom -->
+    <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg"
+      style="background-color:#90D1CA;" dir="rtl">
 
-  <div onclick="location.href='home.html'" class="p-0 ">
-    <i class="bi bi-house-door-fill text-xl "></i>
-    <div class="label ">الرئيسية</div>
-  </div>
+      <div onclick="location.href='home.html'" class="p-0 ">
+        <i class="bi bi-house-door-fill text-xl "></i>
+        <div class="label ">الرئيسية</div>
+      </div>
 
-  <div onclick="location.href='circle-list.html'" class="p-0">
-    <i class="bi bi-people-fill text-xl"></i>
-    <div class="label">جمعياتي</div>
-  </div>
+      <div onclick="location.href='circle-list.html'" class="p-0">
+        <i class="bi bi-people-fill text-xl"></i>
+        <div class="label">جمعياتي</div>
+      </div>
 
-  <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3">
-    <!-- <span class="material-symbols-outlined text-3xl">
-      arrow_circle_left
-    </span> -->
-    <img src="./Assets/imgs/SubscribeIcon.svg" class="z-index:10;" alt="error">
-    <div class="label" style=" font-weight:700;">انضم الان</div>
-  </div>
+      <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3">
+        <img src="./Assets/imgs/SubscribeIcon.svg" class="z-index:10;" alt="error">
+        <div class="label" style=" font-weight:700;">انضم الان</div>
+      </div>
 
-  <div onclick="location.href='./wallet.html'" class="p-0">
-    <i class="bi bi-credit-card-fill text-xl"></i>
-    <div class="label">محفظتي</div>
-  </div>
+      <div onclick="location.href='./wallet.html'" class="p-0">
+        <i class="bi bi-credit-card-fill text-xl"></i>
+        <div class="label">محفظتي</div>
+      </div>
 
-  <div onclick="location.href='payments.html'" class="p-0 ">
-    <i class="bi bi-file-earmark-check-fill text-xl"></i>
-    <div class="label">المدفوعات</div>
-  </div>
-
-</div>
+      <div onclick="location.href='payments.html'" class="p-0 ">
+        <i class="bi bi-file-earmark-check-fill text-xl"></i>
+        <div class="label">المدفوعات</div>
+      </div>
+    </div>
 
     <!-- Custom Modal for Messages -->
     <div id="custom-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center hidden z-[100]">
