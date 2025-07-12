@@ -4,6 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>عن چمعية</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
@@ -13,25 +15,23 @@
 <body class="bg-gray-50 text-gray-800 font-sans">
 
   <!-- Navbar -->
-  <header class="bg-white border-b shadow-sm fixed w-full z-10">
-    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
-      <a href="index.html" class="flex items-center space-x-2 text-[var(--primary)]">
-                <img src="./Assets/imgs/logoJmaia.svg" alt="" class="h-10 w-10 rounded-full ml-3">
-        <span class="text-2xl font-extrabold">چمعية </span>
-      </a>
-      <!-- <button id="menu-btn" class="block lg:hidden focus:outline-none">
-        <svg class="h-6 w-6 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-        </svg>
-      </button>
-      <nav id="menu" class="hidden lg:flex space-x-8">
-        <a href="index.html" class="hover:text-[var(--primary)]">الرئيسية</a>
-        <a href="about.html" class="text-[var(--primary)] font-semibold">عن التطبيق</a>
-        <a href="features.html" class="hover:text-[var(--primary)]">المميزات</a>
-        <a href="contact.html" class="hover:text-[var(--primary)]">اتصل بنا</a>
-      </nav> -->
-    </div>
-  </header>
+<header class="bg-white border-b shadow-sm fixed w-full z-10">
+  <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+
+    <!-- زر الرجوع -->
+    <button onclick="history.back()" class="w-10 h-10 text-green-300 hover:text-[var(--primary)] text-4xl">
+      <i class="bi bi-arrow-right-circle-fill"></i>
+    </button>
+
+    <!-- اللوجو -->
+    <a href="index.html" class="flex items-center space-x-2 text-[var(--primary)]">
+      <img src="./Assets/imgs/logoJmaia.svg" alt="" class="h-10 w-10 rounded-full ml-3">
+      <span class="text-2xl font-extrabold">چمعية</span>
+    </a>
+
+  </div>
+</header>
+
 
   <main class="pt-24">
     <!-- Hero -->
