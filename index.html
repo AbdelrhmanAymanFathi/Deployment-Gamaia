@@ -1,132 +1,259 @@
 <!DOCTYPE html>
-<html lang="ar" dir="">
+<html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>شاشات الترحيب</title>
-  <!-- Tailwind -->
-  <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-  <link rel="stylesheet" href="dist/tailwind.css">
-  <script src="https://unpkg.com/lucide@latest"></script> <!-- أيقونات -->
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Custom styles for the loader and general layout */
+    body {
+      font-family: 'Inter', sans-serif;
+      /* Using Inter font as per guidelines */
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-color: #f9f9f9;
+      /* Light gray background to match the image edge */
+      overflow-x: hidden;
+      /* Prevent horizontal scroll */
+    }
+
+    /* Loader specific styles */
+    #loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+    }
+
+    /* Ensure images fit within their containers */
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* Custom adjustments for smaller mobile screens (approx. 390px and similar) */
+    @media (max-width: 639px) {
+
+      /* Targets screens smaller than sm: breakpoint */
+      .text-xs-custom {
+        font-size: 0.625rem;
+        /* 10px */
+      }
+
+      /* Smaller for National Bank of Saudi Arabia and its translation */
+      .text-lg-custom {
+        font-size: 1.125rem;
+        /* 18px */
+      }
+
+      /* Larger for Kingdom of Saudi Arabia */
+      .w-flag-sm {
+        width: 2rem;
+        /* 32px - Larger for the flag */
+      }
+    }
+
+    /* Custom styles for the floating next button */
+    .btn-next-floating {
+      background-color: #10B981;
+      /* Green color from the image */
+      color: white;
+      border-radius: 9999px;
+      /* Fully rounded */
+      padding: 0.75rem;
+      /* Padding for a circular button */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      /* Subtle shadow */
+      transition: background-color 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      /* Position relative to its parent */
+      left: 1.5rem;
+      /* 24px from the left, adjusted for RTL */
+      bottom: 15%;
+      /* Adjusted from the bottom */
+      z-index: 20;
+      /* Above other content */
+      width: 3rem;
+      /* 48px */
+      height: 3rem;
+      /* 48px */
+    }
+
+    .btn-next-floating:hover {
+      background-color: #059669;
+      /* Darker green on hover */
+    }
+
+    /* Indicator dot styles - now numbered circles */
+    .indicator-circle {
+      width: 2.5rem;
+      /* 40px */
+      height: 2.5rem;
+      /* 40px */
+      border-radius: 9999px;
+      /* Fully rounded */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1rem;
+      /* 16px */
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+      /* Prevent shrinking */
+    }
+
+    .indicator-active {
+      background-color: #10B981;
+      /* Active circle color */
+      color: white;
+      border: 2px solid #10B981;
+    }
+
+    .indicator-inactive {
+      background-color: white;
+      color: #10B981;
+      /* Text color for inactive */
+      border: 2px solid #10B981;
+      /* Green border for inactive */
+    }
+
+    /* Styling for the main content wrapper to center it */
+    .main-content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      /* Distribute space between content and indicators */
+      min-height: calc(100vh - 64px);
+      /* Adjust for header height */
+      padding-top: 4rem;
+      /* Space for the fixed header */
+      padding-bottom: 2rem;
+      /* Padding at the bottom */
+      position: relative;
+      /* For absolute positioning of next button */
+    }
+
+    /* Adjust screen content spacing */
+    .screen {
+      padding-top: 2rem;
+      /* More space from the top for the image */
+      padding-bottom: 2rem;
+      /* More space from the bottom */
+    }
+  </style>
 </head>
+
 <body class="bg-gray-100">
   <!-- Loader -->
-  <div id="loader"
-    style="position:fixed;inset:0;z-index:9999;display:flex;align-items:center;justify-content:center;background:#fff">
-    <style>
-      body {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh;
-        background-color: #f9f9f9;
-        /* Light gray background to match the image edge */
-      }
-
-      /* لتجنب أي مشاكل في تناسب الصورة داخل الحاوية */
-      img {
-        max-width: 100%;
-        height: auto;
-      }
-
-      /*
-         * تعديلات مخصصة لشاشات الموبايل الصغيرة (تقريباً 390px وما شابه)
-         * باستخدام Tailwind's 'sm' breakpoint (الافتراضي 640px)، يمكننا استهداف ما هو أصغر
-         */
-      @media (max-width: 639px) {
-
-        /* يستهدف الشاشات الأصغر من sm: */
-        .text-xs-custom {
-          font-size: 0.625rem;
-          /* 10px */
-        }
-
-        /* أصغر للبنك الأهلي السعودي والترجمة */
-        .text-lg-custom {
-          font-size: 1.125rem;
-          /* 18px */
-        }
-
-        /* أكبر للمملكة العربية السعودية */
-        .w-flag-sm {
-          width: 2rem;
-          /* 32px - أكبر للعلم */
-        }
-      }
-    </style>
+  <div id="loader">
     <div
       class="relative w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl bg-white shadow-lg p-8 h-screen flex flex-col justify-between items-center overflow-hidden">
       <div class="flex flex-col items-center justify-center flex-grow text-center">
-        <img src="./Assets/imgs/Capture-removebg-preview (13)-pica.png" alt="جمعيتي Logo"
-          class="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mb-4 object-contain">
+        <img src="https://placehold.co/150x150/E0F2F7/26A69A?text=جمعيتي+Logo" alt="جمعيتي Logo"
+          class="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 mb-4 object-contain rounded-full">
       </div>
 
       <div class="flex flex-col items-center justify-end w-full mt-auto pb-4 sm:pb-8">
-        <p class="text-xs-custom sm:text-sm text-gray-600 whitespace-nowrap text-center">البنك الأهلي السعودي</p>
+        <p class="text-xs-custom sm:text-sm text-green-600 whitespace-nowrap text-center">البنك المركزي السعودي</p>
 
-        <div class="flex items-center justify-center mt-0"> <img src="./Assets/imgs/download-pica.png"
-            alt="علم المملكة العربية السعودية" class="w-flag-sm sm:w-8 md:w-9 mr-1 sm:mr-2 order-first object-contain">
+        <div class="flex items-center justify-center mt-0">
+          <img src="./Assets/imgs/download-pica.png" alt="علم المملكة العربية السعودية"
+            class="w-flag-sm sm:w-8 md:w-9 mr-1 sm:mr-2 order-first object-contain rounded-sm">
           <p class="text-lg-custom sm:text-xl md:text-2xl font-bold text-gray-700 whitespace-nowrap order-last">المملكة
             العربية السعودية</p>
         </div>
 
-        <p class="text-xs-custom sm:text-xs text-gray-500 whitespace-nowrap text-center mt-0">National Bank of Saudi
+        <p class="text-xs-custom sm:text-xs text-green-500 whitespace-nowrap text-center mt-0">Central Bank of Saudi
           Arabia</p>
       </div>
     </div>
-
   </div>
 
-  <!-- Header: Logo + Next Button -->
-  <div class="absolute top-0 left-0 w-full flex items-center justify-between px-4 py-3 bg-white shadow-md z-10">
+  <!-- Header: Logo only -->
+  <div class="absolute top-0 right-0 w-full flex items-center justify-end px-4 py-3 bg-white shadow-md z-10">
     <!-- Logo -->
     <a href="#" class="flex items-center">
-      <img src="./Assets/imgs/logo.svg" alt="Logo" class="w-14"/>
-      <!-- <span class="mr-2 text-lg font-bold text-gray-800">اسم التطبيق</span> -->
+      <img src="./Assets/imgs/logo 2.svg" alt="Logo" class="w-14 rounded-full" />
     </a>
-    <!-- Next Button -->
-    <button id="btn-next" title="التالي" class="flex items-center text-gray-700 hover:text-green-600">
-      <span class="ml-1">التالي</span>
-      <i data-lucide="chevron-right" class="w-6 h-6"></i>
-    </button>
   </div>
 
 
-  <!-- Wrapper -->
+  <!-- Wrapper for main content -->
+  <div class="main-content-wrapper w-full max-w-md mx-auto px-4">
 
-  <div class="relative w-full h-screen flex flex-col items-center justify-center pt-16">
+    <!-- Screens container -->
+    <div id="screens" class="w-full text-center flex-grow flex flex-col justify-center items-center">
 
-    <!-- الشاشات -->
-    <div id="screens" class="w-full max-w-md mx-auto text-center px-4">
-
-      <!-- الصفحة 1 -->
-      <div class="screen" id="screen-0">
-        <img src="https://cdn-icons-png.flaticon.com/512/2784/2784460.png" class="w-40 mb-4 mx-auto" />
-        <h2 class="text-xl font-bold text-gray-800 mb-2">إدارة الفريق</h2>
-        <p class="text-gray-600">يمكنك إدارة أعضاء الفريق ومهامهم بطريقة سهلة وفعالة.</p>
+      <!-- Page 1 -->
+      <div class="screen flex flex-col items-start justify-center w-full" id="screen-0">
+        <!-- Image with a shield and lock icon for security theme -->
+        <img src="./Assets/imgs/image.svg" class="w-40 mb-8 mx-auto rounded-xl p-4 bg-green-100" />
+        <h2 class="text-2xl font-extrabold text-gray-800 mb-4 " style="text-align: start;">حماية متكاملة</h2>
+        <p class="text-gray-600 text-lg leading-relaxed px-4" style="text-align: start;">تطبيقنا بيضمنلك إن كل جمعيه تتم
+          بأمان وشفافيه من أول الإشتراك لحد الإستلام علشان تطمن إن فلوسك محفوظه وكل حاجه ماشيه بنظام المتابعه.</p>
       </div>
 
-      <!-- الصفحة 2 -->
-      <div class="screen hidden" id="screen-1">
-        <img src="https://cdn-icons-png.flaticon.com/512/1256/1256650.png" class="w-40 mb-4 mx-auto" />
-        <h2 class="text-xl font-bold text-gray-800 mb-2">كفاءة عالية</h2>
-        <p class="text-gray-600">أدواتنا مصممة بكفاءة عالية لتقديم أفضل أداء.</p>
+      <!-- Page 2 -->
+      <div class="screen hidden flex flex-col items-start justify-center w-full" id="screen-1">
+        <!-- Image for high efficiency -->
+        <img src="./Assets/imgs/image2.svg" class="w-40 mb-8 mx-auto rounded-xl p-4 bg-green-100" />
+        <h2 class="text-2xl font-extrabold text-gray-800 mb-4" style="text-align: start;">كفاءة عالية</h2>
+        <p class="text-gray-600 text-lg leading-relaxed px-4" style="text-align: start;">صممنا التطبيق بطريقه ذكيه
+          تساعدك تدير جمعياتك بسهوله من غير ما تضيع وقتك أو تتلخبط كل حاجه محسوبه أوتوماتيك وإنت بتشوف كل التفاصيل قدامك
+          لحظه بلحظه.</p>
       </div>
 
-      <!-- الصفحة 3 -->
-      <div class="screen hidden" id="screen-2">
-        <img src="https://cdn-icons-png.flaticon.com/512/2920/2920099.png" class="w-40 mb-4 mx-auto" />
-        <h2 class="text-xl font-bold text-gray-800 mb-2">سهولة الاستخدام</h2>
-        <p class="text-gray-600 mb-4">واجهة بسيطة وسهلة الاستخدام لجميع المستخدمين.</p>
-        <a href="login.html" class="bg-green-600 text-white px-6 py-2 rounded-full shadow-md hover:bg-green-700 transition">ابدأ الآن</a>
+      <!-- Page 3 -->
+      <div class="screen hidden flex flex-col items-start justify-center w-full" id="screen-2">
+        <!-- Image for ease of use -->
+        <img src="./Assets/imgs/image3.svg" class="w-40 mb-8 mx-auto rounded-xl p-4 bg-green-100" />
+        <h2 class="text-2xl font-extrabold text-gray-800 mb-4" style="text-align: start;">إدارة الأعضاء</h2>
+        <p class="text-gray-600 text-lg leading-relaxed px-4 mb-8" style="text-align: start;">نظام متكامل لإدارة بيانات
+          الأعضاء وتفاصيل عقوباتهم. ونقدم أيضا تقارير مفصله عن جميع العمليات الماليه وأنشطة الجمعيه.</p>
+      </div>
+
+      <!-- Page 4 -->
+      <div class="screen hidden flex flex-col  justify-center w-full" id="screen-3">
+        <!-- Image for final call to action -->
+        <img src="./Assets/imgs/image4.svg" class="w-40 mb-8 mx-auto rounded-xl p-4 bg-green-100" />
+        <h2 class="text-2xl font-extrabold text-gray-800 mb-4" style="text-align: start;">متفصل علي مزاجك </h2>
+        <p class="text-gray-600 text-lg leading-relaxed px-4 mb-8" style="text-align: start;">“جمعيتك علي كيفك! بتحدد
+          المبلغ، عدد المشتركين، الميعاد اللي يناسبك، والتطبيق بيظبط كل حاجه علي احتياجاتك من غير تعقيد... كل حاجه ماشيه
+          بطريقتك.”</p>
+        <a href="login.html"
+          class="bg-green-600 text-white px-8 py-3 rounded-2xl shadow-lg hover:bg-green-700 transition text-lg font-semibold align-center text-center">ابدأ
+        </a>
       </div>
     </div>
 
-    <!-- المؤشرات -->
-    <div class="flex justify-center mt-6 space-x-2 rtl:space-x-reverse">
-      <span class="dot w-3 h-3 bg-green-500 rounded-full"></span>
-      <span class="dot w-3 h-3 bg-gray-400 rounded-full"></span>
-      <span class="dot w-3 h-3 bg-gray-400 rounded-full"></span>
+    <!-- Floating Next Button -->
+    <button id="btn-next" title="التالي" class="btn-next-floating">
+      <i data-lucide="chevron-left" class="w-6 h-6"></i> <!-- Chevron left for RTL next -->
+    </button>
+
+    <!-- Indicators (numbered circles) -->
+    <div class="flex justify-center mt-12 space-x-2 rtl:space-x-reverse">
+      <div class="indicator-circle indicator-active" data-index="0">
+        <i data-lucide="check" class="w-5 h-5"></i>
+      </div>
+      <div class="indicator-circle indicator-inactive" data-index="1">1</div>
+      <div class="indicator-circle indicator-inactive" data-index="2">2</div>
+      <div class="indicator-circle indicator-inactive" data-index="3">3</div>
     </div>
 
   </div>
@@ -134,28 +261,48 @@
   <!-- JavaScript -->
   <script>
     document.addEventListener('DOMContentLoaded', () => {
+      // Initialize Lucide icons
       lucide.createIcons();
 
       let current = 0;
-      const total = 3;
-      const dots = document.querySelectorAll('.dot');
+      const total = 4; // Changed to 4 pages
+      const indicators = document.querySelectorAll('.indicator-circle');
       const screens = Array.from({ length: total }, (_, i) => document.getElementById(`screen-${i}`));
-      const btnNext = document.getElementById('btn-next'); // إضافة متغير للزر
+      const btnNext = document.getElementById('btn-next');
 
+      /**
+       * Displays the specified screen and updates the indicator circles.
+       * @param {number} index - The index of the screen to display.
+       */
       function showScreen(index) {
         screens.forEach((el, i) => {
+          // Toggle 'hidden' class based on the current index
           el.classList.toggle('hidden', i !== index);
-          dots[i].classList.toggle('bg-green-500', i === index);
-          dots[i].classList.toggle('bg-gray-400', i !== index);
         });
-        // إخفاء زر التالي في الصفحة الأخيرة
-        if(index === total - 1) {
+
+        indicators.forEach((indicator, i) => {
+          indicator.classList.remove('indicator-active', 'indicator-inactive');
+          if (i === index) {
+            indicator.classList.add('indicator-active');
+            // Show checkmark for active indicator
+            indicator.innerHTML = '<i data-lucide="check" class="w-5 h-5"></i>';
+            lucide.createIcons(); // Re-render icon
+          } else {
+            indicator.classList.add('indicator-inactive');
+            // Show number for inactive indicators
+            indicator.innerHTML = (i + 1).toString();
+          }
+        });
+
+        // Hide the next button on the last page
+        if (index === total - 1) {
           btnNext.style.display = 'none';
         } else {
-          btnNext.style.display = '';
+          btnNext.style.display = 'flex'; // Use flex to maintain centering of icon
         }
       }
 
+      // Event listener for the next button
       btnNext.addEventListener('click', () => {
         if (current < total - 1) {
           current++;
@@ -163,18 +310,28 @@
         }
       });
 
-      // initial
+      // Event listeners for indicator circles to navigate directly
+      indicators.forEach(indicator => {
+        indicator.addEventListener('click', (event) => {
+          const index = parseInt(event.currentTarget.dataset.index);
+          if (!isNaN(index)) {
+            current = index;
+            showScreen(current);
+          }
+        });
+      });
+
+      // Initial display of the first screen
       showScreen(current);
     });
-  </script>
 
-  <!-- loader -->
-<script>
-  window.addEventListener('load', function () {
-    setTimeout(function () {
-      document.getElementById('loader').style.display = 'none';
-    }, 3000); // 3 ثواني
-  });
-</script>
+    // Loader script
+    window.addEventListener('load', function () {
+      setTimeout(function () {
+        document.getElementById('loader').style.display = 'none';
+      }, 3000); // 3 seconds delay for the loader
+    });
+  </script>
 </body>
+
 </html>
