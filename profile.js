@@ -79,67 +79,103 @@ function logout() {
     window.location.href = window.location.origin + '/login.html'; // Changed to absolute path
 }
 
-// Update profile data - now makes fields editable and changes button
+// =====================
+// Profile Image Change
+// =====================
+
+// Show file picker when clicking on profile image or camera icon
+document.getElementById('profile-image').addEventListener('click', () => {
+    document.getElementById('profile-image-input').click();
+});
+document.querySelector('.camera-icon').addEventListener('click', (e) => {
+    e.stopPropagation();
+    document.getElementById('profile-image-input').click();
+});
+
+// Handle file selection and upload to API
+document.getElementById('profile-image-input').addEventListener('change', async function() {
+    const file = this.files[0];
+    if (!file) return;
+
+    // Optional: Check file type/size here if needed
+
+    const formData = new FormData();
+    formData.append('profileImage', file);
+
+    showCustomModal('جارٍ رفع الصورة...');
+
+    try {
+        const res = await fetch('https://api.technologytanda.com/api/userData/user/update', {
+            method: 'PUT',
+            headers: {
+                'Authorization': 'Bearer ' + token
+            },
+            body: formData
+        });
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.message || data.error || 'فشل تحديث الصورة');
+
+        showCustomModal('✅ تم تحديث صورة الملف الشخصي بنجاح');
+        // Update the profile image on the page (cache-busting)
+        document.getElementById('profile-image').src = 
+            `https://api.technologytanda.com/uploads/${data.user.profileImage.replace('uploads/', '')}?t=${Date.now()}`;
+    } catch (err) {
+        showCustomModal('❌ ' + err.message);
+    }
+});
+
+// =====================
+// Edit Profile (Name & Phone)
+// =====================
+
+// Improved edit mode toggle to support correct endpoint and input
 async function toggleEditMode() {
     const fullNameInput = document.getElementById('full-name');
     const phoneInput = document.getElementById('phone');
     const editBtn = document.getElementById('edit-profile-btn');
 
-    // Check if currently in read-only mode (i.e., 'Edit Profile' state)
+    // If in read-only mode, enable editing
     if (fullNameInput.readOnly) {
-        // Switch to edit mode
         fullNameInput.readOnly = false;
         phoneInput.readOnly = false;
-        fullNameInput.focus(); // Focus on the first editable field
-
+        fullNameInput.focus();
         editBtn.textContent = 'حفظ التغييرات';
         editBtn.classList.remove('button-primary');
-        editBtn.classList.add('button-secondary', 'bg-green-600', 'hover:bg-green-700'); // Use green for save
+        editBtn.classList.add('button-secondary', 'bg-green-600', 'hover:bg-green-700');
     } else {
-        // Currently in edit mode, switch to save mode
-        const newFullName = fullNameInput.value;
-        const newPhone = phoneInput.value;
+        // Gather updated data
+        const newFullName = fullNameInput.value.trim();
+        const newPhone = phoneInput.value.trim();
+
+        // If user wants to allow image upload together, use FormData.
+        const formData = new FormData();
+        formData.append('fullName', newFullName);
+        formData.append('phone', newPhone);
+
+        showCustomModal('جارٍ تحديث الملف الشخصي...');
 
         try {
-            let userId = null;
-            try {
-                const user = JSON.parse(localStorage.getItem('user'));
-                if (user && user.id) userId = user.id;
-            } catch (e) {
-                console.error("Error parsing user from localStorage:", e);
-            }
-
-            if (!userId) {
-                showCustomModal('تعذر تحديد رقم المستخدم. يرجى إعادة تسجيل الدخول.');
-                return;
-            }
-
-            const res = await fetch(`https://api.technologytanda.com/api/userData/admin/update-user/${userId}`, {
+            const res = await fetch('https://api.technologytanda.com/api/userData/user/update', {
                 method: 'PUT',
                 headers: {
-                    'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + token
+                    // Note: Do NOT set 'Content-Type' when using FormData!
                 },
-                body: JSON.stringify({ fullName: newFullName, phone: newPhone })
+                body: formData
             });
-
-            if (res.status === 403) {
-                showCustomModal('ليس لديك صلاحية لتعديل الملف الشخصي. يرجى التواصل مع الإدارة.');
-                return;
-            }
-
             const data = await res.json();
+
             if (!res.ok) throw new Error(data.message || data.error || 'فشل تحديث الملف الشخصي');
 
             showCustomModal('✅ تم تحديث الملف الشخصي بنجاح');
-            loadProfile(); // Reload data to reflect changes
+            loadProfile(); // Reload to reflect changes
+
         } catch (err) {
             showCustomModal('❌ ' + err.message);
         } finally {
-            // Revert to read-only mode and 'Edit Profile' button state
+            // Return to read-only mode and button state
             fullNameInput.readOnly = true;
             phoneInput.readOnly = true;
-
             editBtn.textContent = 'تعديل الملف الشخصي';
             editBtn.classList.remove('button-secondary', 'bg-green-600', 'hover:bg-green-700');
             editBtn.classList.add('button-primary');
