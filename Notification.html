@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>نظام إدارة الإشعارات - جمعيتي</title>
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -10,7 +11,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;900&display=swap');
-    
+
     :root {
       --primary: #16a34a;
       --primary-dark: #15803d;
@@ -20,94 +21,109 @@
       --dark: #1e293b;
       --light: #f8fafc;
     }
-    
+
     body {
       font-family: 'Tajawal', sans-serif;
       background: linear-gradient(135deg, #f0fdf4 0%, #ecfeff 100%);
       color: var(--dark);
       min-height: 100vh;
     }
-    
+
     .notification-card {
       transition: all 0.3s ease;
       border-radius: 16px;
       overflow: hidden;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     }
-    
+
     .notification-card:hover {
       transform: translateY(-5px);
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
     }
-    
+
     .unread-notification {
       background: linear-gradient(to left, rgba(22, 163, 74, 0.05) 0%, rgba(22, 163, 74, 0.02) 100%);
       border-right: 4px solid var(--primary);
     }
-    
+
     .unread-dot {
       animation: pulse 1.5s infinite;
     }
-    
+
     @keyframes pulse {
-      0% { opacity: 0.7; }
-      50% { opacity: 1; }
-      100% { opacity: 0.7; }
+      0% {
+        opacity: 0.7;
+      }
+
+      50% {
+        opacity: 1;
+      }
+
+      100% {
+        opacity: 0.7;
+      }
     }
-    
+
     .category-badge {
       padding: 2px 10px;
       border-radius: 20px;
       font-size: 0.75rem;
       font-weight: 700;
     }
-    
+
     .confirmation-modal {
       animation: modalFadeIn 0.3s ease-out;
     }
-    
+
     @keyframes modalFadeIn {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
-    
+
     .btn-primary {
       background: var(--primary);
       color: white;
       transition: all 0.3s ease;
     }
-    
+
     .btn-primary:hover {
       background: var(--primary-dark);
       transform: translateY(-2px);
       box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
     }
-    
+
     .btn-secondary {
       background: #f1f5f9;
       color: #475569;
       transition: all 0.3s ease;
     }
-    
+
     .btn-secondary:hover {
       background: #e2e8f0;
     }
-    
+
     .filter-btn {
       transition: all 0.3s ease;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     }
-    
+
     .filter-btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
-    
+
     .pagination-btn {
       transition: all 0.3s ease;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
     }
-    
+
     .pagination-btn:hover:not(:disabled) {
       transform: translateY(-2px);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
@@ -134,10 +150,11 @@
     }
   </script>
 </head>
+
 <body class="min-h-screen flex flex-col items-center p-4 pt-24">
   <!-- Header -->
   <div class="fixed top-0 left-0 w-full bg-white shadow-lg z-10 py-4 px-6 flex items-center justify-between">
-        <button class="btn-secondary flex items-center gap-1 px-4 py-2 rounded-full transition font-semibold shadow-md">
+    <button class="btn-secondary flex items-center gap-1 px-4 py-2 rounded-full transition font-semibold shadow-md">
       <i class="fas fa-arrow-right text-xs"></i>
       رجوع
     </button>
@@ -162,10 +179,13 @@
   <div class="w-full max-w-3xl bg-white rounded-xl shadow-md p-3 mb-6">
     <div id="filterTabs" class="flex flex-wrap justify-center gap-2">
       <button class="filter-btn bg-primary text-white px-4 py-2 rounded-full" data-category="all">الكل</button>
-      <button class="filter-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full" data-category="registration">التسجيلات</button>
-      <button class="filter-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full" data-category="profile">الملف الشخصي</button>
+      <button class="filter-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full"
+        data-category="registration">التسجيلات</button>
+      <button class="filter-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full" data-category="profile">الملف
+        الشخصي</button>
       <button class="filter-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full" data-category="payment">الدفع</button>
-      <button class="filter-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full" data-category="society">الجمعيات</button>
+      <button class="filter-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full"
+        data-category="society">الجمعيات</button>
       <button class="filter-btn bg-gray-100 text-gray-700 px-4 py-2 rounded-full" data-category="general">عام</button>
     </div>
   </div>
@@ -173,7 +193,9 @@
   <!-- Main Content -->
   <div class="w-full max-w-3xl bg-white shadow-xl rounded-2xl overflow-hidden">
     <!-- Status Message -->
-    <div id="statusMessage" class="text-center py-2 text-sm font-medium transition-all duration-300 ease-in-out h-0 opacity-0 overflow-hidden"></div>
+    <div id="statusMessage"
+      class="text-center py-2 text-sm font-medium transition-all duration-300 ease-in-out h-0 opacity-0 overflow-hidden">
+    </div>
 
     <!-- Notifications List -->
     <div id="notificationsContainer" class="divide-y divide-gray-100">
@@ -185,12 +207,14 @@
 
     <!-- Pagination -->
     <div id="pagination" class="flex justify-between items-center px-6 py-4 bg-gray-50">
-      <button id="prevBtn" class="pagination-btn px-4 py-2 bg-white border border-gray-300 rounded-full disabled:opacity-50 disabled:cursor-not-allowed">
+      <button id="prevBtn"
+        class="pagination-btn px-4 py-2 bg-white border border-gray-300 rounded-full disabled:opacity-50 disabled:cursor-not-allowed">
         <i class="fas fa-arrow-right ml-2"></i>
         السابق
       </button>
       <span id="pageInfo" class="font-semibold text-gray-700">صفحة 1</span>
-      <button id="nextBtn" class="pagination-btn px-4 py-2 bg-white border border-gray-300 rounded-full disabled:opacity-50 disabled:cursor-not-allowed">
+      <button id="nextBtn"
+        class="pagination-btn px-4 py-2 bg-white border border-gray-300 rounded-full disabled:opacity-50 disabled:cursor-not-allowed">
         التالي
         <i class="fas fa-arrow-left mr-2"></i>
       </button>
@@ -198,7 +222,8 @@
   </div>
 
   <!-- Confirmation Modal -->
-  <div id="confirmationModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden">
+  <div id="confirmationModal"
+    class="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center z-50 hidden">
     <div class="bg-white p-6 rounded-xl shadow-2xl max-w-sm w-full mx-4 text-center">
       <div class="mx-auto bg-red-100 text-red-600 rounded-full p-3 w-16 h-16 flex items-center justify-center mb-4">
         <i class="fas fa-exclamation-triangle text-2xl"></i>
@@ -207,7 +232,8 @@
       <p class="text-gray-600 mb-6">هل أنت متأكد أنك تريد حذف هذا الإشعار؟</p>
       <div class="flex justify-center gap-3">
         <button id="cancelDeleteBtn" class="btn-secondary px-5 py-2 rounded-full">إلغاء</button>
-        <button id="confirmDeleteBtn" class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full transition">حذف</button>
+        <button id="confirmDeleteBtn"
+          class="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-full transition">حذف</button>
       </div>
     </div>
   </div>
@@ -279,35 +305,35 @@
           <p class="text-gray-500">جاري تحميل الإشعارات...</p>
         </div>
       `;
-      
+
       try {
         // بناء رابط الاستعلام مع الفئة والصفحة
         let url = `${API_BASE_URL}/api/userData/notifications?page=${page}&limit=${limit}`;
         if (currentCategory !== 'all') {
           url += `&category=${currentCategory}`;
         }
-        
+
         const response = await fetch(url, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}` // استخدام التوكن من localStorage
           }
         });
-        
+
         if (!response.ok) {
           throw new Error('فشل في جلب الإشعارات');
         }
-        
+
         const data = await response.json();
-        
+
         // عرض الإشعارات
         renderNotifications(data.notifications);
-        
+
         // تحديث معلومات الصفحة
         currentPage = data.pagination.page;
         pageInfo.textContent = `صفحة ${currentPage}`;
         prevBtn.disabled = currentPage <= 1;
         nextBtn.disabled = !data.pagination.hasMore;
-        
+
       } catch (error) {
         container.innerHTML = `
           <div class="text-center py-10 text-red-600">
@@ -331,25 +357,25 @@
         `;
         return;
       }
-      
+
       container.innerHTML = '';
-      
+
       notifications.forEach(notif => {
         const date = new Date(notif.createdAt).toLocaleString('ar-EG', {
           dateStyle: 'short',
           timeStyle: 'short'
         });
-        
+
         const category = notif.category || 'default';
         const icon = categoryIcons[category] || categoryIcons.default;
         const label = categoryLabels[category] || categoryLabels.default;
         const title = categoryTitles[category] || categoryTitles.default;
-        
+
         const card = document.createElement("div");
         card.className = `notification-card p-5 ${notif.isRead ? 'bg-white' : 'unread-notification'}`;
         card.dataset.id = notif.id;
         card.dataset.isRead = notif.isRead;
-        
+
         card.innerHTML = `
           <div class="flex items-start gap-4">
             <div class="relative flex-shrink-0">
@@ -383,7 +409,7 @@
             </div>
           </div>
         `;
-        
+
         // إضافة مستمعي الأحداث
         const markAsReadBtn = card.querySelector('.mark-as-read-btn');
         if (markAsReadBtn) {
@@ -392,13 +418,13 @@
             markNotificationAsRead(notif.id, card);
           });
         }
-        
+
         const deleteBtn = card.querySelector('.delete-btn');
         deleteBtn.addEventListener('click', (e) => {
           e.stopPropagation();
           showConfirmationModal(notif.id);
         });
-        
+
         container.appendChild(card);
       });
     }
@@ -412,28 +438,28 @@
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
-        
+
         if (!response.ok) {
           throw new Error('فشل في تحديث حالة الإشعار');
         }
-        
+
         // تحديث واجهة المستخدم
         notificationElement.classList.remove('unread-notification');
         notificationElement.classList.add('bg-white');
         notificationElement.dataset.isRead = 'true';
-        
+
         const unreadDot = notificationElement.querySelector('.unread-dot');
         if (unreadDot) unreadDot.remove();
-        
+
         const markAsReadBtn = notificationElement.querySelector('.mark-as-read-btn');
         if (markAsReadBtn) {
           markAsReadBtn.textContent = 'تمت القراءة';
           markAsReadBtn.classList.remove('bg-primary/10', 'text-primary');
           markAsReadBtn.classList.add('bg-gray-200', 'text-gray-700');
         }
-        
+
         displayStatusMessage("تم وضع علامة على الإشعار كمقروء");
-        
+
       } catch (error) {
         displayStatusMessage("حدث خطأ أثناء تحديث الإشعار", true);
         console.error(error);
@@ -445,28 +471,28 @@
       try {
         displayStatusMessage("جاري وضع علامة على جميع الإشعارات كمقروءة...");
         markAllReadBtn.disabled = true;
-        
+
         const response = await fetch(`${API_BASE_URL}/api/userData/notifications/read-all`, {
           method: 'PUT',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
-        
+
         if (!response.ok) {
           throw new Error('فشل في تحديث جميع الإشعارات');
         }
-        
+
         // تحديث جميع الإشعارات في الواجهة
         document.querySelectorAll('.notification-card').forEach(card => {
           if (card.dataset.isRead === 'false') {
             card.classList.remove('unread-notification');
             card.classList.add('bg-white');
             card.dataset.isRead = 'true';
-            
+
             const unreadDot = card.querySelector('.unread-dot');
             if (unreadDot) unreadDot.remove();
-            
+
             const markAsReadBtn = card.querySelector('.mark-as-read-btn');
             if (markAsReadBtn) {
               markAsReadBtn.textContent = 'تمت القراءة';
@@ -475,9 +501,9 @@
             }
           }
         });
-        
+
         displayStatusMessage("تم وضع علامة على جميع الإشعارات كمقروءة بنجاح!");
-        
+
       } catch (error) {
         displayStatusMessage("حدث خطأ أثناء تحديث الإشعارات", true);
         console.error(error);
@@ -490,18 +516,18 @@
     async function deleteNotification(notificationId) {
       try {
         displayStatusMessage("جاري حذف الإشعار...");
-        
+
         const response = await fetch(`${API_BASE_URL}/api/userData/notifications/${notificationId}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
           }
         });
-        
+
         if (!response.ok) {
           throw new Error('فشل في حذف الإشعار');
         }
-        
+
         // إزالة الإشعار من الواجهة
         const notificationCard = document.querySelector(`.notification-card[data-id="${notificationId}"]`);
         if (notificationCard) {
@@ -509,9 +535,9 @@
           notificationCard.style.transform = 'translateX(100px)';
           setTimeout(() => notificationCard.remove(), 300);
         }
-        
+
         displayStatusMessage("تم حذف الإشعار بنجاح!");
-        
+
       } catch (error) {
         displayStatusMessage("حدث خطأ أثناء حذف الإشعار", true);
         console.error(error);
@@ -536,44 +562,44 @@
     document.addEventListener('DOMContentLoaded', () => {
       // تحميل الإشعارات الأولية
       fetchNotifications();
-      
+
       // مستمعي الأحداث للزر السابق
       prevBtn.addEventListener("click", () => {
         if (currentPage > 1) fetchNotifications(currentPage - 1);
       });
-      
+
       // مستمعي الأحداث للزر التالي
       nextBtn.addEventListener("click", () => {
         fetchNotifications(currentPage + 1);
       });
-      
+
       // مستمعي الأحداث لزر قراءة الكل
       markAllReadBtn.addEventListener("click", markAllNotificationsAsRead);
-      
+
       // مستمعي الأحداث لنافذة التأكيد
       confirmDeleteBtn.addEventListener('click', () => {
         if (notificationToDeleteId) {
           deleteNotification(notificationToDeleteId);
         }
       });
-      
+
       cancelDeleteBtn.addEventListener('click', hideConfirmationModal);
-      
+
       // مستمعي الأحداث لفلترة الإشعارات
       document.querySelectorAll(".filter-btn").forEach(btn => {
-        btn.addEventListener("click", function() {
+        btn.addEventListener("click", function () {
           document.querySelectorAll(".filter-btn").forEach(b => {
             b.classList.remove("bg-primary", "text-white");
             b.classList.add("bg-gray-100", "text-gray-700");
           });
           this.classList.add("bg-primary", "text-white");
           this.classList.remove("bg-gray-100", "text-gray-700");
-          
+
           currentCategory = this.dataset.category;
           fetchNotifications(1);
         });
       });
-      
+
       // مستمع الأحداث لزر الرجوع
       document.querySelector('.btn-secondary').addEventListener('click', () => {
         window.history.back();
@@ -581,4 +607,5 @@
     });
   </script>
 </body>
+
 </html>
