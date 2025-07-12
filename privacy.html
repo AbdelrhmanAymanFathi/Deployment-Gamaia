@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>چمعية - الشروط والأحكام</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
@@ -30,10 +32,12 @@
             background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
             min-height: 100vh;
         }
+
         .section-title {
             position: relative;
             padding-right: 20px;
         }
+
         .section-title::before {
             content: '';
             position: absolute;
@@ -45,11 +49,13 @@
             background-color: #90D1CA;
             border-radius: 50%;
         }
+
         .nav-link.active {
             color: rgb(8, 156, 115);
             font-weight: 700;
             border-right: 3px solid rgb(8, 156, 115);
         }
+
         .scroll-top {
             position: fixed;
             bottom: 30px;
@@ -67,14 +73,17 @@
             opacity: 0;
             transition: all 0.3s ease;
         }
+
         .scroll-top.show {
             opacity: 1;
         }
+
         .hero {
             background: linear-gradient(to right, rgb(8, 156, 115), #90D1CA);
             position: relative;
             overflow: hidden;
         }
+
         .hero::before {
             content: "";
             position: absolute;
@@ -82,31 +91,37 @@
             right: -50%;
             width: 200%;
             height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 70%);
             transform: rotate(30deg);
         }
+
         .footer {
             background: linear-gradient(to right, #91d1c9, #109f77);
         }
+
         .terms-content h3 {
             border-right: 3px solid #90D1CA;
             padding-right: 12px;
             margin-top: 30px;
             margin-bottom: 15px;
         }
+
         .terms-content p {
             line-height: 1.8;
             margin-bottom: 15px;
         }
+
         .terms-content ul {
             list-style-type: none;
             padding-right: 20px;
         }
+
         .terms-content ul li {
             position: relative;
             padding-right: 25px;
             margin-bottom: 10px;
         }
+
         .terms-content ul li::before {
             content: "•";
             color: #90D1CA;
@@ -115,19 +130,26 @@
             right: 0;
             top: -2px;
         }
+
         .highlight-box {
             border-right: 3px solid #FFC107;
             background: rgba(255, 193, 7, 0.05);
         }
+
         /* Adjusted sticky nav for responsiveness */
         .sticky-nav {
             position: sticky;
             top: 20px;
         }
-        @media (max-width: 767px) { /* For mobile devices */
+
+        @media (max-width: 767px) {
+
+            /* For mobile devices */
             .sticky-nav {
-                position: static; /* Remove sticky on small screens */
-                margin-bottom: 1.5rem; /* Add some space below it */
+                position: static;
+                /* Remove sticky on small screens */
+                margin-bottom: 1.5rem;
+                /* Add some space below it */
             }
         }
 
@@ -135,16 +157,18 @@
             background: rgb(8, 156, 115);
             transition: all 0.3s;
         }
+
         .btn-primary:hover {
             background: rgb(6, 128, 94);
         }
     </style>
 </head>
+
 <body class="bg-gray-50 text-gray-800">
     <!-- Top Navigation Bar -->
     <nav class="bg-white shadow-md py-4 px-4 sm:px-6">
         <div class="container mx-auto flex justify-between items-center">
-                     <!-- Back Button (on the left for RTL layout) -->
+            <!-- Back Button (on the left for RTL layout) -->
             <div>
                 <button id="backButton" class="text-gray-600 hover:text-primary transition-colors duration-200">
                     <i class="fas fa-arrow-right text-2xl"></i> <!-- Changed to arrow-left for RTL visual "back" -->
@@ -152,7 +176,8 @@
             </div>
             <!-- Logo and App Name (moved to the right for RTL layout) -->
             <div class="flex items-center">
-                <div class="bg-primary w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div
+                    class="bg-primary w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0">
                     <img src="./Assets/imgs/logoJmaia.svg" alt="">
                 </div>
                 <div class="mr-2 sm:mr-3">
@@ -160,8 +185,8 @@
                     <p class="text-xs text-gray-600 whitespace-nowrap">برنامج الجمعيات البنكي السعودي</p>
                 </div>
             </div>
-            
-   
+
+
         </div>
     </nav>
 
@@ -170,9 +195,11 @@
         <div class="container mx-auto px-4 sm:px-6 relative z-10">
             <div class="max-w-3xl">
                 <h1 class="text-3xl md:text-5xl font-bold mb-3 md:mb-4">الشروط والأحكام</h1>
-                <p class="text-base md:text-xl mb-6 md:mb-8 opacity-90">تعرف على القواعد والضوابط المنظمة لاستخدامك لتطبيق چمعية للجمعيات البنكية</p>
+                <p class="text-base md:text-xl mb-6 md:mb-8 opacity-90">تعرف على القواعد والضوابط المنظمة لاستخدامك
+                    لتطبيق چمعية للجمعيات البنكية</p>
                 <div class="flex items-center">
-                    <div class="bg-white bg-opacity-20 rounded-full px-3 py-1 text-xs sm:text-sm">آخر تحديث: 10 يوليو 2025</div>
+                    <div class="bg-white bg-opacity-20 rounded-full px-3 py-1 text-xs sm:text-sm">آخر تحديث: 10 يوليو
+                        2025</div>
                 </div>
             </div>
         </div>
@@ -185,20 +212,37 @@
             <div class="bg-white rounded-xl shadow-lg p-5 md:p-6 sticky-nav">
                 <h3 class="text-lg md:text-xl font-bold text-primary mb-4">جدول المحتويات</h3>
                 <ul class="space-y-2">
-                    <li><a href="#section1" class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">مقدمة وتعريفات</a></li>
-                    <li><a href="#section2" class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">شروط التسجيل</a></li>
-                    <li><a href="#section3" class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">المسؤوليات والالتزامات</a></li>
-                    <li><a href="#section4" class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">الرسوم والمدفوعات</a></li>
-                    <li><a href="#section5" class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">الخصوصية والأمان</a></li>
-                    <li><a href="#section6" class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">الملكية الفكرية</a></li>
-                    <li><a href="#section7" class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">إنهاء الخدمة</a></li>
-                    <li><a href="#section8" class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">القانون الحاكم</a></li>
+                    <li><a href="#section1"
+                            class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">مقدمة
+                            وتعريفات</a></li>
+                    <li><a href="#section2"
+                            class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">شروط
+                            التسجيل</a></li>
+                    <li><a href="#section3"
+                            class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">المسؤوليات
+                            والالتزامات</a></li>
+                    <li><a href="#section4"
+                            class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">الرسوم
+                            والمدفوعات</a></li>
+                    <li><a href="#section5"
+                            class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">الخصوصية
+                            والأمان</a></li>
+                    <li><a href="#section6"
+                            class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">الملكية
+                            الفكرية</a></li>
+                    <li><a href="#section7"
+                            class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">إنهاء
+                            الخدمة</a></li>
+                    <li><a href="#section8"
+                            class="nav-link block py-2 px-3 hover:bg-gray-100 rounded-lg transition text-sm md:text-base">القانون
+                            الحاكم</a></li>
                 </ul>
-                
+
                 <div class="mt-6 md:mt-8 p-4 bg-blue-50 rounded-lg border border-blue-100">
                     <h4 class="font-bold text-primary mb-2 text-base md:text-lg">هل لديك استفسار؟</h4>
                     <p class="text-xs md:text-sm mb-3">يمكنك التواصل مع فريق الدعم على مدار الساعة</p>
-                    <button id="contactUsBtn" class="w-full btn-primary text-white py-2 rounded-lg text-sm md:text-base">
+                    <button id="contactUsBtn"
+                        class="w-full btn-primary text-white py-2 rounded-lg text-sm md:text-base">
                         <i class="fas fa-headset mr-2"></i> تواصل معنا
                     </button>
                 </div>
@@ -210,21 +254,27 @@
             <!-- Introduction Section -->
             <section id="section1" class="mb-8 md:mb-12">
                 <h2 class="text-xl md:text-2xl font-bold text-primary mb-4 md:mb-6 section-title">مقدمة وتعريفات</h2>
-                <p class="mb-3 md:mb-4 text-sm md:text-base">مرحبًا بكم في تطبيق "چمعية"، البرنامج الرائد لإدارة الجمعيات البنكية في المملكة العربية السعودية. تهدف هذه الشروط والأحكام إلى تنظيم استخدامكم للتطبيق والخدمات المقدمة من خلاله.</p>
-                
+                <p class="mb-3 md:mb-4 text-sm md:text-base">مرحبًا بكم في تطبيق "چمعية"، البرنامج الرائد لإدارة
+                    الجمعيات البنكية في المملكة العربية السعودية. تهدف هذه الشروط والأحكام إلى تنظيم استخدامكم للتطبيق
+                    والخدمات المقدمة من خلاله.</p>
+
                 <h3 class="text-lg md:text-xl font-bold text-dark">التعريفات</h3>
                 <ul class="mb-3 md:mb-4 text-sm md:text-base">
-                    <li><span class="font-medium">التطبيق:</span> يشير إلى تطبيق "چمعية" للهواتف الذكية والمنصة الإلكترونية المرتبطة به.</li>
-                    <li><span class="font-medium">المستخدم:</span> أي شخص طبيعي أو اعتباري مسجل في التطبيق ويستخدم خدماته.</li>
-                    <li><span class="font-medium">الجمعية:</span> النظام المالي التقليدي الذي يتم تنظيمه عبر التطبيق.</li>
+                    <li><span class="font-medium">التطبيق:</span> يشير إلى تطبيق "چمعية" للهواتف الذكية والمنصة
+                        الإلكترونية المرتبطة به.</li>
+                    <li><span class="font-medium">المستخدم:</span> أي شخص طبيعي أو اعتباري مسجل في التطبيق ويستخدم
+                        خدماته.</li>
+                    <li><span class="font-medium">الجمعية:</span> النظام المالي التقليدي الذي يتم تنظيمه عبر التطبيق.
+                    </li>
                     <li><span class="font-medium">الطرف الثالث:</span> أي جهة خارجية يتم التعامل معها عبر التطبيق.</li>
                 </ul>
-                
+
                 <div class="highlight-box p-3 md:p-4 rounded-lg my-4 md:my-6">
                     <h4 class="font-bold text-accent mb-2 flex items-center text-base md:text-lg">
                         <i class="fas fa-lightbulb mr-2"></i> ملاحظة هامة
                     </h4>
-                    <p class="mb-0 text-sm md:text-base">باستخدامك تطبيق "چمعية"، فإنك توافق على الالتزام بكافة الشروط والأحكام الواردة في هذه الوثيقة. ننصحك بقراءتها بعناية قبل المتابعة.</p>
+                    <p class="mb-0 text-sm md:text-base">باستخدامك تطبيق "چمعية"، فإنك توافق على الالتزام بكافة الشروط
+                        والأحكام الواردة في هذه الوثيقة. ننصحك بقراءتها بعناية قبل المتابعة.</p>
                 </div>
             </section>
 
@@ -232,7 +282,7 @@
             <section id="section2" class="mb-8 md:mb-12">
                 <h2 class="text-xl md:text-2xl font-bold text-primary mb-4 md:mb-6 section-title">شروط التسجيل</h2>
                 <p class="mb-3 md:mb-4 text-sm md:text-base">يشترط للتسجيل في تطبيق "چمعية" توافر الشروط التالية:</p>
-                
+
                 <ul class="mb-4 md:mb-6 text-sm md:text-base">
                     <li>أن يكون المستخدم مواطنًا سعوديًا أو مقيماً في المملكة العربية السعودية.</li>
                     <li>أن يبلغ المستخدم سن 18 عاماً على الأقل.</li>
@@ -240,7 +290,7 @@
                     <li>توفير معلومات صحيحة وكاملة أثناء عملية التسجيل.</li>
                     <li>الالتزام بتعليمات الهيئة العامة للمنافسة ولوائح مؤسسة النقد العربي السعودي.</li>
                 </ul>
-                
+
                 <h3 class="text-lg md:text-xl font-bold text-dark">التحقق من الهوية</h3>
                 <p class="text-sm md:text-base">يتطلب التطبيق إجراءات تحقق دقيقة تشمل:</p>
                 <ul class="text-sm md:text-base">
@@ -253,8 +303,9 @@
 
             <!-- Responsibilities and Obligations Section -->
             <section id="section3" class="mb-8 md:mb-12">
-                <h2 class="text-xl md:text-2xl font-bold text-primary mb-4 md:mb-6 section-title">المسؤوليات والالتزامات</h2>
-                
+                <h2 class="text-xl md:text-2xl font-bold text-primary mb-4 md:mb-6 section-title">المسؤوليات والالتزامات
+                </h2>
+
                 <h3 class="text-lg md:text-xl font-bold text-dark">التزامات المستخدم</h3>
                 <ul class="mb-4 md:mb-6 text-sm md:text-base">
                     <li>المحافظة على سرية معلومات الدخول وعدم مشاركتها مع أي طرف آخر.</li>
@@ -263,7 +314,7 @@
                     <li>استخدام التطبيق للأغراض المشروعة فقط ووفقاً للأنظمة السعودية.</li>
                     <li>تحديث المعلومات الشخصية فور تغييرها.</li>
                 </ul>
-                
+
                 <h3 class="text-lg md:text-xl font-bold text-dark">التزامات التطبيق</h3>
                 <ul class="text-sm md:text-base">
                     <li>توفير خدمة آمنة وموثوقة لإدارة الجمعيات البنكية.</li>
@@ -277,7 +328,7 @@
             <!-- Fees and Payments Section -->
             <section id="section4" class="mb-8 md:mb-12">
                 <h2 class="text-xl md:text-2xl font-bold text-primary mb-4 md:mb-6 section-title">الرسوم والمدفوعات</h2>
-                
+
                 <div class="overflow-x-auto">
                     <table class="min-w-full bg-white border border-gray-200 rounded-lg text-sm md:text-base">
                         <thead>
@@ -290,13 +341,119 @@
                         <tbody>
                             <tr class="hover:bg-gray-50">
                                 <td class="py-2 px-3 md:py-3 md:px-4 border-b">إنشاء جمعية جديدة</td>
-                                <td class="py-2 px-3 md:py-3 md:px-4 border-b">مجاناً</td>
-                                <td class="py-2 px-3 md:py-3 md:px-4 border-b">-</td>
+                                <td class="py-2 px-3 md:py-3 md:px-4 border-b">
+                                    <div class="container mx-auto px-4 py-12">
+                                        <h1 class="text-3xl font-bold text-center mb-8 text-[#1E3A8A]">عروضنا وخصوماتنا
+                                        </h1>
+
+                                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                            <!-- First Tier -->
+                                            <div
+                                                class="bg-white rounded-lg shadow-lg overflow-hidden border-t-4 border-[#10B981]">
+                                                <div class="p-6">
+                                                    <h2 class="text-xl font-bold mb-3 text-[#065F46]">الأدوار الأولَى
+                                                    </h2>
+                                                    <p class="text-4xl font-bold mb-4 text-[#10B981]">7% <span
+                                                            class="text-lg">رسوم الاشتراك</span></p>
+                                                    <div class="flex items-center mb-4">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            class="h-5 w-5 text-[#10B981]" viewBox="0 0 20 20"
+                                                            fill="currentColor">
+                                                            <path fill-rule="evenodd"
+                                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+                                                        <span class="mr-2 text-gray-700">أفضل رسوم الاشتراك عندنا</span>
+                                                    </div>
+                                                    <div class="flex items-center mb-4">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            class="h-5 w-5 text-[#10B981]" viewBox="0 0 20 20"
+                                                            fill="currentColor">
+                                                            <path fill-rule="evenodd"
+                                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+                                                        <span class="mr-2 text-gray-700">للأوائل فقط</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Middle Tier -->
+                                            <div
+                                                class="bg-white rounded-lg shadow-lg overflow-hidden border-t-4 border-[#3B82F6]">
+                                                <div class="p-6">
+                                                    <h2 class="text-xl font-bold mb-3 text-[#1E40AF]">الأدوار الوسطى
+                                                    </h2>
+                                                    <p class="text-4xl font-bold mb-4 text-[#3B82F6]">5% <span
+                                                            class="text-lg">رسوم الاشتراك</span></p>
+                                                    <div class="flex items-center mb-4">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            class="h-5 w-5 text-[#3B82F6]" viewBox="0 0 20 20"
+                                                            fill="currentColor">
+                                                            <path fill-rule="evenodd"
+                                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+                                                        <span class="mr-2 text-gray-700">رسوم الاشتراك معقول</span>
+                                                    </div>
+                                                    <div class="flex items-center mb-4">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            class="h-5 w-5 text-[#3B82F6]" viewBox="0 0 20 20"
+                                                            fill="currentColor">
+                                                            <path fill-rule="evenodd"
+                                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+                                                        <span class="mr-2 text-gray-700">وسط القائمة</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!-- Last Tier -->
+                                            <div
+                                                class="bg-white rounded-lg shadow-lg overflow-hidden border-t-4 border-[#F59E0B]">
+                                                <div class="p-6">
+                                                    <h2 class="text-xl font-bold mb-3 text-[#92400E]">الأدوار الأخيرة
+                                                    </h2>
+                                                    <p class="text-4xl font-bold mb-4 text-[#F59E0B]">2% <span
+                                                            class="text-lg">كاش باك</span></p>
+                                                    <div class="flex items-center mb-4">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            class="h-5 w-5 text-[#F59E0B]" viewBox="0 0 20 20"
+                                                            fill="currentColor">
+                                                            <path fill-rule="evenodd"
+                                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+                                                        <span class="mr-2 text-gray-700">استرجاع نقدي</span>
+                                                    </div>
+                                                    <div class="flex items-center mb-4">
+                                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                                            class="h-5 w-5 text-[#F59E0B]" viewBox="0 0 20 20"
+                                                            fill="currentColor">
+                                                            <path fill-rule="evenodd"
+                                                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                                                clip-rule="evenodd" />
+                                                        </svg>
+                                                        <span class="mr-2 text-gray-700">للأواخر</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-8 text-center">
+                                            <p class="text-gray-600">فَـرِّق وحسّن اختيارك! <span
+                                                    class="text-[#3B82F6] font-bold">🚀💸</span></p>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-2 px-3 md:py-3 md:px-4 border-b">لدينا 3طرق دفع (حساب بنكي - محفظة الكترونيه - نقدي)</td>
                             </tr>
                             <tr class="hover:bg-gray-50">
                                 <td class="py-2 px-3 md:py-3 md:px-4 border-b">رسوم إدارية (دورية)</td>
-                                <td class="py-2 px-3 md:py-3 md:px-4 border-b">1% من قيمة الجمعية أو 50 ريال (أيهما أقل)</td>
-                                <td class="py-2 px-3 md:py-3 md:px-4 border-b">خصم تلقائي من الحساب</td>
+                                <td class="py-2 px-3 md:py-3 md:px-4 border-b">1% من قيمة الجمعية أو 50 ريال (أيهما أقل)
+                                </td>
+                                <td class="py-2 px-3 md:py-3 md:px-4 border-b">رسوم الاشتراك تلقائي من الحساب</td>
                             </tr>
                             <tr class="hover:bg-gray-50">
                                 <td class="py-2 px-3 md:py-3 md:px-4 border-b">تأخير السداد</td>
@@ -311,7 +468,7 @@
                         </tbody>
                     </table>
                 </div>
-                
+
                 <div class="mt-4 md:mt-6 p-3 md:p-4 bg-red-50 rounded-lg border border-red-200">
                     <h4 class="font-bold text-red-600 mb-2 flex items-center text-base md:text-lg">
                         <i class="fas fa-exclamation-triangle mr-2"></i> ملاحظات هامة
@@ -339,12 +496,14 @@
 
             <section id="section6" class="mb-8 md:mb-12">
                 <h2 class="text-xl md:text-2xl font-bold text-primary mb-4 md:mb-6 section-title">الملكية الفكرية</h2>
-                <p class="text-sm md:text-base">جميع حقوق الملكية الفكرية المتعلقة بتطبيق "چمعية" (بما في ذلك الشعارات، التصاميم، البرمجيات) محفوظة لصالح البنك ولا يحق للمستخدمين استخدامها دون إذن كتابي مسبق.</p>
+                <p class="text-sm md:text-base">جميع حقوق الملكية الفكرية المتعلقة بتطبيق "چمعية" (بما في ذلك الشعارات،
+                    التصاميم، البرمجيات) محفوظة لصالح البنك ولا يحق للمستخدمين استخدامها دون إذن كتابي مسبق.</p>
             </section>
 
             <section id="section7" class="mb-8 md:mb-12">
                 <h2 class="text-xl md:text-2xl font-bold text-primary mb-4 md:mb-6 section-title">إنهاء الخدمة</h2>
-                <p class="text-sm md:text-base">يحق للمستخدم إنهاء استخدام التطبيق في أي وقت بعد تسوية جميع الالتزامات المالية. كما يحق للتطبيق تعليق أو إنهاء الحساب في حال:</p>
+                <p class="text-sm md:text-base">يحق للمستخدم إنهاء استخدام التطبيق في أي وقت بعد تسوية جميع الالتزامات
+                    المالية. كما يحق للتطبيق تعليق أو إنهاء الحساب في حال:</p>
                 <ul class="text-sm md:text-base">
                     <li>خرق شروط الاستخدام</li>
                     <li>الاشتباه في نشاط احتيالي</li>
@@ -355,12 +514,14 @@
 
             <section id="section8" class="mb-8 md:mb-12">
                 <h2 class="text-xl md:text-2xl font-bold text-primary mb-4 md:mb-6 section-title">القانون الحاكم</h2>
-                <p class="text-sm md:text-base">تخضع هذه الشروط والأحكام لقوانين المملكة العربية السعودية. أي نزاعات تنشأ عن استخدام التطبيق تُحل من خلال المحاكم السعودية المختصة في مدينة الرياض.</p>
+                <p class="text-sm md:text-base">تخضع هذه الشروط والأحكام لقوانين المملكة العربية السعودية. أي نزاعات
+                    تنشأ عن استخدام التطبيق تُحل من خلال المحاكم السعودية المختصة في مدينة الرياض.</p>
                 <div class="mt-4 md:mt-6 p-3 md:p-4 bg-green-50 rounded-lg border border-green-200">
                     <h4 class="font-bold text-green-700 mb-2 flex items-center text-base md:text-lg">
                         <i class="fas fa-info-circle mr-2"></i> تحديثات الشروط
                     </h4>
-                    <p class="mb-0 text-sm md:text-base">نحتفظ بحق تعديل هذه الشروط والأحكام عند الضرورة. سيتم إعلامك بأي تغييرات جوهرية عبر التطبيق أو البريد الإلكتروني قبل 30 يوماً من سريانها.</p>
+                    <p class="mb-0 text-sm md:text-base">نحتفظ بحق تعديل هذه الشروط والأحكام عند الضرورة. سيتم إعلامك
+                        بأي تغييرات جوهرية عبر التطبيق أو البريد الإلكتروني قبل 30 يوماً من سريانها.</p>
                 </div>
             </section>
 
@@ -368,13 +529,15 @@
             <div class="border-t border-gray-200 pt-6 md:pt-8 mt-6 md:mt-8">
                 <div class="flex flex-col md:flex-row items-center justify-between">
                     <div class="flex items-center mb-4 md:mb-0">
-                        <div class="bg-primary w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div
+                            class="bg-primary w-9 h-9 sm:w-10 sm:h-10 rounded-lg flex items-center justify-center flex-shrink-0">
                             <i class="fas fa-file-contract text-white text-base sm:text-lg"></i>
                         </div>
                         <p class="mr-2 sm:mr-3 font-medium text-sm sm:text-base">شروط وأحكام تطبيق چمعية</p>
                     </div>
                     <div>
-                        <button id="printDocBtn" class="btn-primary text-white px-5 py-2 md:px-6 md:py-3 rounded-lg flex items-center text-sm md:text-base">
+                        <button id="printDocBtn"
+                            class="btn-primary text-white px-5 py-2 md:px-6 md:py-3 rounded-lg flex items-center text-sm md:text-base">
                             <i class="fas fa-print mr-2"></i> طباعة الوثيقة
                         </button>
                     </div>
@@ -389,14 +552,16 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
                 <div>
                     <div class="flex items-center mb-3 md:mb-4">
-                        <div class="bg-white bg-opacity-20 w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div
+                            class="bg-white bg-opacity-20 w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0">
                             <i class="fas fa-hand-holding-usd text-white text-lg sm:text-xl"></i>
                         </div>
                         <h3 class="text-lg sm:text-xl font-bold mr-2 sm:mr-3">چمعية</h3>
                     </div>
-                    <p class="text-gray-300 text-sm md:text-base">برنامج الجمعيات البنكي الأول في السعودية، يقدم حلولاً متكاملة لإدارة الجمعيات المالية بكل سهولة وأمان.</p>
+                    <p class="text-gray-300 text-sm md:text-base">برنامج الجمعيات البنكي الأول في السعودية، يقدم حلولاً
+                        متكاملة لإدارة الجمعيات المالية بكل سهولة وأمان.</p>
                 </div>
-                
+
                 <div>
                     <h4 class="text-base sm:text-lg font-bold mb-3 md:mb-4">روابط سريعة</h4>
                     <ul class="space-y-2 text-sm md:text-base">
@@ -407,11 +572,11 @@
                         <li><a href="#" class="text-gray-300 hover:text-white transition">الشروط والأحكام</a></li>
                     </ul>
                 </div>
-                
+
                 <div>
                     <h4 class="text-base sm:text-lg font-bold mb-3 md:mb-4">الدعم الفني</h4>
                     <ul class="space-y-2 text-sm md:text-base">
-                  <li class="flex items-center">
+                        <li class="flex items-center">
                             <i class="fas fa-headset text-secondary mr-2 "></i>
                             <a href="https://wa.me/966545839034" target="_blank" class="text-white hover:underline">
                                 +966 54 583 9034
@@ -427,29 +592,34 @@
                         </li>
                     </ul>
                     <div class="mt-4 flex space-x-3">
-                        <a href="#" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-opacity-20 transition">
+                        <a href="#"
+                            class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-opacity-20 transition">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a href="#" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-opacity-20 transition">
+                        <a href="#"
+                            class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-opacity-20 transition">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="#" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-opacity-20 transition">
+                        <a href="#"
+                            class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-opacity-20 transition">
                             <i class="fab fa-linkedin"></i>
                         </a>
                     </div>
                 </div>
-                
+
                 <div>
                     <h4 class="text-base sm:text-lg font-bold mb-3 md:mb-4">حمل التطبيق</h4>
                     <div class="space-y-3">
-                        <button class="w-full bg-black bg-opacity-20 hover:bg-opacity-30 rounded-lg py-2 px-3 md:py-3 md:px-4 flex items-center transition">
+                        <button
+                            class="w-full bg-black bg-opacity-20 hover:bg-opacity-30 rounded-lg py-2 px-3 md:py-3 md:px-4 flex items-center transition">
                             <i class="fab fa-apple text-xl sm:text-2xl mr-3"></i>
                             <div>
                                 <div class="text-xs">حمله من</div>
                                 <div class="font-medium text-sm sm:text-base">App Store</div>
                             </div>
                         </button>
-                        <button class="w-full bg-black bg-opacity-20 hover:bg-opacity-30 rounded-lg py-2 px-3 md:py-3 md:px-4 flex items-center transition">
+                        <button
+                            class="w-full bg-black bg-opacity-20 hover:bg-opacity-30 rounded-lg py-2 px-3 md:py-3 md:px-4 flex items-center transition">
                             <i class="fab fa-google-play text-lg sm:text-xl mr-3"></i>
                             <div>
                                 <div class="text-xs">حمله من</div>
@@ -459,8 +629,9 @@
                     </div>
                 </div>
             </div>
-            
-            <div class="border-t border-gray-300 mt-8 md:mt-10 pt-4 md:pt-6 text-center text-gray-400 text-xs sm:text-sm">
+
+            <div
+                class="border-t border-gray-300 mt-8 md:mt-10 pt-4 md:pt-6 text-center text-gray-400 text-xs sm:text-sm">
                 <p class="text-white">© 2025 چمعية. جميع الحقوق محفوظة. </p>
             </div>
         </div>
@@ -472,57 +643,57 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             // Smooth scrolling and active link highlighting for sidebar navigation
             const navLinks = document.querySelectorAll('.nav-link');
             navLinks.forEach(link => {
-                link.addEventListener('click', function(e) {
+                link.addEventListener('click', function (e) {
                     e.preventDefault();
                     const targetId = this.getAttribute('href');
                     const targetSection = document.querySelector(targetId);
-                    
+
                     // Remove active class from all links
                     navLinks.forEach(l => l.classList.remove('active'));
-                    
+
                     // Add active class to the clicked link
                     this.classList.add('active');
-                    
+
                     // Scroll to the target section
                     targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 });
             });
-            
+
             // Scroll to top button functionality
             const scrollTopButton = document.getElementById('scrollTop');
-            
-            window.addEventListener('scroll', function() {
+
+            window.addEventListener('scroll', function () {
                 if (window.pageYOffset > 300) {
                     scrollTopButton.classList.add('show');
                 } else {
                     scrollTopButton.classList.remove('show');
                 }
             });
-            
-            scrollTopButton.addEventListener('click', function() {
+
+            scrollTopButton.addEventListener('click', function () {
                 window.scrollTo({
                     top: 0,
                     behavior: 'smooth'
                 });
             });
-            
+
             // Set active link on scroll
-            window.addEventListener('scroll', function() {
+            window.addEventListener('scroll', function () {
                 const sections = document.querySelectorAll('section[id]');
                 let currentSection = '';
-                
+
                 sections.forEach(section => {
                     const sectionTop = section.offsetTop;
                     // Adjust offset for better active state detection
-                    if (pageYOffset >= sectionTop - 150) { 
+                    if (pageYOffset >= sectionTop - 150) {
                         currentSection = section.getAttribute('id');
                     }
                 });
-                
+
                 navLinks.forEach(link => {
                     link.classList.remove('active');
                     if (link.getAttribute('href') === `#${currentSection}`) {
@@ -534,7 +705,7 @@
             // Functionality for "تواصل معنا" (Contact Us) button
             const contactUsBtn = document.getElementById('contactUsBtn');
             if (contactUsBtn) {
-                contactUsBtn.addEventListener('click', function() {
+                contactUsBtn.addEventListener('click', function () {
                     const phoneNumber = '+966545839034'; // Saudi Arabia number
                     const whatsappUrl = `https://wa.me/${phoneNumber}`;
                     window.open(whatsappUrl, '_blank');
@@ -544,7 +715,7 @@
             // Functionality for "طباعة الوثيقة" (Print Document) button
             const printDocBtn = document.getElementById('printDocBtn');
             if (printDocBtn) {
-                printDocBtn.addEventListener('click', function() {
+                printDocBtn.addEventListener('click', function () {
                     window.print();
                 });
             }
@@ -552,11 +723,12 @@
             // Functionality for the back button in the navigation bar
             const backButton = document.getElementById('backButton');
             if (backButton) {
-                backButton.addEventListener('click', function() {
+                backButton.addEventListener('click', function () {
                     window.history.back();
                 });
             }
         });
     </script>
 </body>
+
 </html>

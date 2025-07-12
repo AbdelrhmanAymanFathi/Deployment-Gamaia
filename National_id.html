@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
   <meta charset="UTF-8">
-  <title>رفع البطاقة الشخصية</title>
+  <title>رفع  الهوية الشخصية</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <!-- Tailwind -->
   <!-- <script src="https://cdn.tailwindcss.com"></script> -->
@@ -26,11 +26,11 @@
         <svg class="w-4 h-4 text-gray-800 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/>
         </svg>
-        <span class="text-base font-bold text-gray-800">إرفع البطاقة الشخصية</span>
+        <span class="text-base font-bold text-gray-800">إرفع  الهوية الشخصية</span>
       </div>
       <!-- التعليمات -->
       <div class="text-right text-gray-800 text-sm leading-loose mb-4 space-y-2">
-        <div>وانت بتصور بطاقتك الشخصية، اتأكد إن وش وصورة البطاقة يكون:</div>
+        <div>وانت بتصور هويتك الشخصية، اتأكد إن وش وصورة  الهوية يكون:</div>
         <ul class="pr-6 mt-1 space-y-2">
           <li class="text-xs text-gray-800 flex items-center">
             <span class="dot dot-red"></span>
@@ -80,7 +80,7 @@
         </span>
       </div>
       <!-- زر الرفع -->
-      <button id="startBtn" class="w-full border border-green-400 rounded-full py-2 text-green-900 font-medium text-base hover:bg-green-50 transition mt-2 focus:outline-none">إرفع البطاقة الشخصية</button>
+      <button id="startBtn" class="w-full border border-green-400 rounded-full py-2 text-green-900 font-medium text-base hover:bg-green-50 transition mt-2 focus:outline-none">إرفع  الهوية الشخصية</button>
     </div>
 
     <!-- الخطوة 2: قبل البدء -->
@@ -97,7 +97,7 @@
           <path d="M12 21c4.97 0 9-4.03 9-9s-4.03-9-9-9-9 4.03-9 9 4.03 9 9 9zm0-16a7 7 0 110 14 7 7 0 010-14zm1 3h-2v5h2V8zm0 6h-2v2h2v-2z" fill="#2DAA9E"/>
           <path d="M9 12h6" stroke="#2DAA9E" stroke-width="2" stroke-linecap="round"/>
         </svg>
-        <div class="text-gray-700 text-sm mb-4">احرص على حمل البطاقة في يدك وعدم وضعها على أي سطح.</div>
+        <div class="text-gray-700 text-sm mb-4">احرص على حمل  الهوية في يدك وعدم وضعها على أي سطح.</div>
         <!-- اختيار الكاميرا -->
         <div class="mb-4">
           <label for="cameraSelect" class="block mb-1 text-sm text-gray-700">اختر الكاميرا:</label>
@@ -120,15 +120,15 @@
       </div>
       <div id="captureArea">
         <div class="text-center mb-4">
-          <div id="captureMsg" class="text-green-900 font-bold text-base mb-2">التقط صورة وجه البطاقة</div>
+          <div id="captureMsg" class="text-green-900 font-bold text-base mb-2">التقط صورة وجه  الهوية</div>
           <video id="video" autoplay playsinline class="mx-auto rounded-lg border-2 border-dashed border-green-400 w-full max-w-xs h-48 object-cover"></video>
           <button id="captureBtn" class="w-full border border-green-400 rounded-full py-2 text-green-900 font-medium text-base hover:bg-green-50 transition mt-3">التقط الصورة</button>
         </div>
       </div>
       <div id="resultArea" class="hidden">
         <div class="flex flex-col gap-4 mb-4">
-          <img id="frontImg" class="rounded-lg border border-gray-300 w-full max-w-xs mx-auto" src="" alt="وجه البطاقة">
-          <img id="backImg" class="rounded-lg border border-gray-300 w-full max-w-xs mx-auto" src="" alt="خلف البطاقة">
+          <img id="frontImg" class="rounded-lg border border-gray-300 w-full max-w-xs mx-auto" src="" alt="وجه  الهوية">
+          <img id="backImg" class="rounded-lg border border-gray-300 w-full max-w-xs mx-auto" src="" alt="خلف  الهوية">
         </div>
         <button id="doneBtn" class="w-full border border-green-400 rounded-full py-2 text-green-900 font-medium text-base hover:bg-green-50 transition">تم</button>
       </div>
@@ -150,7 +150,7 @@
     let backImageUrl = null;
     let captureStep = 0; // 0: front, 1: back
 
-    // زر "إرفع البطاقة الشخصية"
+    // زر "إرفع  الهوية الشخصية"
     startBtn.onclick = function() {
       step1.classList.add('hidden');
       step2.classList.remove('hidden');
@@ -278,9 +278,9 @@
       captureArea.classList.remove('hidden');
       resultArea.classList.add('hidden');
       if (step === 0) {
-        captureMsg.textContent = 'التقط صورة وجه البطاقة';
+        captureMsg.textContent = 'التقط صورة وجه  الهوية';
       } else {
-        captureMsg.textContent = 'التقط صورة خلف البطاقة';
+        captureMsg.textContent = 'التقط صورة خلف  الهوية';
       }
     }
 
