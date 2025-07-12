@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>عن چمعية</title>
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    :root { --primary: #90D1CA; }
+  </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans">
+
+  <!-- Navbar -->
+  <header class="bg-white border-b shadow-sm fixed w-full z-10">
+    <div class="container mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="index.html" class="flex items-center space-x-2 text-[var(--primary)]">
+        <img src="./Assets/imgs/logoJmaia.svg" alt="لوغو چمعية" class="h-8 w-8 rounded-full" />
+        <span class="text-2xl font-extrabold">چمعية </span>
+      </a>
+      <!-- <button id="menu-btn" class="block lg:hidden focus:outline-none">
+        <svg class="h-6 w-6 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+      <nav id="menu" class="hidden lg:flex space-x-8">
+        <a href="index.html" class="hover:text-[var(--primary)]">الرئيسية</a>
+        <a href="about.html" class="text-[var(--primary)] font-semibold">عن التطبيق</a>
+        <a href="features.html" class="hover:text-[var(--primary)]">المميزات</a>
+        <a href="contact.html" class="hover:text-[var(--primary)]">اتصل بنا</a>
+      </nav> -->
+    </div>
+  </header>
+
+  <main class="pt-24">
+    <!-- Hero -->
+    <section class="relative bg-[var(--primary)] text-white overflow-hidden">
+      <div class="container mx-auto px-6 py-24 flex flex-col-reverse lg:flex-row items-center justify-between">
+        <div class="lg:w-1/2 text-center lg:text-left space-y-6">
+          <h1 class="text-4xl md:text-5xl font-extrabold leading-tight">مرحبًا بك في چمعية</h1>
+          <p class="text-lg md:text-xl">أحدث تطبيق لإدارة جمعياتك في المملكة العربية السعودية.</p>
+          <!-- <a href="download.html" class="inline-block bg-white text-[var(--primary)] px-8 py-3 rounded-full font-semibold shadow-lg hover:shadow-xl transition">حمل التطبيق الآن</a> -->
+        </div>
+        <div class="lg:w-1/2 mb-10 lg:mb-0">
+          <img src="assets/hero-app.svg" alt="تطبيق چمعية" class="w-full h-auto">
+        </div>
+      </div>
+      <div class="absolute -bottom-20 right-0 w-96 opacity-10">
+        <img src="assets/wave.svg" alt="wave">
+      </div>
+    </section>
+
+    <!-- About -->
+    <section class="container mx-auto px-6 py-20">
+      <div class="bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col lg:flex-row">
+        <div class="lg:w-1/2">
+          <img src="assets/about-illustration.svg" alt="عن چمعية" class="w-full h-full object-cover">
+        </div>
+        <div class="lg:w-1/2 p-10 space-y-6">
+          <h2 class="text-3xl font-bold text-[var(--primary)]">ما هو چمعية؟</h2>
+          <p class="text-gray-600 leading-relaxed">چمعية هو تطبيق يهدف لتسهيل إدارة الجمعيات والخزانات وبناء مجتمع من الثقة بين الأعضاء، مع توفير تجربة استخدام سلسة وعصرية.</p>
+          <ul class="list-inside space-y-3">
+            <li class="flex items-start"><span class="text-[var(--primary)] text-2xl ml-3">✓</span>إدارة اشتراكات الأعضاء بسهولة</li>
+            <li class="flex items-start"><span class="text-[var(--primary)] text-2xl ml-3">✓</span>مدفوعات إلكترونية آمنة</li>
+            <li class="flex items-start"><span class="text-[var(--primary)] text-2xl ml-3">✓</span>تقارير مالية دقيقة بلمسة واحدة</li>
+            <li class="flex items-start"><span class="text-[var(--primary)] text-2xl ml-3">✓</span>إشعارات وتنبيهات دورية</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works -->
+    <section class="bg-gray-50 py-20">
+      <div class="container mx-auto px-6">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-12">كيف يعمل چمعية؟</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div class="p-8 bg-white rounded-2xl shadow-md transform hover:-translate-y-2 transition">
+            <div class="text-5xl mb-4 text-[var(--primary)]">1</div>
+            <h3 class="font-semibold mb-2">التسجيل</h3>
+            <p>أنشئ حسابك كمدير لجمعيتك خلال ثوانٍ.</p>
+          </div>
+          <div class="p-8 bg-white rounded-2xl shadow-md transform hover:-translate-y-2 transition">
+            <div class="text-5xl mb-4 text-[var(--primary)]">2</div>
+            <h3 class="font-semibold mb-2">إضافة الأعضاء</h3>
+            <p>قم بدعوة الأعضاء وجدولة الاشتراكات بسهولة.</p>
+          </div>
+          <div class="p-8 bg-white rounded-2xl shadow-md transform hover:-translate-y-2 transition">
+            <div class="text-5xl mb-4 text-[var(--primary)]">3</div>
+            <h3 class="font-semibold mb-2">إدارة المدفوعات</h3>
+            <p>تابع المدفوعات والتقارير المالية بنقرة واحدة.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="container mx-auto px-6 py-20 text-center">
+      <h2 class="text-3xl font-bold text-gray-800 mb-6">هل أنت جاهز للانضمام إلى چمعية؟</h2>
+      <a href="home.html" class="inline-block bg-[var(--primary)] text-white px-12 py-4 rounded-full font-semibold shadow-lg hover:shadow-xl transition">ابدأ الآن مجانًا</a>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-white border-t py-8">
+    <div class="container mx-auto px-6 text-center space-y-4">
+      <p class="text-gray-600">© 2025 چمعية. جميع الحقوق محفوظة.</p>
+      <div class="space-x-6">
+        <a href="#" class="text-gray-600 hover:text-[var(--primary)]">سياسة الخصوصية</a>
+        <a href="#" class="text-gray-600 hover:text-[var(--primary)]">الشروط والأحكام</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- JavaScript -->
+  <script>
+    const btn = document.getElementById('menu-btn');
+    const menu = document.getElementById('menu');
+    btn.addEventListener('click', () => {
+      menu.classList.toggle('hidden');
+    });
+  </script>
+</body>
+</html>

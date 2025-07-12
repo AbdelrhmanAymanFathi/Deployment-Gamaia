@@ -1,55 +1,59 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سياسة الخصوصية - چمعية</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap"
+        rel="stylesheet">
     <style>
         /* Base font family for the entire body */
         body {
             font-family: 'Tajawal', sans-serif;
         }
-        
+
         /* Custom colors for consistency */
         .primary-bg {
             background-color: rgb(8, 156, 115);
         }
-        
+
         .secondary-bg {
             background-color: #90D1CA;
         }
-        
+
         .primary-text {
             color: rgb(8, 156, 115);
         }
-        
+
         .secondary-text {
             color: #90D1CA;
         }
-        
+
         /* Section divider style */
         .section-divider {
             border-bottom: 2px dashed #90D1CA;
         }
-        
+
         /* Policy card styling with hover effect */
         .policy-card {
             transition: all 0.3s ease;
-            border-left: 4px solid rgb(8, 156, 115); /* Left border for RTL layout */
+            border-left: 4px solid rgb(8, 156, 115);
+            /* Left border for RTL layout */
         }
-        
+
         .policy-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
         }
-        
+
         /* Highlight box styling */
         .highlight-box {
             background: linear-gradient(135deg, rgba(144, 209, 202, 0.2), rgba(8, 156, 115, 0.1));
-            border-left: 4px solid rgb(8, 156, 115); /* Left border for RTL layout */
+            border-left: 4px solid rgb(8, 156, 115);
+            /* Left border for RTL layout */
         }
 
         /* Footer background gradient */
@@ -59,24 +63,29 @@
 
         /* Styles for terms content within sections */
         .terms-content h3 {
-            border-right: 3px solid #90D1CA; /* Right border for RTL headings */
+            border-right: 3px solid #90D1CA;
+            /* Right border for RTL headings */
             padding-right: 12px;
             margin-top: 30px;
             margin-bottom: 15px;
         }
+
         .terms-content p {
             line-height: 1.8;
             margin-bottom: 15px;
         }
+
         .terms-content ul {
             list-style-type: none;
             padding-right: 20px;
         }
+
         .terms-content ul li {
             position: relative;
             padding-right: 25px;
             margin-bottom: 10px;
         }
+
         .terms-content ul li::before {
             content: "•";
             color: #90D1CA;
@@ -87,8 +96,10 @@
         }
 
         /* Specific highlight box for important points */
-        .highlight-box.important-points { /* Added a specific class for clarity */
-            border-right: 3px solid #FFC107; /* Right border for RTL */
+        .highlight-box.important-points {
+            /* Added a specific class for clarity */
+            border-right: 3px solid #FFC107;
+            /* Right border for RTL */
             background: rgba(255, 193, 7, 0.05);
         }
 
@@ -97,10 +108,14 @@
             position: sticky;
             top: 20px;
         }
-        @media (max-width: 767px) { /* For mobile devices, remove sticky behavior */
+
+        @media (max-width: 767px) {
+
+            /* For mobile devices, remove sticky behavior */
             .sticky-nav {
-                position: static; 
-                margin-bottom: 1.5rem; /* Add some space below it */
+                position: static;
+                margin-bottom: 1.5rem;
+                /* Add some space below it */
             }
         }
 
@@ -109,11 +124,13 @@
             background: rgb(8, 156, 115);
             transition: all 0.3s;
         }
+
         .btn-primary:hover {
             background: rgb(6, 128, 94);
         }
     </style>
 </head>
+
 <body class="bg-gray-50">
     <!-- Navigation Bar -->
     <nav class="primary-bg py-4 px-6 shadow-lg">
@@ -129,7 +146,7 @@
                 <i class="fas fa-users text-white text-2xl mr-3"></i>
                 <h1 class="text-white text-2xl font-bold">چمعية</h1>
             </div>
-            
+
             <!-- Hamburger menu for small screens (currently not functional, but present) -->
             <!-- <button class="md:hidden text-white text-2xl">
                 <i class="fas fa-bars"></i>
@@ -139,17 +156,18 @@
             </div> -->
         </div>
     </nav>
-    
+
     <!-- Main Header Section -->
     <header class="py-16 secondary-bg">
         <div class="container mx-auto px-4 text-center">
             <h1 class="text-3xl md:text-5xl font-bold text-gray-800 mb-6">سياسة الخصوصية</h1>
             <p class="text-gray-700 max-w-3xl mx-auto text-lg">
-                نلتزم في تطبيق "چمعية" بحماية خصوصيتك وضمان أمان معلوماتك الشخصية. تعرف على كيفية جمعنا واستخدامنا وحماية بياناتك.
+                نلتزم في تطبيق "چمعية" بحماية خصوصيتك وضمان أمان معلوماتك الشخصية. تعرف على كيفية جمعنا واستخدامنا
+                وحماية بياناتك.
             </p>
         </div>
     </header>
-    
+
     <!-- Main Content Area -->
     <main class="container mx-auto px-4 py-12">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -159,14 +177,18 @@
                 <h2 class="text-xl font-bold primary-text mb-4">أقسام السياسة</h2>
                 <ul class="space-y-3">
                     <li><a href="#section1" class="block p-3 hover:bg-gray-100 rounded-lg transition">مقدمة</a></li>
-                    <li><a href="#section2" class="block p-3 hover:bg-gray-100 rounded-lg transition">المعلومات التي نجمعها</a></li>
-                    <li><a href="#section3" class="block p-3 hover:bg-gray-100 rounded-lg transition">كيف نستخدم معلوماتك</a></li>
-                    <li><a href="#section4" class="block p-3 hover:bg-gray-100 rounded-lg transition">حماية المعلومات</a></li>
+                    <li><a href="#section2" class="block p-3 hover:bg-gray-100 rounded-lg transition">المعلومات التي
+                            نجمعها</a></li>
+                    <li><a href="#section3" class="block p-3 hover:bg-gray-100 rounded-lg transition">كيف نستخدم
+                            معلوماتك</a></li>
+                    <li><a href="#section4" class="block p-3 hover:bg-gray-100 rounded-lg transition">حماية
+                            المعلومات</a></li>
                     <li><a href="#section5" class="block p-3 hover:bg-gray-100 rounded-lg transition">حقوقك</a></li>
-                    <li><a href="#section6" class="block p-3 hover:bg-gray-100 rounded-lg transition">التحديثات على السياسة</a></li>
+                    <li><a href="#section6" class="block p-3 hover:bg-gray-100 rounded-lg transition">التحديثات على
+                            السياسة</a></li>
                     <li><a href="#section7" class="block p-3 hover:bg-gray-100 rounded-lg transition">اتصل بنا</a></li>
                 </ul>
-                
+
                 <div class="mt-8 highlight-box p-5 rounded-lg important-points">
                     <h3 class="font-bold text-lg mb-2 primary-text">نقاط هامة</h3>
                     <ul class="space-y-2 text-gray-700">
@@ -185,7 +207,7 @@
                     </ul>
                 </div>
             </div>
-            
+
             <!-- Policy Content Sections -->
             <div class="lg:col-span-2">
                 <!-- Section 1: Introduction -->
@@ -197,13 +219,16 @@
                         <h2 class="text-2xl font-bold text-gray-800">مقدمة</h2>
                     </div>
                     <p class="text-gray-700 leading-relaxed">
-                        ترحب بك سياسة الخصوصية الخاصة بتطبيق "چمعية". نحن ندرك أهمية خصوصية معلوماتك الشخصية ونلتزم بحمايتها. توضح هذه السياسة كيفية جمعنا واستخدامنا ومشاركة وحماية معلوماتك عندما تستخدم تطبيقنا أو خدماتنا.
+                        ترحب بك سياسة الخصوصية الخاصة بتطبيق "چمعية". نحن ندرك أهمية خصوصية معلوماتك الشخصية ونلتزم
+                        بحمايتها. توضح هذه السياسة كيفية جمعنا واستخدامنا ومشاركة وحماية معلوماتك عندما تستخدم تطبيقنا
+                        أو خدماتنا.
                     </p>
                     <p class="text-gray-700 leading-relaxed mt-4">
-                        باستخدامك تطبيق "چمعية"، فإنك توافق على ممارسات الخصوصية الموضحة في هذه السياسة. قد نقوم بتحديث هذه السياسة من وقت لآخر، وسنخطرك بأي تغييرات جوهرية.
+                        باستخدامك تطبيق "چمعية"، فإنك توافق على ممارسات الخصوصية الموضحة في هذه السياسة. قد نقوم بتحديث
+                        هذه السياسة من وقت لآخر، وسنخطرك بأي تغييرات جوهرية.
                     </p>
                 </section>
-                
+
                 <!-- Section 2: Information We Collect -->
                 <section id="section2" class="bg-white rounded-xl shadow-lg policy-card p-6 mb-8">
                     <div class="flex items-center mb-4">
@@ -216,19 +241,24 @@
                         نجمع أنواعًا مختلفة من المعلومات لتقديم خدماتنا وتحسينها:
                     </p>
                     <ul class="list-disc mr-5 mt-3 space-y-2 text-gray-700">
-                        <li><span class="font-medium">المعلومات الشخصية:</span> الاسم، البريد الإلكتروني، رقم الهاتف، العنوان، وغيرها عند التسجيل.</li>
-                        <li><span class="font-medium">المعلومات المالية:</span> معلومات الحساب البنكي، سجل المعاملات، والمعلومات الضريبية.</li>
-                        <li><span class="font-medium">معلومات الاستخدام:</span> كيفية استخدامك للتطبيق، الصفحات التي تزورها، الإجراءات التي تتخذها.</li>
-                        <li><span class="font-medium">معلومات الجهاز:</span> نوع الجهاز، نظام التشغيل، عنوان IP، ومعرف الجهاز.</li>
+                        <li><span class="font-medium">المعلومات الشخصية:</span> الاسم، البريد الإلكتروني، رقم الهاتف،
+                            العنوان، وغيرها عند التسجيل.</li>
+                        <li><span class="font-medium">المعلومات المالية:</span> معلومات الحساب البنكي، سجل المعاملات،
+                            والمعلومات الضريبية.</li>
+                        <li><span class="font-medium">معلومات الاستخدام:</span> كيفية استخدامك للتطبيق، الصفحات التي
+                            تزورها، الإجراءات التي تتخذها.</li>
+                        <li><span class="font-medium">معلومات الجهاز:</span> نوع الجهاز، نظام التشغيل، عنوان IP، ومعرف
+                            الجهاز.</li>
                     </ul>
                     <div class="mt-6 p-4 bg-gray-50 rounded-lg">
                         <h3 class="font-bold text-lg primary-text mb-2">ملاحظة هامة</h3>
                         <p class="text-gray-700">
-                            لا نجمع معلومات حساسة مثل البيانات الحيوية أو الدينية إلا عند الضرورة القصوى وبموافقتك الصريحة.
+                            لا نجمع معلومات حساسة مثل البيانات الحيوية أو الدينية إلا عند الضرورة القصوى وبموافقتك
+                            الصريحة.
                         </p>
                     </div>
                 </section>
-                
+
                 <!-- Section 3: How We Use Your Information -->
                 <section id="section3" class="bg-white rounded-xl shadow-lg policy-card p-6 mb-8">
                     <div class="flex items-center mb-4">
@@ -263,7 +293,7 @@
                         </div>
                     </div>
                 </section>
-                
+
                 <!-- Section 4: Information Protection -->
                 <section id="section4" class="bg-white rounded-xl shadow-lg policy-card p-6 mb-8">
                     <div class="flex items-center mb-4">
@@ -280,26 +310,29 @@
                             <i class="fas fa-shield-alt mt-1 mr-3 primary-text"></i>
                             <div>
                                 <h3 class="font-bold text-lg">التشفير المتقدم</h3>
-                                <p class="text-gray-700">جميع البيانات المنقولة بين جهازك وخوادمنا مشفرة باستخدام تقنيات تشفير قياسية في الصناعة.</p>
+                                <p class="text-gray-700">جميع البيانات المنقولة بين جهازك وخوادمنا مشفرة باستخدام تقنيات
+                                    تشفير قياسية في الصناعة.</p>
                             </div>
                         </div>
                         <div class="flex items-start mb-4">
                             <i class="fas fa-user-shield mt-1 mr-3 primary-text"></i>
                             <div>
                                 <h3 class="font-bold text-lg">التحكم في الوصول</h3>
-                                <p class="text-gray-700">يقتصر الوصول إلى معلوماتك على الموظفين المصرح لهم الذين يحتاجون إليها لأداء وظائفهم.</p>
+                                <p class="text-gray-700">يقتصر الوصول إلى معلوماتك على الموظفين المصرح لهم الذين يحتاجون
+                                    إليها لأداء وظائفهم.</p>
                             </div>
                         </div>
                         <div class="flex items-start">
                             <i class="fas fa-sync-alt mt-1 mr-3 primary-text"></i>
                             <div>
                                 <h3 class="font-bold text-lg">النسخ الاحتياطي</h3>
-                                <p class="text-gray-700">نقوم بنسخ بياناتك احتياطيًا بانتظام لضمان استمرارية الخدمة وحماية معلوماتك.</p>
+                                <p class="text-gray-700">نقوم بنسخ بياناتك احتياطيًا بانتظام لضمان استمرارية الخدمة
+                                    وحماية معلوماتك.</p>
                             </div>
                         </div>
                     </div>
                 </section>
-                
+
                 <!-- Section 5: Your Rights -->
                 <section id="section5" class="bg-white rounded-xl shadow-lg policy-card p-6 mb-8">
                     <div class="flex items-center mb-4">
@@ -333,7 +366,7 @@
                         لممارسة أي من هذه الحقوق، يرجى الاتصال بنا من خلال القنوات المذكورة أدناه.
                     </p>
                 </section>
-                
+
                 <!-- Section 6: Policy Updates -->
                 <section id="section6" class="bg-white rounded-xl shadow-lg policy-card p-6 mb-8">
                     <div class="flex items-center mb-4">
@@ -343,7 +376,9 @@
                         <h2 class="text-2xl font-bold text-gray-800">التحديثات على السياسة</h2>
                     </div>
                     <p class="text-gray-700 leading-relaxed">
-                        قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر لتعكس التغييرات في ممارساتنا أو لأسباب تشغيلية أو قانونية أو تنظيمية. سنخطرك بأي تغييرات جوهرية من خلال الإشعارات داخل التطبيق أو عبر البريد الإلكتروني.
+                        قد نقوم بتحديث سياسة الخصوصية هذه من وقت لآخر لتعكس التغييرات في ممارساتنا أو لأسباب تشغيلية أو
+                        قانونية أو تنظيمية. سنخطرك بأي تغييرات جوهرية من خلال الإشعارات داخل التطبيق أو عبر البريد
+                        الإلكتروني.
                     </p>
                     <div class="mt-6">
                         <h3 class="font-bold text-lg primary-text mb-2">تاريخ التحديثات</h3>
@@ -359,7 +394,7 @@
                         </ul>
                     </div>
                 </section>
-                
+
                 <!-- Section 7: Contact Us -->
                 <section id="section7" class="bg-white rounded-xl shadow-lg policy-card p-6">
                     <div class="flex items-center mb-4">
@@ -369,7 +404,8 @@
                         <h2 class="text-2xl font-bold text-gray-800">اتصل بنا</h2>
                     </div>
                     <p class="text-gray-700 leading-relaxed">
-                        إذا كان لديك أي أسئلة أو استفسارات حول سياسة الخصوصية هذه أو ممارسات الخصوصية لدينا، يرجى الاتصال بنا:
+                        إذا كان لديك أي أسئلة أو استفسارات حول سياسة الخصوصية هذه أو ممارسات الخصوصية لدينا، يرجى
+                        الاتصال بنا:
                     </p>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
                         <div class="flex items-center">
@@ -378,7 +414,7 @@
                             </div>
                             <div>
                                 <h3 class="font-bold text-lg">البريد الإلكتروني</h3>
-                                <p class="text-gray-700">privacy@jama3ati.com</p>
+                                <p class="text-gray-700">j04452085@gmail.com</p>
                             </div>
                         </div>
                         <div class="flex items-center">
@@ -387,8 +423,12 @@
                             </div>
                             <div>
                                 <h3 class="font-bold text-lg">الهاتف</h3>
-                                <p class="text-gray-700">920000000</p>
+                                <a href="https://wa.me/966545839034" target="_blank"
+                                    class="text-green-600 hover:underline">
+                                    +966 54 583 9034
+                                </a>
                             </div>
+
                         </div>
                         <div class="flex items-center">
                             <div class="w-14 h-14 rounded-full bg-gray-100 flex items-center justify-center mr-4">
@@ -413,7 +453,7 @@
             </div>
         </div>
     </main>
-    
+
     <!-- Footer -->
     <footer class="footer text-white py-8 md:py-12">
         <div class="container mx-auto px-4 sm:px-6">
@@ -421,14 +461,16 @@
                 <!-- Footer Section: About App -->
                 <div>
                     <div class="flex items-center mb-3 md:mb-4">
-                        <div class="bg-white bg-opacity-20 w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0">
+                        <div
+                            class="bg-white bg-opacity-20 w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center flex-shrink-0">
                             <i class="fas fa-hand-holding-usd text-white text-lg sm:text-xl"></i>
                         </div>
                         <h3 class="text-lg sm:text-xl font-bold mr-2 sm:mr-3">چمعية</h3>
                     </div>
-                    <p class="text-gray-300 text-sm md:text-base">برنامج الجمعيات البنكي الأول في السعودية، يقدم حلولاً متكاملة لإدارة الجمعيات المالية بكل سهولة وأمان.</p>
+                    <p class="text-gray-300 text-sm md:text-base">برنامج الجمعيات البنكي الأول في السعودية، يقدم حلولاً
+                        متكاملة لإدارة الجمعيات المالية بكل سهولة وأمان.</p>
                 </div>
-                
+
                 <!-- Footer Section: Quick Links -->
                 <div>
                     <h4 class="text-base sm:text-lg font-bold mb-3 md:mb-4">روابط سريعة</h4>
@@ -440,15 +482,18 @@
                         <li><a href="#" class="text-gray-300 hover:text-white transition">الشروط والأحكام</a></li>
                     </ul>
                 </div>
-                
+
                 <!-- Footer Section: Technical Support -->
                 <div>
                     <h4 class="text-base sm:text-lg font-bold mb-3 md:mb-4">الدعم الفني</h4>
                     <ul class="space-y-2 text-sm md:text-base">
                         <li class="flex items-center">
-                            <i class="fas fa-headset text-secondary mr-2"></i>
-                            <span>+966 54 583 9034</span>
+                            <i class="fas fa-headset text-secondary mr-2 "></i>
+                            <a href="https://wa.me/966545839034" target="_blank" class="text-white hover:underline">
+                                +966 54 583 9034
+                            </a>
                         </li>
+
                         <li class="flex items-center">
                             <i class="fas fa-envelope text-secondary mr-2"></i>
                             <span>j04452085@gmail.com</span>
@@ -459,30 +504,35 @@
                         </li>
                     </ul>
                     <div class="mt-4 flex space-x-3">
-                        <a href="#" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-opacity-20 transition">
+                        <a href="#"
+                            class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-opacity-20 transition">
                             <i class="fab fa-twitter"></i>
                         </a>
-                        <a href="#" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-opacity-20 transition">
+                        <a href="#"
+                            class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-opacity-20 transition">
                             <i class="fab fa-instagram"></i>
                         </a>
-                        <a href="#" class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-opacity-20 transition">
+                        <a href="#"
+                            class="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-white bg-opacity-10 flex items-center justify-center hover:bg-opacity-20 transition">
                             <i class="fab fa-linkedin"></i>
                         </a>
                     </div>
                 </div>
-                
+
                 <!-- Footer Section: Download App -->
                 <div>
                     <h4 class="text-base sm:text-lg font-bold mb-3 md:mb-4">حمل التطبيق</h4>
                     <div class="space-y-3">
-                        <button class="w-full bg-black bg-opacity-20 hover:bg-opacity-30 rounded-lg py-2 px-3 md:py-3 md:px-4 flex items-center transition">
+                        <button
+                            class="w-full bg-black bg-opacity-20 hover:bg-opacity-30 rounded-lg py-2 px-3 md:py-3 md:px-4 flex items-center transition">
                             <i class="fab fa-apple text-xl sm:text-2xl mr-3"></i>
                             <div>
                                 <div class="text-xs">حمله من</div>
                                 <div class="font-medium text-sm sm:text-base">App Store</div>
                             </div>
                         </button>
-                        <button class="w-full bg-black bg-opacity-20 hover:bg-opacity-30 rounded-lg py-2 px-3 md:py-3 md:px-4 flex items-center transition">
+                        <button
+                            class="w-full bg-black bg-opacity-20 hover:bg-opacity-30 rounded-lg py-2 px-3 md:py-3 md:px-4 flex items-center transition">
                             <i class="fab fa-google-play text-lg sm:text-xl mr-3"></i>
                             <div>
                                 <div class="text-xs">حمله من</div>
@@ -492,14 +542,15 @@
                     </div>
                 </div>
             </div>
-            
+
             <!-- Copyright Information -->
-            <div class="border-t border-gray-300 mt-8 md:mt-10 pt-4 md:pt-6 text-center text-gray-400 text-xs sm:text-sm">
+            <div
+                class="border-t border-gray-300 mt-8 md:mt-10 pt-4 md:pt-6 text-center text-gray-400 text-xs sm:text-sm">
                 <p class="text-white">© 2025 چمعية. جميع الحقوق محفوظة. </p>
             </div>
         </div>
     </footer>
-    
+
     <!-- Back to Top Button -->
     <button id="toTop" class="fixed bottom-6 left-6 bg-white text-primary-text p-3 rounded-full shadow-lg hidden">
         <i class="fas fa-arrow-up"></i>
@@ -508,29 +559,29 @@
     <script>
         // JavaScript for "Back to Top" button functionality
         const toTopButton = document.getElementById('toTop');
-        
+
         // Show/hide the button based on scroll position
-        window.onscroll = function() {
+        window.onscroll = function () {
             if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
                 toTopButton.style.display = 'block';
             } else {
                 toTopButton.style.display = 'none';
             }
         };
-        
+
         // Scroll to top when the button is clicked
-        toTopButton.addEventListener('click', function() {
+        toTopButton.addEventListener('click', function () {
             window.scrollTo({
                 top: 0,
                 behavior: 'smooth' // Smooth scroll animation
             });
         });
-        
+
         // Smooth scrolling for internal anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault(); // Prevent default anchor jump
-                
+
                 // Scroll to the target section smoothly
                 document.querySelector(this.getAttribute('href')).scrollIntoView({
                     behavior: 'smooth'
@@ -547,4 +598,5 @@
         }
     </script>
 </body>
+
 </html>

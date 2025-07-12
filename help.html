@@ -727,6 +727,34 @@
             margin-left: 10px;
             font-size: 1.2rem;
         }
+        
+        /* Alert Modal Styles */
+        #alertModal .modal-content {
+            max-width: 350px;
+            padding: 28px;
+            border-radius: 16px;
+            text-align: center;
+        }
+        #alertModalMessage {
+            font-size: 1rem;
+            line-height: 1.6;
+            color: #4a5568;
+            margin-bottom: 20px;
+        }
+        #closeAlertModalButton {
+            background-color: #006C35;
+            color: white;
+            padding: 10px 24px;
+            border-radius: 25px;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+            border: none;
+            cursor: pointer;
+            min-width: 100px;
+        }
+        #closeAlertModalButton:hover {
+            background-color: #005A2B;
+        }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800">
@@ -790,7 +818,9 @@
                 </div>
                 <div class="service-card" data-service="السحب">
                     <div class="service-icon-wrapper">
-
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg> -->
                         <img src="./Assets/imgs/iconATM.svg" alt="">
                     </div>
                     <span class="text-base font-medium">السحب</span>
@@ -799,7 +829,10 @@
                 </div>
                 <div class="service-card" data-service="العقد">
                     <div class="service-icon-wrapper">
-            
+                        <!-- <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                        </svg> -->
+
                         <img src="./Assets/imgs/contract 1.svg" alt="">
                     </div>
                     <span class="text-base font-medium">العقد</span>
@@ -1026,7 +1059,7 @@
     </div>
 
     <!-- مودال بيانات الخدمة -->
-    <div id="serviceModal" class="modal-overlay open">
+    <div id="serviceModal" class="modal-overlay">
         <div class="modal-content service-modal-content p-0" style="max-width:420px;">
             <!-- Header -->
             <div class="flex items-center justify-between px-5 py-4 border-b bg-[#006C35] rounded-t-2xl relative">
@@ -1073,11 +1106,19 @@
             <div class="static-shape square bottom-left"></div>
         </div>
     </div>
-    <script>
-function showAnswer(question, answer) {
-    alert(question + "\n\n" + answer);
-}
-</script>
+    
+    <!-- Alert Modal -->
+    <div id="alertModal" class="modal-overlay">
+        <div class="modal-content" style="padding-top: 36px; border-radius: 20px; max-width:350px;">
+            <h3 id="alertModalTitle" class="text-xl font-bold text-gray-900 mb-4 text-center">تنبيه</h3>
+            <p id="alertModalMessage" class="mb-4 text-gray-700 text-center"></p>
+            <div class="flex justify-center">
+                <button id="closeAlertModalButton" class="interactive-button" style="background-color:#006C35;color:#fff;">موافق</button>
+            </div>
+            <div class="static-shape circle top-right"></div>
+            <div class="static-shape square bottom-left"></div>
+        </div>
+    </div>
 
     <script>
         // --- JavaScript for Modals ---
@@ -1086,9 +1127,12 @@ function showAnswer(question, answer) {
         const callModal = document.getElementById('callModal');
         const faqModal = document.getElementById('faqModal');
         const serviceModal = document.getElementById('serviceModal');
+        const alertModal = document.getElementById('alertModal');
         const successMessage = document.getElementById('successMessage'); 
         const thankYouMessage = document.getElementById('thankYouMessage');
         const noteSuccessMessage = document.getElementById('noteSuccessMessage');
+        const alertModalMessage = document.getElementById('alertModalMessage');
+        const closeAlertModalButton = document.getElementById('closeAlertModalButton');
 
         function openModal(modalElement) {
             modalElement.classList.add('open');
@@ -1120,6 +1164,15 @@ function showAnswer(question, answer) {
                 messageElement.classList.remove('show');
                 messageElement.style.display = 'none';
             }, 3000);
+        }
+        
+        // Function to show alert in modal instead of browser alert
+        function showAlert(message, title = "تنبيه") {
+            alertModalMessage.textContent = message;
+            if (title) {
+                document.getElementById('alertModalTitle').textContent = title;
+            }
+            openModal(alertModal);
         }
 
         // Send Message Modal
@@ -1157,7 +1210,7 @@ function showAnswer(question, answer) {
                     closeModal(sendMessageModal, true);
                     showNotification(successMessage);
                 } else {
-                    alert('الرجاء كتابة رسالتك.');
+                    showAlert('الرجاء كتابة رسالتك.');
                 }
             });
         }
@@ -1187,7 +1240,7 @@ function showAnswer(question, answer) {
                     closeModal(noteModal, true);
                     showNotification(noteSuccessMessage);
                 } else {
-                    alert('الرجاء كتابة الملاحظة.');
+                    showAlert('الرجاء كتابة الملاحظة.');
                 }
             });
         }
@@ -1414,6 +1467,28 @@ function showAnswer(question, answer) {
                 }
             });
         }
+        
+        // Alert Modal Handling
+        if (closeAlertModalButton) {
+            closeAlertModalButton.addEventListener('click', () => closeModal(alertModal));
+        }
+        if (alertModal) {
+            alertModal.addEventListener('click', (event) => {
+                if (event.target === alertModal) {
+                    closeModal(alertModal);
+                }
+            });
+        }
+        
+        // Function to show answers in alert modal
+        function showAnswer(question, answer) {
+            showAlert(`${question}\n\n${answer}`, question);
+        }
+        
+        // Prevent service modal from opening on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            serviceModal.classList.remove('open');
+        });
     </script>
 </body>
 </html>
