@@ -10,9 +10,9 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
   <!-- Tailwind CSS Suppression -->
   <script>
-    (function() {
+    (function () {
       const originalWarn = console.warn.bind(console);
-      console.warn = function(...args) {
+      console.warn = function (...args) {
         if (
           args[0] && typeof args[0] === 'string' &&
           args[0].includes('cdn.tailwindcss.com should not be used in production')
@@ -38,33 +38,58 @@
       position: relative;
       font-family: 'Segoe UI', sans-serif;
     }
+
     .bank-card .chip {
       width: 40px;
       height: 30px;
       border-radius: 4px;
     }
+
     .bank-card .contactless {
       font-size: 1.2rem;
       position: absolute;
       top: 20px;
       right: 20px;
     }
+
     .bank-card .number {
       font-size: 1.1rem;
       letter-spacing: 2px;
       margin: 30px 0 10px;
     }
+
     .bank-card .name {
       font-size: 1rem;
       font-weight: bold;
     }
+
     .bank-card .logo {
       position: absolute;
       bottom: 20px;
       right: 20px;
       width: 50px;
     }
+
+    .contactless-icon {
+      width: 24px;
+      height: 24px;
+      background: url('https://upload.wikimedia.org/wikipedia/commons/5/5e/Contactless_Card_Symbol.svg') no-repeat center;
+      background-size: contain;
+    }
   </style>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio,line-clamp"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandGreen: '#004d31',
+          }
+        }
+      }
+    }
+  </script>
+
 </head>
 
 <body class="bg-gray-100 min-h-screen flex flex-col">
@@ -127,14 +152,45 @@
         <div class="name" id="card-holder">جاري تحميل اسمك ...</div>
         <img src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 504 318'><circle cx='200' cy='159' r='100' fill='%23EB001B'/><circle cx='304' cy='159' r='100' fill='%23F79E1B'/></svg>" alt="Mastercard Logo" class="logo" />
       </div> -->
-      <img src="./Assets/imgs//cardJMAIA-removebg-preview.png" alt="" class="max-w-full h-auto rounded-lg shadow-md block mx-auto">
+      <!-- image -->
+      <!-- <img src="./Assets/imgs//cardJMAIA-removebg-preview.png" alt="" class="max-w-full h-auto rounded-lg shadow-md block mx-auto"> -->
+      <div class="relative w-[270px] h-[400px] bg-brandGreen rounded-2xl shadow-2xl p-5 text-white font-sans">
+        <!-- Top Section -->
+        <div class="flex justify-end items-start mt-1 mr-1 space-x-2">
+          <!-- Chip -->
+          <div class="w-10 h-8 bg-yellow-500 rounded-sm flex items-center justify-center">
+            <div class="w-4 h-4 bg-yellow-300"></div>
+          </div>
+          <!-- Contactless Icon -->
+          <div class="contactless-icon"></div>
+        </div>
+
+        <!-- Middle Card Info -->
+        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-center space-y-3">
+          <div id="card-number" class="tracking-widest text-xl">•••• •••• •••• 3456</div>
+          <div id="card-holder" class="uppercase text-sm tracking-wide text-gray-200">USER Name ...</div>
+        </div>
+
+
+        <!-- Bottom Section -->
+        <div class="absolute bottom-6 left-0 right-0 px-6 flex items-center justify-between">
+          <!-- JMAIA Text -->
+          <div class="text-white text-2xl font-bold tracking-wider">JMAIA</div>
+          <!-- Mastercard Logo -->
+          <div class="relative w-12 h-6">
+            <div class="absolute left-0 w-6 h-6 bg-red-600 rounded-full"></div>
+            <div class="absolute left-3 w-6 h-6 bg-yellow-400 rounded-full mix-blend-screen"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Top Up Modal -->
     <div id="topup-modal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden z-50">
       <div class="bg-white p-4 sm:p-6 rounded-lg w-11/12 max-w-xs sm:max-w-sm">
-        <h3 class="text-lg font-semibold mb-4">Recharge Wallet</h3>
-        <input id="topup-amount" type="number" placeholder="Enter Amount" min="1" class="w-full border rounded px-3 py-2 mb-4" />
+        <h3 class="text-lg font-semibold mb-4">اشحن محفظتك</h3>
+        <input id="topup-amount" type="number" placeholder="Enter Amount" min="1"
+          class="w-full border rounded px-3 py-2 mb-4" />
         <div class="flex justify-end space-x-2 ltr:space-x-reverse">
           <button id="topup-cancel" class="px-4 py-2 rounded bg-gray-200 hover:bg-gray-300 mx-2">إلغاء</button>
           <button id="topup-ok" class="px-4 py-2 rounded bg-green-600 text-white hover:bg-green-700">موافق</button>
@@ -143,7 +199,8 @@
     </div>
 
     <!-- Wallet Balance Card -->
-    <section class="mx-auto bg-white rounded-2xl shadow-lg p-4 sm:p-6 mb-8 w-full max-w-md flex flex-col items-end text-right border border-[#e5e7eb]">
+    <section
+      class="mx-auto bg-white rounded-2xl shadow-lg p-4 sm:p-6 mb-8 w-full max-w-md flex flex-col items-end text-right border border-[#e5e7eb]">
       <h2 class="text-xl sm:text-2xl md:text-3xl font-extrabold mb-2 text-gray-800 w-full">رصيد المحفظة</h2>
       <div class="flex items-center gap-2 w-full justify-end mb-2">
         <i class="bi bi-wallet2 text-3xl sm:text-4xl xl:text-5xl text-green-500"></i>
@@ -154,7 +211,9 @@
 
     <!-- Top Up Button -->
     <div class="flex justify-center mb-6 px-2">
-      <button id="topup-btn" class="bg-[#16a34a] hover:bg-[#128a3a] text-white text-lg sm:text-xl py-3 px-6 rounded w-full max-w-xs sm:max-w-sm transition-colors duration-200">اشحن محفظتك</button>
+      <button id="topup-btn"
+        class="bg-[#16a34a] hover:bg-[#128a3a] text-white text-lg sm:text-xl py-3 px-6 rounded w-full max-w-xs sm:max-w-sm transition-colors duration-200">اشحن
+        محفظتك</button>
     </div>
 
     <!-- Features List Single Column -->
@@ -178,7 +237,7 @@
         <img src="./Assets/imgs/wallet.png" alt="إثبات العنوان" class="mb-3 w-24 h-auto" />
         <p class="text-sm sm:text-base">بتسهل عليك حياتك</p>
         <p class="text-sm sm:text-base font-bold mb-2">استلم فلوسك أسرع</p>
-        <p class="text-xs sm:text-sm">مع بطاقة چمعية  فلوسك أسرع و أمن من أي طريقة ثانية.</p>
+        <p class="text-xs sm:text-sm">مع بطاقة چمعية فلوسك أسرع و أمن من أي طريقة ثانية.</p>
       </div>
       <!-- Step 4 -->
       <div class="bg-[#fce4ec] rounded-2xl p-4 flex flex-col items-center text-center shadow-md w-full">
@@ -195,18 +254,20 @@
         <p class="text-xs sm:text-sm">من أقرب نقطة ليك استلم وفعّل بطاقتك. ولا تنسى تجيب هويتك معك.</p>
       </div>
     </div>
-    
-            <div class="text-center mb-6 px-2">
-        <button onclick="location.href='./Paid-card.html'" class="bg-[#6048E4] hover:bg-[#5851db] text-white font-bold text-base sm:text-lg xl:text-xl 2xl:text-2xl py-2 px-4 sm:px-6 rounded-full transition duration-300 w-full max-w-xs sm:max-w-md">
-          اشترك الآن
-        </button>
-      </div>
+
+    <div class="text-center mb-6 px-2">
+      <button onclick="location.href='./Paid-card.html'"
+        class="bg-[#6048E4] hover:bg-[#5851db] text-white font-bold text-base sm:text-lg xl:text-xl 2xl:text-2xl py-2 px-4 sm:px-6 rounded-full transition duration-300 w-full max-w-xs sm:max-w-md">
+        اشترك الآن
+      </button>
+    </div>
     </div>
   </main>
-    <!-- spacer -->
-      <div class="h-12"></div>
-    <!-- Navbar Bottom (unchanged) -->
-  <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg" style="background-color:#90D1CA;" dir="rtl">
+  <!-- spacer -->
+  <div class="h-12"></div>
+  <!-- Navbar Bottom (unchanged) -->
+  <div class="bottom-navbar flex justify-between items-center px-1 py-0 shadow-md rounded-t-lg"
+    style="background-color:#90D1CA;" dir="rtl">
 
     <div onclick="location.href='home.html'" class="p-0">
       <i class="bi bi-house-door-fill text-xl"></i>
@@ -218,7 +279,7 @@
       <div class="label">جمعياتي</div>
     </div>
 
-    <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3 text-[#008D10]" >
+    <div onclick="location.href='join.html'" class="grid justify-center active-footer p-0 mb-3 text-[#008D10]">
       <img src="./Assets/imgs/SubscribeIcon.svg" alt="" />
       <div class="label" style="color:#16a34a; font-weight:700;">انضم الان</div>
     </div>
@@ -238,7 +299,7 @@
 
 
 
-  
+
 
   <!-- Scripts -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -247,7 +308,7 @@
   <script src="./MainLayout.js"></script>
   <script>
     document.addEventListener("DOMContentLoaded", () => {
-            // Fetch user profile with auth token and set card holder name
+      // Fetch user profile with auth token and set card holder name
       const token = localStorage.getItem('token');
       fetch('https://api.technologytanda.com/api/userData/profile', {
         headers: {
@@ -290,7 +351,7 @@
       });
 
       document.addEventListener("click", closeAll);
-      notifDropdown.addEventListener("click", e => e.stopPropagation());
+      // notifDropdown.addEventListener("click", e => e.stopPropagation());
       profMenu.addEventListener("click", e => e.stopPropagation());
 
       logoutBtn.addEventListener("click", () => {
@@ -300,4 +361,5 @@
     });
   </script>
 </body>
+
 </html>

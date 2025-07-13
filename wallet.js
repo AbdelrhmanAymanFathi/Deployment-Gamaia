@@ -1,12 +1,32 @@
 // wallet.js
 
 document.addEventListener('DOMContentLoaded', () => {
+  // دالة مساعدة لتنسيق العملة بالعربية مع صورة بدل كلمة ريال
+  const formatToArabicCurrency = (amount) => {
+    const formatter = new Intl.NumberFormat('ar-SA', {
+      style: 'currency',
+      currency: 'SAR',
+      currencyDisplay: 'code'
+    });
+
+    const arabicDigits = formatter.format(amount)
+      .replace('SAR', '') // نشيل الكود النصي
+      .replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]) // نحول الأرقام لعربي
+      .trim();
+
+    return `
+      <span>${arabicDigits}</span>
+      <img src="https://images.seeklogo.com/logo-png/61/1/new-saudi-riyal-2030-logo-png_seeklogo-613034.png" 
+           alt="ريال" class="w-6 h-6 inline-block color-green-600"
+           style="display:inline; align-items: center; vertical-align: middle;" />
+    `;
+  };
 
   // جلب التوكن والـ balance element
   const token = localStorage.getItem('token');
   const balanceEl = document.getElementById('wallet-balance');
   if (!token) {
-    balanceEl.textContent = 'you need to login first';
+    balanceEl.textContent = 'يجب تسجيل الدخول أولاً';
     return;
   }
 
@@ -16,15 +36,11 @@ document.addEventListener('DOMContentLoaded', () => {
   })
     .then(res => res.ok ? res.json() : Promise.reject(res.status))
     .then(data => {
-      balanceEl.textContent = new Intl.NumberFormat('en-US', {
-        style: 'currency',
-        currency: 'SAR',
-        currencyDisplay: 'code'
-      }).format(data.walletBalance);
+      balanceEl.innerHTML = formatToArabicCurrency(data.walletBalance);
     })
     .catch(err => {
       console.error('Fetch wallet error:', err);
-      balanceEl.textContent = 'error loading balance';
+      balanceEl.textContent = 'خطأ في تحميل الرصيد';
     });
 
   // عناصر المودال
@@ -42,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
   btnOk.addEventListener('click', () => {
     const amount = parseFloat(inputAmt.value);
     if (isNaN(amount) || amount <= 0) {
-      alert('Please enter an integer greater than zero');
+      alert('الرجاء إدخال رقم صحيح أكبر من الصفر');
       return;
     }
 
@@ -58,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => {
       .then(res => res.json())
       .then(data => {
         if (!data.success) {
-          alert(data.error || 'Failed to load');
+          alert(data.error || 'فشل في الشحن');
           return Promise.reject();
         }
         // لو نجح الشحن، نعيد جلب الرصيد الفعلي
@@ -68,14 +84,10 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .then(res => res.json())
       .then(walletData => {
-        balanceEl.textContent = new Intl.NumberFormat('en-US', {
-          style: 'currency',
-          currency: 'SAR',
-          currencyDisplay: 'code'
-        }).format(walletData.walletBalance);
+        balanceEl.innerHTML = formatToArabicCurrency(walletData.walletBalance);
         modal.classList.add('hidden');
         inputAmt.value = '';
-        alert('The shipment was successful');
+        alert('تم الشحن بنجاح');
 
         // إضافة سجل شحن جديد للأنشطة الأخيرة في localStorage
         const activities = JSON.parse(localStorage.getItem('activities') || '[]');
@@ -88,6 +100,7 @@ document.addEventListener('DOMContentLoaded', () => {
       })
       .catch(err => {
         console.error('Top-up error:', err);
+        alert('حدث خطأ أثناء الشحن');
       });
   });
 });
