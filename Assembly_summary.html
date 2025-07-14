@@ -517,17 +517,17 @@
                             });
                         }
                         // مبلغ الجمعية = totalPayout
-                        document.getElementById('assoc-amount').innerHTML = currentTurn.totalPayout.toLocaleString() + ' <span class="text-xs font-normal">ر.س</span>';
+                        document.getElementById('assoc-amount').innerHTML = currentTurn.totalPayout.toLocaleString() + '<img src="./Assets/imgs/riyal.svg" alt="Saudi Arabia Flag" class="inline" />';
                         // قسط شهر القبض = monthlyAmount
-                        document.getElementById('installment').innerHTML = (assoc.monthlyAmount || 0).toLocaleString() + ' - <span class="text-xs font-normal">ر.س</span>';
+                        document.getElementById('installment').innerHTML = (assoc.monthlyAmount || 0).toLocaleString() + ' - <img src="./Assets/imgs/riyal.svg" alt="Saudi Arabia Flag" class="inline" />';
                         // المتبقي من المصاريف الإدارية = feeAmount
-                        document.getElementById('admin-fees').innerHTML = (currentTurn.feeAmount || 0).toLocaleString() + ' - <span class="text-xs font-normal">ر.س</span>';
+                        document.getElementById('admin-fees').innerHTML = (currentTurn.feeAmount || 0).toLocaleString() + ' - <img src="./Assets/imgs/riyal.svg" alt="Saudi Arabia Flag" class="inline" />';
                         // إجمالي القبض = finalAmount
-                        document.getElementById('total-receive').innerHTML = (currentTurn.finalAmount || 0).toLocaleString() + ' <span class="text-sm font-normal">ر.س</span>';
+                        document.getElementById('total-receive').innerHTML = (currentTurn.finalAmount || 0).toLocaleString() + ' <img src="./Assets/imgs/riyal.svg" alt="Saudi Arabia Flag" class="inline" />';
                         // إجمالي الرسوم = نفس المتبقي من المصاريف الإدارية بدون أي حساب إضافي
-                        document.getElementById('total-fees').innerHTML = (currentTurn.feeAmount || 0).toLocaleString() + ' <span class="text-xs font-normal">ر.س</span>';
+                        document.getElementById('total-fees').innerHTML = (currentTurn.feeAmount || 0).toLocaleString() + ' <img src="./Assets/imgs/riyal.svg" alt="Saudi Arabia Flag" class="inline" />';
                         // رسوم توصيل العقد
-                        document.getElementById('delivery-fee').innerHTML = (currentTurn.contractDeliveryFee || 0).toLocaleString() + ' <span class="text-xs font-normal">ر.س</span>';
+                        document.getElementById('delivery-fee').innerHTML = (currentTurn.contractDeliveryFee || 0).toLocaleString() + ' <img src="./Assets/imgs/riyal.svg" alt="Saudi Arabia Flag" class="inline" />';
                         // تحديث اسم الجمعية في الهيدر (إذا أردت)
                         const header = document.querySelector('h1');
                         if (header && assoc.name) header.textContent = assoc.name;
