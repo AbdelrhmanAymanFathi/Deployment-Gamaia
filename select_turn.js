@@ -9,7 +9,7 @@ function formatDate(dateString) {
 }
 
 function formatAmount(amount) {
-  return `${amount.toLocaleString(undefined, {maximumFractionDigits: 0})} رس`;
+  return `${amount.toLocaleString(undefined, { maximumFractionDigits: 0 })} <img src="./Assets/imgs/riyal.svg" alt="ر.س" class="inline w-4 h-4 align-text-bottom" />`;
 }
 
 // State
@@ -50,21 +50,21 @@ async function fetchTurns() {
       throw new Error('Network response was not ok: ' + res.status);
     }
     const data = await res.json();
-    // --- changed: handle new API structure ---
     if (!Array.isArray(data.turns)) {
       throw new Error('البيانات المستلمة لا تحتوي على مصفوفة أدوار');
     }
     turns = data.turns;
     if (turns.length === 0) throw new Error('لا يوجد أدوار متاحة');
     association = turns[0].association;
-    // *** Force feeAmount sign for business rule ***
+
     turns.forEach((turn, idx) => {
       if (idx === turns.length - 1) {
-        turn.feeAmount = Math.abs(turn.feeAmount); // last turn gets cashback (positive)
+        turn.feeAmount = Math.abs(turn.feeAmount);
       } else {
-        turn.feeAmount = -Math.abs(turn.feeAmount); // all others get discount (negative)
+        turn.feeAmount = -Math.abs(turn.feeAmount);
       }
     });
+
     splitTabs();
     renderTabs();
     renderTurns();
@@ -75,7 +75,6 @@ async function fetchTurns() {
   }
 }
 
-// تقسيم الأدوار Tabs تلقائياً
 function splitTabs() {
   const n = turns.length;
   const perTab = Math.ceil(n / 3);
@@ -145,49 +144,47 @@ function renderTurns() {
 function renderSummary() {
   if (!association) return;
   durationEl.textContent = turns.length + ' شهور';
-  monthlyFeeEl.textContent = formatAmount(association.monthlyAmount);
+  monthlyFeeEl.innerHTML = formatAmount(association.monthlyAmount);
 
   const selectedTurn = turns.find(t => t.id === selectedTurnId);
   const isLastTurn = selectedTurn === turns[turns.length - 1];
 
-  // Show feeAmount of selected turn, or '-' if none selected
-  document.getElementById('Fee').textContent = selectedTurn
+  document.getElementById('Fee').innerHTML = selectedTurn
     ? formatAmount(selectedTurn.feeAmount)
     : '-';
 
-  // إجمالي القبض = القسط الشهري × المدة ± الرسوم
   let total = association.monthlyAmount * turns.length;
   if (selectedTurn) {
     if (isLastTurn) {
-      total = total + selectedTurn.feeAmount; // Cashback
+      total = total + selectedTurn.feeAmount;
     } else {
-      total = total - Math.abs(selectedTurn.feeAmount); // Discount
+      total = total - Math.abs(selectedTurn.feeAmount);
     }
   }
-  totalFeeEl.textContent = selectedTurn
+
+  totalFeeEl.innerHTML = selectedTurn
     ? formatAmount(total)
     : '-';
 
-  // Show difference text
   const diff = (selectedTurn ? selectedTurn.feeAmount : 0);
   const diffEl = document.getElementById('feeDiffText');
   if (selectedTurn && diff !== 0) {
     if (isLastTurn) {
-      diffEl.textContent = `كاش باك ${formatAmount(diff)}`;
+      diffEl.innerHTML = `كاش باك ${formatAmount(diff)}`;
       diffEl.classList.remove('text-red-500', 'hidden');
       diffEl.classList.add('text-green-500');
     } else {
-      diffEl.textContent = `خصم قدره ${formatAmount(Math.abs(diff))}`;
+      diffEl.innerHTML = `خصم قدره ${formatAmount(Math.abs(diff))}`;
       diffEl.classList.remove('text-green-500', 'hidden');
       diffEl.classList.add('text-red-500');
     }
   } else {
-    diffEl.textContent = '';
+    diffEl.innerHTML = '';
     diffEl.classList.add('hidden');
   }
 }
 
-// دالة مساعدة لتخزين رقم الدور في sessionStorage
+// دالة مساعدة لتخزين رقم الدور
 const storeTurnNumber = turnName => {
   const match = turnName.match(/\d+/);
   const turnNumber = match ? parseInt(match[0], 10) : null;
