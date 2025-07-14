@@ -1,23 +1,20 @@
 // wallet.js
 
 document.addEventListener('DOMContentLoaded', () => {
-  // دالة مساعدة لتنسيق العملة بالعربية مع صورة بدل كلمة ريال
+  // دالة تنسيق الرصيد بالأرقام الإنجليزية مع صورة الريال
   const formatToArabicCurrency = (amount) => {
-    const formatter = new Intl.NumberFormat('ar-SA', {
+    const formatter = new Intl.NumberFormat('en-US', {
       style: 'currency',
       currency: 'SAR',
       currencyDisplay: 'code'
     });
 
-    const arabicDigits = formatter.format(amount)
-      .replace('SAR', '') // نشيل الكود النصي
-      .replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]) // نحول الأرقام لعربي
-      .trim();
+    const englishNumber = formatter.format(amount).replace('SAR', '').trim();
 
     return `
-      <span>${arabicDigits}</span>
+      <span>${englishNumber}</span>
       <img src="https://images.seeklogo.com/logo-png/61/1/new-saudi-riyal-2030-logo-png_seeklogo-613034.png" 
-           alt="ريال" class="w-6 h-6 inline-block color-green-600"
+           alt="SAR" class="w-6 h-6 inline-block color-green-600"
            style="display:inline; align-items: center; vertical-align: middle;" />
     `;
   };
