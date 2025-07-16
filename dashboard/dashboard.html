@@ -404,7 +404,7 @@
  <div class="h-20"></div>
   <!-- Main Content -->
   <main class="flex-1 p-4 md:p-6 overflow-y-auto pb-20 md:pb-0">
-    <section id="contentContainer" class="max-w-7xl mx-auto mt-4 md:mt-0 md:mr-12 lg:mr-30 xl:mr-60 ">
+    <section id="contentContainer" class="max-w-7xl mx-auto mt-4 md:mt-0">
       <!-- Main content will be loaded here dynamically -->
       <div class="text-center py-12" id="welcomeMessage">
         <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">مرحباً بك في لوحة التحكم</h1>
@@ -498,19 +498,31 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">المدة</label>
-            <input name="duration" type="number" placeholder="المدة" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">وحدة المدة</label>
-            <input name="durationUnit" placeholder="مثلاً: weeks" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+            <select name="duration" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required>
+              <option value="">اختر المدة...</option>
+              <option value="6">6 أشهر</option>
+              <option value="10">10 أشهر</option>
+            </select>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">نوع الجمعية</label>
-            <input name="type" placeholder="مثلاً: B" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+            <select name="type" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required>
+              <option value="">اختر النوع...</option>
+              <option value="6-months">6 أشهر</option>
+              <option value="10-months">10 أشهر</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">تاريخ البدء</label>
+            <input name="startDate" type="date" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">الحد الأعلى للأعضاء</label>
-            <input name="maxMembers" type="number" placeholder="الحد الأعلى للأعضاء" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" min="2" max="15" required />
+            <select name="maxMembers" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required>
+              <option value="">اختر الحد الأعلى...</option>
+              <option value="6">6 أعضاء</option>
+              <option value="10">10 أعضاء</option>
+            </select>
           </div>
           <div class="flex justify-end space-x-2 rtl:space-x-reverse">
             <button type="button" onclick="closeCreateAssociationModal()" class="action-btn bg-gray-300">إلغاء</button>
@@ -534,19 +546,24 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">المدة</label>
-            <input name="duration" type="number" placeholder="المدة" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">وحدة المدة</label>
-            <input name="durationUnit" placeholder="مثلاً: weeks" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+            <select name="duration" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required>
+              <option value="6">6 أشهر</option>
+              <option value="10">10 أشهر</option>
+            </select>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">نوع الجمعية</label>
-            <input name="type" placeholder="مثلاً: B" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required />
+            <select name="type" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required>
+              <option value="6-months">6 أشهر</option>
+              <option value="10-months">10 أشهر</option>
+            </select>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">الحد الأعلى للأعضاء</label>
-            <input name="maxMembers" type="number" placeholder="الحد الأعلى للأعضاء" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" min="2" max="15" required />
+            <select name="maxMembers" class="w-full border border-gray-300 rounded-md p-2 focus:ring-[#129990] focus:border-[#129990]" required>
+              <option value="6">6 أعضاء</option>
+              <option value="10">10 أعضاء</option>
+            </select>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">حالة الجمعية</label>
@@ -817,8 +834,6 @@
     </div>
   </div>
 
-<script src="./dashboard.js">
-
-</script>
+<script src="./dashboard.js"></script>
 </body>
 </html>
