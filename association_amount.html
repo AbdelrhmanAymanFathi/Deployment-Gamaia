@@ -174,7 +174,41 @@
       <div class="title">كام هيكون مبلغ القبض؟</div>
       <div class="desc">أكتب من 1000 ر.س إلى 15,000 ر.س</div>
       <div class="amount-box">
-        <input type="number" class="input-amount" id="amountInput" min="1000" max="1200000" placeholder="٠ ر.س" value="0"> ر.س
+<input
+  type="number"
+  class="input-amount"
+  id="amountInput"
+  min="1000"
+  max="15000"
+  placeholder="٠ ر.س"
+  value="1000"
+/>
+
+ ر.س
+<script>
+  const amountInput = document.getElementById('amountInput');
+const MIN = Number(amountInput.min);   // 1000
+const MAX = Number(amountInput.max);   // 15000
+
+// only clamp the upper bound on every input
+amountInput.addEventListener('input', () => {
+  let val = Number(amountInput.value);
+  if (!isNaN(val) && val > MAX) {
+    amountInput.value = MAX;
+  }
+});
+
+// on blur, clamp both lower and upper bounds
+amountInput.addEventListener('blur', () => {
+  let val = Number(amountInput.value);
+  if (isNaN(val) || val < MIN) {
+    amountInput.value = MIN;
+  } else if (val > MAX) {
+    amountInput.value = MAX;
+  }
+});
+
+</script>
       </div>
       <button class="btn-next" id="nextButton">التالي</button>
     </div>
