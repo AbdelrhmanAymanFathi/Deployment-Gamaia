@@ -12,7 +12,7 @@
         // Ensure token is available, otherwise redirect to login
         var token = localStorage.getItem('token');
         if (!token) {
-            window.location.href = window.location.origin + '/login.html';
+            window.location.href = "https://abdelrhmanaymanfathi.github.io/Deployment-Gamaia/login.html";
         }
 
         // Load profile data
@@ -64,7 +64,7 @@
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            window.location.href = window.location.origin + '/login.html';
+            window.location.href = "https://abdelrhmanaymanfathi.github.io/Deployment-Gamaia/login.html";
         }
 
         // =====================
@@ -244,7 +244,7 @@
         document.getElementById("logout-btn").addEventListener("click", () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
-  window.location.href = "https://abdelrhmanaymanfathi.github.io/login.html";
+  window.location.href = "https://abdelrhmanaymanfathi.github.io/Deployment-Gamaia/login.html";
             });
 
             // Toggle profile dropdown menu
