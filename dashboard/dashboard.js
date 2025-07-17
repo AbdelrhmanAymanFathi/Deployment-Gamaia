@@ -459,13 +459,18 @@ document.getElementById('topupForm').onsubmit = async e => {
   }
   
   try {
-    const res = await axios.post('https://api.technologytanda.com/api/payments/topup', { userId, amount });
+    const res = await axios.post(
+      `https://api.technologytanda.com/api/userData/admin/topup-wallet/${userId}`,
+      { amount }
+    );
     
-    if (res.data && res.data.success) {
-      successDiv.textContent = res.data.message + ` (الرصيد الجديد: ${res.data.newBalance.val})`;
-      select.options[select.selectedIndex].setAttribute('data-balance', res.data.newBalance.val);
-      document.getElementById('topupUserBalance').textContent = `الرصيد الحالي: ${res.data.newBalance.val}`;
-      updateUserBalanceInTable(userId, res.data.newBalance.val);
+    if (res.data && (res.data.success || res.data.message)) {
+      // Try to get new balance from response, fallback to message only
+      const newBalance = res.data.newBalance?.val || res.data.newBalance || '';
+      successDiv.textContent = res.data.message + (newBalance ? ` (الرصيد الجديد: ${newBalance})` : '');
+      select.options[select.selectedIndex].setAttribute('data-balance', newBalance);
+      document.getElementById('topupUserBalance').textContent = newBalance ? `الرصيد الحالي: ${newBalance}` : '';
+      updateUserBalanceInTable(userId, newBalance);
     } else {
       throw new Error('فشل الشحن');
     }
