@@ -244,7 +244,7 @@
         document.getElementById("logout-btn").addEventListener("click", () => {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
-  window.location.href = "https://abdelrhmanaymanfathi.github.io/Deployment-Gamaia/login.html";
+  window.location.href = "https://abdelrhmanaymanfathi.github.io/login.html";
             });
 
             // Toggle profile dropdown menu
