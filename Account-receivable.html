@@ -517,24 +517,24 @@
   <!-- الجزء الأيمن: المبالغ -->
   <div class="flex flex-col text-end gap-1">
     <span class="font-bold text-sm sm:text-base">
-      المبلغ المستحق: <span class="text-green-700">${fee} ج.م</span>
+      المبلغ المستحق: <span class="text-green-700">${fee} ر.س</span>
     </span>
 
     ${received}
 
     ${payout ? `
     <span class="text-xs text-gray-500">
-      إجمالي القبض: ${payout} ج.م
+      إجمالي القبض: ${payout} ر.س
     </span>` : ""}
 
     ${feeAmount ? `
     <span class="text-xs text-gray-500">
-      رسوم الاشتراك: ${feeAmount} ج.م
+      رسوم الاشتراك: ${feeAmount} ر.س
     </span>` : ""}
 
     ${finalAmount ? `
     <span class="text-xs text-gray-500">
-      و الصافي بعد الرسوم: ${finalAmount} ج.م
+      و الصافي بعد الرسوم: ${finalAmount} ر.س
     </span>` : ""}
   </div>
 </div>
