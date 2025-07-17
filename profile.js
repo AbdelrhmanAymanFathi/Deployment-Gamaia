@@ -241,15 +241,11 @@
             }
 
             // Logout button event listeners
-            const logoutBtn = document.getElementById('logout-btn');
-            if (logoutBtn) {
-                logoutBtn.addEventListener('click', logout);
-            }
-
-            const logoutBtnLarge = document.getElementById('logout-btn-large');
-            if (logoutBtnLarge) {
-                logoutBtnLarge.addEventListener('click', logout);
-            }
+        document.getElementById("logout-btn").addEventListener("click", () => {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.href = "login.html";
+            });
 
             // Toggle profile dropdown menu
             const profileToggle = document.getElementById('profile-toggle');
