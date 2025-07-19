@@ -1,0 +1,3 @@
+  <!-- Bootstrap Icons  Local & Tailwind-->
+  <link rel="stylesheet" href="./Assets/bootstrap-icons/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="dist/tailwind.css">
