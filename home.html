@@ -187,66 +187,47 @@
     <!-- Cards Grid Wrapper -->
     <div class="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-6 mt-5">
 
-      <!-- Card 1 - Slider جديد -->
-      <div class="overflow-hidden" id="slider">
-        <div id="slides" class="flex transition-transform duration-500 ease-in-out">
-          <!-- Slide 1 -->
-          <div class="min-w-full flex-shrink-0 p-4">
-            <div class="bg-white rounded-xl p-4 shadow-md text-center">
-              <p class="font-bold">أول چمعية<br>بخصم يصل لـ</p>
-              <p class="text-green-600 text-2xl font-bold mt-2">25%</p>
-            </div>
-          </div>
-
-          <!-- Slide 2 -->
-          <div class="min-w-full flex-shrink-0 p-4">
-            <div class="bg-white rounded-xl p-4 shadow-md text-center">
-              <p class="font-bold">اللي هتدفعه<br><span class="text-lg font-bold">ZERO FEES</span></p>
-              <p class="text-green-900 mt-2">هتشترك فيه</p>
-            </div>
-          </div>
-
-          <!-- Slide 3 -->
-          <div class="min-w-full flex-shrink-0 p-4">
-            <div class="bg-white rounded-xl p-4 shadow-md text-center">
-              <p class="text-sm text-gray-800">على خمس أقساط</p>
-              <p class="text-red-600 font-bold text-xl">%25 خصم</p>
-              <p class="text-blue-500 text-sm">بكود: SAVINGS25</p>
-            </div>
-          </div>
-
-          <!-- Slide 4 -->
-          <div class="min-w-full flex-shrink-0 p-4">
-            <div class="bg-white rounded-xl p-4 shadow-md text-center text-black">
-              <p>UP TO</p>
-              <p class="text-3xl font-bold text-red-500">10%</p>
-              <p>OFF</p>
-              <p class="mt-2">كارت چمعية</p>
-            </div>
-          </div>
-
-          <!-- Slide 5 -->
-          <div class="min-w-full flex-shrink-0 p-4">
-            <div class="bg-[#99c9ac] rounded-xl p-4 shadow-md text-center">
-              <p class="font-bold">خليك جاهز للصيف</p>
-              <p class="text-sm">اشترك في چمعية</p>
-              <p class="text-green-600 font-bold">%20</p>
-              <p>خصم على الرسوم</p>
-            </div>
-          </div>
+<!-- Slider Container -->
+  <div id="slider" class="overflow-hidden relative max-w-screen-xl mx-auto mt-8">
+    <!-- Slides Wrapper: px-6 for edge spacing, gap-x-6 for between slides -->
+    <div id="slides" class="flex transition-transform duration-300 ease-in-out select-none px-6 gap-x-6">
+      <!-- Slide Instances -->
+      <div class="flex-shrink-0 w-full mx-1">
+        <div class="aspect-video rounded-2xl overflow-hidden shadow-md">
+          <img src="./Assets/imgs/screen0.png" alt="Slide 0" class="w-full h-full object-cover  mx-2" />
         </div>
-
-        <!-- Indicators -->
-        <div class="flex justify-center mt-0 p-2 rounded">
-          <div class="dot w-4 h-4 mx-2 rounded-full bg-green-600 cursor-pointer" onclick="moveToSlide(0)"></div>
-          <div class="dot w-4 h-4 mx-2 rounded-full bg-gray-300 cursor-pointer" onclick="moveToSlide(1)"></div>
-          <div class="dot w-4 h-4 mx-2 rounded-full bg-gray-300 cursor-pointer" onclick="moveToSlide(2)"></div>
-          <div class="dot w-4 h-4 mx-2 rounded-full bg-gray-300 cursor-pointer" onclick="moveToSlide(3)"></div>
-          <div class="dot w-4 h-4 mx-2 rounded-full bg-gray-300 cursor-pointer" onclick="moveToSlide(4)"></div>
-        </div>
-
       </div>
+      <div class="flex-shrink-0 w-full mx-1">
+        <div class="aspect-video rounded-2xl overflow-hidden shadow-md">
+          <img src="./Assets/imgs/screen1.png" alt="Slide 1" class="w-full h-full object-cover  mx-2" />
+        </div>
+      </div>
+      <div class="flex-shrink-0 w-full mx-1">
+        <div class="aspect-video rounded-2xl overflow-hidden shadow-md">
+          <img src="./Assets/imgs/screen2.png" alt="Slide 2" class="w-full h-full object-cover  mx-2" />
+        </div>
+      </div>
+      <div class="flex-shrink-0 w-full mx-1">
+        <div class="aspect-video rounded-2xl overflow-hidden shadow-md">
+          <img src="./Assets/imgs/screen3.png" alt="Slide 3" class="w-full h-full object-cover  mx-2" />
+        </div>
+      </div>
+      <div class="flex-shrink-0 w-full mx-1">
+        <div class="aspect-video rounded-2xl overflow-hidden shadow-md">
+          <img src="./Assets/imgs/screen4.png" alt="Slide 4" class="w-full h-full object-cover  mx-2" />
+        </div>
+      </div>
+    </div>
 
+    <!-- Indicators -->
+    <div class="flex justify-center mt-2  bottom-2 left-0 right-0">
+      <div class="dot w-3 h-3 mx-1 rounded-full bg-green-600"></div>
+      <div class="dot w-3 h-3 mx-1 rounded-full bg-gray-300"></div>
+      <div class="dot w-3 h-3 mx-1 rounded-full bg-gray-300"></div>
+      <div class="dot w-3 h-3 mx-1 rounded-full bg-gray-300"></div>
+      <div class="dot w-3 h-3 mx-1 rounded-full bg-gray-300"></div>
+    </div>
+  </div>
 
 
 
@@ -449,36 +430,72 @@
     const slider = document.getElementById('slider');
     const slides = document.getElementById('slides');
     const dots = document.querySelectorAll('.dot');
-
     let currentIndex = 0;
-    const totalSlides = slides.children.length;
+    const total = slides.children.length;
 
-    function updateSlider() {
-      const width = slider.clientWidth;
-      slides.style.transform = `translateX(-${currentIndex * width}px)`;
+    // ← Added: variables for dragging
+    let startX = 0, currentTranslate = 0, prevTranslate = 0;
+    let isDragging = false, animationID;
 
+    // ← Added: reposition slides & dots by index
+    function setPositionByIndex() {
+      currentTranslate = -currentIndex * slider.clientWidth;
+      prevTranslate = currentTranslate;
+      slides.style.transform = `translateX(${currentTranslate}px)`;
       dots.forEach((dot, i) => {
-        dot.classList.remove('bg-green-600');
-        dot.classList.add('bg-gray-300');
-        if (i === currentIndex) {
-          dot.classList.add('bg-green-600');
-          dot.classList.remove('bg-gray-300');
-        }
+        dot.classList.toggle('bg-green-600', i === currentIndex);
+        dot.classList.toggle('bg-gray-300', i !== currentIndex);
       });
     }
 
-    function moveToSlide(index) {
-      currentIndex = index;
-      updateSlider();
+    // ← Added: animation loop for dragging
+    function animation() {
+      slides.style.transform = `translateX(${currentTranslate}px)`;
+      if (isDragging) requestAnimationFrame(animation);
     }
 
-    function autoSlide() {
-      currentIndex = (currentIndex + 1) % totalSlides;
-      updateSlider();
+    // ← Added: start dragging
+    slides.addEventListener('pointerdown', e => {
+      isDragging = true;
+      startX = e.clientX;
+      slides.classList.remove('transition-transform');
+      animationID = requestAnimationFrame(animation);
+    });
+
+    // ← Added: during dragging
+    slides.addEventListener('pointermove', e => {
+      if (!isDragging) return;
+      const dx = e.clientX - startX;
+      currentTranslate = prevTranslate + dx;
+    });
+
+    // ← Added: end dragging
+    slides.addEventListener('pointerup', finishDrag);
+    slides.addEventListener('pointerleave', finishDrag);
+    slides.addEventListener('pointercancel', finishDrag);
+
+    function finishDrag() {
+      cancelAnimationFrame(animationID);
+      isDragging = false;
+      const movedBy = currentTranslate - prevTranslate;
+      // threshold: 20% of slider width
+      if (movedBy < -slider.clientWidth * 0.2 && currentIndex < total - 1) currentIndex++;
+      if (movedBy > slider.clientWidth * 0.2 && currentIndex > 0) currentIndex--;
+      slides.classList.add('transition-transform');
+      setPositionByIndex();
     }
 
-    setInterval(autoSlide, 4000);
-    window.addEventListener("resize", updateSlider);
+    // auto-slide every 4 seconds
+    setInterval(() => {
+      currentIndex = (currentIndex + 1) % total;
+      setPositionByIndex();
+    }, 4000);
+
+    // adjust on resize
+    window.addEventListener('resize', setPositionByIndex);
+
+    // initial setup
+    setPositionByIndex();
   </script>
 
 
